@@ -115,7 +115,7 @@ define(function (require,exports,modules) {
         // 手机号码验证
         jQuery.validator.addMethod("isMobile", function(value, element) {
             var length = value.length;
-            return this.optional(element) || (length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value));
+            return this.optional(element) || (length == 11 && /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/.test(value));
         }, "请正确填写您的手机号码。");
 
         // 电话号码验证
@@ -127,7 +127,7 @@ define(function (require,exports,modules) {
         // 联系电话(手机/电话皆可)验证
         jQuery.validator.addMethod("isTel", function(value,element) {
             var length = value.length;
-            var mobile = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+            var mobile = /^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
             var tel = /^(\d{3,4}-?)?\d{7,9}$/g;
             return this.optional(element) || tel.test(value) || (length==11 && mobile.test(value));
         }, "请正确填写您的联系方式");

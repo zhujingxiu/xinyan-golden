@@ -58,10 +58,6 @@
                 <li><a href="<?php echo site_url('project/trash')?>"><i class="fa fa-circle-o"></i> 回收站</a></li>
             </ul>
         </li>
-
-        <li class="header">金价走势</li>
-        <li></li>
-            
     </ul>
     <div class=" user-panel text-center">
 

@@ -1,46 +1,88 @@
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open_multipart('/article/article/save',array('id' => "form-article"))?>
-	<?php echo form_hidden('project_id',$project_id)?>
-	<?php echo form_hidden('project_sn',$project_sn)?>
-		<div class="col-sm-12">
-			<div class="row form-group clearfix col-sm-9">
-				<div class="row col-sm-12">
-					<input type="text" name="title" class="form-control" placeholder="标题" value="<?php echo $title?>" data-toggle="tooltip" title="输入文章标题" data-placement="bottom">
+	<?php echo form_open_multipart('/project/investing/create',array('id' => "form-investing", 'class'=>'form-horizontal'))?>
+		<div class="col-sm-6">
+			<fieldset>
+				<legend>黄金信息</legend>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">实时金价</label>
+					<div class="col-sm-6">
+						<input type="text" name="price" readonly="readonly" class="form-control">
+					</div>
 				</div>
-			</div>
-			<div class="form-group clearfix col-sm-3">
-				<div class="col-sm-12 text-right">
-					<label for=""><input type="checkbox" name="is_top" value="1" data-toggle="tooltip" data-placement="left" title="是否置顶"> 置顶</label>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">购买克重</label>
+					<div class="col-sm-6">
+						<input type="text" name="weight" class="form-control">
+					</div>
 				</div>
-			</div>
+				
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">预购周期</label>
+					<div class="col-sm-6">
+						<select name="period" class="form-control">
+							<option value="3">3个月</option>
+							<option value="6">6个月</option>
+							<option value="9">9个月</option>
+							<option value="12">12个月</option>
+							<option value="18">18个月</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">应付金额</label>
+					<div class="col-sm-6">
+						<input type="text" name="amount" readonly="readonly" class="form-control">
+					</div>
+				</div>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">到期总重</label>
+					<div class="col-sm-6">
+						<input type="text" name="total" readonly="readonly" class="form-control">
+					</div>
+				</div>
+			</fieldset>
 		</div>
-		<div class="col-sm-12">
-			<div class="row form-group clearfix col-sm-6">
-
-				<div class="row col-sm-12">
-					<select name="category_id" class="form-control" data-toggle="tooltip" title="选择一个文章分类" data-placement="right" style="width: 220px;">
-						<option value="0" class="text-center"> -- 请选择一个分类 -- </option>
-
-
-					</select>
+		<div class="col-sm-6">
+			<fieldset>
+				<legend>客户信息</legend>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">客户姓名</label>
+					<div class="col-sm-9">
+						<input type="text" name="realname" class="form-control" placeholder="请输入客户真实姓名">
+					</div>
 				</div>
-			</div>
-			<div class="form-group clearfix col-sm-6">
-				<div class="col-sm-12 text-right">
-					<label for=""><input type="radio" name="status" value="1" <?php echo is_null($status) ||$status ? 'checked' : ''?>> 激活可用</label>
-					&nbsp; &nbsp;
-					<label for="" <?php echo $status ==0 ? 'style="color:#CC6600;"' : ''?>><input type="radio" name="status" value="0" <?php echo  $status ==0 ? 'checked="checked" ' : ''?>	> 暂不使用</label>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">手机号码</label>
+					<div class="col-sm-9">
+						<input type="text" name="phone" class="form-control">
+					</div>
 				</div>
-			</div>
-
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">身份证号</label>
+					<div class="col-sm-9">
+						<input type="text" name="idnumber" class="form-control">
+					</div>
+				</div>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">微信账号</label>
+					<div class="col-sm-9">
+						<input type="text" name="wechat" class="form-control">
+					</div>
+				</div>
+				<div class="form-group clearfix">
+					<label for="" class="control-label col-sm-3">推荐人</label>
+					<div class="col-sm-9">
+						<input type="text" name="referrer" class="form-control">
+					</div>
+				</div>
+			</fieldset>
 		</div>
 		<div class="form-group clearfix">
-			<div class="col-sm-12">
-				<script type="text/plain" id="editor" style="height:460px;"></script>
+			<div class="col-sm-12" data-toggle="tooltip" title="项目备注" >
+				<script type="text/plain" id="editor" style="height:120px;"></script>
 			</div>
 		</div>
-
 	<?php echo form_close();?>
 </div>
 
@@ -52,49 +94,62 @@
 			highlight : function(element) {
 				$(element).closest('.form-group').addClass('has-error');
 			},
-
 			success : function(label) {
 				label.closest('.form-group').removeClass('has-error');
 				label.remove();
 			},
-
 			errorPlacement : function(error, element) {
 				element.parent('div').find('.help-block').remove();
 				element.parent('div').append(error);
-
 			}
 		});
 
-		$("#form-article").validate({
+		$("#form-investing").validate({
 			rules : {
-
-				title : {
-					required : true,
-					minlength : 2,
-					maxlength : 32,
+				price : {
+					required : true
 				},
-				category_id : {
+				weight: {
 					required : true,
-					digits:true,
 					min:1
+				},
+				realname: {
+					required : true,
+					isChinese : true
+				},
+				phone: {
+					required : true,
+					isMobile :true
+				},
+				idnumber: {
+					required : true,
+					isIdCardNo : true
 				},
 			},
 			messages : {
-
-				title : {
-					required : '请输入文章名称',
-					minlength : '文章名称不得少于2个字符。',
-					maxlength : '文章名称不得大于32个字符。'
+				price : {
+					required : '数据有误，请刷新重试',
 				},
-				category_id : {
-					required : '请选择文章分类',
-					min:'请选择一个有效的文章分类'
+				weight : {
+					required : '请输入购入克重',
+					min:'最小购入克重不能小于1克'
+				},
+				realname:{
+					required : '真实姓名必须',
+					isChinese :'请输入中文字符'
+				},
+				phone:{
+					required:'手机号码必须',
+					isMobile : '请输入有效的手机号码'
+				},
+				idnumber:{
+					required:'身份证号码必须',
+					isIdCardNo : '请输入正确的身份证号码'
 				}
 			},
 
 			//提交
 			submitHandler : function(form){
-
 				$(form).ajaxSubmit({
 						dataType:'json',
 						success: function (json) {
@@ -109,17 +164,13 @@
 	});
 	var editor =  new UE.ui.Editor({
 		toolbars: [
-			['fullscreen', 'source', 'undo', 'redo',
+			[ 'source', 'undo', 'redo',
 				'|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-				'|','insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc','|','formatmatch', 'autotypeset', 'blockquote', 'pasteplain',
+				'|','insertorderedlist', 'insertunorderedlist',
 				'|', 'forecolor', 'backcolor',
-				'|','justifyleft','justifycenter','justifyright','justifyjustify'],
-			[ 'link','unlink','emotion','|','horizontal','preview' ]
+				'|','justifyleft','justifycenter','justifyright','justifyjustify']
 		]
-		<?php if(!empty($text)):?>
-		,initialContent:'<?php echo htmlspecialchars_decode($text)?>'
-		<?php endif?>
-		});
+	});
 	editor.render('editor');
 
 

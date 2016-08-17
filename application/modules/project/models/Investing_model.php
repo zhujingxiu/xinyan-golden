@@ -9,9 +9,9 @@ class Investing_model extends CI_Model{
 
     public function project($sn)
     {
-
+        if(!$sn){return false;}
         $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
-        $this->db->from($this->table.' AS p')->order_by('p.addtime')->where("p.project_sn = ".$sn)->limit(1);
+        $this->db->from($this->table.' AS p')->order_by('p.addtime')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
         return $this->db->get();
@@ -29,6 +29,13 @@ class Investing_model extends CI_Model{
         return $this->db->get();
     }
 
+    public function insert($data){
+
+    }
+
+    public function generate_sn(){
+
+    }
     public function category($category_id)
     {
 
@@ -141,19 +148,62 @@ class Investing_model extends CI_Model{
         ));
         return $this->db->insert_id();
     }
-    public function delete_article($article_id)
-    {
-        //$result = $this->article($article_id)->row_array();
 
-        return $this->db->delete($this->table,array('article_id'=>$article_id));
+
+    public function set_hook($event, $name, $class, $method, $arguments)
+    {
+        $this->_ion_hooks->{$event}[$name] = new stdClass;
+        $this->_ion_hooks->{$event}[$name]->class     = $class;
+        $this->_ion_hooks->{$event}[$name]->method    = $method;
+        $this->_ion_hooks->{$event}[$name]->arguments = $arguments;
     }
 
-    public function get_articles_by_code($code='')
+    public function remove_hook($event, $name)
     {
-        if(empty($code)) return array();
-        $code = strtolower($code);
+        if (isset($this->_ion_hooks->{$event}[$name]))
+        {
+            unset($this->_ion_hooks->{$event}[$name]);
+        }
+    }
 
-        return $this->articles(array('atc.code'=>$code));
+    public function remove_hooks($event)
+    {
+        if (isset($this->_ion_hooks->$event))
+        {
+            unset($this->_ion_hooks->$event);
+        }
+    }
 
+    protected function _call_hook($event, $name)
+    {
+        if (isset($this->_ion_hooks->{$event}[$name]) && method_exists($this->_ion_hooks->{$event}[$name]->class, $this->_ion_hooks->{$event}[$name]->method))
+        {
+            $hook = $this->_ion_hooks->{$event}[$name];
+
+            return call_user_func_array(array($hook->class, $hook->method), $hook->arguments);
+        }
+
+        return FALSE;
+    }
+
+    public function trigger_events($events)
+    {
+        if (is_array($events) && !empty($events))
+        {
+            foreach ($events as $event)
+            {
+                $this->trigger_events($event);
+            }
+        }
+        else
+        {
+            if (isset($this->_ion_hooks->$events) && !empty($this->_ion_hooks->$events))
+            {
+                foreach ($this->_ion_hooks->$events as $name => $hook)
+                {
+                    $this->_call_hook($events, $name);
+                }
+            }
+        }
     }
 }

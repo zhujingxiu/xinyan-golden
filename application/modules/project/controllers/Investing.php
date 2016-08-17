@@ -59,8 +59,8 @@ class Investing extends XY_Controller {
 			'status' => 1
 		);
 
-
 		$result = $this->investing_model->project($id)->row_array();
+
 		if($result){
 			$info = $result;
 			$title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
@@ -70,5 +70,35 @@ class Investing extends XY_Controller {
 		$form = $this->load->view('investing/apply',$info,TRUE);
 
 		json_response(array('code'=>1,'title'=>$title,'html'=>$form));
+	}
+
+	public function create()
+	{
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $this->form_validation->set_rules('price', '实时金价', 'required');
+            $this->form_validation->set_rules('weight', '购买克重', 'required');
+            $this->form_validation->set_rules('realname', '真实姓名', 'required');
+            $this->form_validation->set_rules('phone', '联系电话', 'required');
+            $this->form_validation->set_rules('idnumber', '身份证号', 'required');
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                
+                if($this->investing_model->insert($this->input->post())){
+                    $this->session->set_flashdata('success', '项目添加成功！');
+                    json_response(array('code' => 1, 'success' => '成功'));
+                }
+            }else {
+
+                $errors = array(
+                    'price' => form_error('price'),
+                    'weight' => form_error('weight'),
+                    'realname' => form_error('realname'),
+                    'phone' => form_error('phone'),
+                    'idnumber' => form_error('idnumber'),
+                );
+                json_response(array('code' => 0, 'errors' => $errors));
+            }
+        }
 	}
 }

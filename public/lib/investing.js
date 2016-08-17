@@ -39,10 +39,9 @@ define(function(require,exports,modules){
         require('ueditor/ueditor.config');
         require('ueditor');
         require('jqueryvalidate');
+        require('customValidate');
 
         $.get('/project/investing/apply', {project:pid}, function(json){
-            //console.log(json);
-
             layer.open({
                 type: 1,
                 title:json.title,
@@ -52,7 +51,7 @@ define(function(require,exports,modules){
                 btn: ['保存', '取消'],
                 content: json.html ,
                 yes: function(index, layero){
-                    $('#form-article').submit();
+                    $('#form-investing').submit();
                 }
             });
         },'json');
