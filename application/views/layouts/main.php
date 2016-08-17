@@ -26,7 +26,9 @@
     <script src="<?php echo asset_url('base/config.js')?>"></script>
     <script>
         var HTTP_SERVER = '<?php echo base_url();?>';
+        seajs.use('layout');
     </script>
+
     <link rel="icon" href="/favicon.ico">
 </head>
 <body class="hold-transition skin-blue-light fixed sidebar-mini">
@@ -62,8 +64,6 @@
 	    <?php echo $controlbar; ?>
 	</div>
 <!-- ./wrapper -->
-    <script>
-        seajs.use('layout');
-    </script>
+
 </body>
 </html>

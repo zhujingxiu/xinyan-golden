@@ -64,7 +64,6 @@
             
     </ul>
     <div class=" user-panel text-center">
-        <div id="sparkline-4"></div>
-        <p>月</p>
+
     </div>
 </section>

@@ -5,7 +5,7 @@ define(function(require, exports, module) {
     require('raphael');
 
     //require('daterangepicker');
-    require('knob');
+    //require('knob');
     require('sparkline');
     require('datepicker');
     require('slimscroll');
@@ -48,9 +48,9 @@ define(function(require, exports, module) {
             window.alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         });
 */
-        $(".knob").knob();
-
-        //Sparkline charts
+        //$(".knob").knob();
+        //
+        ////Sparkline charts
         var myvalues = [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021];
         $('#sparkline-1').sparkline(myvalues, {
             type: 'line',
@@ -80,12 +80,12 @@ define(function(require, exports, module) {
         //The Calender
         $("#calendar").datepicker();
 
-        //SLIMSCROLL FOR CHAT WIDGET
+        ////SLIMSCROLL FOR CHAT WIDGET
         $('#chat-box').slimScroll({
             height: '250px'
         });
-        // Morris.js Charts
-        // Sales chart
+        //// Morris.js Charts
+        //// Sales chart
         var area = new Morris.Area({
             element: 'revenue-chart',
             resize: true,
@@ -136,8 +136,8 @@ define(function(require, exports, module) {
             gridTextFamily: "Open Sans",
             gridTextSize: 10
         });
-
-        //Donut Chart
+        //
+        ////Donut Chart
         var donut = new Morris.Donut({
             element: 'sales-chart',
             resize: true,
@@ -156,5 +156,121 @@ define(function(require, exports, module) {
             donut.redraw();
             line.redraw();
         });
+    });
+
+    $('#toggle-charts input[name="price_charts"]').bind('change', function () {
+        exports.priceGoldView($(this).val());
     })
+
+
+    exports.priceGoldView = function (gType){
+        require('echarts');
+        $.ajax({
+            url : "/tool/api/golden_price",
+            data:{gType:gType},
+            dataType : 'json',
+            success : function(json) {
+                exports.renderEchart('gold-price-charts','黄金价格走势图',eval("["+json.data+"]"),eval("["+json.val+"]"));
+            }
+        });
+    }
+
+    exports.renderEchart = function (el,title,dataType,valType){
+        var myChart = echarts.init(document.getElementById(el))
+        var option = {
+            title : {
+                text:title,// '黄金价格走势图',
+                textStyle:{
+                    fontSize: 20,
+                    color: '#79654e'
+                }
+            },
+            grid:{
+                x:50,
+                y:60,
+                x2:30,
+                y2:30
+            },
+            tooltip : {
+                trigger: 'axis',
+                formatter: "{c} 元/克 <br/>"+"{b}",
+                enterable:true,
+                borderColor:'FF8800',
+                borderWidth:2,
+                axisPointer:{
+                    type: 'line',
+                    lineStyle: {
+                        color: '#48b',
+                        width: 1,
+                        type: 'dashed',
+                        shadowBlur:0.1
+                    }
+                }
+            },
+            toolbox: {
+                show : true
+            },
+
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : dataType,
+//				            timeline:{
+//						    	controlPosition:'left',
+//						        splitLine:false,
+//						        splitArea:true,
+//						    },
+                    splitLine:false,
+                    splitArea:true,
+                    axisLabel : {
+                        show : true,
+                        textStyle : {
+                            color : '#28c6de'
+                        }
+                    },
+                    axisLine :{
+                        lineStyle:{
+                            color: '#FF8800',
+                            width: 0,
+                            type: 'solid'
+                        }
+                    }
+
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    scale: true,
+                    name : '金价 (元/克)',
+                    precision:2,
+                    axisLine:{
+                        show:true
+                    }
+                }
+            ],
+            lineStyle:{
+                shadowBlur:0
+            },
+            series : [
+                {
+                    type:'line',
+                    symbolSize:0,
+                    data:valType,
+                    showAllSymbol:false,
+                    itemStyle:{
+                        normal:{
+                            lineStyle:{
+                                color:'#FF8800',
+                                width:0.5
+                            }
+                        }
+                    },
+                },
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
 });

@@ -85,5 +85,114 @@ define(function(require, exports, module) {
         selector.parent().find('.errorTips').fadeIn();
         $("#loginBtn").val('登录').prop('disabled', false);
     }
+    exports.price = function (el) {
+        require('echarts');
+        $.get('/auth/login/tmp',{r:Math.random()},function(json){
 
+        //    //console.log(json);
+        //    console.log($(el));
+        //    $(el).append('ok');
+        //    if(json.code==1){
+        //        $(el).html(json.code);
+        //
+        //    }
+            exports.renderEchart('gold-price-charts','今日黄金价格走势图',eval("["+json.data+"]"),eval("["+json.val+"]"));
+        },'json')
+
+    }
+
+    exports.renderEchart = function (el,title,dataType,valType){
+        var myChart = echarts.init(document.getElementById(el))
+        var option = {
+            title : {
+                text:title,// '黄金价格走势图',
+                textStyle:{
+                    fontSize: 20,
+                    //color: '#79654e'
+                }
+            },
+            grid:{
+                x:50,
+                y:60,
+                x2:30,
+                y2:30
+            },
+            tooltip : {
+                trigger: 'axis',
+                formatter: "{c} 元/克 <br/>"+"{b}",
+                enterable:true,
+                borderColor:'FF8800',
+                borderWidth:2,
+                axisPointer:{
+                    type: 'line',
+                    lineStyle: {
+                        color: '#48b',
+                        width: 1,
+                        type: 'dashed',
+                        shadowBlur:0.1
+                    }
+                }
+            },
+            toolbox: {
+                show : true
+            },
+
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    data : dataType,
+//				            timeline:{
+//						    	controlPosition:'left',
+//						        splitLine:false,
+//						        splitArea:true,
+//						    },
+                    splitLine:false,
+                    splitArea:true,
+                    axisLabel : {
+                        show : true,
+
+                    },
+                    axisLine :{
+                        lineStyle:{
+                            width: 0,
+                            type: 'solid'
+                        }
+                    }
+
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value',
+                    scale: true,
+                    precision:2,
+                    axisLine:{
+                        show:true
+                    }
+                }
+            ],
+            lineStyle:{
+                shadowBlur:0
+            },
+            series : [
+                {
+                    type:'line',
+                    symbolSize:0,
+                    data:valType,
+                    showAllSymbol:false,
+                    itemStyle:{
+                        normal:{
+                            lineStyle:{
+                                //color:'#FF8800',
+                                width:0.5
+                            }
+                        }
+                    },
+                },
+            ]
+        };
+        // 为echarts对象加载数据
+        myChart.setOption(option);
+    }
 });

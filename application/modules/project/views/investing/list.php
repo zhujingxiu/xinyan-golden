@@ -19,7 +19,7 @@
                 <div class="box">
                     <div class="box-header">
                         <div class="buttons">
-                            <button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> </button>
+                            <button type="button" class="btn btn-primary" id="btn-new"><i class="fa fa-plus"></i> </button>
                         </div>
 <!--                        <h3 class="box-title">Hover Data Table</h3>-->
                     </div>
@@ -57,4 +57,7 @@
         <!-- /.row -->
     </section>
     <!-- /.content -->
-    <script src="<?php echo site_url('public/asset/require.js')?>" data-main="investing"></script>
+    <script type="text/javascript">
+
+        seajs.use('investing')
+    </script>

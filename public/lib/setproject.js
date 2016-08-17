@@ -5,6 +5,7 @@ define(function(require,exports,module){
 
     require('jqueryvalidate');
     require('ajaxSubmit');
+    require('layer');
     $(function () {
         $.validator.setDefaults({
             errorElement: 'span',
@@ -20,7 +21,6 @@ define(function(require,exports,module){
                 element.parent('div').append(error);
             }
         });
-
         $("#project-investing").validate({
             rules: {
                 code: {
@@ -66,8 +66,60 @@ define(function(require,exports,module){
                     dataType: 'json',
                     success: function (json) {
                         if (json.code == 1) {
-                            $(this).closest('.do-result').html('<div class="alert alert-success">设置参数已保存！</div>').fadeOut(2000);
-                            //location.reload();
+                            $(form).find('.do-result').html('<div class="alert alert-success">设置参数已保存！</div>').fadeOut(3000);
+                            exports.render_statuses($(form).find('input[name="mode"]').val());
+                        }
+                    }
+                });
+            }
+        });
+        $("#project-recycling").validate({
+            rules: {
+                code: {
+                    required: true,
+                    minlength: 2,
+                    remote: {
+                        url: "/setting/project/check_status",             //servlet
+                        data: {
+                            status_id: function () {
+                                return $("input[name='status_id']").val();
+                            },
+                            code: function () {
+                                return $("#form-code").val();
+                            },
+                            mode: function () {
+                                return 'recyling';
+                            }
+                        }
+                    }
+                },
+                title: {
+                    required: true,
+                    minlength: 2
+                },
+
+            },
+            messages: {
+                code: {
+                    required: '请输入状态标识',
+                    minlength: '状态标识不得少于2个字符。',
+                    remote: "状态标识已经被注册"
+                },
+                title: {
+                    required: '请输入状态名称',
+                    minlength: '状态名称不得少于2个字符。'
+                },
+            },
+
+            //提交
+            submitHandler: function (form) {
+
+                $(form).ajaxSubmit({
+                    dataType: 'json',
+                    success: function (json) {
+                        if (json.code == 1) {
+                            $(form).find('.do-result').html('<div class="alert alert-success">设置参数已保存！</div>').fadeOut(3000);
+                            exports.render_statuses($(form).find('input[name="mode"]').val());
                         }
                     }
                 });
@@ -83,6 +135,9 @@ define(function(require,exports,module){
 
     $('.table-status tbody').delegate('.status-row','dblclick',function(){
         exports.render_detail($(this).data('entry'),$(this).data('mode'));
+    });
+    $('.btn-new').bind('click', function () {
+        exports.render_detail(false,$(this).data('mode'));
     });
     exports.render_detail = function (id,mode) {
         if(id > 0) {
@@ -119,6 +174,22 @@ define(function(require,exports,module){
                 _html += '</tr>';
             }
             $('tbody#'+mode+'-list').html(_html)
+        },'json')
+    }
+    $('.setting-project-form .form-control').bind('change', function () {
+        exports.setting_save($(this).attr('name'),$(this).val(),$(this));
+    });
+    $('.setting-project-form .input-group input[type="checkbox"],.setting-project-form .input-group input[type="radio"]').bind('click', function () {
+        console.log($(this).val());
+        console.log($(this));
+        //exports.setting_save($(this).attr('name'),$(this).val(),$(this));
+    })
+    exports.setting_save = function (code,value,el) {
+
+        $.post('/setting/project/save',{code:code,value:value}, function (json) {
+            if(json.code==1){
+                layer.tips('参数已保存', el,{tips: [1, '#00CC99']});
+            }
         },'json')
     }
 });

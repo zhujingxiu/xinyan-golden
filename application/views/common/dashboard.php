@@ -76,6 +76,32 @@
         <div class="row">
             <!-- Left col -->
             <section class="col-lg-7 connectedSortable">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-envelope"></i>
+
+                        <h3 class="box-title">Quick Email</h3>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                        <!-- /. tools -->
+                    </div>
+                    <div class="box-body">
+                        <div id="gold-price-charts" style="margin: 0;padding: 0;width:90%;height:383px;">
+                        </div>
+                        <ul class="tu clear" id="toggle-charts">
+                            <li><input type="radio" name="price_charts" value="day" checked="checked"  />今天</li>
+                            <li><input type="radio" name="price_charts" value="week"  />周</li>
+                            <li><input type="radio" name="price_charts" value="month"  />月</li>
+                        </ul>
+                    </div>
+                    <div class="box-footer clearfix">
+                        <button type="button" class="pull-right btn btn-default" id="sendEmail">Send
+                            <i class="fa fa-arrow-circle-right"></i></button>
+                    </div>
+                </div>
                 <!-- Custom tabs (Charts with tabs)-->
                 <div class="nav-tabs-custom">
                     <!-- Tabs within a box -->
@@ -182,6 +208,7 @@
 
 
                 <!-- quick email widget -->
+
                 <div class="box box-info">
                     <div class="box-header">
                         <i class="fa fa-envelope"></i>
@@ -458,5 +485,20 @@
     </section>
     <!-- /.content  -->
     <script>
-        seajs.use('dashboard');
+        seajs.use('dashboard',function(l){
+            l.priceGoldView('day');
+        });
     </script>
+    <style>
+        .clear {
+            zoom: 1;
+        }
+        .tu {
+            margin-left: 50px;
+            list-style: none;
+        }
+        .tu li {
+            float: left;
+            width: 80px;
+        }
+    </style>

@@ -1,3 +1,4 @@
+window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables');
     require('datatables.bs');
@@ -32,8 +33,6 @@ define(function(require,exports,modules){
         require('jqueryvalidate');
 
         $.get('/article/article/form', {article_id:aid}, function(json){
-            //console.log(json);
-
             layer.open({
                 type: 1,
                 title:json.title,
@@ -44,17 +43,8 @@ define(function(require,exports,modules){
                 content: json.html ,//注意，如果str是object，那么需要字符拼接。
                 yes: function(index, layero){
                     $('#form-article').submit();
-                    //$('#form-article').ajaxSubmit({
-                    //    dataType:'json',
-                    //    success: function (json) {
-                    //        console.log(json)
-                    //    }
-                    //})
-                    //layer.close(index); //如果设定了yes回调，需进行手工关闭
                 }
             });
-
-
         },'json');
     }
 })

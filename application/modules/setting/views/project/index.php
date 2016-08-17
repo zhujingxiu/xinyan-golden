@@ -33,18 +33,16 @@
                 <div class="box-body">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a href="#tab_1" data-toggle="tab">钱生金</a></li>
-                            <li><a href="#tab_2" data-toggle="tab">金生金</a></li>
+                            <li class="active"><a href="#investing" data-toggle="tab">钱生金</a></li>
+                            <li><a href="#recycling" data-toggle="tab">金生金</a></li>
 
                             <li><a href="#tab_3" data-toggle="tab">其他</a></li>
 
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="tab_1">
+                            <div class="tab-pane active" id="investing">
                                 <div class="row">
-
                                     <div class="col-sm-6">
-
                                         <filedset>
                                             <legend>项目状态</legend>
                                             <div class="row">
@@ -71,9 +69,14 @@
                                         <?php echo form_hidden('status_id','')?>
                                         <?php echo form_hidden('mode','investing')?>
                                         <filedset>
-                                            <legend>状态表单</legend>
+                                            <legend>状态表单
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-sm btn-new" data-mode="investing">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </legend>
                                             <div class="col-sm-12 do-result">
-
                                             </div>
                                             <div class="form-group clearfix">
                                                 <label for="" class="control-label col-sm-2">状态名称</label>
@@ -110,22 +113,36 @@
 
                                     </div>
                                     <div class="col-sm-6">
-                                        <?php echo form_open('setting/project/save', array('id' =>'project-investing','class'=>'form-horizontal' ))?>
+                                        <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
                                         <filedset>
                                             <legend>项目表单</legend>
-                                            <div class="form-group">
+                                            <div class="col-sm-12 do-result">
+                                            </div>
+                                            <div class="form-group clearfix">
                                                 <label for="" class="control-label col-sm-3">条款协议</label>
-                                                <div class="col-sm-9">
-                                                    <select name="investing_checkout_id" class="form-control">
-
+                                                <div class="col-sm-6">
+                                                    <select name="investing_privacy" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($privacies as $item): ?>
+                                                            <option value="<?php echo $item['article_id']?>"
+                                                                <?php echo (!empty($setting['investing_privacy']) && $setting['investing_privacy']== $item['article_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group clearfix">
                                                 <label for="" class="control-label col-sm-3">初始状态</label>
-                                                <div class="col-sm-9">
-                                                    <select name="investing_initial_status" class="form-control">
-
+                                                <div class="col-sm-6">
+                                                    <select name="investing_initial" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_initial']) && $setting['investing_initial']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -135,38 +152,148 @@
                                 </div>
                             </div>
                             <!-- /.tab-pane -->
-                            <div class="tab-pane" id="tab_2">
-                                The European languages are members of the same family. Their separate existence is a myth.
-                                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-                                in their grammar, their pronunciation and their most common words. Everyone realizes why a
-                                new common language would be desirable: one could refuse to pay expensive translators. To
-                                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-                                words. If several languages coalesce, the grammar of the resulting language is more simple
-                                and regular than that of the individual languages.
+                            <div class="tab-pane" id="recycling">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <filedset>
+                                            <legend>项目状态</legend>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table class="table table-border table-hover table-status">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>状态</th>
+                                                            <th>标识</th>
+                                                            <th>启用</th>
+                                                            <th>说明</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="recycling-list">
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </filedset>
+
+                                        <?php echo form_open('setting/project/save_status', array('id' =>'project-recycling','class'=>'form-horizontal status-form' ))?>
+                                        <?php echo form_hidden('status_id','')?>
+                                        <?php echo form_hidden('mode','recycling')?>
+                                        <filedset>
+                                            <legend>状态表单
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-sm btn-new" data-mode="recycling">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </legend>
+                                            <div class="col-sm-12 do-result">
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">状态名称</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="title" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">标识</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="code" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">说明</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="note" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">是否启用</label>
+                                                <div class="col-sm-10">
+                                                    <label><input type="radio" name="status" value="1" checked>是</label>
+                                                    <label><input type="radio" name="status" value="0">否</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <div class="col-sm-10 col-sm-offset-2">
+                                                    <button type="button" form="project-recycling" class="btn btn-primary btn-status">保存</button>
+                                                </div>
+                                            </div>
+                                        </filedset>
+                                        <?php echo form_close()?>
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
+                                        <filedset>
+                                            <legend>项目表单</legend>
+                                            <div class="col-sm-12 do-result">
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-3">条款协议</label>
+                                                <div class="col-sm-6">
+                                                    <select name="recycling_privacy" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($privacies as $item): ?>
+                                                            <option value="<?php echo $item['article_id']?>"
+                                                                <?php echo (!empty($setting['recycling_privacy']) && $setting['recycling_privacy']== $item['article_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-3">初始状态</label>
+                                                <div class="col-sm-6">
+                                                    <select name="recycling_initial" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_initial']) && $setting['recycling_initial']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </filedset>
+                                        <?php echo form_close()?>
+                                    </div>
+                                </div>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="tab_3">
                                 <fieldset>
                                     <legend>通用参数</legend>
-                                    <div class="form-group clearfix">
-                                        <label for="" class="control-label col-sm-3 text-right">生金克数 (g)
-                                            <span class="help-block">按1克每年</span>
-                                        </label>
-                                        <div class="col-sm-9">
-                                            <input type="text" name="profit" class="form-control" id="inputProfit"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <label for="" class="control-label col-sm-3 text-right">季度取金
-                                            <span class="help-block">是否支持按季度取金</span>
-                                        </label>
-                                        <div class="col-sm-9">
+                                    <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
+                                    <div class="col-sm-6">
 
-                                                <label><input type="radio" name="season" value="1"/>是</label>
-                                                <label><input type="radio" name="season" value="0"/>否</label>
-
+                                        <div class="form-group clearfix">
+                                            <label for="" class="control-label col-sm-3 text-right">生金克数 (g)
+                                                <span class="help-block">按100克每年</span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="profit" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit'])? '' :$setting['profit']  ?>"/>
+                                            </div>
                                         </div>
+                                        <div class="form-group clearfix">
+                                            <label for="" class="control-label col-sm-3 text-right">季度取金
+                                                <span class="help-block">支持按季度取金</span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                                 <div class="input-group">
+                                                     <label><input type="checkbox" name="season" value="1"/>是</label>
+                                                 </div>
+                                            </div>
+                                        </div>
+
                                     </div>
+                                    <div class="col-sm-6">
+
+                                    </div>
+                                    <?php echo form_close()?>
                                 </fieldset>
                             </div>
                             <!-- /.tab-pane -->
@@ -188,5 +315,6 @@
 <script type="text/javascript">
     seajs.use('setproject', function (sp) {
         sp.render_statuses('investing');
+        sp.render_statuses('recycling');
     });
 </script>

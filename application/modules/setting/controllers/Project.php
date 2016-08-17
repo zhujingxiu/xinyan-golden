@@ -11,11 +11,25 @@ class Project extends XY_Controller {
     }
     public function index()
     {
-        $data = $this->setting->get_settings_by_group('project');
-        $privacy_articles = $this->article_model->get_articles_by_code('privacy');
+        $this->layout->add_includes(array(
+            array('type'=>'css','src'=>_ASSET_.'lib/layer/skin/layer.css')
+        ));
+        $data['setting'] = $this->setting->get_settings_by_group('project');
+        $data['privacies'] = $this->article_model->get_articles_by_code('privacy')->result_array();
+        $data['investing_statuses'] = $this->project_model->statuses(array('status'=>1),'investing')->result_array();
+        $data['recycling_statuses'] = $this->project_model->statuses(array('status'=>1),'recycling')->result_array();
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
+
         $this->layout->view('project/index',$data);
+    }
+
+    public function save()
+    {
+        $setting_id = $this->setting->add_setting($this->input->post('code') , $this->input->post('value'),'project',1);
+
+        json_response(array('code' => 1, 'msg'=>'成功','affected'=>$setting_id));
+
     }
 
     public function status_list()
@@ -30,7 +44,6 @@ class Project extends XY_Controller {
 
     public function save_status()
     {
-        //var_dump($this->input->post());
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             $this->form_validation->set_rules('title', '标题', 'trim|required|min_length[2]|max_length[64]');
 
@@ -56,7 +69,6 @@ class Project extends XY_Controller {
                     json_response(array('code' => 0, 'warning' => '异常'));
                 }
             }else {
-
                 $errors = array(
                     'title' => form_error('title'),
                     'code' => form_error('code'),
@@ -71,7 +83,6 @@ class Project extends XY_Controller {
         $id = $this->input->get('status_id');
         $code = $this->input->get('code');
         $mode = $this->input->get('mode');
-
         $result = $this->project_model->code_check($code,$id,$mode);
 
         if($result){
@@ -86,8 +97,6 @@ class Project extends XY_Controller {
         $id  = $this->input->get('status_id');
         $mode  = $this->input->get('mode');
         $info = $this->project_model->status($id,$mode)->row_array();
-
-
         json_response(array('code'=>1,'info'=>$info));
     }
 }

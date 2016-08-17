@@ -25,7 +25,10 @@
 <body>
 <div class="loginWrapper clearfix">
     <div class="banWrapper" style="background: #21db8a">
-        <div class="banContent"></div>
+        <div id="left-container" class="banContent">
+            <div id="gold-price-charts" style="margin: 0;padding: 0;width:700px;height:380px;">
+            </div>
+        </div>
     </div>
     <div class="loginMain">
         <div class="loginWidth">
@@ -66,7 +69,9 @@
 <script src="<?php echo asset_url('base/app.js')?>"></script>
 <script src="<?php echo asset_url('base/config.js')?>"></script>
 <script>
-    seajs.use("login")
+    seajs.use("login",function(l){
+        l.price('#left-container');
+    })
 </script>
 </body>
 </html>

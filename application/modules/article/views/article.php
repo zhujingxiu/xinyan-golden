@@ -93,6 +93,6 @@
     <!-- /.content -->
 
 <script type="text/javascript">
-    window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
+
     seajs.use('article');
 </script>

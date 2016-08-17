@@ -11,6 +11,7 @@ seajs.config({
         , "moment"          : "moment/moment.min"
         , "jqueryui"        : "https://code.jquery.com/ui/1.11.4/jquery-ui.min"
         , "jqueryvalidate"  : "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min"
+        , "echarts"         : "echarts/echarts.common.min"
         , "slimscroll"      : "slimScroll/jquery.slimscroll.min"
         , "fastclick"       : "fastclick/fastclick"
         , "raphael"         : "raphael/raphael"
