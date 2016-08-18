@@ -18,29 +18,35 @@ class Investing extends XY_Controller {
 			array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
 			array('type'=>'css','src'=>_ASSET_.'lib/layer/skin/layer.css'),
 		));
-		$this->layout->view('investing/list');
+		$data['success'] = $this->session->flashdata('success');
+		$data['warning'] = $this->session->flashdata('warning');
+		$this->layout->view('investing/list',$data);
 	}
 
 	public function all()
 	{
 		$rows = array();
-		$query = $this->db->get_where('project', array('mode' => $this->mode));
-		if(count($query->result_array())){
-			foreach($query->result_array() as $row){
+		$result = $this->investing_model->projects()->result_array();
+		$total = count($result);
+		if($total){
+			foreach($result as $row){
 				$rows[] = array(
+					'<label class="label label-primary">'.$row['status'].'</label>',
 					$row['project_sn'],
-					$row['title'],
 					$row['realname'],
 					$row['phone'],
 					$row['price'],
-					$row['value'],
+					$row['weight'],
+					$row['period'].'个月',
+					$row['amount'],
+					date('Y-m-d H:i',$row['addtime']),
 				);
 			}
 		}
 		$data = array(
 			'draw' 				=> 1,
-			'recordsTotal' 		=> count($query->result_array()),
-			'recordsFiltered' 	=> count($query->result_array()),
+			'recordsTotal' 		=> $total,
+			'recordsFiltered' 	=> $total,
 			'data' => $rows
 		);
 		die(json_encode($data));
@@ -50,10 +56,10 @@ class Investing extends XY_Controller {
 	{
 		$id = $this->input->get('project');
 		$title = '添加项目';
+
 		$info = array(
 			'project_id' => '',
 			'project_sn' => 0,
-			'title'	=> '',
 			'text' => '',
 			'is_top' => 0,
 			'status' => 1
@@ -65,8 +71,17 @@ class Investing extends XY_Controller {
 			$info = $result;
 			$title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
 		}
-
-
+		$info['profit'] = (float)($this->config->item('profit')/(12*100));
+		$info['privacy'] = $this->config->item('investing_privacy');
+		if($info['privacy']){
+			$this->load->model('article/article_model');
+			$article = $this->article_model->article($info['privacy'])->row_array();
+			if(!empty($article['title'])) {
+				$info['agree'] = sprintf('我已阅读并同意《%s》', anchor('#', $article['title'], 'target="_blank"'));
+			}else{
+				$info['agree'] = '';
+			}
+		}
 		$form = $this->load->view('investing/apply',$info,TRUE);
 
 		json_response(array('code'=>1,'title'=>$title,'html'=>$form));
@@ -80,10 +95,12 @@ class Investing extends XY_Controller {
             $this->form_validation->set_rules('realname', '真实姓名', 'required');
             $this->form_validation->set_rules('phone', '联系电话', 'required');
             $this->form_validation->set_rules('idnumber', '身份证号', 'required');
-
+			if($this->config->item('investing_privacy')){
+				$this->form_validation->set_rules('agree', '同意协议', 'required',array('required'=>'必须同意该条款协议'));
+			}
             if ($this->form_validation->run() == TRUE)
             {
-                
+
                 if($this->investing_model->insert($this->input->post())){
                     $this->session->set_flashdata('success', '项目添加成功！');
                     json_response(array('code' => 1, 'success' => '成功'));
@@ -97,6 +114,9 @@ class Investing extends XY_Controller {
                     'phone' => form_error('phone'),
                     'idnumber' => form_error('idnumber'),
                 );
+				if($this->config->item('investing_privacy')){
+					$errors['agree'] = form_error('agree');
+				}
                 json_response(array('code' => 0, 'errors' => $errors));
             }
         }

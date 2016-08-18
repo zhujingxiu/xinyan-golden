@@ -14,6 +14,20 @@
 
     <!-- Main content -->
     <section class="content">
+        <?php if($success) : ?>
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> 成功</h4>
+                <?php echo $success?>
+            </div>
+        <?php endif ?>
+        <?php if($warning) : ?>
+            <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-attention"></i> 警告</h4>
+                <?php echo $warning?>
+            </div>
+        <?php endif ?>
         <div class="row">
             <div class="col-xs-12">
                 <div class="box">
@@ -28,23 +42,29 @@
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
+                                <th>状态</th>
                                 <th>项目编号</th>
-                                <th>名称</th>
                                 <th>客户</th>
                                 <th>联系电话</th>
                                 <th>金价</th>
-                                <th>市值</th>
+                                <th>购入重量</th>
+                                <th>预购周期</th>
+                                <th>应收金额</th>
+                                <th>订单时间</th>
                             </tr>
                             </thead>
 
                             <tfoot>
                             <tr>
+                                <th>状态</th>
                                 <th>项目编号</th>
-                                <th>名称</th>
                                 <th>客户</th>
                                 <th>联系电话</th>
                                 <th>金价</th>
-                                <th>市值</th>
+                                <th>购入重量</th>
+                                <th>预购周期</th>
+                                <th>应收金额</th>
+                                <th>订单时间</th>
                             </tr>
                             </tfoot>
                         </table>

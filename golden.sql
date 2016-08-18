@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-08-17 12:07:01
+-- Generation Time: 2016-08-18 11:59:42
 -- 服务器版本： 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -74,6 +74,24 @@ INSERT INTO `gd_article_category` (`category_id`, `code`, `title`, `is_admin`, `
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `gd_customer`
+--
+
+CREATE TABLE `gd_customer` (
+  `customer_id` int(11) NOT NULL,
+  `realname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `idnumber` char(18) COLLATE utf8_unicode_ci NOT NULL,
+  `wechat` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `referrer` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `worker_id` int(11) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `gd_golden_price`
 --
 
@@ -121,7 +139,7 @@ CREATE TABLE `gd_node` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `sort` smallint(6) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_node`
@@ -131,49 +149,6 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (1, 'menu', 0, 1, NULL, '{"cn":"\\u7cfb\\u7edf","en":"System"}', '', 1, 0, 7),
 (2, 'menu', 0, 1, NULL, '{"cn":"\\u5de5\\u5177","en":"Tool"}', '', 1, 0, 7),
 (3, 'menu', 417, 3, NULL, '{"cn":"\\u7528\\u6237\\u7ec4\\u6743\\u9650","en":"Group Permission"}', 'user/user_permission', 1, 1, 2),
-(2468, 'menu', 2441, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u7a3f\\u4ef6","en":"Facebook Account"}', 'fbaccount/entry', 1, 1, 0),
-(2436, 'menu', 2116, 3, NULL, '{"cn":"NFL\\u914d\\u7f6e","en":"NFL Config"}', '', 1, 1, 3),
-(2440, 'menu', 2115, 2, NULL, '{"cn":"\\u7a3f\\u4ef6","en":"Contribute"}', '', 1, 1, 2),
-(2101, 'menu', 143, 2, NULL, '{"cn":"\\u56de\\u590d","en":"Reply"}', 'office/reply', 1, 1, 3),
-(2100, 'menu', 143, 2, NULL, '{"cn":"\\u76d1\\u63a7","en":"Monitor"}', 'office/monitor', 1, 1, 2),
-(2099, 'menu', 143, 2, NULL, '{"cn":"\\u529e\\u516c\\u7528\\u6237","en":"Office User"}', 'office/user', 1, 1, 4),
-(2098, 'menu', 143, 2, NULL, '{"cn":"\\u7533\\u8bf7","en":"Apply"}', 'office/apply', 1, 1, 1),
-(3379, 'auth', 3371, 2, NULL, 'setting', 'setting/setting', 1, 1, 3),
-(3378, 'auth', 3374, 3, NULL, 'sync', 'setting/permission_node/sync', 1, 1, 4),
-(3377, 'auth', 3374, 3, NULL, 'delete', 'setting/permission_node/delete', 1, 1, 3),
-(3376, 'auth', 3374, 3, NULL, 'save', 'setting/permission_node/save', 1, 1, 2),
-(3375, 'auth', 3374, 3, NULL, 'index', 'setting/permission_node/index', 1, 1, 1),
-(3374, 'auth', 3371, 2, NULL, 'permission_node', 'setting/permission_node', 1, 1, 2),
-(3373, 'auth', 3372, 3, NULL, 'index', 'setting/advertise/index', 1, 1, 1),
-(3372, 'auth', 3371, 2, NULL, 'advertise', 'setting/advertise', 1, 1, 1),
-(3371, 'auth', 0, 1, NULL, 'Setting', '', 1, 1, 14),
-(3369, 'auth', 3364, 3, NULL, 'history', 'service/website/history', 1, 1, 5),
-(3370, 'auth', 3364, 3, NULL, 'tracking', 'service/website/tracking', 1, 1, 6),
-(3368, 'auth', 3364, 3, NULL, 'delete', 'service/website/delete', 1, 1, 4),
-(3367, 'auth', 3364, 3, NULL, 'edit', 'service/website/edit', 1, 1, 3),
-(3366, 'auth', 3364, 3, NULL, 'add', 'service/website/add', 1, 1, 2),
-(3365, 'auth', 3364, 3, NULL, 'index', 'service/website/index', 1, 1, 1),
-(3364, 'auth', 3317, 2, NULL, 'website', 'service/website', 1, 1, 7),
-(3363, 'auth', 3360, 3, NULL, 'ajax_data', 'service/queue/ajax_data', 1, 1, 3),
-(3362, 'auth', 3360, 3, NULL, 'demotion', 'service/queue/demotion', 1, 1, 2),
-(3361, 'auth', 3360, 3, NULL, 'index', 'service/queue/index', 1, 1, 1),
-(3360, 'auth', 3317, 2, NULL, 'queue', 'service/queue', 1, 1, 6),
-(3359, 'auth', 3352, 3, NULL, 'edit_ad_account', 'service/publish/edit_ad_account', 1, 1, 7),
-(3358, 'auth', 3352, 3, NULL, 'tracking', 'service/publish/tracking', 1, 1, 6),
-(3357, 'auth', 3352, 3, NULL, 'component', 'service/publish/component', 1, 1, 5),
-(3356, 'auth', 3352, 3, NULL, 'history', 'service/publish/history', 1, 1, 4),
-(3355, 'auth', 3352, 3, NULL, 'getForm', 'service/publish/getForm', 1, 1, 3),
-(3351, 'auth', 3345, 3, NULL, 'history', 'service/advertise_targeting/history', 1, 1, 6),
-(3352, 'auth', 3317, 2, NULL, 'publish', 'service/publish', 1, 1, 5),
-(3353, 'auth', 3352, 3, NULL, 'index', 'service/publish/index', 1, 1, 1),
-(3354, 'auth', 3352, 3, NULL, 'edit', 'service/publish/edit', 1, 1, 2),
-(3350, 'auth', 3345, 3, NULL, 'detail', 'service/advertise_targeting/detail', 1, 1, 5),
-(3344, 'auth', 3338, 3, NULL, 'history', 'service/advertise_post/history', 1, 1, 6),
-(3345, 'auth', 3317, 2, NULL, 'advertise_targeting', 'service/advertise_targeting', 1, 1, 4),
-(3349, 'auth', 3345, 3, NULL, 'delete', 'service/advertise_targeting/delete', 1, 1, 4),
-(3348, 'auth', 3345, 3, NULL, 'approve', 'service/advertise_targeting/approve', 1, 1, 3),
-(3347, 'auth', 3345, 3, NULL, 'edit', 'service/advertise_targeting/edit', 1, 1, 2),
-(3346, 'auth', 3345, 3, NULL, 'index', 'service/advertise_targeting/index', 1, 1, 1),
 (123, 'menu', 418, 3, NULL, '{"cn":"\\u6743\\u9650\\u8282\\u70b9","en":"Permission Nodes"}', 'setting/permission_node', 1, 1, 3),
 (124, 'menu', 2, 2, NULL, '{"cn":"\\u7528\\u6237\\u65e5\\u8bb0","en":"User Logs "}', 'user/user_log', 1, 0, 5),
 (125, 'menu', 417, 3, NULL, '{"cn":"\\u7528\\u6237","en":"Users"}', 'user/user', 1, 1, 0),
@@ -181,7 +156,6 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (127, 'menu', 0, 1, NULL, '{"cn":"\\u63a7\\u5236\\u53f0","en":"Dashboard"}', 'common/dashboard', 1, 0, 1),
 (128, 'menu', 0, 1, NULL, '{"cn":"\\u76ee\\u5f55","en":"Catalog"}', '', 1, 1, 2),
 (129, 'menu', 128, 2, NULL, '{"cn":"\\u4fe1\\u606f","en":"Information"}', 'catalog/information', 1, 1, 3),
-(435, 'menu', 145, 3, NULL, '{"cn":"\\u5b9a\\u4f4d","en":"Targetings"}', 'localisation/targeting', 1, 1, 7),
 (132, 'menu', 0, 1, NULL, '{"cn":"\\u5e7f\\u544a","en":"Advertise"}', '', 1, 1, 4),
 (133, 'menu', 0, 1, NULL, '{"cn":"\\u5ba2\\u6237","en":"Customer"}', '', 1, 1, 3),
 (134, 'menu', 133, 3, NULL, '{"cn":"\\u5e7f\\u544a\\u5ba2\\u6237","en":"Customers"}', 'customer/customer', 1, 1, 1),
@@ -191,51 +165,20 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (139, 'menu', 0, 1, NULL, '{"cn":"\\u62a5\\u544a","en":"Report"}', '', 1, 1, 8),
 (140, 'menu', 139, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u62a5\\u8868","en":"Ad Report"}', 'report/report', 1, 1, 1),
 (141, 'menu', 139, 2, NULL, '{"cn":"\\u9879\\u76ee","en":"project"}', 'report/project', 0, 1, 2),
-(432, 'menu', 145, 3, NULL, '{"cn":"\\u5e7f\\u544a\\u53d1\\u5e03\\u72b6\\u6001","en":"Ad Publish"}', 'localisation/advertise_publish', 1, 1, 1),
 (143, 'menu', 0, 1, NULL, '{"cn":"\\u529e\\u516c","en":"Office"}', '', 1, 1, 9),
 (144, 'menu', 143, 2, NULL, '{"cn":"\\u5de5\\u4f5c\\u65f6\\u95f4","en":"Office Time"}', 'office/time', 1, 1, 5),
 (145, 'menu', 1, 2, NULL, '{"cn":"\\u672c\\u5730\\u5316","en":"Localisation"}', '', 1, 1, 5),
 (146, 'menu', 145, 3, NULL, '{"cn":"\\u8bed\\u8a00","en":"Language"}', 'localisation/language', 1, 1, 8),
 (148, 'menu', 145, 3, NULL, '{"cn":"\\u56fd\\u5bb6","en":"Country"}', 'localisation/country', 1, 1, 10),
 (149, 'menu', 145, 3, NULL, '{"cn":"\\u5e7f\\u544a\\u72b6\\u6001","en":"Ad Status"}', 'localisation/advertise_status', 0, 1, 9),
-(3343, 'auth', 3338, 3, NULL, 'detail', 'service/advertise_post/detail', 1, 1, 5),
-(3342, 'auth', 3338, 3, NULL, 'delete', 'service/advertise_post/delete', 1, 1, 4),
-(3341, 'auth', 3338, 3, NULL, 'approve', 'service/advertise_post/approve', 1, 1, 3),
-(3340, 'auth', 3338, 3, NULL, 'edit', 'service/advertise_post/edit', 1, 1, 2),
-(3339, 'auth', 3338, 3, NULL, 'index', 'service/advertise_post/index', 1, 1, 1),
-(3338, 'auth', 3317, 2, NULL, 'advertise_post', 'service/advertise_post', 1, 1, 3),
-(3337, 'auth', 3330, 3, NULL, 'history', 'service/advertise_photo/history', 1, 1, 7),
-(3336, 'auth', 3330, 3, NULL, 'detail', 'service/advertise_photo/detail', 1, 1, 6),
-(3335, 'auth', 3330, 3, NULL, 'apply', 'service/advertise_photo/apply', 1, 1, 5),
-(3334, 'auth', 3330, 3, NULL, 'delete', 'service/advertise_photo/delete', 1, 1, 4),
-(3332, 'auth', 3330, 3, NULL, 'approve', 'service/advertise_photo/approve', 1, 1, 2),
-(3333, 'auth', 3330, 3, NULL, 'edit', 'service/advertise_photo/edit', 1, 1, 3),
-(3331, 'auth', 3330, 3, NULL, 'index', 'service/advertise_photo/index', 1, 1, 1),
-(3330, 'auth', 3317, 2, NULL, 'advertise_photo', 'service/advertise_photo', 1, 1, 2),
-(3329, 'auth', 3318, 3, NULL, 'get_preview', 'service/advertise/get_preview', 1, 1, 11),
-(3328, 'auth', 3318, 3, NULL, 'balance', 'service/advertise/balance', 1, 1, 10),
-(3327, 'auth', 3318, 3, NULL, 'tracking', 'service/advertise/tracking', 1, 1, 9),
-(3326, 'auth', 3318, 3, NULL, 'component', 'service/advertise/component', 1, 1, 8),
-(3325, 'auth', 3318, 3, NULL, 'ajax_data', 'service/advertise/ajax_data', 1, 1, 7),
-(3323, 'auth', 3318, 3, NULL, 'getForm', 'service/advertise/getForm', 1, 1, 5),
-(3324, 'auth', 3318, 3, NULL, 'history', 'service/advertise/history', 1, 1, 6),
-(3322, 'auth', 3318, 3, NULL, 'delete', 'service/advertise/delete', 1, 1, 4),
-(3321, 'auth', 3318, 3, NULL, 'edit', 'service/advertise/edit', 1, 1, 3),
-(3320, 'auth', 3318, 3, NULL, 'add', 'service/advertise/add', 1, 1, 2),
-(3319, 'auth', 3318, 3, NULL, 'index', 'service/advertise/index', 1, 1, 1),
-(3318, 'auth', 3317, 2, NULL, 'advertise', 'service/advertise', 1, 1, 1),
-(3317, 'auth', 0, 1, NULL, 'Service', '', 1, 1, 13),
-(3316, 'auth', 3313, 3, NULL, 'ajax_data', 'report/report/ajax_data', 1, 1, 3),
-(3315, 'auth', 3313, 3, NULL, 'detail', 'report/report/detail', 1, 1, 2),
-(3314, 'auth', 3313, 3, NULL, 'index', 'report/report/index', 1, 1, 1),
-(3312, 'auth', 0, 1, NULL, 'Report', '', 1, 1, 12),
-(3313, 'auth', 3312, 2, NULL, 'report', 'report/report', 1, 1, 1),
-(436, 'menu', 132, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u6587\\u672c","en":"Ad Posts"}', 'service/advertise_post', 1, 1, 3),
 (417, 'menu', 1, 2, NULL, '{"cn":"\\u7528\\u6237","en":"Users"}', '', 1, 1, 2),
 (418, 'menu', 1, 2, NULL, '{"cn":"\\u914d\\u7f6e","en":"Config"}', '', 1, 1, 1),
+(423, 'menu', 132, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u5217\\u8868","en":"Ads List"}', 'service/advertise', 1, 1, 2),
+(432, 'menu', 145, 3, NULL, '{"cn":"\\u5e7f\\u544a\\u53d1\\u5e03\\u72b6\\u6001","en":"Ad Publish"}', 'localisation/advertise_publish', 1, 1, 1),
 (433, 'menu', 145, 3, NULL, '{"cn":"\\u7a3f\\u4ef6\\u72b6\\u6001","en":"Post Status"}', 'localisation/advertise_post', 1, 1, 6),
 (434, 'menu', 145, 3, NULL, '{"cn":"\\u56fe\\u7247\\u72b6\\u6001","en":"Photo Status"}', 'localisation/advertise_photo', 1, 1, 6),
-(423, 'menu', 132, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u5217\\u8868","en":"Ads List"}', 'service/advertise', 1, 1, 2),
+(435, 'menu', 145, 3, NULL, '{"cn":"\\u5b9a\\u4f4d","en":"Targetings"}', 'localisation/targeting', 1, 1, 7),
+(436, 'menu', 132, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u6587\\u672c","en":"Ad Posts"}', 'service/advertise_post', 1, 1, 3),
 (437, 'menu', 132, 2, NULL, '{"cn":"\\u5e7f\\u544a\\u56fe\\u7247","en":"Ad Photos"}', 'service/advertise_photo', 1, 1, 3),
 (438, 'menu', 128, 2, NULL, '{"cn":"\\u5e38\\u89c1\\u95ee\\u9898","en":"F.A.Q"}', 'catalog/faq', 1, 1, 2),
 (439, 'menu', 128, 2, NULL, '{"cn":"\\u65b0\\u95fb","en":"News"}', 'catalog/news', 1, 1, 2),
@@ -251,10 +194,10 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (1013, 'menu', 145, 3, NULL, '{"cn":"\\u8d27\\u5e01","en":"Currency"}', 'localisation/currency', 1, 1, 10),
 (1015, 'menu', 2962, 2, NULL, '{"cn":"\\u4f59\\u989d","en":"My Balance"}', 'finance/customer_balance', 1, 1, 1),
 (1016, 'menu', 132, 2, NULL, '{"cn":"\\u6392\\u961f\\u5217\\u8868","en":"Queuing List"}', 'service/queue', 1, 1, 1),
-(3176, 'auth', 3174, 3, NULL, 'edit', 'finance/customer_balance/edit', 1, 1, 2),
-(3175, 'auth', 3174, 3, NULL, 'index', 'finance/customer_balance/index', 1, 1, 1),
-(3174, 'auth', 3173, 2, NULL, 'customer_balance', 'finance/customer_balance', 1, 1, 1),
-(3173, 'auth', 0, 1, NULL, 'Finance', '', 1, 1, 8),
+(2098, 'menu', 143, 2, NULL, '{"cn":"\\u7533\\u8bf7","en":"Apply"}', 'office/apply', 1, 1, 1),
+(2099, 'menu', 143, 2, NULL, '{"cn":"\\u529e\\u516c\\u7528\\u6237","en":"Office User"}', 'office/user', 1, 1, 4),
+(2100, 'menu', 143, 2, NULL, '{"cn":"\\u76d1\\u63a7","en":"Monitor"}', 'office/monitor', 1, 1, 2),
+(2101, 'menu', 143, 2, NULL, '{"cn":"\\u56de\\u590d","en":"Reply"}', 'office/reply', 1, 1, 3),
 (2106, 'menu', 2438, 4, NULL, '{"cn":"NFL\\u7a3f\\u4ef6","en":"NFL Posts"}', 'nfl/post_player', 1, 1, 0),
 (2107, 'menu', 2438, 4, NULL, '{"cn":"\\u6bd4\\u8d5b\\u7a3f\\u4ef6","en":"Schedule Posts"}', 'nfl/post_schedule', 0, 1, 0),
 (2108, 'menu', 2437, 4, NULL, '{"cn":"\\u7403\\u961f\\u7a3f\\u4ef6","en":"NFL Teams"}', 'nfl/team', 1, 1, 0),
@@ -267,14 +210,13 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (2115, 'menu', 0, 1, NULL, '{"cn":"\\u793e\\u5a92","en":"SNS"}', '', 1, 1, 5),
 (2116, 'menu', 2115, 2, NULL, '{"cn":"\\u6a44\\u6984\\u7403\\u8d5b","en":"NFL"}', '', 1, 1, 1),
 (2138, 'menu', 2116, 3, NULL, '{"cn":"\\u7a3f\\u4ef6\\u62a5\\u8868","en":"Posts Report"}', 'nfl/report', 1, 1, 4),
+(2436, 'menu', 2116, 3, NULL, '{"cn":"NFL\\u914d\\u7f6e","en":"NFL Config"}', '', 1, 1, 3),
 (2437, 'menu', 2116, 3, NULL, '{"cn":"\\u63d0\\u4ea4\\u7a3f\\u4ef6","en":"Submit Post"}', '', 1, 1, 0),
 (2438, 'menu', 2116, 3, NULL, '{"cn":"\\u5904\\u7406\\u7a3f\\u4ef6","en":"Handling Post"}', '', 1, 1, 0),
+(2440, 'menu', 2115, 2, NULL, '{"cn":"\\u7a3f\\u4ef6","en":"Contribute"}', '', 1, 1, 2),
 (2441, 'menu', 2440, 3, NULL, '{"cn":"\\u63d0\\u4ea4\\u7a3f\\u4ef6","en":"Submit Contribute"}', '', 1, 1, 0),
 (2442, 'menu', 2440, 3, NULL, '{"cn":"\\u5904\\u7406\\u7a3f\\u4ef6","en":"Handling Contribute"}', '', 1, 1, 0),
 (2443, 'menu', 2440, 3, NULL, '{"cn":"\\u7a3f\\u4ef6\\u914d\\u7f6e","en":"Contribute Config"}', '', 1, 1, 0),
-(2474, 'menu', 2443, 4, NULL, '{"cn":"\\u6d88\\u606f\\u914d\\u7f6e","en":"Message Config"}', 'fbmessage/config', 1, 1, 5),
-(2473, 'menu', 2443, 4, NULL, '{"cn":"\\u4e13\\u9875\\u914d\\u7f6e","en":"Page Config"}', 'fbpage/config', 1, 1, 4),
-(2469, 'menu', 2441, 4, NULL, '{"cn":"\\u4e13\\u9875\\u7a3f\\u4ef6","en":"Facebook Page"}', 'fbpage/entry', 1, 1, 0),
 (2449, 'menu', 2442, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u6709\\u56fe\\u7247\\u7a3f\\u4ef6","en":"Account With Photo"}', 'fbaccount/photo', 1, 1, 1),
 (2450, 'menu', 2442, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u65e0\\u56fe\\u7247\\u7a3f\\u4ef6","en":"Account Without Photo"}', 'fbaccount/nophoto', 1, 1, 2),
 (2452, 'menu', 2442, 4, NULL, '{"cn":"\\u4e13\\u9875\\u65e0\\u56fe\\u7247\\u7a3f\\u4ef6","en":"Page Without Photo"}', 'fbpage/nophoto', 1, 1, 3),
@@ -292,58 +234,13 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (2464, 'menu', 2461, 4, NULL, '{"cn":"\\u94fe\\u63a5\\u62a5\\u8868","en":"Report Links"}', '', 1, 1, 0),
 (2466, 'menu', 2461, 4, NULL, '{"cn":"\\u7a3f\\u4ef6\\u7edf\\u8ba1","en":"Post Statistics"}', '', 1, 1, 0),
 (2467, 'menu', 2443, 4, NULL, '{"cn":"\\u4e13\\u9875\\u53d1\\u5e03\\u72b6\\u6001","en":"Page Publish"}', 'fbpage/nophoto_publish', 1, 1, 18),
+(2468, 'menu', 2441, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u7a3f\\u4ef6","en":"Facebook Account"}', 'fbaccount/entry', 1, 1, 0),
+(2469, 'menu', 2441, 4, NULL, '{"cn":"\\u4e13\\u9875\\u7a3f\\u4ef6","en":"Facebook Page"}', 'fbpage/entry', 1, 1, 0),
 (2470, 'menu', 2443, 4, NULL, '{"cn":"\\u9009\\u9879","en":"Options"}', 'sns/option', 1, 1, 3),
-(2472, 'menu', 2443, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u914d\\u7f6e","en":"Account Config"}', 'fbaccount/config', 1, 1, 3),
 (2471, 'menu', 2115, 2, NULL, '{"cn":"\\u5ba1\\u6838\\u7ec4","en":"Audit Group"}', 'sns/group', 1, 1, 4),
-(3380, 'auth', 3379, 3, NULL, 'index', 'setting/setting/index', 1, 1, 1),
-(3029, 'auth', 3028, 3, NULL, 'index', 'dashboard/sale/index', 1, 1, 1),
-(3028, 'auth', 3018, 2, NULL, 'sale', 'dashboard/sale', 1, 1, 5),
-(3027, 'auth', 3026, 3, NULL, 'index', 'dashboard/recent/index', 1, 1, 1),
-(3026, 'auth', 3018, 2, NULL, 'recent', 'dashboard/recent', 1, 1, 4),
-(3025, 'auth', 3024, 3, NULL, 'index', 'dashboard/order/index', 1, 1, 1),
-(3024, 'auth', 3018, 2, NULL, 'order', 'dashboard/order', 1, 1, 3),
-(3023, 'auth', 3022, 3, NULL, 'index', 'dashboard/customer/index', 1, 1, 1),
-(3022, 'auth', 3018, 2, NULL, 'customer', 'dashboard/customer', 1, 1, 2),
-(3021, 'auth', 3019, 3, NULL, 'chart', 'dashboard/chart/chart', 1, 1, 2),
-(3020, 'auth', 3019, 3, NULL, 'index', 'dashboard/chart/index', 1, 1, 1),
-(3019, 'auth', 3018, 2, NULL, 'chart', 'dashboard/chart', 1, 1, 1),
-(3018, 'auth', 0, 1, NULL, 'Dashboard', '', 1, 1, 4),
-(3017, 'auth', 3013, 3, NULL, 'delete', 'customer/customer_group/delete', 1, 1, 4),
-(3016, 'auth', 3013, 3, NULL, 'edit', 'customer/customer_group/edit', 1, 1, 3),
-(3015, 'auth', 3013, 3, NULL, 'add', 'customer/customer_group/add', 1, 1, 2),
-(3014, 'auth', 3013, 3, NULL, 'index', 'customer/customer_group/index', 1, 1, 1),
-(3013, 'auth', 3004, 2, NULL, 'customer_group', 'customer/customer_group', 1, 1, 2),
-(3012, 'auth', 3005, 3, NULL, 'login', 'customer/customer/login', 1, 1, 7),
-(3011, 'auth', 3005, 3, NULL, 'autocomplete', 'customer/customer/autocomplete', 1, 1, 6),
-(3010, 'auth', 3005, 3, NULL, 'history', 'customer/customer/history', 1, 1, 5),
-(3009, 'auth', 3005, 3, NULL, 'delete', 'customer/customer/delete', 1, 1, 4),
-(3008, 'auth', 3005, 3, NULL, 'edit', 'customer/customer/edit', 1, 1, 3),
-(3007, 'auth', 3005, 3, NULL, 'add', 'customer/customer/add', 1, 1, 2),
-(3006, 'auth', 3005, 3, NULL, 'index', 'customer/customer/index', 1, 1, 1),
-(3005, 'auth', 3004, 2, NULL, 'customer', 'customer/customer', 1, 1, 1),
-(3004, 'auth', 0, 1, NULL, 'Customer', '', 1, 1, 3),
-(3003, 'auth', 3002, 3, NULL, 'index', 'common/stats/index', 1, 1, 1),
-(3002, 'auth', 2997, 2, NULL, 'stats', 'common/stats', 1, 1, 3),
-(3001, 'auth', 3000, 3, NULL, 'index', 'common/profile/index', 1, 1, 1),
-(3000, 'auth', 2997, 2, NULL, 'profile', 'common/profile', 1, 1, 2),
-(2999, 'auth', 2998, 3, NULL, 'index', 'common/download/index', 1, 1, 1),
-(2998, 'auth', 2997, 2, NULL, 'download', 'common/download', 1, 1, 1),
-(2997, 'auth', 0, 1, 'Common', '通用模块', '', 1, 0, 2),
-(2991, 'auth', 2987, 3, NULL, 'delete', 'catalog/news/delete', 1, 1, 4),
-(2990, 'auth', 2987, 3, NULL, 'edit', 'catalog/news/edit', 1, 1, 3),
-(2989, 'auth', 2987, 3, NULL, 'add', 'catalog/news/add', 1, 1, 2),
-(2988, 'auth', 2987, 3, NULL, 'index', 'catalog/news/index', 1, 1, 1),
-(2987, 'auth', 2976, 2, NULL, 'news', 'catalog/news', 1, 1, 3),
-(2986, 'auth', 2982, 3, NULL, 'delete', 'catalog/information/delete', 1, 1, 4),
-(2985, 'auth', 2982, 3, NULL, 'edit', 'catalog/information/edit', 1, 1, 3),
-(2984, 'auth', 2982, 3, NULL, 'add', 'catalog/information/add', 1, 1, 2),
-(2983, 'auth', 2982, 3, 'index', '信息页', 'catalog/information/index', 1, 1, 1),
-(2982, 'auth', 2976, 2, NULL, 'information', 'catalog/information', 1, 1, 2),
-(2980, 'auth', 2977, 3, NULL, 'edit', 'catalog/faq/edit', 1, 1, 3),
-(2979, 'auth', 2977, 3, NULL, 'add', 'catalog/faq/add', 1, 1, 2),
-(2978, 'auth', 2977, 3, NULL, 'index', 'catalog/faq/index', 1, 1, 1),
-(2976, 'auth', 0, 1, NULL, 'Catalog', '', 1, 1, 1),
-(2977, 'auth', 2976, 2, NULL, 'faq', 'catalog/faq', 1, 1, 1),
+(2472, 'menu', 2443, 4, NULL, '{"cn":"\\u8d26\\u53f7\\u914d\\u7f6e","en":"Account Config"}', 'fbaccount/config', 1, 1, 3),
+(2473, 'menu', 2443, 4, NULL, '{"cn":"\\u4e13\\u9875\\u914d\\u7f6e","en":"Page Config"}', 'fbpage/config', 1, 1, 4),
+(2474, 'menu', 2443, 4, NULL, '{"cn":"\\u6d88\\u606f\\u914d\\u7f6e","en":"Message Config"}', 'fbmessage/config', 1, 1, 5),
 (2962, 'menu', 0, 1, NULL, '{"cn":"\\u7528\\u6237\\u4e2d\\u5fc3","en":"Profile Center"}', '', 1, 1, 0),
 (2963, 'menu', 2962, 2, NULL, '{"cn":"\\u8bbe\\u7f6e","en":"Setting"}', 'common/private', 1, 1, 0),
 (2964, 'menu', 2962, 2, NULL, '{"cn":"\\u6211\\u7684\\u7a3f\\u4ef6","en":"My Posts"}', '', 1, 1, 3),
@@ -358,6 +255,127 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (2973, 'menu', 2971, 3, NULL, '{"cn":"\\u8d26\\u53f7\\u65e0\\u56fe\\u7247\\u7a3f\\u4ef6","en":"Account Without Photo"}', 'fbaccount/publish_nophoto', 1, 1, 2),
 (2974, 'menu', 2971, 3, NULL, '{"cn":"\\u4e13\\u9875\\u7a3f\\u4ef6","en":"Facebook Page"}', 'fbpage/publish_nophoto', 1, 1, 3),
 (2975, 'menu', 2971, 3, NULL, '{"cn":"\\u6d88\\u606f\\u7a3f\\u4ef6","en":"Facebook Message"}', 'fbmessage/publish_nophoto', 1, 1, 4),
+(2976, 'auth', 0, 1, NULL, 'Catalog', '', 1, 1, 1),
+(2977, 'auth', 2976, 2, NULL, 'faq', 'catalog/faq', 1, 1, 1),
+(2978, 'auth', 2977, 3, NULL, 'index', 'catalog/faq/index', 1, 1, 1),
+(2979, 'auth', 2977, 3, NULL, 'add', 'catalog/faq/add', 1, 1, 2),
+(2980, 'auth', 2977, 3, NULL, 'edit', 'catalog/faq/edit', 1, 1, 3),
+(2982, 'auth', 2976, 2, NULL, 'information', 'catalog/information', 1, 1, 2),
+(2983, 'auth', 2982, 3, 'index', '信息页', 'catalog/information/index', 1, 1, 1),
+(2984, 'auth', 2982, 3, NULL, 'add', 'catalog/information/add', 1, 1, 2),
+(2985, 'auth', 2982, 3, NULL, 'edit', 'catalog/information/edit', 1, 1, 3),
+(2986, 'auth', 2982, 3, NULL, 'delete', 'catalog/information/delete', 1, 1, 4),
+(2987, 'auth', 2976, 2, NULL, 'news', 'catalog/news', 1, 1, 3),
+(2988, 'auth', 2987, 3, NULL, 'index', 'catalog/news/index', 1, 1, 1),
+(2989, 'auth', 2987, 3, NULL, 'add', 'catalog/news/add', 1, 1, 2),
+(2990, 'auth', 2987, 3, NULL, 'edit', 'catalog/news/edit', 1, 1, 3),
+(2991, 'auth', 2987, 3, NULL, 'delete', 'catalog/news/delete', 1, 1, 4),
+(2997, 'auth', 0, 1, 'Common', '通用模块', '', 1, 0, 2),
+(2998, 'auth', 2997, 2, NULL, 'download', 'common/download', 1, 1, 1),
+(2999, 'auth', 2998, 3, NULL, 'index', 'common/download/index', 1, 1, 1),
+(3000, 'auth', 2997, 2, NULL, 'profile', 'common/profile', 1, 1, 2),
+(3001, 'auth', 3000, 3, NULL, 'index', 'common/profile/index', 1, 1, 1),
+(3002, 'auth', 2997, 2, NULL, 'stats', 'common/stats', 1, 1, 3),
+(3003, 'auth', 3002, 3, NULL, 'index', 'common/stats/index', 1, 1, 1),
+(3004, 'auth', 0, 1, NULL, 'Customer', '', 1, 1, 3),
+(3005, 'auth', 3004, 2, NULL, 'customer', 'customer/customer', 1, 1, 1),
+(3006, 'auth', 3005, 3, NULL, 'index', 'customer/customer/index', 1, 1, 1),
+(3007, 'auth', 3005, 3, NULL, 'add', 'customer/customer/add', 1, 1, 2),
+(3008, 'auth', 3005, 3, NULL, 'edit', 'customer/customer/edit', 1, 1, 3),
+(3009, 'auth', 3005, 3, NULL, 'delete', 'customer/customer/delete', 1, 1, 4),
+(3010, 'auth', 3005, 3, NULL, 'history', 'customer/customer/history', 1, 1, 5),
+(3011, 'auth', 3005, 3, NULL, 'autocomplete', 'customer/customer/autocomplete', 1, 1, 6),
+(3012, 'auth', 3005, 3, NULL, 'login', 'customer/customer/login', 1, 1, 7),
+(3013, 'auth', 3004, 2, NULL, 'customer_group', 'customer/customer_group', 1, 1, 2),
+(3014, 'auth', 3013, 3, NULL, 'index', 'customer/customer_group/index', 1, 1, 1),
+(3015, 'auth', 3013, 3, NULL, 'add', 'customer/customer_group/add', 1, 1, 2),
+(3016, 'auth', 3013, 3, NULL, 'edit', 'customer/customer_group/edit', 1, 1, 3),
+(3017, 'auth', 3013, 3, NULL, 'delete', 'customer/customer_group/delete', 1, 1, 4),
+(3018, 'auth', 0, 1, NULL, 'Dashboard', '', 1, 1, 4),
+(3019, 'auth', 3018, 2, NULL, 'chart', 'dashboard/chart', 1, 1, 1),
+(3020, 'auth', 3019, 3, NULL, 'index', 'dashboard/chart/index', 1, 1, 1),
+(3021, 'auth', 3019, 3, NULL, 'chart', 'dashboard/chart/chart', 1, 1, 2),
+(3022, 'auth', 3018, 2, NULL, 'customer', 'dashboard/customer', 1, 1, 2),
+(3023, 'auth', 3022, 3, NULL, 'index', 'dashboard/customer/index', 1, 1, 1),
+(3024, 'auth', 3018, 2, NULL, 'order', 'dashboard/order', 1, 1, 3),
+(3025, 'auth', 3024, 3, NULL, 'index', 'dashboard/order/index', 1, 1, 1),
+(3026, 'auth', 3018, 2, NULL, 'recent', 'dashboard/recent', 1, 1, 4),
+(3027, 'auth', 3026, 3, NULL, 'index', 'dashboard/recent/index', 1, 1, 1),
+(3028, 'auth', 3018, 2, NULL, 'sale', 'dashboard/sale', 1, 1, 5),
+(3029, 'auth', 3028, 3, NULL, 'index', 'dashboard/sale/index', 1, 1, 1),
+(3173, 'auth', 0, 1, NULL, 'Finance', '', 1, 1, 8),
+(3174, 'auth', 3173, 2, NULL, 'customer_balance', 'finance/customer_balance', 1, 1, 1),
+(3175, 'auth', 3174, 3, NULL, 'index', 'finance/customer_balance/index', 1, 1, 1),
+(3176, 'auth', 3174, 3, NULL, 'edit', 'finance/customer_balance/edit', 1, 1, 2),
+(3312, 'auth', 0, 1, NULL, 'Report', '', 1, 1, 12),
+(3313, 'auth', 3312, 2, NULL, 'report', 'report/report', 1, 1, 1),
+(3314, 'auth', 3313, 3, NULL, 'index', 'report/report/index', 1, 1, 1),
+(3315, 'auth', 3313, 3, NULL, 'detail', 'report/report/detail', 1, 1, 2),
+(3316, 'auth', 3313, 3, NULL, 'ajax_data', 'report/report/ajax_data', 1, 1, 3),
+(3317, 'auth', 0, 1, NULL, 'Service', '', 1, 1, 13),
+(3318, 'auth', 3317, 2, NULL, 'advertise', 'service/advertise', 1, 1, 1),
+(3319, 'auth', 3318, 3, NULL, 'index', 'service/advertise/index', 1, 1, 1),
+(3320, 'auth', 3318, 3, NULL, 'add', 'service/advertise/add', 1, 1, 2),
+(3321, 'auth', 3318, 3, NULL, 'edit', 'service/advertise/edit', 1, 1, 3),
+(3322, 'auth', 3318, 3, NULL, 'delete', 'service/advertise/delete', 1, 1, 4),
+(3323, 'auth', 3318, 3, NULL, 'getForm', 'service/advertise/getForm', 1, 1, 5),
+(3324, 'auth', 3318, 3, NULL, 'history', 'service/advertise/history', 1, 1, 6),
+(3325, 'auth', 3318, 3, NULL, 'ajax_data', 'service/advertise/ajax_data', 1, 1, 7),
+(3326, 'auth', 3318, 3, NULL, 'component', 'service/advertise/component', 1, 1, 8),
+(3327, 'auth', 3318, 3, NULL, 'tracking', 'service/advertise/tracking', 1, 1, 9),
+(3328, 'auth', 3318, 3, NULL, 'balance', 'service/advertise/balance', 1, 1, 10),
+(3329, 'auth', 3318, 3, NULL, 'get_preview', 'service/advertise/get_preview', 1, 1, 11),
+(3330, 'auth', 3317, 2, NULL, 'advertise_photo', 'service/advertise_photo', 1, 1, 2),
+(3331, 'auth', 3330, 3, NULL, 'index', 'service/advertise_photo/index', 1, 1, 1),
+(3332, 'auth', 3330, 3, NULL, 'approve', 'service/advertise_photo/approve', 1, 1, 2),
+(3333, 'auth', 3330, 3, NULL, 'edit', 'service/advertise_photo/edit', 1, 1, 3),
+(3334, 'auth', 3330, 3, NULL, 'delete', 'service/advertise_photo/delete', 1, 1, 4),
+(3335, 'auth', 3330, 3, NULL, 'apply', 'service/advertise_photo/apply', 1, 1, 5),
+(3336, 'auth', 3330, 3, NULL, 'detail', 'service/advertise_photo/detail', 1, 1, 6),
+(3337, 'auth', 3330, 3, NULL, 'history', 'service/advertise_photo/history', 1, 1, 7),
+(3338, 'auth', 3317, 2, NULL, 'advertise_post', 'service/advertise_post', 1, 1, 3),
+(3339, 'auth', 3338, 3, NULL, 'index', 'service/advertise_post/index', 1, 1, 1),
+(3340, 'auth', 3338, 3, NULL, 'edit', 'service/advertise_post/edit', 1, 1, 2),
+(3341, 'auth', 3338, 3, NULL, 'approve', 'service/advertise_post/approve', 1, 1, 3),
+(3342, 'auth', 3338, 3, NULL, 'delete', 'service/advertise_post/delete', 1, 1, 4),
+(3343, 'auth', 3338, 3, NULL, 'detail', 'service/advertise_post/detail', 1, 1, 5),
+(3344, 'auth', 3338, 3, NULL, 'history', 'service/advertise_post/history', 1, 1, 6),
+(3345, 'auth', 3317, 2, NULL, 'advertise_targeting', 'service/advertise_targeting', 1, 1, 4),
+(3346, 'auth', 3345, 3, NULL, 'index', 'service/advertise_targeting/index', 1, 1, 1),
+(3347, 'auth', 3345, 3, NULL, 'edit', 'service/advertise_targeting/edit', 1, 1, 2),
+(3348, 'auth', 3345, 3, NULL, 'approve', 'service/advertise_targeting/approve', 1, 1, 3),
+(3349, 'auth', 3345, 3, NULL, 'delete', 'service/advertise_targeting/delete', 1, 1, 4),
+(3350, 'auth', 3345, 3, NULL, 'detail', 'service/advertise_targeting/detail', 1, 1, 5),
+(3351, 'auth', 3345, 3, NULL, 'history', 'service/advertise_targeting/history', 1, 1, 6),
+(3352, 'auth', 3317, 2, NULL, 'publish', 'service/publish', 1, 1, 5),
+(3353, 'auth', 3352, 3, NULL, 'index', 'service/publish/index', 1, 1, 1),
+(3354, 'auth', 3352, 3, NULL, 'edit', 'service/publish/edit', 1, 1, 2),
+(3355, 'auth', 3352, 3, NULL, 'getForm', 'service/publish/getForm', 1, 1, 3),
+(3356, 'auth', 3352, 3, NULL, 'history', 'service/publish/history', 1, 1, 4),
+(3357, 'auth', 3352, 3, NULL, 'component', 'service/publish/component', 1, 1, 5),
+(3358, 'auth', 3352, 3, NULL, 'tracking', 'service/publish/tracking', 1, 1, 6),
+(3359, 'auth', 3352, 3, NULL, 'edit_ad_account', 'service/publish/edit_ad_account', 1, 1, 7),
+(3360, 'auth', 3317, 2, NULL, 'queue', 'service/queue', 1, 1, 6),
+(3361, 'auth', 3360, 3, NULL, 'index', 'service/queue/index', 1, 1, 1),
+(3362, 'auth', 3360, 3, NULL, 'demotion', 'service/queue/demotion', 1, 1, 2),
+(3363, 'auth', 3360, 3, NULL, 'ajax_data', 'service/queue/ajax_data', 1, 1, 3),
+(3364, 'auth', 3317, 2, NULL, 'website', 'service/website', 1, 1, 7),
+(3365, 'auth', 3364, 3, NULL, 'index', 'service/website/index', 1, 1, 1),
+(3366, 'auth', 3364, 3, NULL, 'add', 'service/website/add', 1, 1, 2),
+(3367, 'auth', 3364, 3, NULL, 'edit', 'service/website/edit', 1, 1, 3),
+(3368, 'auth', 3364, 3, NULL, 'delete', 'service/website/delete', 1, 1, 4),
+(3369, 'auth', 3364, 3, NULL, 'history', 'service/website/history', 1, 1, 5),
+(3370, 'auth', 3364, 3, NULL, 'tracking', 'service/website/tracking', 1, 1, 6),
+(3371, 'auth', 0, 1, NULL, 'Setting', '', 1, 1, 14),
+(3372, 'auth', 3371, 2, NULL, 'advertise', 'setting/advertise', 1, 1, 1),
+(3373, 'auth', 3372, 3, NULL, 'index', 'setting/advertise/index', 1, 1, 1),
+(3374, 'auth', 3371, 2, NULL, 'permission_node', 'setting/permission_node', 1, 1, 2),
+(3375, 'auth', 3374, 3, NULL, 'index', 'setting/permission_node/index', 1, 1, 1),
+(3376, 'auth', 3374, 3, NULL, 'save', 'setting/permission_node/save', 1, 1, 2),
+(3377, 'auth', 3374, 3, NULL, 'delete', 'setting/permission_node/delete', 1, 1, 3),
+(3378, 'auth', 3374, 3, NULL, 'sync', 'setting/permission_node/sync', 1, 1, 4),
+(3379, 'auth', 3371, 2, NULL, 'setting', 'setting/setting', 1, 1, 3),
+(3380, 'auth', 3379, 3, NULL, 'index', 'setting/setting/index', 1, 1, 1),
 (3381, 'auth', 3379, 3, NULL, 'template', 'setting/setting/template', 1, 1, 2),
 (3382, 'auth', 3379, 3, NULL, 'country', 'setting/setting/country', 1, 1, 3),
 (3403, 'auth', 0, 1, NULL, 'Tool', '', 1, 1, 16),
@@ -434,6 +452,73 @@ INSERT INTO `gd_project` (`project_id`, `project_sn`, `title`, `mode`, `customer
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `gd_project_investing`
+--
+
+CREATE TABLE `gd_project_investing` (
+  `project_id` int(11) NOT NULL,
+  `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_id` int(11) NOT NULL DEFAULT '0',
+  `realname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `idnumber` char(18) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `wechat` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `referrer` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `price` decimal(6,2) NOT NULL DEFAULT '0.00',
+  `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `period` tinyint(4) NOT NULL DEFAULT '0',
+  `total` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `note` text COLLATE utf8_unicode_ci,
+  `status_id` tinyint(1) NOT NULL DEFAULT '0',
+  `worker_id` int(11) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_project_investing`
+--
+
+INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `realname`, `phone`, `idnumber`, `wechat`, `referrer`, `price`, `weight`, `amount`, `period`, `total`, `note`, `status_id`, `worker_id`, `addtime`, `lasttime`) VALUES
+(1, 'SD20156454564522', 0, 'OKOK', '18800011000', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 0, '0.00', NULL, 1, 0, 1470000000, 0),
+(2, 'SD20155454564511', 0, 'OKOK', '18800011001', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 1, '0.00', NULL, 1, 1, 1470000000, 0),
+(3, '1608188031093542', 0, '朱景修', '18850911111', '321324200808080415', '', 'XX', '287.35', '10.00', '2873.50', 3, '10.15', '<p>sadsadasdsa</p><ol class=" list-paddingleft-2" style="list-style-type: decimal;"><li><p>dsadadsa</p></li><li><p><strong>asdsadsadsa</strong><br/></p></li></ol>', 1, 1, 1471509342, 0),
+(4, '1608188261053809', 0, '朱景修', '13813801380', '321325199902024510', '', '', '287.98', '100.00', '28798.00', 12, '106.00', '&lt;p&gt;dasdsada&lt;/p&gt;', 1, 1, 1471509489, 0),
+(5, '1608181371034554', 0, '沈万三', '18888888888', '325326150008080808', '', '', '287.35', '1000000.00', '287350000.00', 12, '1060000.00', '&lt;p&gt;我是沈万三&lt;/p&gt;&lt;p&gt;我有聚宝盆&lt;/p&gt;&lt;p&gt;爱买几吨买几吨&lt;/p&gt;', 1, 1, 1471509954, 0),
+(6, '1608186671184447', 0, '赵公明', '15815801580', '321324198808080808', '', '', '287.35', '10.00', '2873.50', 3, '10.15', '&lt;p&gt;哈哈哈哈哈哈&lt;/p&gt;', 1, 1, 1471513487, 0),
+(7, '1608183471764952', 0, '马晓云', '13913901390', '500250196606080806', '', '', '287.35', '10.00', '2873.50', 3, '10.15', '&lt;p&gt;我是马晓云&lt;/p&gt;&lt;p&gt;我是财神爷&lt;/p&gt;', 1, 1, 1471513792, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gd_project_investing_history`
+--
+
+CREATE TABLE `gd_project_investing_history` (
+  `history_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL DEFAULT '0',
+  `status_id` int(11) NOT NULL DEFAULT '0',
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
+  `worker_id` int(11) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_project_investing_history`
+--
+
+INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_id`, `note`, `worker_id`, `addtime`, `ip`) VALUES
+(1, 3, 1, '', 1, 1471509342, NULL),
+(2, 4, 1, '', 1, 1471509489, NULL),
+(3, 5, 1, '', 1, 1471509954, '127.0.0.1'),
+(4, 6, 1, '', 1, 1471513487, '127.0.0.1'),
+(5, 7, 1, '', 1, 1471513792, '127.0.0.1');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `gd_project_investing_status`
 --
 
@@ -458,6 +543,36 @@ INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `note`,
 (6, '库存不足', 'lacking', '库存金，数量不足', 1),
 (7, '已拒绝', 'refused', '客户信息等问题造成', 1),
 (8, '已终止', 'terminated', '客户提前终止项目', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gd_project_recycling`
+--
+
+CREATE TABLE `gd_project_recycling` (
+  `project_id` int(11) NOT NULL,
+  `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `customer_id` int(11) NOT NULL DEFAULT '0',
+  `realname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
+  `price` decimal(6,2) NOT NULL DEFAULT '0.00',
+  `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `value` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `status_id` tinyint(1) NOT NULL DEFAULT '0',
+  `worker_id` int(11) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_project_recycling`
+--
+
+INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `title`, `customer_id`, `realname`, `phone`, `price`, `weight`, `value`, `status_id`, `worker_id`, `addtime`, `lasttime`) VALUES
+(1, 'SD201564545645', '测试titleA', 0, 'OKOK', '18800011000', '288.88', '100.00', '28888.00', 1, 0, 1470000000, 0),
+(2, 'SD201554545645', '测试titleB', 0, 'OKOK', '18800011001', '288.88', '100.00', '28888.00', 1, 1, 1470000000, 0);
 
 -- --------------------------------------------------------
 
@@ -507,29 +622,35 @@ CREATE TABLE `gd_sessions` (
 --
 
 INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
-('e604f0125f731465680ccdb0b8a249d9c47e4bed', '127.0.0.1', 1471414329, '__ci_last_regenerate|i:1471414047;code|s:4:"3G8K";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471396526";'),
-('efaf13a8352ed24273d8677ab3649d4fbad9bd68', '127.0.0.1', 1471414940, '__ci_last_regenerate|i:1471414450;code|s:4:"pStH";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471406022";'),
-('d48ea061d9f19e4646f2f78c7b92eb8472baaff7', '127.0.0.1', 1471416781, '__ci_last_regenerate|i:1471414973;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('59998434f15ef3f57845b287b4bdca55c1d649f4', '127.0.0.1', 1471416873, '__ci_last_regenerate|i:1471416781;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";success|s:12:"保存成功";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('23c04b8458bda21a5bb22320c37291e14b6bb03a', '127.0.0.1', 1471417516, '__ci_last_regenerate|i:1471417094;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";success|s:12:"保存成功";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
-('ab1f9b8448b4533e8b0dde9febfeff7fdd082a30', '127.0.0.1', 1471417943, '__ci_last_regenerate|i:1471417641;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('cd4bbcabc204a5e55ba2e8d330046971fba76032', '127.0.0.1', 1471418460, '__ci_last_regenerate|i:1471418161;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('0fd4fa9e371db3006cbee06c03cd053a9636b5a4', '127.0.0.1', 1471419169, '__ci_last_regenerate|i:1471418482;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('14364603b0004b786eed63bff5eac12919aaf5a5', '127.0.0.1', 1471419537, '__ci_last_regenerate|i:1471419170;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";success|s:12:"保存成功";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
-('e8ba1b73cf4c99d2cdfb89a04c1f9d44d0b5c9de', '127.0.0.1', 1471420272, '__ci_last_regenerate|i:1471420007;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('4fd07e5f132aee4e885799d00a4c82ab553a4660', '127.0.0.1', 1471420369, '__ci_last_regenerate|i:1471420369;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('4d46a31852d3ffe06b2a39e916eb0658bec7ee2e', '127.0.0.1', 1471421988, '__ci_last_regenerate|i:1471421877;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('45c838b1705c0f398e9ad13c06d80aaba80fdfdd', '127.0.0.1', 1471422705, '__ci_last_regenerate|i:1471422427;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('2a552050ae9e99221ec76945afb2c840769684d8', '127.0.0.1', 1471423069, '__ci_last_regenerate|i:1471422822;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('ec29e2758eae564597cdae7d96113f73dde053c4', '127.0.0.1', 1471423425, '__ci_last_regenerate|i:1471423156;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('c75df227e6257166e59ebf09aa73ad18736b4b47', '127.0.0.1', 1471423478, '__ci_last_regenerate|i:1471423478;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('c252910311fb63b3df9b35f604496458a5a98e16', '127.0.0.1', 1471424143, '__ci_last_regenerate|i:1471423868;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('ad44d88f1f01e05a0021b91e3a84adfbd3be2d27', '127.0.0.1', 1471424208, '__ci_last_regenerate|i:1471424208;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('ab493b58c04221b6e2d614cab863871513099d72', '127.0.0.1', 1471424874, '__ci_last_regenerate|i:1471424586;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('5b9940f8109ac9904ed84aefff7a049801434d63', '127.0.0.1', 1471425182, '__ci_last_regenerate|i:1471424893;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('8c56f796fa176974a4b8491b9d0b7e0d64ea9cd9', '127.0.0.1', 1471427961, '__ci_last_regenerate|i:1471425209;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('8ac4017986ced2559840c28a287e3b634f42b977', '127.0.0.1', 1471428005, '__ci_last_regenerate|i:1471427974;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";'),
-('84ebc43aec161e80e9a9ffb698f8db4b1396b7a9', '127.0.0.1', 1471428394, '__ci_last_regenerate|i:1471428307;code|s:4:"5KrF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471414940";');
+('65cbddb189774dd545b62df029469e382b1b0afa', '127.0.0.1', 1471490220, '__ci_last_regenerate|i:1471490212;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('b93750528814f33bec864c2537e42d30f6a87133', '127.0.0.1', 1471491055, '__ci_last_regenerate|i:1471490847;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('f27adfbc16638f80851daf284c1464ab21c5c509', '127.0.0.1', 1471493212, '__ci_last_regenerate|i:1471493155;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('0d292df4c8ae3e2f7abfe91e6308372c8c6bc1cc', '127.0.0.1', 1471495288, '__ci_last_regenerate|i:1471495052;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('ff4278e63a33619094958d7123eabfa8bad05f52', '127.0.0.1', 1471495659, '__ci_last_regenerate|i:1471495373;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('66fe0c3b42ac5aabddcfc1dad2447b1f1ca91529', '127.0.0.1', 1471495980, '__ci_last_regenerate|i:1471495748;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('148bf144b3a672a1857b96e7ce4feee2fba2221e', '127.0.0.1', 1471497178, '__ci_last_regenerate|i:1471496926;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('14f588e1b24f8802c91d597b13b7a2abcb4452e4', '127.0.0.1', 1471497724, '__ci_last_regenerate|i:1471497523;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('7e422835bd4e504a3dc7b053c010e63c8024a0a4', '127.0.0.1', 1471497908, '__ci_last_regenerate|i:1471497907;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('afee63e8d18529fb2ce8e777cf855148296056d3', '127.0.0.1', 1471498776, '__ci_last_regenerate|i:1471498506;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('f62cd11731832272bcf1fbaeed7a6ea567a16b6e', '127.0.0.1', 1471499001, '__ci_last_regenerate|i:1471498921;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('b5af92e5cc4605b6b88a283c0dc0371812995398', '127.0.0.1', 1471503284, '__ci_last_regenerate|i:1471501213;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('b628482674c9b1f2a1a49941891ab29d344233c5', '127.0.0.1', 1471503773, '__ci_last_regenerate|i:1471503524;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('b1957948e8a6da67e4e5bb7b0780ff1595840814', '127.0.0.1', 1471503920, '__ci_last_regenerate|i:1471503919;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('9b2c21488a95fe4fbaaf984174298b233e2fec9c', '127.0.0.1', 1471504493, '__ci_last_regenerate|i:1471504268;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('1d34bd47c009ed5ab689d5d9a422eb27ca093293', '127.0.0.1', 1471504995, '__ci_last_regenerate|i:1471504717;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('a1aa7efb256436f4de6d7583ef49e3ec2b0f09af', '127.0.0.1', 1471505406, '__ci_last_regenerate|i:1471505169;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('8dfbae881ffafa601267eadb8cfd2e151916a666', '127.0.0.1', 1471505619, '__ci_last_regenerate|i:1471505555;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('1257801b1bf950307826bb90b08231925f3efbbb', '127.0.0.1', 1471507015, '__ci_last_regenerate|i:1471506736;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('0fc5cd87e84b9a86e3db279bb4143cdf69db8287', '127.0.0.1', 1471507274, '__ci_last_regenerate|i:1471507058;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('ae4bc431ae178fa154e2596913ce8c47119aa5f3', '127.0.0.1', 1471509342, '__ci_last_regenerate|i:1471508690;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('536edb630e565a9c27643acb312f38c1a516f3e3', '127.0.0.1', 1471509489, '__ci_last_regenerate|i:1471509342;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('b87597e08661d2c1d82d2792248cf2a6c953c3d0', '127.0.0.1', 1471509955, '__ci_last_regenerate|i:1471509842;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('7bd00bd7afc8e7c85e8364b988610787eb5306a3', '127.0.0.1', 1471511579, '__ci_last_regenerate|i:1471510194;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('95a68add0f5e42aac71f5a477086deac9a5bd989', '127.0.0.1', 1471511829, '__ci_last_regenerate|i:1471511694;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('3be924685c88eed0951aee9d05b9710f3b896bec', '127.0.0.1', 1471512103, '__ci_last_regenerate|i:1471512071;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('e6753aec0158b42bcdd29b16f3a67859d460fb64', '127.0.0.1', 1471512835, '__ci_last_regenerate|i:1471512629;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
+('de5e53c07b15a1b24c06405e01eea0def22891df', '127.0.0.1', 1471513792, '__ci_last_regenerate|i:1471513358;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('fe7651e9ad36c3ae8e3db61bdf2478f8141f4aff', '127.0.0.1', 1471513975, '__ci_last_regenerate|i:1471513792;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";');
 
 -- --------------------------------------------------------
 
@@ -543,8 +664,8 @@ CREATE TABLE `gd_setting` (
   `value` text,
   `serialized` tinyint(1) NOT NULL DEFAULT '0',
   `group` varchar(64) NOT NULL DEFAULT 'config',
-  `initial` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `initial` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_setting`
@@ -592,7 +713,7 @@ CREATE TABLE `gd_worker` (
 --
 
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1471416781, '127.0.0.1', 1, '0'),
+(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1471481330, '127.0.0.1', 1, '0'),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766');
 
 -- --------------------------------------------------------
@@ -700,6 +821,12 @@ ALTER TABLE `gd_article_category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  ADD PRIMARY KEY (`customer_id`);
+
+--
 -- Indexes for table `gd_golden_price`
 --
 ALTER TABLE `gd_golden_price`
@@ -724,10 +851,28 @@ ALTER TABLE `gd_project`
   ADD PRIMARY KEY (`project_id`);
 
 --
+-- Indexes for table `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
 -- Indexes for table `gd_project_investing_status`
 --
 ALTER TABLE `gd_project_investing_status`
   ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  ADD PRIMARY KEY (`project_id`);
 
 --
 -- Indexes for table `gd_project_recycling_status`
@@ -803,6 +948,11 @@ ALTER TABLE `gd_article`
 ALTER TABLE `gd_article_category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- 使用表AUTO_INCREMENT `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- 使用表AUTO_INCREMENT `gd_golden_price`
 --
 ALTER TABLE `gd_golden_price`
@@ -823,10 +973,25 @@ ALTER TABLE `gd_node`
 ALTER TABLE `gd_project`
   MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- 使用表AUTO_INCREMENT `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
 -- 使用表AUTO_INCREMENT `gd_project_investing_status`
 --
 ALTER TABLE `gd_project_investing_status`
   MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- 使用表AUTO_INCREMENT `gd_project_recycling_status`
 --

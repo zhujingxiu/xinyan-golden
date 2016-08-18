@@ -7,7 +7,7 @@ class XY_Controller extends MX_Controller {
         parent::__construct();
         $this->tpl_data['cdn_server'] = base_url();
         $this->load->driver('cache', array('adapter' => 'file'));
-        $this->load->library(array('Ion_auth','Layout'));
+        $this->load->library(array('Ion_auth','Layout','Setting'));
         //$this->output->enable_profiler(TRUE);
 
         if($this->ion_auth->get_user_id()){
