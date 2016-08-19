@@ -13,8 +13,6 @@ class Permission extends XY_Controller {
     {
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>'https://cdnjs.cloudflare.com/ajax/libs/jstree/3.0.9/themes/default/style.min.css','preurl'=>false),
-//            array('type'=>'css','src'=>_ASSET_.'lib/treetable/jquery.treetable.css'),
-//            array('type'=>'css','src'=>_ASSET_.'lib/treetable/style.css'),
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
@@ -22,7 +20,7 @@ class Permission extends XY_Controller {
             json_response($this->render_tree($this->permission_model->getNodeTree(null)));
         }
 
-        $this->layout->view('permission/index',$data);
+        $this->layout->view('permission',$data);
     }
     private function render_tree($nodes){
 

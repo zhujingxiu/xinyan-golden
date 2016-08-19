@@ -21,7 +21,7 @@ class Role extends XY_Controller {
             json_response($this->render_tree($this->permission_model->getNodeTree(null)));
         }
 
-        $this->layout->view('role/index',$data);
+        $this->layout->view('role',$data);
     }
 
     private function render_tree($nodes){
@@ -85,10 +85,10 @@ class Role extends XY_Controller {
 
             if ($this->form_validation->run() == TRUE)
             {
-
                 $id = $this->input->post('role_id');
                 $name = $this->input->post('name');
                 $addtional = array(
+                    'is_system' => $this->input->post('is_system'),
                     'title' => $this->input->post('title'),
                     'permission' => $this->input->post('permission'),
                 );

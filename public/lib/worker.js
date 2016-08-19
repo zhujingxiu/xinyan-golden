@@ -147,7 +147,9 @@ define(function (require,exports,modules) {
     })
     */
     exports.row_detail = function (user_id) {
-
+        $.each($('#form-worker input[name^=groups]'), function () {
+            $(this).prop('checked',false);
+        })
         if(user_id > 0) {
             $.get('/auth/worker/get_info', {user_id: user_id}, function (json) {
                 if (json.code == 1) {
@@ -158,6 +160,11 @@ define(function (require,exports,modules) {
                     $('#form-worker input[name="email"]').val(info.email);
                     $('#form-worker input[name="phone"]').val(info.phone);
                     $('#form-worker input[name="status"][value="' + info.status + '"]').prop('checked', true);
+                    if(info.roles){
+                        for(var i=0;i<info.roles.length;i++){
+                            $('#form-worker input[name^="groups"][value="'+info.roles[i].id+'"]').prop('checked',true);
+                        }
+                    }
                     $('#form-worker .box-title').text('编辑用户 ' + info.username);
 
                     if (info.id > 0) {

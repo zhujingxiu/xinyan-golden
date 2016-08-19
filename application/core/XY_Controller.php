@@ -24,6 +24,8 @@ class XY_Controller extends MX_Controller {
             $url = $this->uri->uri_string();
             if(!$this->isAllowed($url)){
                 //redirect('auth/login','refresh');
+                $node = $this->permission_model->get_node_by_path($url);
+                var_dump($node);
                 show_error('未被授权访问该页面 ['.$url.']',404,'无此权限');
             }
 
@@ -69,6 +71,7 @@ class XY_Controller extends MX_Controller {
         if($this->ion_auth->is_admin()) return TRUE;
         if(empty($path)) $path = 'home';
         $path = parse_route($path);
+
         $this->load->model('auth/permission_model');
         $node = $this->permission_model->get_node_by_path($path);
 
@@ -88,5 +91,26 @@ class XY_Controller extends MX_Controller {
             return False;
         }
 
+    }
+
+    public function _get_csrf_nonce()
+    {
+        $this->load->helper('string');
+        $key   = random_string('alnum', 8);
+        $value = random_string('alnum', 20);
+        $this->session->set_flashdata('csrfkey', $key);
+        $this->session->set_flashdata('csrfvalue', $value);
+
+        return array($key => $value);
+    }
+
+    public function _valid_csrf_nonce()
+    {
+        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
+            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 }

@@ -139,6 +139,7 @@ define(function (require,exports,modules) {
         }else{
             title = '新增节点';
             $('#parent-name').html(node ? node.path+'/' :'/');
+            $('#node-form input[name="node_id"]').val(0);
             $('#node-form input[name="parent_id"]').val(node ? node.id : 0);
             $('#node-form input[name="name"]').val('');
             $('#node-form input[name="path"]').val(node ? node.path : '');
@@ -152,5 +153,12 @@ define(function (require,exports,modules) {
         }
         $('#node-title').text(title);
         return true;
+    }
+
+    document.onkeydown = function (e) {
+        var ev = document.all ? window.event : e;
+        if (ev.keyCode == 13) {
+            $("#node-save").click();
+        }
     }
 });

@@ -217,7 +217,7 @@ function main_menu()
 			'text' => '控制面板',
 			'icon' => '<i class="fa fa-dashboard"></i>',
 			'style'=> 'active',
-			'path' => array('','home','home/index')
+			'path' => array('/','home','home/index')
 		),
 		'project'  => array(
 			'text' => '项目列表',

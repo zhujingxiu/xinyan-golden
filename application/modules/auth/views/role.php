@@ -1,4 +1,3 @@
-
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
@@ -40,19 +39,20 @@
                     <div class="box-body">
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
-                            <tr>
-                                <th>角色</th>
-                                <th>标识</th>
-                                <th>状态</th>
-                            </tr>
+                                <tr>
+                                    <th>角色</th>
+                                    <th>标识</th>
+                                    <th>系统角色</th>
+                                    <th>状态</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($groups as $item):?>
                                 <tr data-entry="<?php echo $item['id'];?>" class="role-row">
                                     <td><?php echo $item['title'];?></td>
                                     <td><?php echo $item['name'];?></td>
+                                    <td><?php echo $item['is_system'] ? '是' : '否';?></td>
                                     <td><?php echo $item['status'] ? '激活' : '禁用';?></td>
-
                                 </tr>
                             <?php endforeach;?>
                             </tbody>
@@ -87,21 +87,25 @@
                                 <input type="text" name="name" id="form-name" class="form-control">
                             </div>
                         </div>
-                        
+                        <div class="form-group clearfix">
+                            <label for="" class="control-label col-sm-2">系统角色</label>
+                            <div class="col-sm-8">
+                                <div class="radio-inline">
+                                    <label> <input type="radio" name="is_system" value="1" > 是 </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label> <input type="radio" name="is_system" value="0" checked> 否 </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group clearfix">
                             <label for="" class="control-label col-sm-2">状态</label>
                             <div class="col-sm-8">
                                 <div class="radio-inline">
-                                    <label>
-                                        <input type="radio" name="status" value="1" checked>
-                                        启用
-                                    </label>
+                                    <label> <input type="radio" name="status" value="1" checked> 启用 </label>
                                 </div>
                                 <div class="radio-inline">
-                                    <label>
-                                        <input type="radio" name="status" value="0">
-                                        禁用
-                                    </label>
+                                    <label> <input type="radio" name="status" value="0"> 禁用 </label>
                                 </div>
                             </div>
                         </div>

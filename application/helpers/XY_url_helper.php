@@ -18,6 +18,10 @@ function theme_url(){
 
 function parse_route($url)
 {
-
+    $url = trim($url,'/');
+    $route = explode('/',$url);
+    if(count($route)<3){
+        $url .= '/index';
+    }
     return $url;
 }

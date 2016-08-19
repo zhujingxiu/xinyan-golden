@@ -1,6 +1,6 @@
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open_multipart('/project/investing/create',array('id' => "form-investing", 'class'=>'form-horizontal'))?>
+	<?php echo form_open_multipart('/project/investing/applied',array('id' => "form-investing", 'class'=>'form-horizontal'))?>
 		<div class="col-sm-12">
 			<fieldset>
 				<legend>黄金信息</legend>

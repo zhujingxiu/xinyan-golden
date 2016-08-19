@@ -21,7 +21,7 @@ class Project extends XY_Controller {
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
 
-        $this->layout->view('project/index',$data);
+        $this->layout->view('project',$data);
     }
 
     public function save()

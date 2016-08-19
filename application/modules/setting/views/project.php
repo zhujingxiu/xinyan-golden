@@ -42,7 +42,7 @@
                         <div class="tab-content">
                             <div class="tab-pane active" id="investing">
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-5">
                                         <filedset>
                                             <legend>项目状态</legend>
                                             <div class="row">
@@ -112,7 +112,7 @@
                                         <?php echo form_close()?>
 
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-7">
                                         <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
                                         <filedset>
                                             <legend>项目表单</legend>
@@ -154,7 +154,7 @@
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="recycling">
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-5">
                                         <filedset>
                                             <legend>项目状态</legend>
                                             <div class="row">
@@ -224,15 +224,16 @@
                                         <?php echo form_close()?>
 
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-7">
                                         <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
                                         <filedset>
                                             <legend>项目表单</legend>
                                             <div class="col-sm-12 do-result">
                                             </div>
+                                            <div class="col-sm-6">
                                             <div class="form-group clearfix">
                                                 <label for="" class="control-label col-sm-3">条款协议</label>
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-9">
                                                     <select name="recycling_privacy" class="form-control">
                                                         <option value="0">--请选择--</option>
                                                         <?php foreach($privacies as $item): ?>
@@ -244,9 +245,11 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            </div>
+                                            <div class="col-sm-6">
                                             <div class="form-group clearfix">
                                                 <label for="" class="control-label col-sm-3">初始状态</label>
-                                                <div class="col-sm-6">
+                                                <div class="col-sm-9">
                                                     <select name="recycling_initial" class="form-control">
                                                         <option value="0">--请选择--</option>
                                                         <?php foreach($recycling_statuses as $item): ?>
@@ -257,6 +260,7 @@
                                                         <?php endforeach?>
                                                     </select>
                                                 </div>
+                                            </div>
                                             </div>
                                         </filedset>
                                         <?php echo form_close()?>

@@ -48,13 +48,11 @@
             </div>
             <!-- /.col -->
             <div class="col-xs-3">
-                <?php echo form_open('worker/user/save',['id'=>'node-form']); ?>
+                <?php echo form_open('auth/permission/save',['id'=>'node-form']); ?>
                 <div class="box box-success">
                     <div class="box-header">
                         <div class="pull-right buttons">
-                            <input type="hidden" name="node_id">
-                            <input type="hidden" name="parent_id">
-                            <input type="hidden" name="level">
+
                             <button id="node-save" type="submit" form="form-worker" class="btn btn-success"><i class="fa fa-save"></i> </button>
                         </div>
                     </div>
@@ -63,6 +61,9 @@
                         <div class="form-group">
                             <label for="parent-name" class="control-label">层级</label>
                             <span id="parent-name" class="form-control">/</span>
+                            <input type="hidden" name="node_id">
+                            <input type="hidden" name="parent_id">
+                            <input type="hidden" name="level">
                         </div>
                         <div class="form-group">
                             <label for="title" class="control-label">标题</label>

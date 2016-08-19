@@ -20,10 +20,13 @@ class Investing extends XY_Controller {
 		));
 		$data['success'] = $this->session->flashdata('success');
 		$data['warning'] = $this->session->flashdata('warning');
+		if($this->input->get('list')){
+			json_response($this->_list());
+		}
 		$this->layout->view('investing/list',$data);
 	}
 
-	public function all()
+	private function _list()
 	{
 		$rows = array();
 		$result = $this->investing_model->projects()->result_array();
@@ -43,16 +46,16 @@ class Investing extends XY_Controller {
 				);
 			}
 		}
-		$data = array(
+		return array(
 			'draw' 				=> 1,
 			'recordsTotal' 		=> $total,
 			'recordsFiltered' 	=> $total,
 			'data' => $rows
 		);
-		die(json_encode($data));
+
 	}
 
-	public function apply()
+	public function applying_form()
 	{
 		$id = $this->input->get('project');
 		$title = '添加项目';
@@ -87,7 +90,7 @@ class Investing extends XY_Controller {
 		json_response(array('code'=>1,'title'=>$title,'html'=>$form));
 	}
 
-	public function create()
+	public function applied()
 	{
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
             $this->form_validation->set_rules('price', '实时金价', 'required');
@@ -120,5 +123,53 @@ class Investing extends XY_Controller {
                 json_response(array('code' => 0, 'errors' => $errors));
             }
         }
+	}
+
+	public function checking_form()
+	{
+
+	}
+	public function checked()
+	{
+
+	}
+	public function confirming_form()
+	{
+
+	}
+	public function confirmed()
+	{
+
+	}
+
+	public function certificating_form()
+	{
+
+	}
+	public function certificated()
+	{
+
+	}
+
+	public function taking_form()
+	{
+
+	}
+	public function taken()
+	{
+
+	}
+
+	public function refusing_form()
+	{
+
+	}
+	public function refused(){
+
+	}
+
+	public function trash()
+	{
+
 	}
 }

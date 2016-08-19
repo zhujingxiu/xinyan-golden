@@ -12,8 +12,9 @@ define(function(require,exports,modules){
         "processing": true,
         "serverSide": true,
         "ajax": {
-            url:'/project/investing/all',
-            type:'post'
+            url:'/project/investing/index',
+            data:{list:1},
+            type:'get'
         },
         "paging": true,
         "lengthChange": true,
@@ -41,7 +42,7 @@ define(function(require,exports,modules){
         require('jqueryvalidate');
         require('customValidate');
 
-        $.get('/project/investing/apply', {project:pid}, function(json){
+        $.get('/project/investing/applying_form', {project:pid}, function(json){
             layer.open({
                 type: 1,
                 title:json.title,

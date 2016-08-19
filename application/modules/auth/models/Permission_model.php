@@ -128,7 +128,7 @@ class Permission_model extends CI_Model
                 'path'      => trim($data['path'],"/"),
                 'auth'      => (int)$data['auth'],
                 'status'    => (int)$data['status'],
-                'note'      => $data['note'],
+                'note'      => isset($data['note'])? $data['note'] :'',
                 'sort'      => (int)$data['sort']
             );
             $this->db->insert("node",$fields);

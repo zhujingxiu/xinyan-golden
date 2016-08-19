@@ -100,7 +100,7 @@ class Article extends XY_Controller {
 
     public function umupload()
     {
-        var_dump($this->input->post());
+        //var_dump($this->input->post());
         $this->load->library("UMuploader");
         //上传配置
         $config = array(

@@ -1,11 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Investing extends XY_Controller {
+class System extends XY_Controller {
 
 
 	public function index()
 	{
-		$this->layout->view('investing/list');
+		$this->layout->view('system');
+	}
+
+	public function save()
+	{
+
 	}
 }

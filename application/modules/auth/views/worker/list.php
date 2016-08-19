@@ -76,7 +76,7 @@
             <!-- /.col -->
 
             <div class="col-xs-3">
-                <?php echo form_open('auth/worker/save',['id'=>'form-worker']); ?>
+                <?php echo form_open('auth/worker/save',array('id'=>'form-worker','class'=>'form-horizontal')); ?>
                 <div class="box box-success">
                     <div class="box-header">
                         <h3 class="box-title">添加员工</h3>
@@ -87,42 +87,67 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="" class="control-label">用户名</label>
-                            <input type="text" name="username" id="form-username" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">真实姓名</label>
-                            <input type="text" name="realname" id="form-realname" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">Email</label>
-                            <input type="text" name="email" id="form-email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">电话</label>
-                            <input type="text" name="phone" id="form-phone" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">密码</label>
-                            <input type="password" name="password" id="form-password" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">确认密码</label>
-                            <input type="password" name="confirm" id="form-confirm" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="control-label">状态</label>
-                            <div class="radio ">
-                                <label>
-                                    <input type="radio" name="status" value="1">
-                                    激活
-                                </label>
+                            <label for="" class="control-label col-sm-3">用户名</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="username" id="form-username" class="form-control">
                             </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="status" value="0">
-                                    禁用
-                                </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">真实姓名</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="realname" id="form-realname" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">Email</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="email" id="form-email" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">电话</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="phone" id="form-phone" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">角色设置</label>
+                            <div class="col-sm-9">
+                                <?php foreach($groups as $item) : ?>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>"><?php echo $item['title']?></label>
+                                </div>
+                                <?php endforeach ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="password" id="form-password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">确认密码</label>
+                            <div class="col-sm-9">
+                                <input type="password" name="confirm" id="form-confirm" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">状态</label>
+                            <div class="col-sm-9">
+                                <div class="radio ">
+
+                                    <label>
+                                        <input type="radio" name="status" value="1">
+                                        激活
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="status" value="0">
+                                        禁用
+                                    </label>
+                                </div>
                             </div>
                         </div>
 

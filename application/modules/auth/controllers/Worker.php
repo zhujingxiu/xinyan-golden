@@ -59,7 +59,6 @@ class Worker extends XY_Controller {
                 $identity = $this->input->post('username');
                 $password = $this->input->post('password');
 
-
                 $additional_data = array(
                     'realname' => $this->input->post('realname'),
                     'phone'      => $this->input->post('phone'),
@@ -93,19 +92,24 @@ class Worker extends XY_Controller {
 
                     }else{
                         $this->session->set_flashdata('warning', $this->ion_auth->errors() );
-                        if ($this->ion_auth->is_admin())
-                        {
-                            redirect('worker/use', 'refresh');
-                        }
-                        else
-                        {
-                            redirect('/', 'refresh');
-                        }
+                        redirect('auth/worker', 'refresh');
                     }
 
-                }else if($this->ion_auth->register($identity, $password, $email, $additional_data)){
+                }else if($id = $this->ion_auth->register($identity, $password, $email, $additional_data)){
+
+                    $groupData = $this->input->post('groups');
+
+                    if ($id && isset($groupData) && !empty($groupData)) {
+
+                        $this->ion_auth->remove_from_group('', $id);
+
+                        foreach ($groupData as $grp) {
+                            $this->ion_auth->add_to_group($grp, $id);
+                        }
+
+                    }
                     $this->session->set_flashdata('success', $this->ion_auth->messages());
-                    redirect("worker/user", 'refresh');
+                    json_response(array('code'=>1));
                 }
             }else {
 
