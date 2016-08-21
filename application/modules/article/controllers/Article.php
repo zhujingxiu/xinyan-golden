@@ -15,7 +15,6 @@ class Article extends XY_Controller {
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/datatables.bootstrap.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
-            array('type'=>'css','src'=>_ASSET_.'lib/layer/skin/layer.css'),
         ));
         $data['articles']=$this->article_model->articles()->result_array();
         $data['success'] = $this->session->flashdata('success');
@@ -86,16 +85,15 @@ class Article extends XY_Controller {
     	);
 
             
-		$result = $this->article_model->article($id)->row_array();
+		$result = $this->article_model->article($id);
         if($result){
-            $info = $result;
+            $info = $result->row_array();
             $title = '编辑文章 '.$info['author'].':'.str_truncate($info['title'],20);
         }
 
     	$info['categories'] = $this->article_model->get_categories()->result_array();
-        $form = $this->load->view('form',$info,TRUE);
-//var_dump($form);
-    	json_response(array('code'=>1,'title'=>$title,'html'=>$form));
+
+    	json_response(array('code'=>1,'title'=>$title,'html'=>$this->load->view('form',$info,TRUE)));
     }
 
     public function umupload()
@@ -126,5 +124,21 @@ class Article extends XY_Controller {
         } else {
             echo json_encode($info);
         }
+    }
+
+    public function detail($article_id)
+    {
+        $data['heading'] = '文章不存在';
+        $data['message'] = '参数异常，您查找的文章不存在';
+        $result = $this->article_model->article($article_id);
+        if($result){
+            $info = $result->row_array();
+            if($info){
+                $data['heading'] = $info['title'];
+                $data['message'] = htmlspecialchars_decode($info['text']);
+            }
+        }
+
+        $this->layout->view('detail',$data,FALSE);
     }
 }

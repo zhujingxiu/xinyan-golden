@@ -12,7 +12,7 @@ class Permission extends XY_Controller {
     public function index()
     {
         $this->layout->add_includes(array(
-            array('type'=>'css','src'=>'https://cdnjs.cloudflare.com/ajax/libs/jstree/3.0.9/themes/default/style.min.css','preurl'=>false),
+            array('type'=>'css','src'=>_ASSET_.'lib/vakata-jstree/src/themes/default/style.css'),
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');

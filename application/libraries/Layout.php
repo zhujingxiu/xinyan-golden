@@ -45,6 +45,10 @@ class Layout {
 
     }
 
+    public function set_vars($vars = array()){
+        $this->extends = array_merge($this->extends,$vars) ;
+    }
+
     public function add_tpl($name='',$tpl='common/top',$data=array())
     {
         $this->extends[$name] = $this->ci->load->view($tpl, $data, TRUE);

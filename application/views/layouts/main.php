@@ -7,10 +7,6 @@
   
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-
     <?php if(isset($includes['css']) AND count($includes['css']) > 0): ?>
     <?php foreach($includes['css'] as $file): ?>
     <link rel="stylesheet" href="<?php echo $file['file']; ?>">
@@ -18,15 +14,19 @@
     <?php endif; ?>
 
     <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="<?php echo asset_url('base/html5shiv.min.js')?>"></script>
+    <script src="<?php echo asset_url('base/respond.min.js')?>"></script>
     <![endif]-->
     <script src="<?php echo asset_url('base/jquery.min.js')?>" type="text/javascript"></script>
     <script src="<?php echo asset_url('base/app.js')?>"></script>
     <script src="<?php echo asset_url('base/config.js')?>"></script>
     <script>
         var HTTP_SERVER = '<?php echo base_url();?>';
-        seajs.use('layout');
+        seajs.use('layout',function(l){
+            <?php if(!empty($error_permission)) : ?>
+            l.render_message('<?php echo $error_permission;?>','没权限');
+            <?php endif?>
+        });
     </script>
 
     <link rel="icon" href="/favicon.ico">

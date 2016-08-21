@@ -28,16 +28,16 @@ define(function (require,exports,modules) {
 
         $("#form-role").validate({
             rules : {
-                name : {
+                code : {
                     required : true,
                     minlength : 2,
                     remote:{
-                        url:"/auth/role/check_rolename",             //servlet
+                        url:"/auth/role/check_code",             //servlet
                         data:{
                             role_id: function () {
                                 return $("input[name='role_id']").val();
                             },
-                            rolename: function () {
+                            code: function () {
                                 return $("#form-rolename").val();
                             }
                         }
@@ -50,7 +50,7 @@ define(function (require,exports,modules) {
 
             },
             messages : {
-                name : {
+                code : {
                     required : '请输入角色标识',
                     minlength : '角色标识不得少于2个字符。',
                     remote  :"角色标识已经被注册"
@@ -109,7 +109,7 @@ define(function (require,exports,modules) {
                     var info = json.info;
                     $('#form-role .box-body').prepend('<div class="form-group role-worker clearfix"><label class="control-label col-sm-2">员工</label><div class="col-sm-10"><span>'+info.worker+'</span></div></div>')
                     $('#form-role input[name="role_id"]').val(info.id);
-                    $('#form-role input[name="name"]').val(info.name);
+                    $('#form-role input[name="code"]').val(info.code);
                     $('#form-role input[name="title"]').val(info.title);
                     $('#form-role input[name="permission"]').val(info.permission);
 

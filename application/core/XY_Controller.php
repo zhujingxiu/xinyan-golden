@@ -3,12 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class XY_Controller extends MX_Controller {
     protected $tpl_data = array();
     protected $worker;
-    function __construct(){
+    protected $ajax_permission = FALSE;
+    function __construct()
+    {
         parent::__construct();
-        $this->tpl_data['cdn_server'] = base_url();
+
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->library(array('Ion_auth','Layout','Setting'));
-        //$this->output->enable_profiler(TRUE);
+        $this->layout->set_vars(array('error_permission' => $this->session->flashdata('error_permission')));
 
         if($this->ion_auth->get_user_id()){
             // 登录用户信息
@@ -23,27 +25,34 @@ class XY_Controller extends MX_Controller {
             
             $url = $this->uri->uri_string();
             if(!$this->isAllowed($url)){
-                //redirect('auth/login','refresh');
-                $node = $this->permission_model->get_node_by_path($url);
-                var_dump($node);
-                show_error('未被授权访问该页面 ['.$url.']',404,'无此权限');
-            }
 
+                if($this->input->server('HTTP_X_REQUESTED_WITH') && strtolower($this->input->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest'){
+                    $this->session->set_flashdata(array('ajax_permission'=>'未被授权访问该页面 <br> ['.$url.']'));
+                }else{
+                    $this->session->set_flashdata(array('error_permission'=>'未被授权访问该页面 <br> ['.$url.']'));
+                    $back = $this->input->server('HTTP_REFERER') ? $this->input->server('HTTP_REFERER') : site_url();//var_dump($back);
+                    redirect($back);
+                }
+
+            }
         }else{
             // 跳转到登录页面
             redirect('auth/login','refresh');
         }
     }
 
-    function index(){
+    function index()
+    {
         $this->load->view('login', $this->tpl_data);
     }
 
     private function load_files()
     {
         return array(
-            
+            array('type'=>'css','src'=>_ASSET_.'lib/font-awesome/css/font-awesome.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/ionicons/css/ionicons.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/bootstrap/css/bootstrap.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/layer/skin/layer.css'),
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/AdminLTE.min.css'),
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/skins/_all-skins.min.css'),
         );
@@ -52,8 +61,7 @@ class XY_Controller extends MX_Controller {
 
     private function navbar()
     {
-        
-        return ['worker'=>$this->worker];
+        return array('worker'=>$this->worker);
     }
 
     private function sidebar()
@@ -74,7 +82,6 @@ class XY_Controller extends MX_Controller {
 
         $this->load->model('auth/permission_model');
         $node = $this->permission_model->get_node_by_path($path);
-
         if(empty($node['node_id'])) return False;
 
         if(!empty($node['auth']) && !empty($node['status']) && in_array($node['node_id'],$this->worker['permission'])){
@@ -91,6 +98,12 @@ class XY_Controller extends MX_Controller {
             return False;
         }
 
+    }
+
+    public function inRole($role)
+    {
+
+        return array_key_exists(strtolower($role),$this->worker['roles']);
     }
 
     public function _get_csrf_nonce()

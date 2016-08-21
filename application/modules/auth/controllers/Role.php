@@ -12,7 +12,7 @@ class Role extends XY_Controller {
     public function index()
     {
         $this->layout->add_includes(array(
-            array('type'=>'css','src'=>'https://cdnjs.cloudflare.com/ajax/libs/jstree/3.0.9/themes/default/style.min.css','preurl'=>false),
+            array('type'=>'css','src'=>_ASSET_.'lib/vakata-jstree/src/themes/default/style.css'),
         ));
         $data['groups']=$this->ion_auth->groups()->result_array();
         $data['success'] = $this->session->flashdata('success');
@@ -58,13 +58,13 @@ class Role extends XY_Controller {
         return false;
     }
 
-    public function check_rolename($id=false,$name=false,$rule=False)
+    public function check_code($id=false,$code=false,$rule=False)
     {
 
         $id || $id = $this->input->get('role_id');
-        $name || $name = $this->input->get('rolename');
+        $code || $code = $this->input->get('check_code');
 
-        $result = $this->ion_auth->check_rolename($name,$id);
+        $result = $this->ion_auth->check_code($code,$id);
 
         if($rule) {
             return $result ? false : true;
@@ -81,7 +81,7 @@ class Role extends XY_Controller {
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             $this->form_validation->set_rules('title', '标题', 'trim|required|min_length[2]|max_length[16]');
 
-            $this->form_validation->set_rules('name', '标识', 'trim|required|min_length[2]');
+            $this->form_validation->set_rules('code', '标识', 'trim|required|min_length[2]');
 
             if ($this->form_validation->run() == TRUE)
             {
@@ -101,7 +101,7 @@ class Role extends XY_Controller {
 
                 $errors = array(
                     'title' => form_error('title'),
-                    'name' => form_error('name'),
+                    'code' => form_error('code'),
                     'permisson' => form_error('permisson'),
                 );
                 json_response(array('code' => 0, 'errors' => $errors));

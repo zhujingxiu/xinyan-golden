@@ -39,7 +39,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table id="project-list" class="table table-bordered table-hover">
                             <thead>
                             <tr>
                                 <th>状态</th>
@@ -51,22 +51,10 @@
                                 <th>预购周期</th>
                                 <th>应收金额</th>
                                 <th>订单时间</th>
+                                <th></th>
                             </tr>
                             </thead>
 
-                            <tfoot>
-                            <tr>
-                                <th>状态</th>
-                                <th>项目编号</th>
-                                <th>客户</th>
-                                <th>联系电话</th>
-                                <th>金价</th>
-                                <th>购入重量</th>
-                                <th>预购周期</th>
-                                <th>应收金额</th>
-                                <th>订单时间</th>
-                            </tr>
-                            </tfoot>
                         </table>
                     </div>
                     <!-- /.box-body -->
@@ -79,5 +67,8 @@
     <!-- /.content -->
     <script type="text/javascript">
 
-        seajs.use('investing')
+        seajs.use('investing',function(inv){
+            inv.render_appling();
+            inv.render_checking();
+        })
     </script>

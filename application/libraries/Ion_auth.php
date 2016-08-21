@@ -246,6 +246,7 @@ class Ion_auth
 		if(empty($info['avatar'])){
 			$info['avatar'] = 'public/images/avatar/avatar.png';
 		}
+		$info['roles'] = array();
 		if($info){
 			$roles = $this->ion_auth->get_users_groups($id)->result_array();
 			if($roles){
@@ -253,7 +254,7 @@ class Ion_auth
 				{
 					if($item['status']){
 
-						$info['roles'][$item['name']] = $item['title'];
+						$info['roles'][strtolower($item['code'])] = $item['title'];
 						$info['permission'] = array();
 						$tmp = explode(',',$item['permission']);
 						if(is_array($tmp)){
@@ -311,7 +312,7 @@ class Ion_auth
 			$groups_array = array();
 			foreach ($users_groups as $group)
 			{
-				$groups_array[$group->id] = $group->name;
+				$groups_array[$group->id] = $group->code;
 			}
 			$this->_cache_user_in_group[$id] = $groups_array;
 		}
@@ -345,9 +346,9 @@ class Ion_auth
 		return $this->ion_auth_model->username_check($username,$user_id);
 	}
 
-	function check_rolename($name,$role_id)
+	function check_code($code,$role_id)
 	{
-		return $this->ion_auth_model->rolename_check($name,$role_id);
+		return $this->ion_auth_model->rolename_check($code,$role_id);
 	}
 
 	function get_group_users($group_id)
@@ -355,9 +356,9 @@ class Ion_auth
 		return $this->ion_auth_model->get_users_by_group($group_id)->result_array();
 	}
 
-	function save_group($group_id,$name,$additional){
+	function save_group($group_id,$code,$additional){
 
-		return $group_id ? $this->ion_auth_model->update_group($group_id,$name,$additional) :$this->ion_auth_model->create_group($name,$additional['title'],$additional) ;
+		return $group_id ? $this->ion_auth_model->update_group($group_id,$code,$additional) :$this->ion_auth_model->create_group($code,$additional['title'],$additional) ;
 	}
 
 	function update_avatar($file){

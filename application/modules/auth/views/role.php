@@ -50,7 +50,7 @@
                             <?php foreach ($groups as $item):?>
                                 <tr data-entry="<?php echo $item['id'];?>" class="role-row">
                                     <td><?php echo $item['title'];?></td>
-                                    <td><?php echo $item['name'];?></td>
+                                    <td><?php echo $item['code'];?></td>
                                     <td><?php echo $item['is_system'] ? '是' : '否';?></td>
                                     <td><?php echo $item['status'] ? '激活' : '禁用';?></td>
                                 </tr>
@@ -84,7 +84,7 @@
                         <div class="form-group clearfix">
                             <label for="" class="control-label col-sm-2">标识</label>
                             <div class="col-sm-8">
-                                <input type="text" name="name" id="form-name" class="form-control">
+                                <input type="text" name="code" id="form-name" class="form-control">
                             </div>
                         </div>
                         <div class="form-group clearfix">

@@ -5,7 +5,7 @@ window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs')
-    $('#example2').DataTable({
+    $('#project-list').DataTable({
         "language": {
             "url": "/public/lib/datatables/Chinese.json"
         },
@@ -16,6 +16,22 @@ define(function(require,exports,modules){
             data:{list:1},
             type:'get'
         },
+        "columns": [
+            {
+                "data-entry":          'details-control',
+                "data":"status"
+            },
+
+            { "data": "sn" },
+            { "data": "realname" },
+            { "data": "phone" },
+            { "data": "price" },
+            { "data": "weight" },
+            { "data": "period" },
+            { "data": "amount" },
+            { "data": "addtime" },
+            { "data": "operation" }
+        ],
         "paging": true,
         "lengthChange": true,
         "searching": true,
@@ -24,37 +40,71 @@ define(function(require,exports,modules){
         "autoWidth": false
     });
 
+    exports.render_appling = function(){
+        $('#btn-new').bind('click',function() {
+            require('layer');
+            require('ajaxSubmit');
 
-    $('#btn-new').bind('click',function(){
-        exports.render_detail(false);
-    })
+            require('ueditor/ueditor.config');
+            require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
 
-    $('.btn-detail').bind('click',function(){
-        exports.render_detail($(this).parent().parent().data('entry'));
-    })
-
-    exports.render_detail = function(pid){
-        require('layer');
-        require('ajaxSubmit');
-
-        require('ueditor/ueditor.config');
-        require('ueditor');
-        require('jqueryvalidate');
-        require('customValidate');
-
-        $.get('/project/investing/applying_form', {project:pid}, function(json){
-            layer.open({
-                type: 1,
-                title:json.title,
-                area:'800px',
-                offset: '100px',
-                zIndex:99,
-                btn: ['保存', '取消'],
-                content: json.html ,
-                yes: function(index, layero){
-                    $('#form-investing').submit();
+            $.get('/project/investing/applied', {project: false}, function (json) {
+                if (json.code == 1) {
+                    layer.open({
+                        type: 1,
+                        title: json.title,
+                        area: '880px',
+                        offset: '100px',
+                        zIndex: 99,
+                        btn: ['保存', '取消'],
+                        content: json.msg,
+                        yes: function (index, layero) {
+                            $('#form-investing').submit();
+                        }
+                    });
+                } else {
+                    var l = require('layout');
+                    l.render_message(json.msg, json.title);
                 }
-            });
-        },'json');
+
+            }, 'json');
+        });
+    }
+
+    exports.render_checking = function()
+    {
+        $('#project-list').delegate('.btn-checking','click', function () {
+
+            require('layer');
+            require('ajaxSubmit');
+
+            require('ueditor/ueditor.config');
+            require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+
+            $.get('/project/investing/checked', {project:$(this).parent().parent().attr('id')}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['保存', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-investing').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        })
+
     }
 })

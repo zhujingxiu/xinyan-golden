@@ -1061,5 +1061,13 @@ define(function(require, exports, module) {
         }
     })(jQuery, $.AdminLTE);
 
+    exports.render_message = function ($msg,$title) {
+        require('layer');
 
+        layer.alert($msg, {
+            icon: 2,
+            time: 5000, //2秒关闭（如果不配置，默认是3秒）
+            title:$title
+        });
+    }
 });
