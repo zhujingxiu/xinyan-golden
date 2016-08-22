@@ -11,7 +11,7 @@ class XY_Controller extends MX_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->library(array('Ion_auth','Layout','Setting'));
         $this->layout->set_vars(array('error_permission' => $this->session->flashdata('error_permission')));
-
+        $this->lang->load('default');
         if($this->ion_auth->get_user_id()){
             // 登录用户信息
             $this->worker = $this->ion_auth->get_info();
@@ -22,14 +22,14 @@ class XY_Controller extends MX_Controller {
             $this->layout->add_tpl('navbar','common/navbar',$this->navbar());
             $this->layout->add_tpl('sidebar','common/sidebar',$this->sidebar());
             $this->layout->add_tpl('controlbar','common/controlbar',$this->controlbar());
-            
+
             $url = $this->uri->uri_string();
             if(!$this->isAllowed($url)){
 
                 if($this->input->server('HTTP_X_REQUESTED_WITH') && strtolower($this->input->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest'){
-                    $this->session->set_flashdata(array('ajax_permission'=>'未被授权访问该页面 <br> ['.$url.']'));
+                    $this->session->set_flashdata(array('ajax_permission'=>lang('error_no_permission').' <br> ['.$url.']'));
                 }else{
-                    $this->session->set_flashdata(array('error_permission'=>'未被授权访问该页面 <br> ['.$url.']'));
+                    $this->session->set_flashdata(array('error_permission'=>lang('error_no_permission').' <br> ['.$url.']'));
                     $back = $this->input->server('HTTP_REFERER') ? $this->input->server('HTTP_REFERER') : site_url();//var_dump($back);
                     redirect($back);
                 }
@@ -56,7 +56,6 @@ class XY_Controller extends MX_Controller {
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/AdminLTE.min.css'),
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/skins/_all-skins.min.css'),
         );
-
     }
 
     private function navbar()
@@ -100,10 +99,18 @@ class XY_Controller extends MX_Controller {
 
     }
 
-    public function inRole($role)
+    public function inRole($role=array())
     {
-
-        return array_key_exists(strtolower($role),$this->worker['roles']);
+        if(is_array($role)){
+            foreach($role as $item){
+                if(in_array(strtolower($item),array_keys($this->worker['roles']))){
+                    return True;
+                }
+            }
+            return False;
+        }else{
+            return array_key_exists(strtolower($role),$this->worker['roles']);
+        }
     }
 
     public function _get_csrf_nonce()
@@ -126,4 +133,6 @@ class XY_Controller extends MX_Controller {
         }
         return FALSE;
     }
+
+
 }

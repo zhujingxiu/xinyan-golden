@@ -86,7 +86,7 @@ class Article extends XY_Controller {
 
             
 		$result = $this->article_model->article($id);
-        if($result){
+        if($result->num_rows()){
             $info = $result->row_array();
             $title = '编辑文章 '.$info['author'].':'.str_truncate($info['title'],20);
         }
@@ -102,7 +102,7 @@ class Article extends XY_Controller {
         $this->load->library("UMuploader");
         //上传配置
         $config = array(
-            "savePath" => "/public/uploads/" ,             //存储文件夹
+            "savePath" => "./public/uploads/" ,             //存储文件夹
             "maxSize" => 2048 ,                   //允许的文件最大尺寸，单位KB
             "allowFiles" => array( ".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp" )  //允许的文件格式
         );

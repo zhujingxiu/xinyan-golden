@@ -7,7 +7,6 @@
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?php echo site_url() ?>"><i class="fa fa-dashboard"></i> 控制面板</a></li>
-
             <li class="active">钱生金</li>
         </ol>
     </section>
@@ -43,13 +42,12 @@
                             <thead>
                             <tr>
                                 <th>状态</th>
-                                <th>项目编号</th>
+                                <th>编号</th>
                                 <th>客户</th>
-                                <th>联系电话</th>
                                 <th>金价</th>
-                                <th>购入重量</th>
-                                <th>预购周期</th>
-                                <th>应收金额</th>
+                                <th>重量 （克）</th>
+                                <th>周期</th>
+                                <th>金额 （元）</th>
                                 <th>订单时间</th>
                                 <th></th>
                             </tr>
@@ -69,6 +67,7 @@
 
         seajs.use('investing',function(inv){
             inv.render_appling();
+            inv.render_update();
             inv.render_checking();
         })
     </script>

@@ -49,13 +49,13 @@ class Investing_model extends XY_Model{
             'period' => $data['period'],
             'amount' => $data['amount'],
             'total' => $data['total'],
-            'note' => htmlspecialchars($data['editorValue']),
+            'note' => $data['note'],
             'status_id' => $this->config->item('investing_initial'),
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time()
         ));
         $project_id = $this->db->insert_id();
-        $this->history($project_id,$this->config->item('investing_initial'),'');
+        $this->history($project_id,$this->config->item('investing_initial'),$data['note']);
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
@@ -69,6 +69,53 @@ class Investing_model extends XY_Model{
         $this->trigger_events(array('post_insert_project', 'post_insert_project_successful'));
         $this->set_message('insert_successful');
         return TRUE;
+    }
+
+    public function update($project_sn,$data)
+    {
+        $info = $this->project($project_sn);
+        if($info->num_rows()){
+            $project = $info->row_array();
+            $fileds = array();
+            if(isset($data['realname'])){
+                $fileds['realname'] = $data['realname'];
+            }
+            if(isset($data['phone'])){
+                $fileds['phone'] = $data['phone'];
+                $fileds['customer_id'] = $this->match_customer(array('phone'=>$data['phone']));
+            }
+            if(isset($data['referrer'])){
+                $fileds['referrer'] = $data['referrer'];
+            }
+
+            if(isset($data['wechat'])){
+                $fileds['wechat'] = $data['wechat'];
+            }
+
+            if(isset($data['weight'])){
+                $fileds['weight'] = $data['weight'];
+            }
+
+            if(isset($data['amount'])){
+                $fileds['amount'] = $data['amount'];
+            }
+
+            if(isset($data['total'])){
+                $fileds['total'] = $data['total'];
+            }
+
+            if(isset($data['note'])){
+                $fileds['note'] = $data['note'];
+            }
+            $fileds['worker_id'] = $this->ion_auth->get_user_id();
+            $fileds['lasttime'] = time();
+            $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
+            $this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
+            return $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
+
+        }else{
+            return FALSE;
+        }
     }
 
     public function generate_sn(){
@@ -88,6 +135,30 @@ class Investing_model extends XY_Model{
                 return (int)$result['customer_id'];
         }
         return 0;
+    }
+
+    public function push_state($project_sn,$data)
+    {
+        $info = $this->project($project_sn);
+        if($info->num_rows()) {
+            $project = $info->row_array();
+            $fileds = array();
+            if (isset($data['status'])) {
+                $fileds['status'] = $data['status'];
+            }
+            if(isset($data['note'])){
+                $fileds['note'] = $data['note'];
+            }
+            if(isset($data['extra'])){
+                $fileds['extra'] = htmlspecialchars($data['extra']);
+            }
+            $fileds['worker_id'] = $this->ion_auth->get_user_id();
+            $fileds['lasttime'] = time();
+            $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
+            return $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
+
+        }
+        return FALSE;
     }
 
     public function history($project_id,$status_id,$note=''){

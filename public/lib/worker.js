@@ -106,46 +106,7 @@ define(function (require,exports,modules) {
     $('#new-user').bind('click', function () {
         exports.row_detail(false);
     })
-    /*
 
-    var editor =  $('#example2').DataTable({
-        "language": {
-            "url": "/public/asset/lib/plugins/datatables/Chinese.json"
-        },
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            url:'/auth/worker/all',
-            type:'post'
-        },
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-
-    });
-
-
-    $('#btn-save').bind('click',function(){
-        var form = $(this).attr('form');
-        $('#'+form+' .has-error').removeClass('has-error');
-        $('#'+form+' .help-block').remove();
-        $('#'+form).ajaxSubmit({
-            dataType:'json',
-            success: function (json) {
-                if(json.code == 1){
-
-                }else{
-                    for(var i in json.errors){
-                        $('#form-'+i).parent('.form-group').addClass('has-error').append(json.errors[i]);
-                    }
-                }
-            }
-        })
-    })
-    */
     exports.row_detail = function (user_id) {
         $.each($('#form-worker input[name^=groups]'), function () {
             $(this).prop('checked',false);

@@ -1,6 +1,7 @@
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open_multipart('/project/investing/applied',array('id' => "form-investing", 'class'=>'form-horizontal'))?>
+	<?php echo form_open_multipart('/project/investing/applied',array('id' => "form-appling", 'class'=>'form-horizontal'))?>
+		<?php echo form_hidden($csrf)?>
 		<div class="col-sm-12">
 			<fieldset>
 				<legend>黄金信息</legend>
@@ -12,7 +13,7 @@
 								<option value="3">3个月</option>
 								<option value="6">6个月</option>
 								<option value="9">9个月</option>
-								<option value="12">12个月</option>
+								<option value="12" selected>12个月</option>
 								<option value="18">18个月</option>
 							</select>
 						</div>
@@ -25,28 +26,27 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">应付金额</span>
-							<input type="text" name="amount" readonly="readonly" class="form-control" style="color:#CC9900;font-weight: bold;">
+							<span id="appling-amount" class="form-control" style="color:#CC9900;font-weight: bold;"></span>
 							<span class="input-group-addon">元</span>
 						</div>
 					</div>
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">预期收益</span>
-							<input type="text" name="total" readonly="readonly" class="form-control" style="color:#CC9900;font-weight: bold;">
+							<span id="appling-total" class="form-control" style="color:#CC9900;font-weight: bold;"></span>
 							<span class="input-group-addon">克</span>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-4">
 					<div class="form-group clearfix">
-						<div class="input-group col-sm-12">
-							<span class="input-group-addon">金价</span>
-							<input type="text" name="price" readonly="readonly" class="form-control" style="color:#CC9900;font-weight: bold;">
-							<span class="input-group-addon">元/克</span>
+						<div class="input-group col-sm-11">
+							<span class="input-group-addon">实时金价</span>
+							<span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price ?> 元/克</span>
 						</div>
 					</div>
 				</div>
@@ -70,7 +70,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-5">
+				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">身份证号</span>
@@ -85,11 +85,11 @@
 
 					</div>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-sm-4">
 					<div class="form-group clearfix">
 
-						<div class="input-group col-sm-12">
-							<span class="input-group-addon">手机</span>
+						<div class="input-group col-sm-11">
+							<span class="input-group-addon">手机号码</span>
 							<input type="text" name="phone" class="form-control" placeholder="客户的手机号码">
 						</div>
 					</div>
@@ -101,7 +101,7 @@
 			<fieldset>
 				<legend>项目备注</legend>
 				<div class="form-group clearfix">
-					<script type="text/plain" id="editor" style="height:120px;margin:0px 20px;"></script>
+					<script type="text/plain" id="editor" style="height:100px;margin:0px 20px;"></script>
 				</div>
 			</fieldset>
 		</div>
@@ -120,13 +120,9 @@
 </div>
 
 <script type="text/javascript">
-	var profit = '<?php echo $profit;?>';
+	var profit = '<?php echo $profit;?>',price='<?php echo $price;?>';
 	$(function () {
 
-		$.get('/tool/api/golden_price',{gType:'current'}, function (json) {
-			if(json.code==1)
-				$('#form-investing input[name="price"]').val(json.current);
-		},'json')
 		$.validator.setDefaults({
 			errorElement : 'span',
 			errorClass : 'help-block',
@@ -148,11 +144,9 @@
 			}
 		});
 
-		$("#form-investing").validate({
+		$("#form-appling").validate({
 			rules : {
-				price : {
-					required : true
-				},
+
 				weight: {
 					required : true,
 					min:1
@@ -171,9 +165,7 @@
 				},
 			},
 			messages : {
-				price : {
-					required : '数据有误，请刷新重试',
-				},
+
 				weight : {
 					required : '请输入购入克重',
 					min:'最小购入克重不能小于1克'
@@ -205,22 +197,22 @@
 			}
 		});
 
-		$('#form-investing input[name="weight"]').bind('keyup', function () {
-			var _w = $(this).val(),_p = $('#form-investing input[name="price"]').val(),_t = $('#form-investing select[name="period"]').val();
-			if(parseFloat(_p,2)*100 <100){
-				layer.tips('数据异常',$('#form-investing input[name="price"]'),{tips: [1, '#CC6666']});
+		$('#form-appling input[name="weight"]').bind('keyup blur', function () {
+			var _w = $(this).val(),_t = $('#form-appling select[name="period"]').val();
+			if(parseFloat(price,2)*100 <100){
+				layer.tips('数据异常',$('#form-appling #appling-amount'),{tips: [1, '#CC6666']});
 				return false;
 			}
 			if(parseFloat(_w,2)*100 < 100){
-				//layer.tips('数据异常',$('#form-investing input[name="amount"]'),{tips: [1, '#CC6666']});
+				//layer.tips('数据异常',$('#form-appling #appling-amount'),{tips: [1, '#CC6666']});
 				return false;
 			}else{
-				do_amount(_w,_p);
+				do_amount(_w,price);
 				do_total(_w,_t);
 			}
 		});
-		$('#form-investing select[name="period"]').bind('change', function () {
-			var _w = $('#form-investing input[name="weight"]').val(),_t = $(this).val();
+		$('#form-appling select[name="period"]').bind('change', function () {
+			var _w = $('#form-appling input[name="weight"]').val(),_t = $(this).val();
 			if(parseFloat(_w,2)*100 < 100) {
 				return false;
 			}
@@ -240,13 +232,13 @@
 
 	function do_amount(weight,price)
 	{
-		$('#form-investing input[name="amount"]').val(parseFloat(math_mul(weight,price),2));
+		$('#form-appling #appling-amount').text(parseFloat(math_mul(weight,price),2));
 	}
 
 	function do_total(weight,period)
 	{
 		var _income = math_mul(math_mul(profit,period),weight);
-		$('#form-investing input[name="total"]').val(parseFloat(math_add(weight,_income),4));
+		$('#form-appling #appling-total').text(parseFloat(math_add(weight,_income),4));
 	}
 
 </script>

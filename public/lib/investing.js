@@ -24,7 +24,6 @@ define(function(require,exports,modules){
 
             { "data": "sn" },
             { "data": "realname" },
-            { "data": "phone" },
             { "data": "price" },
             { "data": "weight" },
             { "data": "period" },
@@ -61,7 +60,39 @@ define(function(require,exports,modules){
                         btn: ['保存', '取消'],
                         content: json.msg,
                         yes: function (index, layero) {
-                            $('#form-investing').submit();
+                            $('#form-appling').submit();
+                        }
+                    });
+                } else {
+                    var l = require('layout');
+                    l.render_message(json.msg, json.title);
+                }
+
+            }, 'json');
+        });
+    }
+
+    exports.render_update = function(){
+        $('#project-list').delegate('.btn-update','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            require('ueditor/ueditor.config');
+            require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+
+            $.get('/project/investing/update', {project: $(this).parent().parent().attr('id')}, function (json) {
+                if (json.code == 1) {
+                    layer.open({
+                        type: 1,
+                        title: json.title,
+                        area: '880px',
+                        offset: '100px',
+                        zIndex: 99,
+                        btn: ['保存', '取消'],
+                        content: json.msg,
+                        yes: function (index, layero) {
+                            $('#form-update').submit();
                         }
                     });
                 } else {
@@ -79,7 +110,6 @@ define(function(require,exports,modules){
 
             require('layer');
             require('ajaxSubmit');
-
             require('ueditor/ueditor.config');
             require('ueditor');
             require('jqueryvalidate');
