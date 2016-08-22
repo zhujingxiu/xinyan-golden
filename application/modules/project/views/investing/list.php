@@ -48,6 +48,7 @@
                                 <th>重量 （克）</th>
                                 <th>周期</th>
                                 <th>金额 （元）</th>
+                                <th>操作人</th>
                                 <th>订单时间</th>
                                 <th></th>
                             </tr>
@@ -66,6 +67,7 @@
     <script type="text/javascript">
 
         seajs.use('investing',function(inv){
+            inv.render_list();
             inv.render_appling();
             inv.render_update();
             inv.render_checking();

@@ -3,41 +3,40 @@
  */
 window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
-    require('datatables')
-    require('datatables.bs')
-    $('#project-list').DataTable({
-        "language": {
-            "url": "/public/lib/datatables/Chinese.json"
-        },
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            url:'/project/investing/index',
-            data:{list:1},
-            type:'get'
-        },
-        "columns": [
-            {
-                "data-entry":          'details-control',
-                "data":"status"
-            },
-
-            { "data": "sn" },
-            { "data": "realname" },
-            { "data": "price" },
-            { "data": "weight" },
-            { "data": "period" },
-            { "data": "amount" },
-            { "data": "addtime" },
-            { "data": "operation" }
-        ],
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false
-    });
+    exports.render_list = function() {
+        require('datatables')
+        require('datatables.bs');
+        $(function () {
+            $('#project-list').DataTable({
+                "language": {
+                    "url": "/public/lib/datatables/Chinese.json"
+                },
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    url: '/project/investing/index',
+                    data: {draw: 1},
+                    type: 'get'
+                },
+                "columns": [
+                    {
+                        "data-entry": 'details-control',
+                        "data": "status",
+                        "name": "status"
+                    },
+                    {"data": "sn", "name": "p.project_sn"},
+                    {"data": "realname", "name": "p.realname"},
+                    {"data": "price", "name": "p.price"},
+                    {"data": "weight", "name": "p.weight"},
+                    {"data": "period", "name": "p.period"},
+                    {"data": "amount", "name": "p.amount"},
+                    {"data": "operator", "name": "operator"},
+                    {"data": "addtime", "name": "p.addtime"},
+                    {"data": "operation"}
+                ],
+            })
+        });
+    }
 
     exports.render_appling = function(){
         $('#btn-new').bind('click',function() {

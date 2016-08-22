@@ -20,30 +20,50 @@ class Investing extends Project {
 		$data['success'] = $this->session->flashdata('success');
 		$data['warning'] = $this->session->flashdata('warning');
 
-		if($this->input->get('list')){
-			json_response($this->_list());
+		if($this->input->get('draw')){
+			json_response($this->_list($this->input->get()));
 		}
 		$this->layout->view('investing/list',$data);
 	}
 
-	protected function _list()
+	protected function _list($filter)
 	{
+		//排序
+
+		$columns = isset($filter['columns']) ? $filter['columns'] : array();
+		$index = (isset($filter['order']['0']['column'])) ? intval($filter['order']['0']['column']) : FALSE;
+		$temp = array();
+		if($index && isset($columns[$index]) && isset($columns[$index]['name'])){
+			$temp['order_by'] = $columns[$index]['name'] .' '.(isset($filter['order']['0']['dir']) ? $filter['order']['0']['dir'] : 'asc');
+		}else{
+			$temp['order_by'] = "p.addtime asc";
+		}
+		//搜索
+		if($filter['search']['value']){//获取前台传过来的过滤条件
+
+		}
+
+		//分页
+		$temp['start'] = $filter['start'];//从多少开始
+		$temp['limit'] = $filter['length'];//数据长度
+
 		$rows = array();
-		$result = $this->investing_model->projects()->result_array();
-		$total = count($result);
+		$result = $this->investing_model->projects($temp);
+		$total = $result->num_rows();
 		if($total){
-			foreach($result as $row){
+			foreach($result->result_array() as $row){
 				$rows[] = array(
 					'DT_RowId'  => $row['project_sn'],
 					'status' 	=> '<label class="label label-primary">'.$row['status'].'</label>',
 					'sn'		=> $row['project_sn'],
 					'realname' 	=> $row['realname'].'<br>'.$row['phone'],
-					'price'		=>$row['price'],
-					'weight'	=>$row['weight'],
-					'period'	=>$row['period'].'个月',
-					'amount'	=>$row['amount'],
-					'addtime'	=>date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']),
-					'operation'	=>$this->render_operation($row['status_id'])
+					'price'		=> $row['price'],
+					'weight'	=> $row['weight'],
+					'period'	=> $row['period'].'个月',
+					'amount'	=> $row['amount'],
+					'operator'	=> $row['operator'],
+					'addtime'	=> date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']),
+					'operation'	=> $this->render_operation($row['status_id'])
 				);
 			}
 		}

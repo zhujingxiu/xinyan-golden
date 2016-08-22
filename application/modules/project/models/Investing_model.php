@@ -21,13 +21,21 @@ class Investing_model extends XY_Model{
 
     public function projects($data=array())
     {
-        if(is_array($data)){
-            $this->db->where($data);
+        if(is_array($data) && isset($data['where'])){
+            $this->db->where($data['where']);
         }
         $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
-        $this->db->from($this->table.' AS p')->order_by('p.addtime');
+        $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
+        if(isset($data['order_by'])){
+            $this->db->order_by($data['order_by']);
+        }else{
+            $this->db->order_by('p.addtime desc');
+        }
+        $start = isset($data['start']) ? $data['start'] : 0 ;
+        $limit = isset($data['limit']) ? $data['limit'] : 20 ;
+        $this->db->limit($start,$limit);
         return $this->db->get();
     }
 
