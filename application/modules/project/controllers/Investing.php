@@ -36,7 +36,7 @@ class Investing extends Project {
 		if($index && isset($columns[$index]) && isset($columns[$index]['name'])){
 			$temp['order_by'] = $columns[$index]['name'] .' '.(isset($filter['order']['0']['dir']) ? $filter['order']['0']['dir'] : 'asc');
 		}else{
-			$temp['order_by'] = "p.addtime asc";
+			$temp['order_by'] = "p.lasttime desc";
 		}
 		//搜索
 		if($filter['search']['value']){//获取前台传过来的过滤条件
@@ -47,6 +47,9 @@ class Investing extends Project {
 		$temp['start'] = $filter['start'];//从多少开始
 		$temp['limit'] = $filter['length'];//数据长度
 
+		if(!$this->inRole('manager')) {
+			$temp['where'] = FALSE;//ToDo
+		}
 		$rows = array();
 		$result = $this->investing_model->projects($temp);
 		$total = $result->num_rows();
@@ -62,7 +65,7 @@ class Investing extends Project {
 					'period'	=> $row['period'].'个月',
 					'amount'	=> $row['amount'],
 					'operator'	=> $row['operator'],
-					'addtime'	=> date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']),
+					'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
 					'operation'	=> $this->render_operation($row['status_id'])
 				);
 			}
@@ -118,7 +121,7 @@ class Investing extends Project {
 					'weight'=> $weight,
 					'period'=> $period,
 					'amount'=> $this->calculate_amount($price,$weight),
-					'total'=> $this->calculate_total($period,$weight,(float)($this->config->item('profit')/(12*100))),
+					'total'=> $this->calculate_total($period,$weight,(float)($this->config->item('profit_weight')/(12*100))),
 				);
                 if($this->investing_model->insert($tmp)){
                     $this->session->set_flashdata('success', '项目添加成功！');
@@ -146,7 +149,7 @@ class Investing extends Project {
 				'project_id' => '',
 				'project_sn' => 0,
 				'status' => 1,
-				'profit' => (float)($this->config->item('profit')/(12*100)),
+				'profit' => $this->profit_weight(),
 				'privacy'=> $this->config->item('investing_privacy'),
 				'agree'	=> '',
 				'csrf' => $this->_get_csrf_nonce()
@@ -155,7 +158,7 @@ class Investing extends Project {
 				$this->load->model('article/article_model');
 				$article = $this->article_model->article($info['privacy'])->row_array();
 				if(!empty($article['title'])) {
-					$info['agree'] = sprintf('我已阅读并同意《%s》', anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
+					$info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
 				}
 			}
 			json_response(array('code'=>1,'title'=>'添加项目','msg'=>$this->load->view('investing/appling',$info,TRUE)));
@@ -198,7 +201,7 @@ class Investing extends Project {
 					'weight'=> $weight,
 					'period'=> $period,
 					'amount'=> $this->calculate_amount($info['price'],$weight),
-					'total'=> $this->calculate_total($period,$weight,(float)($this->config->item('profit')/(12*100))),
+					'total'=> $this->calculate_total($period,$weight,$this->profit_weight()),
 				);
 				if($this->investing_model->update($this->input->post('project_sn'),$tmp)){
 					$this->session->set_flashdata('success', '项目编辑成功！');
@@ -243,30 +246,51 @@ class Investing extends Project {
 		}
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
 			if($this->_valid_csrf_nonce() === FALSE){
-				json_response(array('code' => 0, 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
+				//json_response(array('code' => 0, 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
 			}
 			$this->form_validation->set_rules('amount', '实收金额', 'required');
 			$this->form_validation->set_rules('phone', '联系电话', 'required');
 
 			if ($this->form_validation->run() == TRUE)
 			{
-				$result = $this->investing_model->project($this->input->post('project_sn'));
+				$project_sn = $this->input->post('project_sn');
+				$note = htmlspecialchars($this->input->post('editorValue'));
+				$amount = $this->input->post('amount');
+				$phone = $this->input->post('phone');
+				$result = $this->investing_model->project($project_sn);
 				if(!$result->num_rows()){
 					json_response(array('code' => 0, 'msg' => '项目不存在','title'=>lang('error_no_result')));
 				}
-				if($this->investing_model->insert($this->input->post())){
-					$this->session->set_flashdata('success', '项目添加成功！');
+				$project = $result->row_array();
+				if($project['amount'] == $amount && $project['phone'] == $phone){
+					$this->investing_model->push_state($project_sn,array(
+						'request'	=> var_export(array(
+										'amount' =>$amount,
+										'_amount' =>$this->input->post('_amount'),
+										'phone' =>$phone,
+										'_phone' =>$this->input->post('_phone')
+									),TRUE),
+						'status'	=> $this->config->item('investing_checked'),
+						'note' 		=> $note,
+					));
+					$this->session->set_flashdata('success', sprintf("项目%s已核实！",$project_sn));
 					json_response(array('code' => 1, 'success' => '成功'));
+				}else{
+					$errors = array(
+						'amount' => lang("error_confirm_amount"),
+						'phone' => lang("error_confirm_phone"),
+					);
+
+					json_response(array('code' => 0, 'errors' => $errors));
 				}
+
 			}else {
 
 				$errors = array(
 					'amount' => form_error('amount'),
 					'phone' => form_error('phone'),
 				);
-				if($this->config->item('investing_privacy')){
-					$errors['agree'] = form_error('agree');
-				}
+
 				json_response(array('code' => 0, 'errors' => $errors));
 			}
 		}else{

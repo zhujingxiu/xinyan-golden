@@ -13,3 +13,7 @@ $lang['error_title'] = '出错了';
 $lang['error_no_result'] = '没找到结果';
 $lang['error_params'] = '参数异常，请稍后重试';
 $lang['error_current_price'] = '实时金价参数错误,请重试！';
+$lang['error_confirm_amount'] = '输入的金额与项目的应收金额不相符！';
+$lang['error_confirm_phone'] = '输入的手机号与项目的登记的手机号码不相符！';
+$lang['text_agree'] = "我已阅读并同意《%s》";
+$lang['text_unknown'] = "未知";

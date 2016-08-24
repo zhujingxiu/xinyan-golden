@@ -8,7 +8,7 @@
 ?>
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open_multipart('/project/investing/checked',array('id' => "form-checking", 'class'=>'form-horizontal'))?>
+	<?php echo form_open('/project/investing/checked',array('id' => "form-checking", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
     <input type="hidden" name="_amount" id="confirm_amount" value="<?php echo $amount;?>">
     <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">

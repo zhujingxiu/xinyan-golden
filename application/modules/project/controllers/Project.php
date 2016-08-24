@@ -38,41 +38,64 @@ class Project extends XY_Controller
                     $buttons[] = '<a class="btn btn-warning btn-update">编辑</a>';
                 }
                 break;
+            case $this->config->item('investing_checked'):
+                if($this->inRole('warehouser')) {
+                    $buttons[] = '<a class="btn btn-primary btn-confirming">确认</a>';
+                }else{
+                    $buttons[] = '<a class="btn btn-info disabled">待确认</a>';
+                }
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-warning btn-refused">拒绝</a>';
+                }
+                break;
+            case $this->config->item('investing_confirmed'):
+
+                $buttons[] = '<a class="btn btn-success disabled">进行中</a>';
+
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-warning btn-terminated">终止</a>';
+                }
+                break;
+            case $this->config->item('investing_expired'):
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-success btn-certificated">申请提金</a>';
+                }else{
+                    $buttons[] = '<a class="btn btn-success dsabled">可提金</a>';
+                }
+                break;
+            case $this->config->item('investing_certificated'):
+                if($this->inRole('warehouser')){
+                    $buttons[] = '<a class="btn btn-success btn-taking">确认提金</a>';
+                }else{
+                    $buttons[] = '<a class="btn btn-success dsabled">待提金</a>';
+                }
+                break;
+            case $this->config->item('investing_finished'):
+
+                $buttons[] = '<a class="btn btn-default dsabled">已完结</a>';
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-warning btn-trash">隐藏</a>';
+                }
+                break;
+            case $this->config->item('investing_refused'):
+
+                $buttons[] = '<a class="btn btn-error dsabled">已拒绝</a>';
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-warning btn-trash">隐藏</a>';
+                }
+                break;
+            case $this->config->item('investing_terminated'):
+
+                $buttons[] = '<a class="btn btn-error dsabled">已终止</a>';
+                if($this->inRole('manager')){
+                    $buttons[] = '<a class="btn btn-warning btn-trash">隐藏</a>';
+                }
+                break;
         }
 
         return implode(" ",$buttons);
     }
-    /*
-    public function history(){
 
-        $contribute_id = (int)$this->request->get['contribute_id'];
-
-
-        $limit = 20;
-        $data['histories'] = array();
-        $total = $this->model_fbaccount_publish_nophoto->getTotalHistory($contribute_id);
-        $results = $this->model_fbaccount_publish_nophoto->getHistories($contribute_id,($page - 1) * $limit, $limit);
-        foreach ($results as $result) {
-
-
-            if($result['user_id']==0){
-                $operator = lang('text_author');
-            }elseif ($result['user_id']==-1){
-                $operator = lang('text_system');
-            }else{
-                $operator = $result['nickname'];
-            }
-            $data['histories'][] = array(
-                'history_id'  	=> $result['history_id'] ,
-                'type'			=> strtolower($result['type']) == 'edit' ? 'Edit Status' : 'Post Status',
-                'status_text'   => $result,
-                'operator'		=> $operator,
-                'date_added' 	=> date('Y-m-d H:i:s', strtotime($result['date_added']))
-            );
-        }
-
-        return $this->load->view('investing/history.tpl', $data,TRUE);
-    }*/
 
     protected function calculate_amount($price,$weight)
     {
@@ -83,6 +106,12 @@ class Project extends XY_Controller
     {
         return round(($weight+(float)($period*$profit*$weight)),2);
     }
+
+    protected function profit_weight()
+    {
+        return (float)($this->config->item('profit_weight')/(12*100));
+    }
+
 
     public function refused(){
 

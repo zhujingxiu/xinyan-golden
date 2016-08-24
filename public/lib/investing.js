@@ -31,7 +31,7 @@ define(function(require,exports,modules){
                     {"data": "period", "name": "p.period"},
                     {"data": "amount", "name": "p.amount"},
                     {"data": "operator", "name": "operator"},
-                    {"data": "addtime", "name": "p.addtime"},
+                    {"data": "lasttime", "name": "p.lasttime"},
                     {"data": "operation"}
                 ],
             })
@@ -60,6 +60,7 @@ define(function(require,exports,modules){
                         content: json.msg,
                         yes: function (index, layero) {
                             $('#form-appling').submit();
+                            $(this).addClass('disabled').text('正在提交...');
                         }
                     });
                 } else {
@@ -92,6 +93,7 @@ define(function(require,exports,modules){
                         content: json.msg,
                         yes: function (index, layero) {
                             $('#form-update').submit();
+                            $(this).addClass('disabled').text('正在提交...');
                         }
                     });
                 } else {
@@ -122,10 +124,14 @@ define(function(require,exports,modules){
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['保存', '取消'],
+                        btn: ['通过', '拒绝'],
                         content: json.msg ,
                         yes: function(index, layero){
-                            $('#form-investing').submit();
+                            $('#form-checking').submit();
+                            $(this).addClass('disabled').text('正在提交...');
+                        },
+                        btn2 : function(index, layero){
+                            alert(index);
                         }
                     });
                 }else{

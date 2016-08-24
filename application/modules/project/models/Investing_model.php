@@ -13,7 +13,7 @@ class Investing_model extends XY_Model{
     {
         if(!$sn){return false;}
         $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
-        $this->db->from($this->table.' AS p')->order_by('p.addtime')->where(array("p.project_sn" => $sn))->limit(1);
+        $this->db->from($this->table.' AS p')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
         return $this->db->get();
@@ -24,6 +24,7 @@ class Investing_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
+
         $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
@@ -31,7 +32,7 @@ class Investing_model extends XY_Model{
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
-            $this->db->order_by('p.addtime desc');
+            $this->db->order_by('p.lasttime desc');
         }
         $start = isset($data['start']) ? $data['start'] : 0 ;
         $limit = isset($data['limit']) ? $data['limit'] : 20 ;
@@ -60,7 +61,8 @@ class Investing_model extends XY_Model{
             'note' => $data['note'],
             'status_id' => $this->config->item('investing_initial'),
             'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time()
+            'addtime' => time(),
+            'lasttime' => time()
         ));
         $project_id = $this->db->insert_id();
         $this->history($project_id,$this->config->item('investing_initial'),$data['note']);
@@ -81,6 +83,9 @@ class Investing_model extends XY_Model{
 
     public function update($project_sn,$data)
     {
+        $this->trigger_events('pre_update_project');
+
+        $this->db->trans_begin();
         $info = $this->project($project_sn);
         if($info->num_rows()){
             $project = $info->row_array();
@@ -119,8 +124,19 @@ class Investing_model extends XY_Model{
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
             $this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
-            return $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
+            $history_id = $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
+            if ($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_update_project', 'post_update_project_unsuccessful'));
+                $this->set_error('update_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
 
+            $this->trigger_events(array('post_update_project', 'post_update_project_successful'));
+            $this->set_message('update_successful');
+            return $history_id;
         }else{
             return FALSE;
         }
@@ -147,57 +163,56 @@ class Investing_model extends XY_Model{
 
     public function push_state($project_sn,$data)
     {
+        $this->trigger_events('pre_pushstate_project');
+
+        $this->db->trans_begin();
         $info = $this->project($project_sn);
         if($info->num_rows()) {
             $project = $info->row_array();
             $fileds = array();
             if (isset($data['status'])) {
-                $fileds['status'] = $data['status'];
+                $fileds['status_id'] = (int)$data['status'];
             }
             if(isset($data['note'])){
                 $fileds['note'] = $data['note'];
             }
-            if(isset($data['extra'])){
-                $fileds['extra'] = htmlspecialchars($data['extra']);
-            }
             $fileds['worker_id'] = $this->ion_auth->get_user_id();
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            return $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
 
+            $request = isset($data['request']) ? htmlspecialchars($data['request']) :'';
+            if (isset($fileds['status_id'])) {
+                $affected = $this->history($project['project_id'], $fileds['status_id'], $fileds['note'],$request);
+            }else{
+                $affected = $this->db->affected_rows();
+            }
+            if ($this->db->trans_status() === FALSE)
+            {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_pushstate_project', 'post_pushstate_project_unsuccessful'));
+                $this->set_error('pushstate_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
+
+            $this->trigger_events(array('post_pushstate_project', 'post_pushstate_project_successful'));
+            $this->set_message('pushstate_successful');
+            return $affected;
         }
         return FALSE;
     }
 
-    public function history($project_id,$status_id,$note=''){
+    public function history($project_id,$status_id,$note='',$request=''){
         $this->db->insert($this->history_table,array(
             'project_id' => $project_id,
             'status_id' => $status_id,
             'note' => $note,
+            'request' => $request,
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time(),
             'ip' => $this->_prepare_ip($this->input->ip_address())
         ));
         return $this->db->insert_id();
-    }
-
-
-
-    public function update_article($id,$data = array()){
-        if(!$id || empty($data['title']) || empty($data['category_id'])){
-            return false;
-        }
-
-        $this->db->update($this->table,array(
-            'title'=>$data['title'],
-            'category_id'=>$data['category_id'],
-            'text'=>$data['text'],
-            'is_top'=>(int)$data['is_top'],
-            'status'=>(int)$data['status'],
-            'author_id'=> $this->ion_auth->get_user_id(),
-            'addtime' => time()
-        ),array('article_id'=>$id));
-        return $this->db->affected_rows();
     }
 
 

@@ -119,8 +119,8 @@
                                             <div class="col-sm-12 do-result">
                                             </div>
                                             <div class="form-group clearfix">
-                                                <label for="" class="control-label col-sm-3">条款协议</label>
-                                                <div class="col-sm-6">
+                                                <label for="" class="control-label col-sm-2">条款协议</label>
+                                                <div class="col-sm-9">
                                                     <select name="investing_privacy" class="form-control">
                                                         <option value="0">--请选择--</option>
                                                         <?php foreach($privacies as $item): ?>
@@ -132,14 +132,104 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group clearfix">
-                                                <label for="" class="control-label col-sm-3">初始状态</label>
-                                                <div class="col-sm-6">
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">初始状态</label>
+                                                <div class="col-sm-4">
                                                     <select name="investing_initial" class="form-control">
                                                         <option value="0">--请选择--</option>
                                                         <?php foreach($investing_statuses as $item): ?>
                                                             <option value="<?php echo $item['status_id']?>"
                                                                 <?php echo (!empty($setting['investing_initial']) && $setting['investing_initial']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                                <label for="" class="control-label col-sm-2">主管核实</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_checked" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_checked']) && $setting['investing_checked']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">库管确认</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_confirmed" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_confirmed']) && $setting['investing_confirmed']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                                <label for="" class="control-label col-sm-2">项目到期</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_expired" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_expired']) && $setting['investing_expired']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">项目完结</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_finished" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_finished']) && $setting['investing_finished']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                                <label for="" class="control-label col-sm-2">库存不足</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_lacking" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_lacking']) && $setting['investing_lacking']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">项目被拒绝</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_refused" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_refused']) && $setting['investing_refused']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                                <label for="" class="control-label col-sm-2">项目终止</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_terminated" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_terminated']) && $setting['investing_terminated']== $item['status_id']) ? 'selected' : ''?>>
                                                                 <?php echo $item['status_id'].' - '.$item['title'];?>
                                                             </option>
                                                         <?php endforeach?>
@@ -279,7 +369,7 @@
                                                 <span class="help-block">按100克每年</span>
                                             </label>
                                             <div class="col-sm-9">
-                                                <input type="text" name="profit" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit'])? '' :$setting['profit']  ?>"/>
+                                                <input type="text" name="profit_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit_weight'])? '' :$setting['profit_weight']  ?>"/>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">

@@ -10,7 +10,7 @@ seajs.config({
         , "bootstrap"       : "bootstrap/js/bootstrap.min"
         , "moment"          : "moment/moment.min"
         , "jqueryui"        : "jquery-ui/jquery-ui.min"
-        , "jqueryvalidate"  : "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.1/jquery.validate.min.js"
+        , "jqueryvalidate"  : "jquery-validation/dist/jquery.validate.min"
         , "echarts"         : "echarts/echarts.common.min"
         , "slimscroll"      : "slimScroll/jquery.slimscroll.min"
         , "fastclick"       : "fastclick/fastclick"
@@ -26,7 +26,7 @@ seajs.config({
         , "datatables.bs"   : "datatables/dataTables.bootstrap.min"
         , "switch.bs"       : "bootstrap-switch/bootstrap-switch.min"
         , "jquerytreetable" : "treetable/jquery.treetable"
-        , "jstree"          : "https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"
+        , "jstree"          : "vakata-jstree/dist/jstree.min"
         , "layer"           : "layer/layer"
     }
 });

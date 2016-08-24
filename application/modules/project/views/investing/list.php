@@ -49,7 +49,7 @@
                                 <th>周期</th>
                                 <th>金额 （元）</th>
                                 <th>操作人</th>
-                                <th>订单时间</th>
+                                <th>操作时间</th>
                                 <th></th>
                             </tr>
                             </thead>
