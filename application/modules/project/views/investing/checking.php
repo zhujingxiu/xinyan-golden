@@ -124,24 +124,26 @@
         <div class="form-group">
             <ul class="timeline">
                 <li class="time-label">
-                    <span class="bg-red">
-                    项目备注
-                  </span>
+                    <span class="bg-red"> 项目备注 </span>
                 </li>
+                <?php if(!empty($histories) && is_array($histories)): ?>
+                <?php foreach($histories as $item) :?>
                 <li>
                     <i class="fa fa-user bg-aqua"></i>
-
                     <div class="timeline-item">
-                        <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
+                        <span class="time"><i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime']);?></span>
 
-                        <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request</h3>
+                        <h3 class="timeline-header no-border">
+                            <a href="javascript:;" class="liveim"><?php echo $item['operator']?></a> <label><?php echo $item['status']?></label>
+                            <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?>
+                        </h3>
                     </div>
                 </li>
+                <?php endforeach ?>
+                <?php endif ?>
                 <li>
                     <i class="fa fa-envelope bg-blue"></i>
-
                     <div class="timeline-item">
-
                         <div class="timeline-body">
                             <script type="text/plain" id="editor" style="height:80px;"></script>
                         </div>

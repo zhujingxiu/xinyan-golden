@@ -215,5 +215,20 @@ class Investing_model extends XY_Model{
         return $this->db->insert_id();
     }
 
-
+    public function histories($project_sn,$limit=FALSE){
+        $project = $this->project($project_sn);
+        if($project->num_rows()){
+            $info = $project->row_array();
+            $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username', false);
+            $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc');
+            $this->db->join($this->status_table.' AS pis','h.status_id = pis.status_id');
+            $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
+            if(is_numeric($limit)){
+                $this->db->limit($limit);
+            }
+            $result = $this->db->get();
+            return $result->num_rows() ? $result->result_array() : FALSE;
+        }
+        return FALSE;
+    }
 }

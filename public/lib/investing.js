@@ -115,8 +115,8 @@ define(function(require,exports,modules){
             require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-
-            $.get('/project/investing/checked', {project:$(this).parent().parent().attr('id')}, function(json){
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/checked', {project:sn}, function(json){
                 if(json.code==1){
                     layer.open({
                         type: 1,
@@ -124,14 +124,16 @@ define(function(require,exports,modules){
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['通过', '拒绝'],
+                        btn: ['通过', '驳回'],
                         content: json.msg ,
                         yes: function(index, layero){
                             $('#form-checking').submit();
                             $(this).addClass('disabled').text('正在提交...');
                         },
                         btn2 : function(index, layero){
-                            alert(index);
+                            exports.do_refused(sn);
+                            console.log(layero);
+                            return false
                         }
                     });
                 }else{
@@ -140,6 +142,41 @@ define(function(require,exports,modules){
                 }
             },'json');
         })
+    }
 
+    exports.render_refused = function(){
+        $('#project-list').delegate('.btn-refused','click',function(){
+            exports.do_refused($(this).parent().parent().attr('id'));
+        });
+    }
+
+    exports.do_refused = function (sn) {
+        require('layer');
+
+        layer.prompt({
+            formType: 2,
+            value: '',
+            title: '请填写驳回原因 : '+sn,
+            minlength:10,
+        }, function(value, index, elem){
+            $.ajax({
+                type:'post',
+                url:'/project/investing/refused',
+                data:{project_sn:sn,value:value},
+                dataType:'json',
+                beforeSubmit:function(){
+                    $(elem).addClass('disabled').text('正在提交...');
+                },
+                success:function(json){
+                    if(json.code==1){
+                        location.reload();
+                    }else{
+                        var l = require('layout');
+                        l.render_message(json.msg,json.title);
+                    }
+                }
+            })
+
+        });
     }
 })

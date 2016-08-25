@@ -48,7 +48,7 @@ class Investing extends Project {
 		$temp['limit'] = $filter['length'];//数据长度
 
 		if(!$this->inRole('manager')) {
-			$temp['where'] = FALSE;//ToDo
+			//$temp['where'] = FALSE;//ToDo
 		}
 		$rows = array();
 		$result = $this->investing_model->projects($temp);
@@ -186,7 +186,7 @@ class Investing extends Project {
 				$result = $this->investing_model->project($this->input->post('project_sn'));
 
 				if(!$result->num_rows()){
-					json_response(array('code' => 0, 'msg' => '项目不存在','title'=>lang('error_no_result')));
+					json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 				}
 				$info = $result->row_array();
 				$weight = $this->input->post('weight');
@@ -233,7 +233,7 @@ class Investing extends Project {
 
 				json_response(array('code'=>1,'title'=>$title,'msg'=>$this->load->view('investing/update',$info,TRUE)));
 			}else{
-				json_response(array('code' => 0, 'msg' => '项目不存在','title'=>lang('error_no_result')));
+				json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 			}
 		}
 
@@ -259,7 +259,7 @@ class Investing extends Project {
 				$phone = $this->input->post('phone');
 				$result = $this->investing_model->project($project_sn);
 				if(!$result->num_rows()){
-					json_response(array('code' => 0, 'msg' => '项目不存在','title'=>lang('error_no_result')));
+					json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 				}
 				$project = $result->row_array();
 				if($project['amount'] == $amount && $project['phone'] == $phone){
@@ -273,7 +273,7 @@ class Investing extends Project {
 						'status'	=> $this->config->item('investing_checked'),
 						'note' 		=> $note,
 					));
-					$this->session->set_flashdata('success', sprintf("项目%s已核实！",$project_sn));
+					$this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
 					json_response(array('code' => 1, 'success' => '成功'));
 				}else{
 					$errors = array(
@@ -300,11 +300,12 @@ class Investing extends Project {
 			if($result->num_rows()){
 				$info = $result->row_array();
 				$info['csrf'] = $this->_get_csrf_nonce();
+				$info['histories'] = $this->investing_model->histories($info['project_sn']);
 				$title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
 
 				json_response(array('code'=>1,'title'=>$title,'msg'=>$this->load->view('investing/checking',$info,TRUE)));
 			}else{
-				json_response(array('code' => 0, 'msg' => '项目不存在','title'=>lang('error_no_result')));
+				json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 			}
 		}
 	}
@@ -325,5 +326,30 @@ class Investing extends Project {
 
 	}
 
-
+	public function refused()
+	{
+		if($msg = $this->session->flashdata('ajax_permission')){
+			json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
+		}
+		$project_sn = $this->input->post('project_sn');
+		$reason = $this->input->post('value');
+		if(!$project_sn || !$reason ){
+			json_response(array('code'=>0,'msg'=>lang('error_params'),'title'=>lang('error_title')));
+		}
+		if(strlen($reason) < 10){
+			json_response(array('code'=>0,'msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
+		}
+		$result = $this->investing_model->project($project_sn);
+		if(!$result->num_rows()){
+			json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
+		}
+		if($this->investing_model->push_state($project_sn,array(
+			'status'=> $this->config->item('investing_refused'),
+			'note' 	=> $reason
+		))){
+			$this->session->set_flashdata('success', sprintf("项目已驳回！编号: %s",$project_sn));
+			json_response(array('code' => 1, 'success' => '成功'));
+		}
+		json_response(array('code'=>0,'msg'=>lang('error_params'),'title'=>lang('error_title')));
+	}
 }

@@ -45,7 +45,7 @@ class Project extends XY_Controller
                     $buttons[] = '<a class="btn btn-info disabled">待确认</a>';
                 }
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-warning btn-refused">拒绝</a>';
+                    $buttons[] = '<a class="btn btn-warning btn-refused">驳回</a>';
                 }
                 break;
             case $this->config->item('investing_confirmed'):
@@ -79,14 +79,14 @@ class Project extends XY_Controller
                 break;
             case $this->config->item('investing_refused'):
 
-                $buttons[] = '<a class="btn btn-error dsabled">已拒绝</a>';
+                $buttons[] = '<a class="btn btn-danger dsabled">已驳回</a>';
                 if($this->inRole('manager')){
                     $buttons[] = '<a class="btn btn-warning btn-trash">隐藏</a>';
                 }
                 break;
             case $this->config->item('investing_terminated'):
 
-                $buttons[] = '<a class="btn btn-error dsabled">已终止</a>';
+                $buttons[] = '<a class="btn btn-danger dsabled">已终止</a>';
                 if($this->inRole('manager')){
                     $buttons[] = '<a class="btn btn-warning btn-trash">隐藏</a>';
                 }
@@ -96,6 +96,10 @@ class Project extends XY_Controller
         return implode(" ",$buttons);
     }
 
+    protected function histories()
+    {
+
+    }
 
     protected function calculate_amount($price,$weight)
     {

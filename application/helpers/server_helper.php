@@ -244,6 +244,24 @@ function str_truncate($string, $length = 60, $etc = '...', $count_words = true) 
 	return join ( "", array_slice ( $info [0], 0, $length ) ) . $etc;
 }
 
+function format_time($time){
+	if(!is_numeric($time)){
+		$time = strtotime($time);
+	}
+	$now = time();
+	$value = $now - $time;
+	if($value < 60){
+		$result = $value."秒前";
+	}else if($value>=60 && $value <60*60){
+		$result = floor($value/60)."分钟前";
+	}else if($value >= 60*60 && $value<24*60*60){
+		$result = floor($value/(60*60))."小时前";
+	}else{
+		$result = date('Y-m-d H:i',$time);
+	}
+	return $result;
+}
+
 function main_menu()
 {
 	return array(
@@ -350,3 +368,4 @@ function main_menu()
 		),
 	);
 }
+
