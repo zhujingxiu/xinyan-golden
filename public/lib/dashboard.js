@@ -2,14 +2,14 @@ define(function(require, exports, module) {
     require('moment');
     
     require('jqueryui');
-    require('raphael');
+    //require('raphael');
 
     //require('daterangepicker');
     //require('knob');
-    require('sparkline');
+    //require('sparkline');
     require('datepicker');
     require('slimscroll');
-    require('morris');
+    //require('morris');
     $.widget.bridge('uibutton', $.ui.button);
 
     $(document).ready(function () {
@@ -51,7 +51,7 @@ define(function(require, exports, module) {
         //$(".knob").knob();
         //
         ////Sparkline charts
-        var myvalues = [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021];
+/*        var myvalues = [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021];
         $('#sparkline-1').sparkline(myvalues, {
             type: 'line',
             lineColor: '#92c1dc',
@@ -74,7 +74,7 @@ define(function(require, exports, module) {
             fillColor: "#ebf4f9",
             height: '50',
             width: '80'
-        });
+        });*/
 
 
         //The Calender
@@ -86,7 +86,7 @@ define(function(require, exports, module) {
         });
         //// Morris.js Charts
         //// Sales chart
-        var area = new Morris.Area({
+/*        var area = new Morris.Area({
             element: 'revenue-chart',
             resize: true,
             data: [
@@ -155,7 +155,7 @@ define(function(require, exports, module) {
             area.redraw();
             donut.redraw();
             line.redraw();
-        });
+        });*/
     });
 
     $('#toggle-charts input[name="price_charts"]').bind('change', function () {

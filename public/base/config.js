@@ -16,7 +16,7 @@ seajs.config({
         , "fastclick"       : "fastclick/fastclick"
         , "raphael"         : "raphael/raphael.min"
         , "morris"          : "morris/morris.min"
-        , "iCheck"          : "iCheck/iCheck.min"
+        , "iCheck"          : "iCheck/icheck.min"
         , "sparkline"       : "sparkline/jquery.sparkline.min"
         , "knob"            : "knob/jquery.knob"
         , "daterangepicker" : "daterangepicker/daterangepicker"
