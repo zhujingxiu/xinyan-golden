@@ -108,7 +108,6 @@ define(function(require,exports,modules){
     exports.render_checking = function()
     {
         $('#project-list').delegate('.btn-checking','click', function () {
-
             require('layer');
             require('ajaxSubmit');
             require('ueditor/ueditor.config');
@@ -134,6 +133,38 @@ define(function(require,exports,modules){
                             exports.do_refused(sn);
                             console.log(layero);
                             return false
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        })
+    }
+
+    exports.render_confirming = function (){
+        $('#project-list').delegate('.btn-confirming','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            require('ueditor/ueditor.config');
+            require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/confirmed', {project:sn}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['确认标记', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-confirming').submit();
+                            $(this).addClass('disabled').text('正在提交...');
                         }
                     });
                 }else{

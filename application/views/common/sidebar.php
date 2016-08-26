@@ -1,12 +1,17 @@
 <section class="sidebar">
     <!-- Sidebar user panel -->
-    <div class="user-panel">
+    <div class="user-panel" id="price-box">
         <div class="pull-left image">
             <img src="<?php echo asset_url('images/price.png');?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
             <p>实时金价 (元/克)</p>
-            <a href="#"><i class="fa fa-circle text-success"></i> 288.88 </a>
+            <a href="javascript:;" >
+                <i class="fa fa-circle text-success"></i>
+                <b id="sidebar-price">
+                    <?php echo $price;?>
+                </b>
+            </a>
         </div>
     </div>
 

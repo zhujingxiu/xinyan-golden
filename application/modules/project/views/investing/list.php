@@ -71,6 +71,7 @@
             inv.render_appling();
             inv.render_update();
             inv.render_checking();
+            inv.render_confirming();
             inv.render_refused();
         })
     </script>

@@ -11,16 +11,9 @@ class Project extends XY_Controller
 
     public function __construct(){
         parent::__construct();
-        $this->load->library('form_validation');
+        $this->load->library(array('form_validation'));
         $this->load->model(array('investing_model'));
         $this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
-    }
-
-
-    public function current_price()
-    {
-        $_tmp = array("287.84","286.80","287.35","287.98","288.15","288.39","288.99","289.67");
-        return number_format($_tmp[array_rand($_tmp)],2);
     }
 
     protected function render_operation($status)

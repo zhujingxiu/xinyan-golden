@@ -143,6 +143,11 @@ class Investing extends Project {
         }else{
 
 			$price = $this->current_price();
+			if($price){
+				$price = number_format($price,2);
+			}else{
+				json_response(array('code'=>0,'msg'=>lang("error_params"),'title'=>lang("error_title")));
+			}
 			$this->session->set_tempdata('current_price',XEncrypt($price),1200);
 			$info = array(
 				'price' => $price,
@@ -312,7 +317,66 @@ class Investing extends Project {
 
 	public function confirmed()
 	{
+		if($msg = $this->session->flashdata('ajax_permission')){
+			json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			if($this->_valid_csrf_nonce() === FALSE){
+				//json_response(array('code' => 0, 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
+			}
+			$this->form_validation->set_rules('amount', '实收金额', 'required');
+			$this->form_validation->set_rules('phone', '联系电话', 'required');
 
+			if ($this->form_validation->run() == TRUE)
+			{
+				$project_sn = $this->input->post('project_sn');
+				$note = htmlspecialchars($this->input->post('editorValue'));
+				$amount = $this->input->post('amount');
+				$phone = $this->input->post('phone');
+				$result = $this->investing_model->project($project_sn);
+				if(!$result->num_rows()){
+					json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
+				}
+				$project = $result->row_array();
+				if($project['amount'] == $amount && $project['phone'] == $phone){
+					$this->investing_model->push_state($project_sn,array(
+						'request'	=> var_export(array(
+							'amount' =>$amount,
+							'_amount' =>$this->input->post('_amount'),
+							'phone' =>$phone,
+							'_phone' =>$this->input->post('_phone')
+						),TRUE),
+						'status'	=> $this->config->item('investing_checked'),
+						'note' 		=> $note,
+					));
+					$this->session->set_flashdata('success', sprintf("项目已入库标记！编号: %s",$project_sn));
+					json_success();
+				}else{
+					json_error(array('errors' => array(
+						'amount' => lang("error_confirm_amount"),
+						'phone' => lang("error_confirm_phone"),
+					)));
+				}
+
+			}else {
+				json_error(array('errors' =>  array(
+					'amount' => form_error('amount'),
+					'phone' => form_error('phone'),
+				)));
+			}
+		}else{
+			$result = $this->investing_model->project($this->input->get('project'));
+			if($result->num_rows()){
+				$info = $result->row_array();
+				$info['csrf'] = $this->_get_csrf_nonce();
+				$info['histories'] = $this->investing_model->histories($info['project_sn']);
+				$title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
+
+				json_response(array('code'=>1,'title'=>$title,'msg'=>$this->load->view('investing/confirming',$info,TRUE)));
+			}else{
+				json_response(array('code' => 0, 'msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
+			}
+		}
 	}
 
 

@@ -163,14 +163,14 @@ define(function(require, exports, module) {
     })
 
 
-    exports.priceGoldView = function (gType){
+    exports.priceGoldView = function (mode){
         require('echarts');
         $.ajax({
-            url : "/tool/api/golden_price",
-            data:{gType:gType},
+            url : "/tool/api/price",
+            data:{mode:mode},
             dataType : 'json',
             success : function(json) {
-                exports.renderEchart('gold-price-charts','黄金价格走势图',eval("["+json.data+"]"),eval("["+json.val+"]"));
+                exports.renderEchart('gold-price-charts','黄金价格走势图',json.time,json.price);
             }
         });
     }

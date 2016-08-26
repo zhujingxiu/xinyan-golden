@@ -40,19 +40,7 @@ define(function(require, exports, module) {
                     else {
                         if (code == '-1') {//登录数据库验证,登录失败显示
                             $('.sysError').show().find('em').html(obj.msg);
-                        } else if (code == '-4') {//未激活状态显示
-                            if (!isEmail(obj.email)) {
-                                var info = '账户未激活且未绑定邮箱,' + '<a href="http://crm2.qq.com/page/portalpage/wpa.php?uin=800076065&f=1&ty=1&aty=0&a=&from=6" target="_blank">联系客服</a>';
-                            }
-                            else {
-                                var info = obj.info + '或&nbsp;<a id="resendEmail" href="javascript:;" identity="' + obj.identity + '" email="' + obj.email + '">重新发送邮件</a>';
-                            }
-                            $('.sysError').show().find('em').html(info);
-                        } else if (code == '-6') {//验证码错误显示
-                            $(".loginListCode").css('display', 'block');
-                            exports.error(obj.info, $("#captcha"));
-                        } else if (code == '-3') {//验证码错误显示
-                            exports.error(obj.info, $("#identity"));
+
                         } else {
                             var errcount = obj.errcount;
                             if (errcount > 2) {
@@ -87,16 +75,10 @@ define(function(require, exports, module) {
     }
     exports.price = function (el) {
         require('echarts');
-        $.get('/auth/login/tmp',{r:Math.random()},function(json){
+        $.get('/auth/login/price',{r:Math.random()},function(json){
 
-        //    //console.log(json);
-        //    console.log($(el));
-        //    $(el).append('ok');
-        //    if(json.code==1){
-        //        $(el).html(json.code);
-        //
-        //    }
-            exports.renderEchart('gold-price-charts','今日黄金价格走势图',eval("["+json.data+"]"),eval("["+json.val+"]"));
+            if(json.code==1)
+            exports.renderEchart('gold-price-charts','今日黄金价格走势图',json.time,json.price);
         },'json')
 
     }

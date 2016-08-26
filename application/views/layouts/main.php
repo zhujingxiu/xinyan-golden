@@ -23,9 +23,11 @@
     <script>
         var HTTP_SERVER = '<?php echo base_url();?>';
         seajs.use('layout',function(l){
+            l.price();
             <?php if(!empty($error_permission)) : ?>
-            l.render_message('<?php echo $error_permission;?>','没权限');
+            l.render_message('<?php echo $error_permission;?>',lang("error_permission"));
             <?php endif?>
+
         });
     </script>
 
@@ -56,9 +58,7 @@
 		</div>
 
 	    <footer class="main-footer">
-	        <div class="pull-right hidden-xs">
-	          <b>Version</b> 2.3.1
-	        </div>
+
 	        <strong>Copyright &copy; 2016 <a href="https://www.gong-e.com">信研普惠金融</a>.</strong>
 	    </footer>
 	    <?php echo $controlbar; ?>

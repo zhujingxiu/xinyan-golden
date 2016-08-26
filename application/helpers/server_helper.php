@@ -146,6 +146,28 @@ if(!function_exists('json_response')){
 	}
 }
 
+if(!function_exists('json_success')) {
+	function json_success($data=array())
+	{
+		$tmp['msg'] = (isset($data['msg'])) ? $data['msg'] : lang("text_success");
+		$tmp['title'] = (isset($data['title'])) ? $data['title'] : lang("title_success");
+		unset($data['msg']);
+		unset($data['title']);
+		json_response(array('code' => 1, 'msg' => $tmp['msg'], 'title' => $tmp['title']) + $data);
+	}
+}
+
+if(!function_exists('json_error')) {
+	function json_error($data=array())
+	{
+		$tmp['msg'] = (isset($data['msg'])) ? $data['msg'] : lang("error_params");
+		$tmp['title'] = (isset($data['title'])) ? $data['title'] : lang("error_title");
+		unset($data['msg']);
+		unset($data['title']);
+		json_response(array('code' => 0, 'msg' => $tmp['msg'], 'title' => $tmp['title']) + $data);
+	}
+}
+
 function zeroFull($value,$length = 3){
     $zeroFull = array();
     for($i=strlen((int)$value);$i<$length;$i++){
@@ -244,7 +266,7 @@ function str_truncate($string, $length = 60, $etc = '...', $count_words = true) 
 	return join ( "", array_slice ( $info [0], 0, $length ) ) . $etc;
 }
 
-function format_time($time){
+function format_time($time,$simple=false){
 	if(!is_numeric($time)){
 		$time = strtotime($time);
 	}
@@ -257,9 +279,37 @@ function format_time($time){
 	}else if($value >= 60*60 && $value<24*60*60){
 		$result = floor($value/(60*60))."小时前";
 	}else{
-		$result = date('Y-m-d H:i',$time);
+		$result = $simple ? date('y/m/d H:i',$time) : date('Y-m-d H:i',$time);
 	}
 	return $result;
+}
+
+function curl_post($url,$data)
+{
+	$ch = curl_init();
+
+	// 添加apikey到header
+	curl_setopt($ch, CURLOPT_HTTPHEADER  , $data);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	// 执行HTTP请求
+	$output = curl_setopt($ch , CURLOPT_URL , $url);
+	curl_exec($ch);
+	return $output;
+}
+
+function curl_get($url,$data){
+	//设置选项，包括URL
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($data));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_HEADER, 0);
+
+	//执行并获取HTML文档内容
+	$output = curl_exec($ch);
+
+	//释放curl句柄
+	curl_close($ch);
+	return $output;
 }
 
 function main_menu()

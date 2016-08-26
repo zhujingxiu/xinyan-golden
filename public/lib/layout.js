@@ -1070,4 +1070,18 @@ define(function(require, exports, module) {
             title:$title
         });
     }
+
+    exports.price = function () {
+        $('#sidebar-price').animate({fontSize:'22px'},2000);
+        setInterval(function () {
+            $.get('/tool/api/price',{'mode':'current',r:Math.random()}, function (json) {
+                if(json.code==1)
+                    $('#sidebar-price').animate({fontSize:'14px'},1000).text(json.current).animate({fontSize:'22px'},2000);
+                else{
+                    exports.render_message(json.msg, json.title);
+                }
+            },'json');
+        },20*60*1000);
+    }
+
 });
