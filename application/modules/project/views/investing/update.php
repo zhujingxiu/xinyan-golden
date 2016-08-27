@@ -105,23 +105,28 @@
             </div>
         </fieldset>
     </div>
-
     <div class="col-sm-12">
         <fieldset>
             <legend>项目备注</legend>
-            <div class="form-group clearfix">
-                <script type="text/plain" id="editor" style="height:120px;margin:0px 20px;"></script>
+            <div class="col-sm-12">
+                <div class="form-group clearfix">
+                    <?php if(false): ?><script type="text/plain" id="editor" style="height:120px;margin:0px 20px;"></script><?php endif ?>
+                    <textarea class="form-control" name="editorValue" placeholder="填写项目备注">
+                        <?php echo trim(strip_tags(htmlspecialchars_decode($note)));?>
+                    </textarea>
+                </div>
             </div>
         </fieldset>
     </div>
-
     <?php echo form_close();?>
 </div>
 
 <script type="text/javascript">
     var profit = '<?php echo $profit;?>',price='<?php echo $price;?>';
     $(function () {
-
+        $('#timeline-box').slimScroll({
+            height: '560px'
+        });
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
@@ -218,19 +223,19 @@
             do_total(_w, _t);
         });
     });
-    var editor =  new UE.ui.Editor({
-        toolbars: [
-            [ 'source', 'undo', 'redo',
-                '|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-                '|','insertorderedlist', 'insertunorderedlist',
-                '|', 'forecolor', 'backcolor',
-                '|','justifyleft','justifycenter','justifyright','justifyjustify' ]
-        ]
-        <?php if(!empty($note)):?>
-        ,initialContent:'<?php echo htmlspecialchars_decode($note)?>'
-        <?php endif?>
-    });
-    editor.render('editor');
+//    var editor =  new UE.ui.Editor({
+//        toolbars: [
+//            [ 'source', 'undo', 'redo',
+//                '|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
+//                '|','insertorderedlist', 'insertunorderedlist',
+//                '|', 'forecolor', 'backcolor',
+//                '|','justifyleft','justifycenter','justifyright','justifyjustify' ]
+//        ]
+//        <?php //if(!empty($note)):?>
+//        ,initialContent:'<?php //echo htmlspecialchars_decode($note)?>//'
+//        <?php //endif?>
+//    });
+//    editor.render('editor');
 
     function do_amount(weight,price)
     {

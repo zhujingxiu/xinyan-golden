@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="<?php echo $file['file']; ?>">
     <?php endforeach; ?>
     <?php endif; ?>
-
+    <link rel="stylesheet" href="<?php echo asset_url('adminlte/css/style.css')?>">
     <!--[if lt IE 9]>
     <script src="<?php echo asset_url('base/html5shiv.min.js')?>"></script>
     <script src="<?php echo asset_url('base/respond.min.js')?>"></script>

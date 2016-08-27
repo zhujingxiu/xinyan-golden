@@ -75,7 +75,7 @@ class Login extends MX_Controller {
     public function price()
     {
         $this->load->model('tool/tool_model');
-        $data = $this->tool_model->range('day');
+        $data = $this->tool_model->range_price('day');
         if($data){
             $data['last'] = $this->tool_model->lastprice();
             json_success($data);

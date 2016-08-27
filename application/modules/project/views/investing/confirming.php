@@ -8,19 +8,21 @@
 ?>
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-    <?php echo form_open('/project/investing/checked',array('id' => "form-confirming", 'class'=>'form-horizontal'))?>
+    <?php echo form_open('/project/investing/confirmed',array('id' => "form-confirming", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
+    <input type="hidden" name="_weight" id="confirm_weight" value="<?php echo $weight;?>">
+    <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">
     <?php echo form_hidden($csrf)?>
 
     <div class="col-sm-12">
 
         <div class="form-group">
-            <ul class="timeline">
+            <ul class="timeline" id="timeline-box">
                 <li class="time-label">
-                    <span class="bg-red"> 项目入库 </span>
+                    <span class="bg-green"> 项目信息 </span>
                 </li>
                 <li>
-                    <i class="fa fa-user bg-aqua"></i>
+                    <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
                         <div class="timeline-body">
                             <div class="col-sm-4">
@@ -56,7 +58,7 @@
                             <div class="col-sm-4">
 
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
+                                    <div class="input-group col-sm-12">
                                         <span class="input-group-addon">应付金额</span>
                                         <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?></span>
                                         <span class="input-group-addon">元</span>
@@ -67,10 +69,10 @@
                     </div>
                 </li>
                 <li>
-                    <i class="fa fa-user bg-aqua"></i>
+                    <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
                         <div class="timeline-body">
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">客户姓名</span>
@@ -85,13 +87,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">身份证号</span>
-                                        <span class="form-control"><?php echo $idnumber;?></span>
-                                    </div>
 
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">手机号码</span>
+                                        <span class="form-control"><?php echo $phone?></span>
+                                    </div>
                                 </div>
 
                                 <div class="form-group clearfix">
@@ -104,44 +106,63 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">手机号码</span>
-                                        <span class="form-control"><?php echo $phone?></span>
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon">身份证号</span>
+                                        <span class="form-control"><?php echo $idnumber;?></span>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </li>
-
-                <?php if(!empty($histories) && is_array($histories)): ?>
-                    <?php foreach($histories as $item) :?>
-                        <li>
-                            <i class="fa fa-user bg-aqua"></i>
-                            <div class="timeline-item">
-                                <span class="time">
-                                    <?php echo $item['status']?>
-                                    <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
-                                </span>
-
-                                <h3 class="timeline-header no-border">
-                                    <a href="javascript:;" class="liveim"><?php echo $item['operator']?></a>
-                                    <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?>
-                                </h3>
-                            </div>
-                        </li>
-                    <?php endforeach ?>
-                <?php endif ?>
+                <li class="time-label">
+                    <span class="bg-red"> 入库确认 </span>
+                </li>
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
                     <div class="timeline-item">
                         <div class="timeline-body">
-                            <script type="text/plain" id="editor" style="height:80px;"></script>
+                            <div class="input-group">
+                                <span class="input-group-addon">客户手机</span>
+                                <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
+                                <span class="input-group-addon">确认重量</span>
+                                <input class="form-control" name="weight" type="text" placeholder="确认客户的预购重量">
+                                <span class="input-group-addon">克</span>
+                            </div>
+                            <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
+                            <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
                         </div>
 
                     </div>
                 </li>
+                <li class="time-label">
+                    <span class="bg-purple"> 状态变更 </span>
+                </li>
+                <?php if(!empty($histories) && is_array($histories)): ?>
+                <?php foreach($histories as $item) :?>
+                <li>
+                    <i class="fa fa-user bg-aqua"></i>
+                    <div class="timeline-item">
+                        <span class="time">
+                                    <?php echo $item['status']?>
+                            <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
+                                </span>
+
+                        <h3 class="timeline-header no-border">
+                            <a href="javascript:;" class="liveim">
+                                <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
+                                    <img data-toggle="tooltip" src="<?php echo site_url($item['avatar'])?>" class="user-avatar" title="<?php echo $item['operator']?>" alt="<?php echo $item['operator']?>">
+                                <?php else: ?>
+                                    <?php echo $item['operator']?>
+                                <?php endif?>
+                            </a>
+                            <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
+                        </h3>
+                    </div>
+                </li>
+                <?php endforeach ?>
+                <?php endif ?>
             </ul>
         </div>
 
@@ -153,32 +174,30 @@
 <script type="text/javascript">
 
     $(function () {
+        $('#timeline-box').slimScroll({
+            height: '560px'
+        });
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
             highlight : function(element) {
-                $(element).closest('.form-group').addClass('has-error');
+                $(element).prev('.input-group-addon').addClass('has-error');
             },
             success : function(label) {
-                label.closest('.form-group').removeClass('has-error');
+                label.prev('.input-group-addon').removeClass('has-error');
                 label.remove();
             },
             errorPlacement : function(error, element) {
-                if(element.parent('div').is('.input-group')){
-                    element.parent('div').parent('div').find('.help-block').remove();
-                    element.parent('div').parent('div').append(error);
-                }else{
-                    element.parent('div').find('.help-block').remove();
-                    element.parent('div').append(error);
-                }
+                if(error.text().length>0)
+                layer.tips(error.text(), element,{tips: 1});
             }
         });
 
-        $("#form-checking").validate({
+        $("#form-confirming").validate({
             rules : {
-                amount : {
+                weight : {
                     required : true,
-                    equalTo: '#confirm_amount'
+                    equalTo: '#confirm_weight'
                 },
 
                 phone: {
@@ -189,9 +208,9 @@
             },
             messages : {
 
-                amount : {
-                    required : '请输入实收金额',
-                    equalTo: "与该项目实收金额不相符"
+                weight : {
+                    required : '请输入购入重量',
+                    equalTo: "与该项目预购重量不相符"
                 },
                 phone:{
                     required:'手机号码必须',
@@ -214,16 +233,16 @@
         });
 
     });
-    var editor =  new UE.ui.Editor({
-        toolbars: [
-            [ 'source', 'undo', 'redo',
-                '|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-                '|','insertorderedlist', 'insertunorderedlist',
-                '|', 'forecolor', 'backcolor',
-                '|','justifyleft','justifycenter','justifyright','justifyjustify']
-        ]
-    });
-    editor.render('editor');
+//    var editor =  new UE.ui.Editor({
+//        toolbars: [
+//            [ 'source', 'undo', 'redo',
+//                '|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
+//                '|','insertorderedlist', 'insertunorderedlist',
+//                '|', 'forecolor', 'backcolor',
+//                '|','justifyleft','justifycenter','justifyright','justifyjustify']
+//        ]
+//    });
+//    editor.render('editor');
 
 
 

@@ -239,9 +239,9 @@ class Ion_auth
 		return null;
 	}
 
-	public function get_info()
+	public function get_info($id = FALSE)
 	{
-		$id = $this->get_user_id();
+		$id || $id = $this->get_user_id();
 		$info = $this->ion_auth_model->user($id)->row_array();
 		if(empty($info['avatar'])){
 			$info['avatar'] = 'public/images/avatar/avatar.png';
@@ -265,6 +265,10 @@ class Ion_auth
 			}
 		}
 		return $info;
+	}
+	public function get_worker($id)
+	{
+		return $this->get_info($id);
 	}
 	/**
 	 * is_admin

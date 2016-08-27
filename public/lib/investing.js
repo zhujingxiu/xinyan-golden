@@ -3,6 +3,8 @@
  */
 window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
+
+
     exports.render_list = function() {
         require('datatables')
         require('datatables.bs');
@@ -20,7 +22,7 @@ define(function(require,exports,modules){
                 },
                 "columns": [
                     {
-                        "data-entry": 'details-control',
+                        "data-class": 'details-control',
                         "data": "status",
                         "name": "status"
                     },
@@ -114,6 +116,7 @@ define(function(require,exports,modules){
             require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
+            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/checked', {project:sn}, function(json){
                 if(json.code==1){
@@ -130,7 +133,7 @@ define(function(require,exports,modules){
                             $(this).addClass('disabled').text('正在提交...');
                         },
                         btn2 : function(index, layero){
-                            exports.do_refused(sn);
+                            exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 项目: '+sn);
                             console.log(layero);
                             return false
                         }
@@ -151,6 +154,7 @@ define(function(require,exports,modules){
             require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
+            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/confirmed', {project:sn}, function(json){
                 if(json.code==1){
@@ -175,24 +179,28 @@ define(function(require,exports,modules){
         })
     }
 
-    exports.render_refused = function(){
+    exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
-            exports.do_refused($(this).parent().parent().attr('id'));
+            var sn = $(this).parent().parent().attr('id');
+            exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 项目: '+sn);
+        });
+        $('#project-list').delegate('.btn-terminated','click',function(){
+            var sn = $(this).parent().parent().attr('id');
+            exports.do_cancle(sn,'/project/investing/terminated','请填写终止原因 项目: '+sn);
         });
     }
 
-    exports.do_refused = function (sn) {
+    exports.do_cancle = function (sn,url,title) {
         require('layer');
-
         layer.prompt({
             formType: 2,
             value: '',
-            title: '请填写驳回原因 : '+sn,
+            title: title,
             minlength:10,
         }, function(value, index, elem){
             $.ajax({
                 type:'post',
-                url:'/project/investing/refused',
+                url:url,
                 data:{project_sn:sn,value:value},
                 dataType:'json',
                 beforeSubmit:function(){
@@ -208,6 +216,28 @@ define(function(require,exports,modules){
                 }
             })
 
+        });
+    }
+    exports.render_hidden = function(){
+        $('#project-list').delegate('.btn-trashed','click',function(){
+            var sn = $(this).parent().parent().attr('id')
+            require('layer');
+            layer.confirm('确定删除项目'+sn, {icon: 3, title:'删除'}, function(index){
+                $.ajax({
+                    type:'post',
+                    url:'/project/investing/trashed',
+                    data:{project_sn:sn},
+                    dataType:'json',
+                    success:function(json){
+                        if(json.code==1){
+                            location.reload();
+                        }else{
+                            var l = require('layout');
+                            l.render_message(json.msg,json.title);
+                        }
+                    }
+                })
+            });
         });
     }
 })

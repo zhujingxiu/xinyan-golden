@@ -107,7 +107,7 @@ define(function (require,exports,modules) {
             data:$('#node-form').serialize(),
             dataType:'json',
             success:function(json){
-                if(json.status==1){
+                if(json.code==1){
                     $('#tab-menu .do-result').html('<div class="alert alert-success">'+json.msg+'</div>');
                     $('#node-tree').jstree().refresh();
                 }else{

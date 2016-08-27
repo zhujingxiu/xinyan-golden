@@ -44,7 +44,7 @@
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
-						<div class="input-group col-sm-11">
+						<div class="input-group col-sm-12">
 							<span class="input-group-addon">实时金价</span>
 							<span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price ?> 元/克</span>
 						</div>
@@ -73,8 +73,8 @@
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
-							<span class="input-group-addon">身份证号</span>
-							<input type="text" name="idnumber" class="form-control" placeholder="二代身份证号码">
+							<span class="input-group-addon">手机号码</span>
+							<input type="text" name="phone" class="form-control" placeholder="客户的手机号码">
 						</div>
 					</div>
 					<div class="form-group clearfix">
@@ -82,15 +82,13 @@
 							<span class="input-group-addon">微信账号</span>
 							<input type="text" name="wechat" class="form-control">
 						</div>
-
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
-
-						<div class="input-group col-sm-11">
-							<span class="input-group-addon">手机号码</span>
-							<input type="text" name="phone" class="form-control" placeholder="客户的手机号码">
+						<div class="input-group col-sm-12">
+							<span class="input-group-addon">身份证号</span>
+							<input type="text" name="idnumber" class="form-control" placeholder="二代身份证号码">
 						</div>
 					</div>
 				</div>
@@ -100,9 +98,12 @@
 		<div class="col-sm-12">
 			<fieldset>
 				<legend>项目备注</legend>
+				<div class="col-sm-12">
 				<div class="form-group clearfix">
-					<script type="text/plain" id="editor" style="height:100px;margin:0px 20px;"></script>
+					<?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
+					<textarea class="form-control" name="editorValue" placeholder="填写项目备注"></textarea>
 				</div>
+					</div>
 			</fieldset>
 		</div>
 		<?php if($privacy) : ?>
@@ -219,16 +220,16 @@
 			do_total(_w, _t);
 		});
 	});
-	var editor =  new UE.ui.Editor({
-		toolbars: [
-			[ 'source', 'undo', 'redo',
-				'|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-				'|','insertorderedlist', 'insertunorderedlist',
-				'|', 'forecolor', 'backcolor',
-				'|','justifyleft','justifycenter','justifyright','justifyjustify']
-		]
-	});
-	editor.render('editor');
+//	var editor =  new UE.ui.Editor({
+//		toolbars: [
+//			[ 'source', 'undo', 'redo',
+//				'|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
+//				'|','insertorderedlist', 'insertunorderedlist',
+//				'|', 'forecolor', 'backcolor',
+//				'|','justifyleft','justifycenter','justifyright','justifyjustify']
+//		]
+//	});
+//	editor.render('editor');
 
 	function do_amount(weight,price)
 	{

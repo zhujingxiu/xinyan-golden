@@ -52,7 +52,7 @@ class XY_Controller extends MX_Controller {
             return FALSE;
         }
 
-        $result = true ?
+        $result = false ?
             '{"status":"0","msg":"ok","result":[{"type":"Au(T+D)","typename":"黄金延期","price":"284.61","openingprice":"283.88","maxprice":"284.65","minprice":"282.81","changepercent":"-0.03%","lastclosingprice":"284.69","tradeamount":"47184.0000","updatetime":"2016-08-26 15:29:56"},{"type":"Au99.99","typename":"沪金99","price":"284.85","openingprice":"284.20","maxprice":"284.90","minprice":"283.22","changepercent":"-0.01%","lastclosingprice":"284.89","tradeamount":"22441.9200","updatetime":"2016-08-26 15:29:58"},{"type":"Au(T+N2)","typename":"延期双金","price":"284.95","openingprice":"284.00","maxprice":"285.25","minprice":"283.80","changepercent":"-0.11%","lastclosingprice":"285.25","tradeamount":"8534.6000","updatetime":"2016-08-26 15:27:34"},{"type":"Au(T+N1)","typename":"延期单金","price":"287.00","openingprice":"286.10","maxprice":"287.10","minprice":"285.15","changepercent":"0.07%","lastclosingprice":"286.80","tradeamount":"8056.2000","updatetime":"2016-08-26 15:28:22"},{"type":"mAu(T+D)","typename":"迷你黄金延期","price":"284.75","openingprice":"284.25","maxprice":"284.80","minprice":"283.05","changepercent":"-0.01%","lastclosingprice":"284.79","tradeamount":"6733.8000","updatetime":"2016-08-26 15:29:57"},{"type":"Au99.95","typename":"沪金95","price":"284.65","openingprice":"248.99","maxprice":"284.65","minprice":"248.99","changepercent":"0.09%","lastclosingprice":"284.40","tradeamount":"518.0000","updatetime":"2016-08-26 15:29:58"},{"type":"Pt99.95","typename":"沪铂95","price":"245.75","openingprice":"245.00","maxprice":"245.75","minprice":"245.00","changepercent":"-0.08%","lastclosingprice":"245.95","tradeamount":"184.0000","updatetime":"2016-08-26 15:29:58"},{"type":"Au100g","typename":"沪金100G","price":"285.00","openingprice":"284.50","maxprice":"285.00","minprice":"283.20","changepercent":"0.18%","lastclosingprice":"284.50","tradeamount":"26.0000","updatetime":"2016-08-26 15:29:58"},{"type":"iAu100g","typename":"IAU100G","price":"283.80","openingprice":"280.00","maxprice":"283.80","minprice":"280.00","changepercent":"10.43%","lastclosingprice":"257.00","tradeamount":"0.6000","updatetime":"2016-08-26 15:29:58"},{"type":"iAu99.99","typename":"IAU99.99","price":"283.96","openingprice":"284.01","maxprice":"284.01","minprice":"283.96","changepercent":"-0.12%","lastclosingprice":"284.30","tradeamount":"0.0400","updatetime":"2016-08-26 15:29:58"},{"type":"iAu99.5","typename":"IAU99.5","price":"0.00","openingprice":"0.00","maxprice":"0.00","minprice":"0.00","changepercent":"0.00%","lastclosingprice":"237.80","tradeamount":"0.0000","updatetime":"2016-08-26 15:29:58"}]}'
             :curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
 
@@ -104,13 +104,15 @@ class XY_Controller extends MX_Controller {
 
         $this->load->model('auth/permission_model');
         $node = $this->permission_model->get_node_by_path($path);
-        if(empty($node['node_id'])) return False;
+        if(empty($node['node_id']) || empty($node['status']))
+            return False;
 
-        if(!empty($node['auth']) && !empty($node['status']) && in_array($node['node_id'],$this->worker['permission'])){
+        if(empty($node['auth'])){
+            return TRUE;
+        }else if(in_array($node['node_id'],$this->worker['permission'])){
             return TRUE;
         }else{
             $parents = $this->permission_model->getRecursionParentNodes($node['node_id']);
-
             if($parents){
                 foreach($parents as $item)
                 {
@@ -119,7 +121,6 @@ class XY_Controller extends MX_Controller {
             }
             return False;
         }
-
     }
 
     public function inRole($role=array())

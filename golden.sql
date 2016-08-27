@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-08-26 12:05:18
+-- Generation Time: 2016-08-27 11:42:12
 -- 服务器版本： 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -130,7 +130,8 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 (20, '2016-08-01', 'Au99.99', ' 沪金99', '288.17', 1471234567),
 (21, '2016-07-29', 'Au99.99', ' 沪金99', '285.83', 1471234567),
 (22, '2016-07-28', 'Au99.99', ' 沪金99', '287.71', 1471234567),
-(23, '2016-07-27', 'Au99.99', ' 沪金99', '283.63', 1471234567);
+(23, '2016-07-27', 'Au99.99', ' 沪金99', '283.63', 1471234567),
+(24, '2016-08-26', 'Au99.99', '沪金99', '284.89', 1472260847);
 
 -- --------------------------------------------------------
 
@@ -574,7 +575,18 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 ('2016-08-26', 'Au100g', '沪金100G', '285.00', '284.50', '285.00', '283.20', '0.18', '284.50', '26.0000', 1472196598, 1472201231),
 ('2016-08-26', 'iAu100g', 'IAU100G', '283.80', '280.00', '283.80', '280.00', '10.43', '257.00', '0.6000', 1472196598, 1472201231),
 ('2016-08-26', 'iAu99.99', 'IAU99.99', '283.96', '284.01', '284.01', '283.96', '-0.12', '284.30', '0.0400', 1472196598, 1472201231),
-('2016-08-26', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472196598, 1472201231);
+('2016-08-26', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472196598, 1472201231),
+('2016-08-26', 'Au(T+D)', '黄金延期', '284.48', '285.30', '287.90', '283.52', '-0.05', '284.61', '58702.0000', 1472227080, 1472260847),
+('2016-08-26', 'mAu(T+D)', '迷你黄金延期', '284.52', '285.15', '287.98', '283.60', '-0.08', '284.75', '6241.6000', 1472227080, 1472260847),
+('2016-08-26', 'Au99.99', '沪金99', '284.52', '285.20', '287.28', '284.00', '-0.13', '284.89', '182.4800', 1472227034, 1472260847),
+('2016-08-26', 'Au(T+N2)', '延期双金', '285.20', '286.00', '288.50', '284.55', '0.09', '284.95', '133.8000', 1472227050, 1472260847),
+('2016-08-26', 'Au(T+N1)', '延期单金', '287.00', '286.05', '289.45', '286.05', '0.00', '287.00', '71.2000', 1472226948, 1472260847),
+('2016-08-26', 'Au100g', '沪金100G', '285.00', '286.20', '287.55', '284.20', '0.05', '284.86', '8.2000', 1472227064, 1472260847),
+('2016-08-26', 'Au99.95', '沪金95', '286.00', '268.99', '286.00', '268.99', '0.53', '284.49', '4.0000', 1472226380, 1472260847),
+('2016-08-26', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.51', '0.0000', 1472226801, 1472260847),
+('2016-08-26', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472213695, 1472260847),
+('2016-08-26', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472211631, 1472260847),
+('2016-08-26', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '283.98', '0.0000', 1472227080, 1472260847);
 
 -- --------------------------------------------------------
 
@@ -679,34 +691,8 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (90, 'auth', 0, 1, 'error', '错误提示', '', 1, 0, 0, NULL),
 (91, 'auth', 90, 1, 'permission', '无此授权', 'error/permission', 1, 0, 0, NULL),
 (92, 'auth', 90, 1, 'permission', '无此授权', 'error/permission/index', 1, 0, 0, NULL),
-(93, 'auth', 54, 1, 'update', '编辑项目', 'project/investing/update', 1, 1, 0, '');
-
--- --------------------------------------------------------
-
---
--- 表的结构 `gd_project_gold`
---
-
-CREATE TABLE `gd_project_gold` (
-  `project_id` int(11) NOT NULL,
-  `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
-  `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-  `mode` enum('investing','recycling','stock') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'investing',
-  `info` text COLLATE utf8_unicode_ci,
-  `note` text COLLATE utf8_unicode_ci,
-  `status` tinyint(4) NOT NULL,
-  `worker_id` int(11) NOT NULL,
-  `addtime` int(11) NOT NULL,
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_project_gold`
---
-
-INSERT INTO `gd_project_gold` (`project_id`, `project_sn`, `title`, `mode`, `info`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
-(1, 'SD201564545645', '测试titleA', 'investing', 'OKOK', NULL, 1, 0, 1470000000, 0),
-(2, 'SD201554545645', '测试titleB', 'investing', 'OKOK', NULL, 1, 1, 1470000000, 0);
+(93, 'auth', 54, 1, 'update', '编辑项目', 'project/investing/update', 1, 1, 0, ''),
+(94, 'auth', 54, 1, 'terminated', '终止项目', 'project/investing/terminated', 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -727,8 +713,11 @@ CREATE TABLE `gd_project_investing` (
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
   `amount` decimal(11,2) NOT NULL DEFAULT '0.00',
   `period` tinyint(4) NOT NULL DEFAULT '0',
+  `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   `total` decimal(11,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci,
+  `is_del` tinyint(1) NOT NULL DEFAULT '0',
   `status_id` tinyint(1) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
@@ -740,20 +729,21 @@ CREATE TABLE `gd_project_investing` (
 -- 转存表中的数据 `gd_project_investing`
 --
 
-INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `realname`, `phone`, `idnumber`, `wechat`, `referrer`, `price`, `weight`, `amount`, `period`, `total`, `note`, `status_id`, `worker_id`, `addtime`, `lasttime`, `locker`) VALUES
-(1, 'SD20156454564522', 0, 'OKOK', '18800011000', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 0, '0.00', NULL, 1, 0, 1470000000, 0, 0),
-(2, 'SD20155454564511', 0, 'OKOK', '18800011001', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 1, '0.00', '', 2, 3, 1470000000, 1472049634, 0),
-(3, '1608188031093542', 0, '朱景修', '18850911111', '321324200808080415', '', 'XX', '287.35', '10.00', '2873.50', 3, '10.15', '', 2, 3, 1471509342, 1472049785, 0),
-(4, '1608188261053809', 0, '朱景修', '13813801380', '321325199902024510', '', '', '287.98', '100.00', '28798.00', 12, '106.00', '&lt;p&gt;okok&lt;/p&gt;', 2, 3, 1471509489, 1472048310, 0),
-(5, '1608181371034554', 0, '沈万三', '18888888888', '325326150008080808', '', '', '287.35', '1000000.00', '287350000.00', 12, '1060000.00', '数据异常', 7, 3, 1471509954, 1472093730, 0),
-(6, '1608186671184447', 0, '赵公明', '15815801580', '321324198808080808', '', '', '287.35', '10.00', '2873.50', 3, '10.15', '', 2, 3, 1471513487, 1472049868, 0),
-(7, '1608183471764952', 0, '马晓云', '13913901390', '500250196606080806', '', '', '287.35', '10.00', '2873.50', 3, '10.15', '', 2, 3, 1471513792, 1472049929, 0),
-(8, '1608222241360343', 0, '朱景修', '18850911766', '321324155010254569', '', '', '286.80', '12.00', '3441.60', 12, '12.72', '&lt;p&gt;asdasdsadsa&lt;/p&gt;', 1, 5, 1471842223, 1471856775, 0),
-(9, '1608229881435008', 0, '朱景修', '18850911766', '321245198905080904', '', '', '290.00', '100.00', '29000.00', 12, '106.00', '&lt;p&gt;6565461333&lt;/p&gt;', 2, 3, 1471848608, 1472085444, 0),
-(10, '1608229951425621', 0, '朱景修', '18850911766', '321245198905080904', '', '', '289.67', '100.00', '28967.00', 12, '106.00', '', 1, 5, 1471848981, 1471856834, 0),
-(11, '1608225151495752', 0, '陈国', '13001023005', '321245198905080904', '', '', '289.67', '12.00', '3476.04', 12, '12.72', '&lt;p&gt;asdsadsaxzcxz&lt;/p&gt;', 1, 5, 1471849072, 1471856820, 0),
-(12, '1608222511510103', 0, '陈国', '18850911766', '321245198905080904', '', '', '288.39', '12.00', '3460.68', 12, '12.72', '&lt;p&gt;sa&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;em&gt;&lt;strong&gt;dasdsagfdhgfhgfhgf&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;span style=&quot;text-decoration: none;&quot;&gt; &amp;nbsp;&lt;/span&gt;&lt;span style=&quot;text-decoration: line-through;&quot;&gt;sssssss&lt;/span&gt;&lt;/p&gt;', 2, 3, 1471849263, 1472049992, 0),
-(13, '1608252211011343', 0, '朱景修', '18850911223', '321324196606060606', '', '', '288.15', '12.00', '3457.80', 12, '12.72', '&lt;p&gt;是老客户&lt;br/&gt;&lt;/p&gt;', 1, 5, 1472091223, 1472091223, 0);
+INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `realname`, `phone`, `idnumber`, `wechat`, `referrer`, `price`, `weight`, `amount`, `period`, `start`, `end`, `total`, `note`, `is_del`, `status_id`, `worker_id`, `addtime`, `lasttime`, `locker`) VALUES
+(1, 'SD20156454564522', 0, 'OKOK', '18800011000', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 6, NULL, NULL, '0.00', NULL, 0, 1, 0, 1470000000, 0, 0),
+(2, 'SD20155454564511', 0, '林木森', '18800011001', '599455198505050808', '', '', '288.88', '100.00', '28888.00', 1, NULL, NULL, '101.50', '已更改资料              ', 0, 1, 6, 1470000000, 1472290152, 0),
+(3, '1608188031093542', 0, '朱景修', '18850911111', '321324200808080415', '', 'XX', '287.35', '10.00', '2873.50', 3, NULL, NULL, '10.15', '', 0, 2, 3, 1471509342, 1472049785, 0),
+(4, '1608188261053809', 0, '朱景修', '13813801380', '321325199902024510', '', '', '287.98', '100.00', '28798.00', 12, NULL, NULL, '106.00', '&lt;p&gt;okok&lt;/p&gt;', 0, 2, 3, 1471509489, 1472048310, 0),
+(5, '1608181371034554', 0, '沈万三', '18888888888', '325326150008080808', '', '', '287.35', '1000000.00', '287350000.00', 12, NULL, NULL, '1060000.00', '去问问企鹅完全', 1, 8, 3, 1471509954, 1472289031, 0),
+(6, '1608186671184447', 0, '赵公明', '15815801580', '321324198808080808', '', '', '287.35', '10.00', '2873.50', 3, NULL, NULL, '10.15', '', 0, 2, 3, 1471513487, 1472049868, 0),
+(7, '1608183471764952', 0, '马晓云', '13913901390', '500250196606080806', '', '', '287.35', '10.00', '2873.50', 3, NULL, NULL, '10.15', '', 0, 2, 3, 1471513792, 1472049929, 0),
+(8, '1608222241360343', 0, '朱景修', '18850911766', '321324155010254569', '', '', '286.80', '12.00', '3441.60', 9, NULL, NULL, '12.72', '&lt;p&gt;asdasdsadsa&lt;/p&gt;', 0, 1, 5, 1471842223, 1471856775, 0),
+(9, '1608229881435008', 0, '朱景修', '18850911766', '321245198905080904', '', '', '290.00', '100.00', '29000.00', 6, NULL, NULL, '106.00', '&lt;p&gt;fdsfsdggdgfdgfd&lt;br/&gt;&lt;/p&gt;', 0, 3, 7, 1471848608, 1472277224, 0),
+(10, '1608229951425621', 0, '朱景修', '18850911766', '321245198905080904', '', '', '289.67', '100.00', '28967.00', 3, NULL, NULL, '106.00', '', 0, 1, 5, 1471848981, 1471856834, 0),
+(11, '1608225151495752', 0, '陈国', '13001023005', '321245198905080904', '', '', '289.67', '12.00', '3476.04', 6, NULL, NULL, '12.72', '&lt;p&gt;asdsadsaxzcxz&lt;/p&gt;', 0, 1, 5, 1471849072, 1471856820, 0),
+(12, '1608222511510103', 0, '陈国', '18850911766', '321245198905080904', '', '', '288.39', '12.00', '3460.68', 12, NULL, NULL, '12.72', '&lt;p&gt;sa&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;em&gt;&lt;strong&gt;dasdsagfdhgfhgfhgf&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;span style=&quot;text-decoration: none;&quot;&gt; &amp;nbsp;&lt;/span&gt;&lt;span style=&quot;text-decoration: line-through;&quot;&gt;sssssss&lt;/span&gt;&lt;/p&gt;', 0, 2, 3, 1471849263, 1472049992, 0),
+(13, '1608252211011343', 0, '朱景修', '18850911223', '321324196606060606', '', '', '288.15', '12.00', '3457.80', 12, '2016-08-25', '2017-08-24', '12.72', 'sadsadsadsadsadsadsa', 0, 2, 3, 1472091223, 1472289668, 0),
+(14, '1608272541144202', 0, '华大妈', '13316618899', '110120199909090909', '', '', '284.52', '1000.00', '284520.00', 12, '2016-08-27', '2017-08-26', '1060.00', '&lt;p&gt;撒打算打算的撒&lt;/p&gt;', 0, 2, 4, 1472269322, 1472278417, 0);
 
 -- --------------------------------------------------------
 
@@ -795,7 +785,20 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 (20, 12, 2, '&lt;p&gt;sa&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;em&gt;&lt;strong&gt;dasdsagfdhgfhgfhgf&lt;/strong&gt;&lt;/em&gt;&lt;/span&gt;&lt;span style=&quot;text-decoration: none;&quot;&gt; &amp;nbsp;&lt;/span&gt;&lt;span style=&quot;text-decoration: line-through;&quot;&gt;sssssss&lt;/span&gt;&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''3460.68'',\n  ''_amount'' =&gt; ''3460.68'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 3, 1472049992, '127.0.0.1'),
 (21, 9, 2, '&lt;p&gt;6565461333&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''29000.00'',\n  ''_amount'' =&gt; ''29000.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 3, 1472085444, '127.0.0.1'),
 (22, 13, 1, '&lt;p&gt;是老客户&lt;br/&gt;&lt;/p&gt;', '', 5, 1472091223, '127.0.0.1'),
-(23, 5, 7, '数据异常', '', 3, 1472093730, '127.0.0.1');
+(23, 5, 7, '数据异常', '', 3, 1472093730, '127.0.0.1'),
+(24, 14, 1, '&lt;p&gt;疯狂的中国大妈买了2斤黄金，咱们库存够不够&lt;/p&gt;', '', 6, 1472269322, '127.0.0.1'),
+(25, 2, 3, '&lt;p&gt;432432432432432432432&lt;br/&gt;&lt;/p&gt;', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; ''100.00'',\n  ''phone'' =&gt; ''18800011001'',\n  ''_phone'' =&gt; ''18800011001'',\n)', 7, 1472276945, '127.0.0.1'),
+(26, 9, 3, '', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; ''100.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 7, 1472277090, '127.0.0.1'),
+(28, 9, 3, '&lt;p&gt;fdsfsdggdgfdgfd&lt;br/&gt;&lt;/p&gt;', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; ''100.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 7, 1472277224, '127.0.0.1'),
+(29, 14, 2, '&lt;p&gt;管够，管够&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''284520.00'',\n  ''_amount'' =&gt; ''284520.00'',\n  ''phone'' =&gt; ''13316618899'',\n  ''_phone'' =&gt; ''13316618899'',\n)', 4, 1472277747, '127.0.0.1'),
+(30, 14, 2, '&lt;p&gt;撒旦撒旦撒&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''284520.00'',\n  ''_amount'' =&gt; ''284520.00'',\n  ''phone'' =&gt; ''13316618899'',\n  ''_phone'' =&gt; ''13316618899'',\n)', 4, 1472278195, '127.0.0.1'),
+(31, 14, 2, '&lt;p&gt;阿斯顿撒旦撒大&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''284520.00'',\n  ''_amount'' =&gt; ''284520.00'',\n  ''phone'' =&gt; ''13316618899'',\n  ''_phone'' =&gt; ''13316618899'',\n)', 4, 1472278325, '127.0.0.1'),
+(32, 14, 2, '&lt;p&gt;撒打算打算的撒&lt;/p&gt;', 'array (\n  ''amount'' =&gt; ''284520.00'',\n  ''_amount'' =&gt; ''284520.00'',\n  ''phone'' =&gt; ''13316618899'',\n  ''_phone'' =&gt; ''13316618899'',\n)', 4, 1472278417, '127.0.0.1'),
+(33, 5, 8, '去问问企鹅完全', '', 3, 1472288961, '127.0.0.1'),
+(34, 13, 2, 'sadsadsadsadsadsadsa', 'array (\n  ''amount'' =&gt; ''3457.80'',\n  ''_amount'' =&gt; ''3457.80'',\n  ''phone'' =&gt; ''18850911223'',\n  ''_phone'' =&gt; ''18850911223'',\n)', 3, 1472289668, '127.0.0.1'),
+(35, 2, 7, '资料不完整', '', 3, 1472289921, '127.0.0.1'),
+(36, 2, 1, '                        资料不完整                    ', '', 6, 1472290004, '127.0.0.1'),
+(37, 2, 1, '已更改资料              ', '', 6, 1472290152, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -884,6 +887,35 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `note`,
 (8, '已完结', 'finished', '到期取金，项目完结 （可转到金生金）', 1),
 (9, '已拒绝', 'refused', '客户信息等问题造成', 1),
 (10, '已终止', 'terminated', '客户提前终止项目', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gd_project_stock`
+--
+
+CREATE TABLE `gd_project_stock` (
+  `project_id` int(11) NOT NULL,
+  `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `mode` enum('investing','recycling','stock') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'investing',
+  `info` text COLLATE utf8_unicode_ci,
+  `weight` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `note` text COLLATE utf8_unicode_ci,
+  `status` tinyint(4) NOT NULL,
+  `worker_id` int(11) NOT NULL,
+  `addtime` int(11) NOT NULL,
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_project_stock`
+--
+
+INSERT INTO `gd_project_stock` (`project_id`, `project_sn`, `title`, `mode`, `info`, `weight`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
+(1, 'SD201564545645', '测试titleA', 'investing', 'OKOK', '0.00', NULL, 1, 0, 1470000000, 0),
+(2, 'SD201554545645', '测试titleB', 'investing', 'OKOK', '0.00', NULL, 1, 1, 1470000000, 0),
+(3, '1608229881435008', '朱景修:18850911766:100.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608229881435008";s:8:"realname";s:9:"朱景修";s:5:"phone";s:11:"18850911766";s:8:"idnumber";s:18:"321245198905080904";s:5:"price";s:6:"290.00";s:6:"weight";s:6:"100.00";s:6:"amount";s:8:"29000.00";s:6:"period";s:2:"12";s:5:"total";s:6:"106.00";s:5:"start";N;s:3:"end";N;}', '100.00', '&lt;p&gt;fdsfsdggdgfdgfd&lt;br/&gt;&lt;/p&gt;', 1, 7, 1472277224, 1472277224);
 
 -- --------------------------------------------------------
 
@@ -1114,14 +1146,67 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('f58f18d2ebf1d5392cfac18b7f749740455449d8', '127.0.0.1', 1472199689, '__ci_last_regenerate|i:1472199047;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
 ('bde5202bbb93fa9f0b4f3a87cad61a432ef75447', '127.0.0.1', 1472200518, '__ci_last_regenerate|i:1472199689;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
 ('f9a1007f102c654e40649f190e097a57000a599c', '127.0.0.1', 1472200854, '__ci_last_regenerate|i:1472200611;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
-('40f6e8801eac233d78c91fb1e0f136812b8c4afa', '127.0.0.1', 1472205913, '__ci_last_regenerate|i:1472201007;code|s:4:"pn7M";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472199689";'),
+('40f6e8801eac233d78c91fb1e0f136812b8c4afa', '127.0.0.1', 1472206873, '__ci_last_regenerate|i:1472201007;code|s:4:"pn7M";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472199689";'),
 ('ec5c7ff2a6637299706328a7fd03c240d2e58dbb', '127.0.0.1', 1472201716, '__ci_last_regenerate|i:1472201455;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
 ('ecbd47113bc02b1ac6ea85588afadc3067a554f4', '127.0.0.1', 1472202888, '__ci_last_regenerate|i:1472201780;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
 ('c5c5fc7168f85e5d81269ebaa252ad2cb52751e1', '127.0.0.1', 1472204608, '__ci_last_regenerate|i:1472202993;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"LRJQbwug";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"B0cA6os1vgqTYCDR5LdP";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
 ('5d1c2d340231ee9788dccb4194345bb404cb4fb8', '127.0.0.1', 1472203472, '__ci_last_regenerate|i:1472203472;code|s:4:"NIUx";'),
 ('410f4b7aa8484943e278fbeff1d0771fdac85c55', '127.0.0.1', 1472203472, '__ci_last_regenerate|i:1472203472;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"old";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
 ('09fc4dff7dede6ca61f39d3d68f75b94a3aca61e', '127.0.0.1', 1472205396, '__ci_last_regenerate|i:1472204615;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('17032648a3913514a107a13e70ffe6bef48e9340', '127.0.0.1', 1472205442, '__ci_last_regenerate|i:1472205436;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"uxNYS3T2";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"e95Blprtuw32gQb1dPVM";');
+('17032648a3913514a107a13e70ffe6bef48e9340', '127.0.0.1', 1472206638, '__ci_last_regenerate|i:1472205436;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"uxNYS3T2";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"e95Blprtuw32gQb1dPVM";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
+('5ef8b47996ded2482ccd693921bc6fcaac57b049', '127.0.0.1', 1472207369, '__ci_last_regenerate|i:1472206847;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"U6PRlotD";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"e14CJlrXzLPBEj8AIhwR";'),
+('b03d929fbe82ab018537843df8584ffd179346d3', '127.0.0.1', 1472207211, '__ci_last_regenerate|i:1472206928;code|s:4:"pn7M";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472199689";current_price|s:19:"83H8A72u7hNIQIkTC/g";__ci_vars|a:3:{s:13:"current_price";i:1472208206;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"ob5A0xsz";csrfvalue|s:20:"L2AXFlvONmRbU5ugG64w";'),
+('fab59e772053977b21e64212ee25bd8e29492148', '127.0.0.1', 1472207499, '__ci_last_regenerate|i:1472207394;code|s:4:"EDaI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472201129";'),
+('1163468b98318fb1d537ec80540e3f3e87e41654', '127.0.0.1', 1472260860, '__ci_last_regenerate|i:1472260557;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('5ca4facc0ed44f69516486e73827e7cb5b4c3fc8', '127.0.0.1', 1472262125, '__ci_last_regenerate|i:1472260923;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('b11526082a5f8e66ed6f8b11fc31a908f858e06e', '127.0.0.1', 1472277751, '__ci_last_regenerate|i:1472262150;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('dfcb47bda737fbaf1876d3367f2a2d8b3ad24686', '127.0.0.1', 1472263850, '__ci_last_regenerate|i:1472262197;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"K7V4tiHy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"ONyIhU8Ef2CRpjTiF4Ko";'),
+('b0dbcfa1640b880a1164c823ce3dbb193c0e1b6b', '127.0.0.1', 1472265940, '__ci_last_regenerate|i:1472264121;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"jENqwtIy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"DBtygapbSxdO1HJ7LVzm";'),
+('57896e33f4c04da2d03eadd2e907deb4829295d8', '127.0.0.1', 1472267254, '__ci_last_regenerate|i:1472266384;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"ZjYGFRHl";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"TQh38yMupS5coxKFPBVO";'),
+('6f250a8f34840940ecbf3f4633b00cea9c1178ca', '127.0.0.1', 1472267984, '__ci_last_regenerate|i:1472267254;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"7FC3SPA8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"TiEdp4Dn1HafYeWARBq0";'),
+('1958aa015de198c961672a167a1af99b5f85cc9b', '127.0.0.1', 1472269926, '__ci_last_regenerate|i:1472268032;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"xP2YdrDb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"DErOFz1RMa6plXuxJBiL";'),
+('b491eb35d76c5edfef457eb445e67806feb48bbd', '127.0.0.1', 1472269125, '__ci_last_regenerate|i:1472269124;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
+('ee1d35e957475f620e8e0e0195c8205cd5c62acd', '127.0.0.1', 1472269846, '__ci_last_regenerate|i:1472269154;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";current_price|s:19:"832pVbj06UBIQIkTBv8";__ci_vars|a:3:{s:13:"current_price";i:1472271046;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"6ASqtpbe";csrfvalue|s:20:"WxP5vpSTErZO3MhoqXF2";'),
+('de436b8b8fcb9594b7621d95c84bd90bedd76e6f', '127.0.0.1', 1472269792, '__ci_last_regenerate|i:1472269333;code|s:4:"QdPf";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:1:"0";csrfkey|s:8:"V7oTF2ze";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"BZ06WoMUQAFLGb1zOxn3";'),
+('3cc52b24d2954ccc4d52f31e3e13d6d39234da13', '127.0.0.1', 1472278928, '__ci_last_regenerate|i:1472269894;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
+('3d05aab6be05a51273a72100bb621ef760e08c7c', '127.0.0.1', 1472274888, '__ci_last_regenerate|i:1472270087;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
+('9af03a200f807d26a77847386342c20e7eb9918a', '127.0.0.1', 1472275430, '__ci_last_regenerate|i:1472275126;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"old";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
+('4da2af2cbcffa77e59b801b4107eb6d0c0b496bf', '127.0.0.1', 1472275752, '__ci_last_regenerate|i:1472275434;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"4l2JZ5g6";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"dwh2FXQ3Wi0YNRepIyUj";'),
+('8010bbee2a96b1ebe05ec7e758a94d3d241cf12c', '127.0.0.1', 1472276945, '__ci_last_regenerate|i:1472275797;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";success|s:48:"项目已入库标记！编号: SD20155454564511";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('31355580cbe6d8bc2633423a3c8202c0a018947f', '127.0.0.1', 1472279501, '__ci_last_regenerate|i:1472276945;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"gnI0SRCK";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"ZglrftqzVJc5n8P3kCQM";'),
+('9161d8710259322d219539f1673c2e494d777b22', '127.0.0.1', 1472277747, '__ci_last_regenerate|i:1472277376;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";csrfkey|s:8:"K4fUsmFJ";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"DJY5IQmzoTW2ZL1v3k9E";success|s:42:"项目已核实！编号: 1608272541144202";'),
+('63e51ad350946799c059948bec6a4efa37915022', '127.0.0.1', 1472277748, '__ci_last_regenerate|i:1472277747;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";'),
+('71ea5369b33a198dbff6747dbeb752105bf2f452', '127.0.0.1', 1472278418, '__ci_last_regenerate|i:1472278166;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";'),
+('99614ba2e63eb32ae4905be487a33009f6b40d57', '127.0.0.1', 1472278683, '__ci_last_regenerate|i:1472278432;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('35fb532dd99e7b1c71cfb10bbb96ce54b6fcf3bd', '127.0.0.1', 1472278898, '__ci_last_regenerate|i:1472278897;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('3fdbdb6bef9155072687d41c43ed8349196b4376', '127.0.0.1', 1472278971, '__ci_last_regenerate|i:1472278931;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
+('3b74579b048ffaa6a72b3479fc20a2dfc0f3ba24', '127.0.0.1', 1472279556, '__ci_last_regenerate|i:1472279507;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";'),
+('de987c001d401c9774758994edf3f6c58758c83b', '127.0.0.1', 1472280751, '__ci_last_regenerate|i:1472279547;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
+('0e3fde35fdb00d1f4b2ac44636309b5c99bacda4', '127.0.0.1', 1472279663, '__ci_last_regenerate|i:1472279568;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"ZxEXv3DN";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"IOYUCtRqm24sTKwAeBLd";'),
+('8f6188f0d9657dfc020299d368caa672abd5a05e', '127.0.0.1', 1472279762, '__ci_last_regenerate|i:1472279731;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
+('969b81e8956c670ce3d952b56f0ead306208ebbd', '127.0.0.1', 1472280357, '__ci_last_regenerate|i:1472280094;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"8ktJ9Lfb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"qDbQdwP8r5npsKNlLZgW";'),
+('2d2bc3bb9d92dccd715640762fd06ea3ab4ce19e', '127.0.0.1', 1472280757, '__ci_last_regenerate|i:1472280430;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"2IJSxk6G";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"NOC36rUBjusQflGHbaXm";'),
+('2014d7c7e08bfa71ecc99295c6808a64df9eb2ec', '127.0.0.1', 1472281506, '__ci_last_regenerate|i:1472280748;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"Ytq4xPWv";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wOC3mJIijkUlQ0rzMVLR";'),
+('b8125ccc7af17ff6db6ac92a8d18992a0435c8b3', '127.0.0.1', 1472281196, '__ci_last_regenerate|i:1472280856;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"gF0bPrad";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"EosfR1Fz8mjiGXdHq7Un";'),
+('3ad70ee6b065cbf3f730f98ae0a4c2450fa94e3d', '127.0.0.1', 1472281957, '__ci_last_regenerate|i:1472281564;code|s:4:"gMBy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472280529";csrfkey|s:8:"EkOJoBIF";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"E109RPrjikqapCuWOlvc";'),
+('5d7250e82fdcd1b5fac638596f7cf2977356dff7', '127.0.0.1', 1472287946, '__ci_last_regenerate|i:1472281648;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
+('94d877ae2aeb6ee4af7cdbec57c1f63b6aa23410', '127.0.0.1', 1472282385, '__ci_last_regenerate|i:1472281909;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"DKUmwMGk";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"caKHsSrgzI4eOdytECB1";'),
+('a8c6a5e780bdc2a5e419f1c6356a8b37fe1aa746', '127.0.0.1', 1472287957, '__ci_last_regenerate|i:1472282517;code|s:4:"gMBy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472280529";'),
+('a6b64e13da345025821212b49a0d34611125343c', '127.0.0.1', 1472283385, '__ci_last_regenerate|i:1472282617;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"u4clskqR";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"sqwuvnh2HkG15UmYRito";'),
+('97fac9ccec22ab6c70338056912d365ae7678fd5', '127.0.0.1', 1472284617, '__ci_last_regenerate|i:1472283410;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
+('3d67caed8f0f5609de3bd55954660183d160502a', '127.0.0.1', 1472285832, '__ci_last_regenerate|i:1472285575;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
+('0d21fd77bb6df9be6ad8e017ad7c0b04c3b273e4', '127.0.0.1', 1472286352, '__ci_last_regenerate|i:1472286304;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
+('3f4156d20328887e4b09847aa9a4432b502de82d', '127.0.0.1', 1472287317, '__ci_last_regenerate|i:1472287091;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
+('a6dd8fd7f3cbe1151c5c29b6f88c33fe0c107e46', '127.0.0.1', 1472287971, '__ci_last_regenerate|i:1472287950;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"ZMaNsUeu";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"l9dHVeAu0rPvZjwqQDcs";'),
+('ad3a890b757498bd0644e2cc634f6eadb21dc667', '127.0.0.1', 1472288351, '__ci_last_regenerate|i:1472288169;code|s:4:"eIqT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472260756";'),
+('8bb223dbc078e4d66d113b30bc0eddb16a9b7e02', '127.0.0.1', 1472288779, '__ci_last_regenerate|i:1472288558;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";csrfkey|s:8:"vJgbqrzA";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wsQSx97jAdXcJybZWa0O";'),
+('50ce80f6081fe48d5ec1d41f2b176622c3d9f9de', '127.0.0.1', 1472289031, '__ci_last_regenerate|i:1472288662;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";success|s:42:"项目已回收！编号: 1608181371034554";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('751c9f60697a8655566d841bc8af2fbf0051ccd9', '127.0.0.1', 1472290701, '__ci_last_regenerate|i:1472288838;code|s:4:"M5be";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472262219";'),
+('bd8b08cbad0d3cbbbc4ef55ee9741310ce7aa4b2', '127.0.0.1', 1472289668, '__ci_last_regenerate|i:1472289031;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"8d4T5bN9";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"0WBsQGVOlKbjk7ItF1yP";success|s:42:"项目已核实！编号: 1608252211011343";'),
+('b87ba3b9b1318fe177269b2975fdb4e840591c6f', '127.0.0.1', 1472289922, '__ci_last_regenerate|i:1472289668;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
+('dab9e204e74d034967117c6500fae27833df4288', '127.0.0.1', 1472290890, '__ci_last_regenerate|i:1472289936;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";csrfkey|s:8:"lWaQm72p";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"w9zQd7hbO3Zxi8DUGJ6R";'),
+('5b96526e39fcf12d45e1f774ce8ce1c6acdc4b9e', '127.0.0.1', 1472290899, '__ci_last_regenerate|i:1472290246;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"pyx0J3MD";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"UHfrnDlJQ1bGAhWjsmz0";'),
+('2e5fd3f9468aa33fc0691f2ce0c0b0771241aabd', '127.0.0.1', 1472290861, '__ci_last_regenerate|i:1472290701;code|s:4:"M5be";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472262219";csrfkey|s:8:"MQLVxBvK";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"JNUbdYLC8WehIjo2HEcn";');
 
 -- --------------------------------------------------------
 
@@ -1191,17 +1276,17 @@ CREATE TABLE `gd_worker` (
 --
 
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472201129, '127.0.0.1', 1, ''),
+(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472288906, '127.0.0.1', 1, ''),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766'),
-(3, 'jingli-demo1', '经理测试A', NULL, '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472181763, '127.0.0.1', 1, ''),
-(4, 'jingli-demo2', '经理测试B', NULL, '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 0, '127.0.0.1', 1, ''),
-(5, 'dengji-demo1', '登记测试A', NULL, '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1472091043, '127.0.0.1', 1, ''),
-(6, 'dengji-demo2', '录单测试B', NULL, '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 0, '127.0.0.1', 1, ''),
-(7, 'kuguan-demo1', '库管测试A', NULL, '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472201475, '127.0.0.1', 1, ''),
-(8, 'kuguan-demo2', '库管测试B', NULL, '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 0, '127.0.0.1', 1, ''),
-(9, 'jianding-demo1', '鉴定人A', NULL, '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, ''),
-(10, 'jianding-demo2', '鉴定人B', NULL, '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, ''),
-(11, 'all-demo1', '综合账户', NULL, '$2y$08$bnDehV48c1sDsmwPNmmTHOdMMxUE1MHNGItvkmvL7CC2G20doVhcq', NULL, 'all@b.cc', NULL, 1471599856, 1471600479, '127.0.0.1', 1, '');
+(3, 'jingli-demo1', '经理测试A', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472283412, '127.0.0.1', 1, ''),
+(4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1472277405, '127.0.0.1', 1, ''),
+(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1472091043, '127.0.0.1', 1, ''),
+(6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1472269180, '127.0.0.1', 1, ''),
+(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472290701, '127.0.0.1', 1, ''),
+(8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1472280758, '127.0.0.1', 1, ''),
+(9, 'jianding-demo1', '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, ''),
+(10, 'jianding-demo2', '鉴定人B', 'public/images/avatar/user7-128x128.jpg', '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, ''),
+(11, 'all-demo1', '综合账户', 'public/images/avatar/user2-160x160.jpg', '$2y$08$bnDehV48c1sDsmwPNmmTHOdMMxUE1MHNGItvkmvL7CC2G20doVhcq', NULL, 'all@b.cc', NULL, 1471599856, 1471600479, '127.0.0.1', 1, '');
 
 -- --------------------------------------------------------
 
@@ -1553,7 +1638,18 @@ INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtim
 (330, 1, 'SELECT COUNT(*) AS `numrows`\nFROM `gd_golden_today`\nWHERE `updatetime` = 1472192784\nAND `type` = ''Au100g''', 1472196512),
 (331, 1, 'SELECT COUNT(*) AS `numrows`\nFROM `gd_golden_today`\nWHERE `updatetime` = 1472192723\nAND `type` = ''iAu100g''', 1472196512),
 (332, 1, 'SELECT COUNT(*) AS `numrows`\nFROM `gd_golden_today`\nWHERE `updatetime` = 1472192776\nAND `type` = ''iAu99.99''', 1472196512),
-(333, 1, 'SELECT COUNT(*) AS `numrows`\nFROM `gd_golden_today`\nWHERE `updatetime` = 1472125226\nAND `type` = ''iAu99.5''', 1472196512);
+(333, 1, 'SELECT COUNT(*) AS `numrows`\nFROM `gd_golden_today`\nWHERE `updatetime` = 1472125226\nAND `type` = ''iAu99.5''', 1472196512),
+(334, 4, '1608272541144202|1', 1472278195),
+(335, 4, 'active_period|1608272541144202', 1472278195),
+(336, 4, '1608272541144202|1', 1472278325),
+(337, 4, '1608272541144202|UPDATE `gd_project_investing` SET `worker_id` = ''4'', `lasttime` = 1472278325\nWHERE `project_sn` = ''1608272541144202''', 1472278325),
+(338, 4, 'active_period|1608272541144202', 1472278325),
+(339, 4, '1608272541144202|1', 1472278417),
+(340, 4, '1608272541144202|UPDATE `gd_project_investing` SET `start` = ''2016-08-27'', `end` = ''2017-08-26'', `worker_id` = ''4'', `lasttime` = 1472278417\nWHERE `project_sn` = ''1608272541144202''', 1472278417),
+(341, 4, 'active_period|1608272541144202', 1472278417),
+(342, 3, '1608252211011343|1', 1472289668),
+(343, 3, '1608252211011343|UPDATE `gd_project_investing` SET `start` = ''2016-08-25'', `end` = ''2017-08-24'', `worker_id` = ''3'', `lasttime` = 1472289668\nWHERE `project_sn` = ''1608252211011343''', 1472289668),
+(344, 3, 'active_period|1608252211011343', 1472289668);
 
 -- --------------------------------------------------------
 
@@ -1590,7 +1686,7 @@ CREATE TABLE `gd_worker_group` (
 INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`, `status`) VALUES
 (1, 'admin', '管理组', 1, '', 1),
 (2, 'members', '未分组', 0, '2997,2999,3001,3003,2998,3000,3002', 1),
-(3, 'manager', '经理', 1, '5,6,7,8,9,10,11,22,23,24,25,26,27,33,35,30,3,2,1,49,52,51,50,48,55,59,63,67,68,70,78,84,85,93', 1),
+(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,55,59,63,67,68,70,78,84,85,94', 1),
 (4, 'warehouser', '库管', 1, '55,70,82,65,61,87,3,2,1', 1),
 (5, 'appraiser', '鉴定人', 0, '74,73,70,1,3,2', 1),
 (6, 'booker', '登记人', 0, '55,57,70,72,1,3,2,93', 1);
@@ -1686,12 +1782,6 @@ ALTER TABLE `gd_node`
   ADD PRIMARY KEY (`node_id`);
 
 --
--- Indexes for table `gd_project_gold`
---
-ALTER TABLE `gd_project_gold`
-  ADD PRIMARY KEY (`project_id`);
-
---
 -- Indexes for table `gd_project_investing`
 --
 ALTER TABLE `gd_project_investing`
@@ -1720,6 +1810,12 @@ ALTER TABLE `gd_project_recycling`
 --
 ALTER TABLE `gd_project_recycling_status`
   ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  ADD PRIMARY KEY (`project_id`);
 
 --
 -- Indexes for table `gd_sessions`
@@ -1797,27 +1893,22 @@ ALTER TABLE `gd_customer`
 -- 使用表AUTO_INCREMENT `gd_golden_price`
 --
 ALTER TABLE `gd_golden_price`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- 使用表AUTO_INCREMENT `gd_node`
 --
 ALTER TABLE `gd_node`
-  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
---
--- 使用表AUTO_INCREMENT `gd_project_gold`
---
-ALTER TABLE `gd_project_gold`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
 --
 -- 使用表AUTO_INCREMENT `gd_project_investing`
 --
 ALTER TABLE `gd_project_investing`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- 使用表AUTO_INCREMENT `gd_project_investing_history`
 --
 ALTER TABLE `gd_project_investing_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 --
 -- 使用表AUTO_INCREMENT `gd_project_investing_status`
 --
@@ -1834,6 +1925,11 @@ ALTER TABLE `gd_project_recycling`
 ALTER TABLE `gd_project_recycling_status`
   MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
+-- 使用表AUTO_INCREMENT `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- 使用表AUTO_INCREMENT `gd_setting`
 --
 ALTER TABLE `gd_setting`
@@ -1847,7 +1943,7 @@ ALTER TABLE `gd_worker`
 -- 使用表AUTO_INCREMENT `gd_worker_activity`
 --
 ALTER TABLE `gd_worker_activity`
-  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=334;
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=345;
 --
 -- 使用表AUTO_INCREMENT `gd_worker_attempt`
 --

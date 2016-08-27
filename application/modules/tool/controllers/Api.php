@@ -18,7 +18,7 @@ class Api extends XY_Controller {
 			$price = $this->current_price();
 			$price ? json_success(array('current'=>$price)) : json_error();
 		}
-		$data = $this->tool_model->range($mode);
+		$data = $this->tool_model->range_price($mode);
 		$data ? json_success($data) : json_error();
 
 	}

@@ -22,11 +22,7 @@ class Profile extends XY_Controller {
             // redirect them to the login page
             redirect('login', 'refresh');
         }
-        elseif (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-        {
-            // redirect them to the home page because they must be an administrator to view this
-            return show_error('You must be an administrator to view this page.');
-        }
+
         else
         {
             // set the flash data error message if there is one
@@ -98,7 +94,7 @@ class Profile extends XY_Controller {
 
         if (!$this->ion_auth->logged_in() || ( !($this->ion_auth->user()->row()->id == $id)))
         {
-            redirect('auth', 'refresh');
+            redirect('auth/profile', 'refresh');
         }
 
         $user = $this->ion_auth->user($id)->row();
@@ -110,12 +106,12 @@ class Profile extends XY_Controller {
         $this->form_validation->set_rules('email', $this->lang->line('edit_user_validation_lname_label'), 'required');
         $this->form_validation->set_rules('phone', $this->lang->line('edit_user_validation_phone_label'), 'required');
 
-        if (isset($_POST) && !empty($_POST))
+        if($this->input->server('REQUEST_METHOD') == 'POST')
         {
             // do we have a valid request?
             if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
             {
-                show_error($this->lang->line('error_csrf'));
+                json_error(array('msg'=>$this->lang->line('error_csrf')));
             }
 
             if ($this->form_validation->run() === TRUE)
@@ -135,40 +131,15 @@ class Profile extends XY_Controller {
                 // check to see if we are updating the user
                 if($this->ion_auth->update($user->id, $data))
                 {
-                    // redirect them back to the admin page if admin, or to the base url if non admin
-                    $this->session->set_flashdata('message', $this->ion_auth->messages() );
-                    if ($this->ion_auth->is_admin())
-                    {
-                        redirect('auth', 'refresh');
-                    }
-                        redirect('/', 'refresh');
+                    $this->session->set_flashdata('success', $this->ion_auth->messages() );
                 }
                 else
                 {
-                    // redirect them back to the admin page if admin, or to the base url if non admin
-                    $this->session->set_flashdata('message', $this->ion_auth->errors() );
-                    if ($this->ion_auth->is_admin())
-                    {
-                        redirect('auth', 'refresh');
-                    }
-                        redirect('/', 'refresh');
+                    $this->session->set_flashdata('warning', $this->ion_auth->errors() );
                 }
+                redirect('/', 'refresh');
             }
         }
-
-        // display the edit user form
-        $this->data['csrf'] = $this->_get_csrf_nonce();
-
-        // set the flash data error message if there is one
-        $this->data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
-        // pass the user to the view
-        $this->data['user'] = $user;
-        $this->data['groups'] = $groups;
-        $this->data['currentGroups'] = $currentGroups;
-
-
-        $this->_render_page('auth/edit_user', $this->data);
     }
 
     public function avatar()//I think this makes more sense
@@ -178,15 +149,11 @@ class Profile extends XY_Controller {
 
             if ($this->form_validation->run() === TRUE) {
                 if($this->ion_auth->update_avatar( $this->input->post('avatar'))){
-                    json_response(array('code' =>1, 'msg' => '成功'));
+                    $this->session->set_flashdata('success', '头像修改成功' );
+                    json_success();
                 }
-
             }
         }
-        json_response(array('code' =>0, 'msg' => '参数异常'));
+        json_error();
     }
-
-
-
-
 }

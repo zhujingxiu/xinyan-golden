@@ -74,13 +74,8 @@ class Permission extends XY_Controller {
 
             if ($this->form_validation->run() == TRUE)
             {
-                $res = $this->permission_model->saveNode($this->input->post());
-                if($res){
-                    $data = array('status'=>1,'msg'=>'成功');
-                }else{
-                    $data = array('status'=>0,'msg'=>'错误');
-                }
-                json_response($data);
+                $this->permission_model->saveNode($this->input->post());
+                json_success();
             }else {
 
                 $errors = array(

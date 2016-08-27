@@ -40,6 +40,20 @@
                     <div class="box-body">
                         <table id="project-list" class="table table-bordered table-hover">
                             <thead>
+                                <tr>
+                                    <th>状态</th>
+                                    <th>编号</th>
+                                    <th>客户</th>
+                                    <th>金价</th>
+                                    <th>重量 （克）</th>
+                                    <th>周期</th>
+                                    <th>金额 （元）</th>
+                                    <th>操作人</th>
+                                    <th>操作时间</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tfoot>
                             <tr>
                                 <th>状态</th>
                                 <th>编号</th>
@@ -52,8 +66,7 @@
                                 <th>操作时间</th>
                                 <th></th>
                             </tr>
-                            </thead>
-
+                            </tfoot>
                         </table>
                     </div>
                     <!-- /.box-body -->
@@ -72,6 +85,7 @@
             inv.render_update();
             inv.render_checking();
             inv.render_confirming();
-            inv.render_refused();
+            inv.render_cancle();
+            inv.render_hidden();
         })
     </script>

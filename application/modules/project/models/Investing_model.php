@@ -8,6 +8,7 @@ class Investing_model extends XY_Model{
     private $history_table = 'project_investing_history';
     private $worker_table = 'worker';
     private $customer_table = 'customer';
+    private $stock_table = 'project_stock';
 
     public function project($sn)
     {
@@ -22,9 +23,10 @@ class Investing_model extends XY_Model{
     public function projects($data=array())
     {
         if(is_array($data) && isset($data['where'])){
+
             $this->db->where($data['where']);
         }
-
+        $this->db->where(array('is_del'=>0));
         $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
@@ -93,6 +95,9 @@ class Investing_model extends XY_Model{
             if(isset($data['realname'])){
                 $fileds['realname'] = $data['realname'];
             }
+            if(isset($data['idnumber'])){
+                $fileds['idnumber'] = $data['idnumber'];
+            }
             if(isset($data['phone'])){
                 $fileds['phone'] = $data['phone'];
                 $fileds['customer_id'] = $this->match_customer(array('phone'=>$data['phone']));
@@ -120,10 +125,11 @@ class Investing_model extends XY_Model{
             if(isset($data['note'])){
                 $fileds['note'] = $data['note'];
             }
+            $fileds['status_id'] = $this->config->item('investing_initial');
             $fileds['worker_id'] = $this->ion_auth->get_user_id();
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            $this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
+            //$this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
             $history_id = $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
             if ($this->db->trans_status() === FALSE)
             {
@@ -186,6 +192,11 @@ class Investing_model extends XY_Model{
             }else{
                 $affected = $this->db->affected_rows();
             }
+
+            if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
+                $this->{$data['call_func']}($data['call_param']);
+                $this->activity($data['call_func'].'|'.$data['call_param']);
+            }
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
@@ -200,6 +211,40 @@ class Investing_model extends XY_Model{
             return $affected;
         }
         return FALSE;
+    }
+
+    public function active_period($project_sn)
+    {
+        $info = $this->project($project_sn);$this->activity($project_sn.'|'.$info->num_rows());
+        if($info->num_rows()) {
+            $project = $info->row_array();
+            $fileds['start'] = date('Y-m-d',$project['addtime']);
+            $start = strtotime($fileds['start']);
+            $fileds['end'] = date('Y-m-d',mktime(0,0,0,date('m',$start)+(int)$project['period'],date('d',$start)-1,date('Y',$start)));
+            $fileds['worker_id'] = $this->ion_auth->get_user_id();
+            $fileds['lasttime'] = time();
+            $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
+            $this->activity($project['project_sn'].'|'.$this->db->last_query());
+            return $this->db->affected_rows();
+        }
+        return FALSE;
+    }
+
+    public function in_stock($data=array())
+    {
+        $this->db->insert($this->stock_table,array(
+            'project_sn' => empty($data['project_sn']) ? '' : $data['project_sn'],
+            'title' => empty($data['title']) ? '' : $data['title'],
+            'info' => empty($data['info']) ? '' : $data['info'],
+            'note' => empty($data['note']) ? '' : $data['note'],
+            'weight' => $data['weight']*(-1.00),
+            'status' => 1,
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time(),
+            'lasttime' => time(),
+        ));
+
+        return $this->db->insert_id();
     }
 
     public function history($project_id,$status_id,$note='',$request=''){
@@ -219,7 +264,7 @@ class Investing_model extends XY_Model{
         $project = $this->project($project_sn);
         if($project->num_rows()){
             $info = $project->row_array();
-            $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username', false);
+            $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username,w.avatar', false);
             $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc');
             $this->db->join($this->status_table.' AS pis','h.status_id = pis.status_id');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
@@ -230,5 +275,10 @@ class Investing_model extends XY_Model{
             return $result->num_rows() ? $result->result_array() : FALSE;
         }
         return FALSE;
+    }
+
+    public function hidden($project_sn){
+        $this->db->update($this->table,array('is_del'=>1,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_sn'=>$project_sn));
+        return $this->db->affected_rows();
     }
 }

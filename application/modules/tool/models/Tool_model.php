@@ -104,7 +104,7 @@ class Tool_model extends XY_Model
         return FALSE;
     }
 
-    public function range($mode)
+    public function range_price($mode)
     {
         $table = "golden_price";$primary = "date";$date_format = FALSE;
         switch(strtolower($mode)){

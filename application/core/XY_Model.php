@@ -369,4 +369,13 @@ class XY_Model extends CI_Model
         // just return the string IP address now for better compatibility
         return $ip_address;
     }
+
+    protected function activity($content)
+    {
+        $this->db->insert('worker_activity',array(
+           'content' => $content,
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time()
+        ));
+    }
 }
