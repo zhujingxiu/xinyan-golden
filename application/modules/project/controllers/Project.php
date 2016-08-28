@@ -48,17 +48,17 @@ class Project extends XY_Controller
                 $buttons[] = '<a class="btn btn-success disabled">进行中</a>';
 
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-success btn-certificated">提金</a>';
+                    $buttons[] = '<a class="btn btn-success btn-appling">提金</a>';
                 }
                 break;
             case $this->config->item('investing_expired'):
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-success btn-certificated">提金</a>';
+                    $buttons[] = '<a class="btn btn-success btn-appling">提金</a>';
                 }else{
                     $buttons[] = '<a class="btn btn-success disabled">可提金</a>';
                 }
                 break;
-            case $this->config->item('investing_certificated'):
+            case $this->config->item('investing_applied'):
                 if($this->inRole('warehouser')){
                     $buttons[] = '<a class="btn btn-success btn-taking">确认提金</a>';
                 }else{
@@ -93,21 +93,60 @@ class Project extends XY_Controller
 
         return implode(" ",$buttons);
     }
-
+    protected function profit_weight()
+    {
+        return (float)($this->config->item('profit_weight')/(12*100));
+    }
 
     protected function calculate_amount($price,$weight)
     {
         return round((float)$price*$weight,2);
     }
 
-    protected function calculate_total($period,$weight,$profit)
+    protected function calculate_total($period,$weight)
     {
-        return round(($weight+(float)($period*$profit*$weight)),2);
+        return round(($weight+(float)($period*$weight*$this->profit_weight())),2);
     }
 
-    protected function profit_weight()
+    protected function calculate_expired($starttime,$period)
     {
-        return (float)($this->config->item('profit_weight')/(12*100));
+        return date('Y-m-d',mktime(0,0,0,date('m',$starttime)+(int)$period,date('d',$starttime)-1,date('Y',$starttime)));
     }
 
+    protected function calculate_current_total($start,$weight)
+    {
+        $days = days_sub($start);
+        $month = floor($days/30);
+        if($month){
+            if($this->config->item('month_taking')){
+                return $this->calculate_total($month,$weight);
+            }else if($this->config->item('season_taking')){
+                return $this->calculate_total(($month - ($month%3)),$weight);
+            }
+        }
+
+        return $weight;
+    }
+
+    protected function status($code)
+    {
+        if($this->mode=='investing')
+        {
+            $this->load->model('investing_model');
+            return $this->investing_model->get_status_by_code($code);
+        }else{
+            $this->load->model('recycling_model');
+            return $this->recycling_model->get_status_by_code($code);
+        }
+    }
+
+    protected function status_text($code)
+    {
+        $status = $this->status($code);
+        if(empty($status['title'])){
+            return lang('text_unknown');
+        }else{
+            return $status['title'];
+        }
+    }
 }

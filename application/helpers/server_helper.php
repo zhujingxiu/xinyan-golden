@@ -266,6 +266,18 @@ function str_truncate($string, $length = 60, $etc = '...', $count_words = true) 
 	return join ( "", array_slice ( $info [0], 0, $length ) ) . $etc;
 }
 
+function days_sub($start,$end=FALSE){
+	$starttime = strtotime($start);
+	if($end){
+		$endtime = strtotime($end);
+
+	}else{
+		$endtime = time();
+	}
+
+	return round(($endtime - $starttime)/(60*60*24));
+}
+
 function format_time($time,$simple=false){
 	if(!is_numeric($time)){
 		$time = strtotime($time);

@@ -111,9 +111,7 @@
             <div class="col-sm-12">
                 <div class="form-group clearfix">
                     <?php if(false): ?><script type="text/plain" id="editor" style="height:120px;margin:0px 20px;"></script><?php endif ?>
-                    <textarea class="form-control" name="editorValue" placeholder="填写项目备注">
-                        <?php echo trim(strip_tags(htmlspecialchars_decode($note)));?>
-                    </textarea>
+                    <textarea class="form-control" name="editorValue" placeholder="填写项目备注"><?php echo trim(strip_tags(htmlspecialchars_decode($note)));?></textarea>
                 </div>
             </div>
         </fieldset>

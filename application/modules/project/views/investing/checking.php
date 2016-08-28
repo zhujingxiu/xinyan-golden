@@ -6,7 +6,7 @@
  * Time: 20:11
  */
 ?>
-<div id="form-result" class="do-result"></div>
+
 <div class="col-sm-12" style="padding-top:10px; ">
 	<?php echo form_open('/project/investing/checked',array('id' => "form-checking", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
@@ -20,15 +20,13 @@
                     <span class="bg-green"> 登记信息 </span>
                 </li>
                 <li>
-                    <i class="fa fa-user bg-aqua"></i>
+                    <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
                         <div class="col-sm-4">
                             <div class="form-group clearfix">
-
                                 <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">预购周期</span>
-                                    <span class="form-control"><?php echo $period ?>个月</span>
-
+                                    <span class="input-group-addon">实时金价</span>
+                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price;?>元/克</span>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
@@ -39,35 +37,38 @@
                             </div>
                         </div>
                         <div class="col-sm-4">
-
                             <div class="form-group clearfix">
                                 <div class="input-group col-sm-11">
                                     <span class="input-group-addon">应付金额</span>
-                                    <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?></span>
-                                    <span class="input-group-addon">元</span>
+                                    <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?>元</span>
                                 </div>
                             </div>
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">预购周期</span>
+                                    <span class="form-control"><?php echo $period ?>个月</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
                             <div class="form-group clearfix">
                                 <div class="input-group col-sm-11">
                                     <span class="input-group-addon">预期收益</span>
                                     <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $total ?>克</span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
                             <div class="form-group clearfix">
-                                <div class="input-group col-sm-12">
-                                    <span class="input-group-addon">实时金价</span>
-                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price;?>元/克</span>
+                                <div class="input-group col-sm-11">
+                                    <span class="form-control"><?php echo $start ?></span>
+                                    <span class="input-group-addon">-</span>
+                                    <span class="form-control"><?php echo $end ?></span>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </li>
                 <li>
-                    <i class="fa fa-user bg-aqua"></i>
+                    <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
                         <div class="col-sm-4">
                             <div class="form-group clearfix">
@@ -76,7 +77,6 @@
                                     <span class="form-control"><?php echo $realname;?></span>
                                 </div>
                             </div>
-
                             <div class="form-group clearfix">
                                 <div class="input-group col-sm-11">
                                     <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
@@ -86,7 +86,6 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group clearfix">
-
                                 <div class="input-group col-sm-11">
                                     <span class="input-group-addon">手机号码</span>
                                     <span class="form-control"><?php echo $phone?></span>
@@ -108,7 +107,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </li>
                 <li class="time-label">
@@ -117,18 +115,15 @@
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
                     <div class="timeline-item">
-                        <div class="timeline-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">客户手机</span>
-                                <input type="text" class="form-control" name="phone" placeholder="确认客户手机">
-                                <span class="input-group-addon">实收金额</span>
-                                <input type="text" name="amount" class="form-control" placeholder="确认实收金额">
-                                <span class="input-group-addon">元</span>
-                            </div>
-                            <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
-                            <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
+                        <div class="input-group">
+                            <span class="input-group-addon">客户手机</span>
+                            <input type="text" class="form-control" name="phone" placeholder="确认客户手机">
+                            <span class="input-group-addon">实收金额</span>
+                            <input type="text" name="amount" class="form-control" placeholder="确认实收金额">
+                            <span class="input-group-addon">元</span>
                         </div>
-
+                        <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
+                        <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
                     </div>
                 </li>
                 <li class="time-label">
@@ -140,10 +135,9 @@
                     <i class="fa fa-user bg-aqua"></i>
                     <div class="timeline-item">
                         <span class="time">
-                                    <?php echo $item['status']?>
+                            <?php echo $item['status']?>
                             <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
-                                </span>
-
+                        </span>
                         <h3 class="timeline-header no-border">
                             <a href="javascript:;" class="liveim">
                                 <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
@@ -165,7 +159,6 @@
 </div>
 
 <script type="text/javascript">
-
     $(function () {
         $('#timeline-box').slimScroll({
             height: '560px'
@@ -181,19 +174,16 @@
                 label.remove();
             },
             errorPlacement : function(error, element) {
-
                 if(error.text().length>0)
                     layer.tips(error.text(), element,{tips: 1});
             }
         });
-
         $("#form-checking").validate({
             rules : {
                 amount : {
                     required : true,
                     equalTo: '#confirm_amount'
                 },
-
                 phone: {
                     required : true,
                     isMobile :true,
@@ -201,7 +191,6 @@
                 },
             },
             messages : {
-
                 amount : {
                     required : '请输入实收金额',
                     equalTo: "与该项目实收金额不相符"
@@ -216,6 +205,9 @@
             submitHandler : function(form){
                 $(form).ajaxSubmit({
                         dataType:'json',
+                        beforeSubmit: function () {
+                            layer.load()
+                        },
                         success: function (json) {
                             if(json.code==1){
                                 location.reload()
@@ -237,7 +229,4 @@
 //        ]
 //    });
 //    editor.render('editor');
-
-
-
 </script>

@@ -78,19 +78,24 @@ define(function(require, exports, module) {
         $.get('/auth/login/price',{r:Math.random()},function(json){
 
             if(json.code==1)
-            exports.renderEchart('gold-price-charts','今日黄金价格走势图',json.time,json.price);
+            exports.renderEchart('gold-price-charts',json.title,json.subtitle,json.time,json.price);
         },'json')
 
     }
 
-    exports.renderEchart = function (el,title,dataType,valType){
+    exports.renderEchart = function (el,title,subtext,dataType,valType){
         var myChart = echarts.init(document.getElementById(el))
         var option = {
             title : {
                 text:title,// '黄金价格走势图',
+                subtext:subtext,
                 textStyle:{
                     fontSize: 20,
                     //color: '#79654e'
+                },
+                //itemGap:,
+                subtextStyle:{
+                    color: '#79654e'
                 }
             },
             grid:{

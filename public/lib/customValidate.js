@@ -82,6 +82,13 @@ define(function (require,exports,modules) {
             return this.optional(element) || value<=0;
         }, "浮点数必须小于或等于0");
 
+        // 判断浮点数value是否小于或等于0
+        jQuery.validator.addMethod("maxFloat", function(value, element,param) {
+            value=parseFloat(value);
+            var _maxVal=parseFloat(param);
+            return this.optional(element) || value<=_maxVal;
+        }, "浮点数必须小于或等于{0}");
+
         // 判断浮点型
         jQuery.validator.addMethod("isFloat", function(value, element) {
             return this.optional(element) || /^[-\+]?\d+(\.\d+)?$/.test(value);

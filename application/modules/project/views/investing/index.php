@@ -85,6 +85,7 @@
             inv.render_update();
             inv.render_checking();
             inv.render_confirming();
+            inv.render_booking();
             inv.render_cancle();
             inv.render_hidden();
         })

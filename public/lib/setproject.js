@@ -113,7 +113,6 @@ define(function(require,exports,module){
 
             //提交
             submitHandler: function (form) {
-
                 $(form).ajaxSubmit({
                     dataType: 'json',
                     success: function (json) {
@@ -179,10 +178,15 @@ define(function(require,exports,module){
     $('.setting-project-form .form-control').bind('change', function () {
         exports.setting_save($(this).attr('name'),$(this).val(),$(this));
     });
-    $('.setting-project-form .input-group input[type="checkbox"],.setting-project-form .input-group input[type="radio"]').bind('click', function () {
-        console.log($(this).val());
-        console.log($(this));
-        //exports.setting_save($(this).attr('name'),$(this).val(),$(this));
+    $('.setting-project-form .input-group input[type="checkbox"]').bind('click', function () {
+        var _name = $(this).attr('name');
+        var _value = [];
+        $('input[name="'+_name+'"]').each(function() {
+            if ($(this).is(':checked') == true) {
+                _value.push($(this).val());
+            }
+        });
+        exports.setting_save(_name,_value.join(),$(this).parent());
     })
     exports.setting_save = function (code,value,el) {
 

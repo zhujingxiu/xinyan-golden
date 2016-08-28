@@ -9,6 +9,7 @@ class Investing_model extends XY_Model{
     private $worker_table = 'worker';
     private $customer_table = 'customer';
     private $stock_table = 'project_stock';
+    private $apply_table = 'project_apply';
 
     public function project($sn)
     {
@@ -23,7 +24,6 @@ class Investing_model extends XY_Model{
     public function projects($data=array())
     {
         if(is_array($data) && isset($data['where'])){
-
             $this->db->where($data['where']);
         }
         $this->db->where(array('is_del'=>0));
@@ -195,7 +195,6 @@ class Investing_model extends XY_Model{
 
             if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
                 $this->{$data['call_func']}($data['call_param']);
-                $this->activity($data['call_func'].'|'.$data['call_param']);
             }
             if ($this->db->trans_status() === FALSE)
             {
@@ -213,9 +212,13 @@ class Investing_model extends XY_Model{
         return FALSE;
     }
 
+    public function applied($project_id){
+        return $this->db->get_where($this->apply_table,array('project_id'=>$project_id,'status'=>1,'mode'=>'taking'));
+    }
+
     public function active_period($project_sn)
     {
-        $info = $this->project($project_sn);$this->activity($project_sn.'|'.$info->num_rows());
+        $info = $this->project($project_sn);
         if($info->num_rows()) {
             $project = $info->row_array();
             $fileds['start'] = date('Y-m-d',$project['addtime']);
@@ -224,7 +227,6 @@ class Investing_model extends XY_Model{
             $fileds['worker_id'] = $this->ion_auth->get_user_id();
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            $this->activity($project['project_sn'].'|'.$this->db->last_query());
             return $this->db->affected_rows();
         }
         return FALSE;
@@ -245,6 +247,26 @@ class Investing_model extends XY_Model{
         ));
 
         return $this->db->insert_id();
+    }
+
+    public function appling_weight($data=array())
+    {
+        if(empty($data['project_sn'])) return FALSE;
+        $project = $this->project($data['project_sn']);
+        if($project->num_rows()){
+            $info = $project->row_array();
+            $this->db->insert($this->apply_table,array(
+                'project_id' => $info['project_id'],
+                'weight' => (float)$data['weight'],
+                'mode' => 'taking',
+                'note' => $data['note'],
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            ));
+            return $this->db->insert_id();
+        }
+        return FALSE;
     }
 
     public function history($project_id,$status_id,$note='',$request=''){
@@ -280,5 +302,11 @@ class Investing_model extends XY_Model{
     public function hidden($project_sn){
         $this->db->update($this->table,array('is_del'=>1,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_sn'=>$project_sn));
         return $this->db->affected_rows();
+    }
+
+    public function get_status_by_code($code)
+    {
+        $query = $this->db->where(array('code'=>strtolower($code)))->from($this->status_table)->get()->limit(1);
+        return $query->num_rows() ? $query->row_array() : FALSE;
     }
 }

@@ -6,16 +6,14 @@
  * Time: 17:15
  */
 ?>
-<div id="form-result" class="do-result"></div>
+
 <div class="col-sm-12" style="padding-top:10px; ">
     <?php echo form_open('/project/investing/confirmed',array('id' => "form-confirming", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
     <input type="hidden" name="_weight" id="confirm_weight" value="<?php echo $weight;?>">
     <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">
     <?php echo form_hidden($csrf)?>
-
     <div class="col-sm-12">
-
         <div class="form-group">
             <ul class="timeline" id="timeline-box">
                 <li class="time-label">
@@ -24,45 +22,46 @@
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
-                        <div class="timeline-body">
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">预购周期</span>
-                                        <span class="form-control"><?php echo $period ?>个月</span>
-
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">预购重量</span>
-                                        <span class="form-control"><?php echo $weight;?> 克</span>
-                                    </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">实时金价</span>
+                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price;?>元/克</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">实时金价</span>
-                                        <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price;?>元/克</span>
-                                    </div>
-                                </div>
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">预期收益</span>
-                                        <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $total ?>克</span>
-                                    </div>
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">预购重量</span>
+                                    <span class="form-control"><?php echo $weight;?> 克</span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-12">
-                                        <span class="input-group-addon">应付金额</span>
-                                        <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?></span>
-                                        <span class="input-group-addon">元</span>
-                                    </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">应付金额</span>
+                                    <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?>元</span>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">预购周期</span>
+                                    <span class="form-control"><?php echo $period ?>个月</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">预期收益</span>
+                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $total ?>克</span>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="form-control"><?php echo $start ?></span>
+                                    <span class="input-group-addon">-</span>
+                                    <span class="form-control"><?php echo $end ?></span>
                                 </div>
                             </div>
                         </div>
@@ -71,46 +70,39 @@
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
-                        <div class="timeline-body">
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">客户姓名</span>
-                                        <span class="form-control"><?php echo $realname;?></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
-                                        <span class="form-control"><?php echo $referrer;?></span>
-                                    </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">客户姓名</span>
+                                    <span class="form-control"><?php echo $realname;?></span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">手机号码</span>
-                                        <span class="form-control"><?php echo $phone?></span>
-                                    </div>
-                                </div>
-
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">微信账号</span>
-                                        <span class="form-control"><?php echo $wechat ?></span>
-                                    </div>
-
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
+                                    <span class="form-control"><?php echo $referrer;?></span>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-12">
-                                        <span class="input-group-addon">身份证号</span>
-                                        <span class="form-control"><?php echo $idnumber;?></span>
-                                    </div>
-
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">手机号码</span>
+                                    <span class="form-control"><?php echo $phone?></span>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-11">
+                                    <span class="input-group-addon">微信账号</span>
+                                    <span class="form-control"><?php echo $wechat ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group clearfix">
+                                <div class="input-group col-sm-12">
+                                    <span class="input-group-addon">身份证号</span>
+                                    <span class="form-control"><?php echo $idnumber;?></span>
                                 </div>
                             </div>
                         </div>
@@ -122,18 +114,15 @@
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
                     <div class="timeline-item">
-                        <div class="timeline-body">
-                            <div class="input-group">
-                                <span class="input-group-addon">客户手机</span>
-                                <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
-                                <span class="input-group-addon">确认重量</span>
-                                <input class="form-control" name="weight" type="text" placeholder="确认客户的预购重量">
-                                <span class="input-group-addon">克</span>
-                            </div>
-                            <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
-                            <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
+                        <div class="input-group">
+                            <span class="input-group-addon">客户手机</span>
+                            <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
+                            <span class="input-group-addon">确认重量</span>
+                            <input class="form-control" name="weight" type="text" placeholder="确认客户的预购重量">
+                            <span class="input-group-addon">克</span>
                         </div>
-
+                        <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
+                        <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
                     </div>
                 </li>
                 <li class="time-label">
@@ -145,10 +134,9 @@
                     <i class="fa fa-user bg-aqua"></i>
                     <div class="timeline-item">
                         <span class="time">
-                                    <?php echo $item['status']?>
+                            <?php echo $item['status']?>
                             <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
-                                </span>
-
+                        </span>
                         <h3 class="timeline-header no-border">
                             <a href="javascript:;" class="liveim">
                                 <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
@@ -165,14 +153,11 @@
                 <?php endif ?>
             </ul>
         </div>
-
     </div>
-
     <?php echo form_close();?>
 </div>
 
 <script type="text/javascript">
-
     $(function () {
         $('#timeline-box').slimScroll({
             height: '560px'
@@ -188,6 +173,7 @@
                 label.remove();
             },
             errorPlacement : function(error, element) {
+                console.log(error);console.log(element);
                 if(error.text().length>0)
                 layer.tips(error.text(), element,{tips: 1});
             }
@@ -199,7 +185,6 @@
                     required : true,
                     equalTo: '#confirm_weight'
                 },
-
                 phone: {
                     required : true,
                     isMobile :true,
@@ -207,7 +192,6 @@
                 },
             },
             messages : {
-
                 weight : {
                     required : '请输入购入重量',
                     equalTo: "与该项目预购重量不相符"
@@ -221,17 +205,18 @@
             //提交
             submitHandler : function(form){
                 $(form).ajaxSubmit({
-                        dataType:'json',
-                        success: function (json) {
-                            if(json.code==1){
-                                location.reload()
-                            }
+                    dataType:'json',
+                    beforeSubmit:function(){
+                        layer.load();
+                    },
+                    success: function (json) {
+                        if(json.code==1){
+                            location.reload()
                         }
                     }
-                );
+                });
             }
         });
-
     });
 //    var editor =  new UE.ui.Editor({
 //        toolbars: [
@@ -243,7 +228,4 @@
 //        ]
 //    });
 //    editor.render('editor');
-
-
-
 </script>

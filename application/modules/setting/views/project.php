@@ -185,6 +185,18 @@
                                                 </div>
                                             </div>
                                             <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">申请提金</label>
+                                                <div class="col-sm-4">
+                                                    <select name="investing_appling" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($investing_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['investing_appling']) && $setting['investing_appling']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
                                                 <label for="" class="control-label col-sm-2">项目完结</label>
                                                 <div class="col-sm-4">
                                                     <select name="investing_finished" class="form-control">
@@ -197,18 +209,7 @@
                                                         <?php endforeach?>
                                                     </select>
                                                 </div>
-                                                <label for="" class="control-label col-sm-2">库存不足</label>
-                                                <div class="col-sm-4">
-                                                    <select name="investing_lacking" class="form-control">
-                                                        <option value="0">--请选择--</option>
-                                                        <?php foreach($investing_statuses as $item): ?>
-                                                            <option value="<?php echo $item['status_id']?>"
-                                                                <?php echo (!empty($setting['investing_lacking']) && $setting['investing_lacking']== $item['status_id']) ? 'selected' : ''?>>
-                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                            </option>
-                                                        <?php endforeach?>
-                                                    </select>
-                                                </div>
+
                                             </div>
                                             <div class="form-group ">
                                                 <label for="" class="control-label col-sm-2">项目被拒绝</label>
@@ -362,7 +363,7 @@
                                 <fieldset>
                                     <legend>通用参数</legend>
                                     <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
 
                                         <div class="form-group clearfix">
                                             <label for="" class="control-label col-sm-3 text-right">生金克数 (g)
@@ -373,16 +374,25 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
+                                            <label for="" class="control-label col-sm-3 text-right">月取金
+                                                <span class="help-block">支持按月取金</span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <label><input type="checkbox" name="month_taking" value="1" <?php echo !empty($setting['month_taking']) ? 'checked' : '' ?>/>是</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
                                             <label for="" class="control-label col-sm-3 text-right">季度取金
                                                 <span class="help-block">支持按季度取金</span>
                                             </label>
                                             <div class="col-sm-9">
-                                                 <div class="input-group">
-                                                     <label><input type="checkbox" name="season" value="1"/>是</label>
-                                                 </div>
+                                                <div class="input-group">
+                                                    <label><input type="checkbox" name="season_taking" value="1" <?php echo !empty($setting['season_taking']) ? 'checked' : '' ?>/>是</label>
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="col-sm-6">
 

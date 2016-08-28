@@ -4,7 +4,6 @@
 window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
 
-
     exports.render_list = function() {
         require('datatables')
         require('datatables.bs');
@@ -40,17 +39,16 @@ define(function(require,exports,modules){
         });
     }
 
-    exports.render_appling = function(){
+    exports.render_booking = function(){
         $('#btn-new').bind('click',function() {
             require('layer');
             require('ajaxSubmit');
-
-            require('ueditor/ueditor.config');
-            require('ueditor');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
 
-            $.get('/project/investing/applied', {project: false}, function (json) {
+            $.get('/project/investing/booked', {project: false}, function (json) {
                 if (json.code == 1) {
                     layer.open({
                         type: 1,
@@ -61,8 +59,7 @@ define(function(require,exports,modules){
                         btn: ['保存', '取消'],
                         content: json.msg,
                         yes: function (index, layero) {
-                            $('#form-appling').submit();
-                            $(this).addClass('disabled').text('正在提交...');
+                            $('#form-booking').submit();
                         }
                     });
                 } else {
@@ -78,11 +75,10 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-update','click', function () {
             require('layer');
             require('ajaxSubmit');
-            require('ueditor/ueditor.config');
-            require('ueditor');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-
             $.get('/project/investing/update', {project: $(this).parent().parent().attr('id')}, function (json) {
                 if (json.code == 1) {
                     layer.open({
@@ -95,7 +91,6 @@ define(function(require,exports,modules){
                         content: json.msg,
                         yes: function (index, layero) {
                             $('#form-update').submit();
-                            $(this).addClass('disabled').text('正在提交...');
                         }
                     });
                 } else {
@@ -112,8 +107,8 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-checking','click', function () {
             require('layer');
             require('ajaxSubmit');
-            require('ueditor/ueditor.config');
-            require('ueditor');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('slimscroll');
@@ -126,15 +121,14 @@ define(function(require,exports,modules){
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['通过', '驳回'],
+                        btn: ['核实', '驳回'],
                         content: json.msg ,
                         yes: function(index, layero){
                             $('#form-checking').submit();
-                            $(this).addClass('disabled').text('正在提交...');
                         },
                         btn2 : function(index, layero){
                             exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 项目: '+sn);
-                            console.log(layero);
+
                             return false
                         }
                     });
@@ -150,8 +144,8 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-confirming','click', function () {
             require('layer');
             require('ajaxSubmit');
-            require('ueditor/ueditor.config');
-            require('ueditor');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('slimscroll');
@@ -168,7 +162,6 @@ define(function(require,exports,modules){
                         content: json.msg ,
                         yes: function(index, layero){
                             $('#form-confirming').submit();
-                            $(this).addClass('disabled').text('正在提交...');
                         }
                     });
                 }else{
@@ -176,17 +169,49 @@ define(function(require,exports,modules){
                     l.render_message(json.msg,json.title);
                 }
             },'json');
-        })
+        });
+    };
+
+    exports.render_appling = function () {
+        $('#project-list').delegate('.btn-appling','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/applied', {project:sn}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['确认标记', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-appling').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
     }
 
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 项目: '+sn);
+            exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 '+sn);
         });
         $('#project-list').delegate('.btn-terminated','click',function(){
             var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/investing/terminated','请填写终止原因 项目: '+sn);
+            exports.do_cancle(sn,'/project/investing/terminated','请填写终止原因 '+sn);
         });
     }
 
@@ -194,27 +219,30 @@ define(function(require,exports,modules){
         require('layer');
         layer.prompt({
             formType: 2,
-            value: '',
-            title: title,
-            minlength:10,
+            placeholder: '内容必须包含该项目的编号',
+            title: title
         }, function(value, index, elem){
-            $.ajax({
-                type:'post',
-                url:url,
-                data:{project_sn:sn,value:value},
-                dataType:'json',
-                beforeSubmit:function(){
-                    $(elem).addClass('disabled').text('正在提交...');
-                },
-                success:function(json){
-                    if(json.code==1){
-                        location.reload();
-                    }else{
-                        var l = require('layout');
-                        l.render_message(json.msg,json.title);
+            if(value.length >= 10) {
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: {project_sn: sn, value: value},
+                    dataType: 'json',
+                    beforeSubmit: function () {
+                        layer.load(1);
+                    },
+                    success: function (json) {
+                        if (json.code == 1) {
+                            location.reload();
+                        } else {
+                            var l = require('layout');
+                            l.render_message(json.msg, json.title);
+                        }
                     }
-                }
-            })
+                })
+            }else{
+                layer.tips('内容长度不小于10个字符', elem,{tips: 1});
+            }
 
         });
     }
@@ -240,4 +268,6 @@ define(function(require,exports,modules){
             });
         });
     }
+
+
 })

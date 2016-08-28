@@ -19,6 +19,7 @@ class Login extends MX_Controller {
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->lang->load('auth');
+        $this->lang->load('default');
     }
 
     function index(){
@@ -75,9 +76,16 @@ class Login extends MX_Controller {
     public function price()
     {
         $this->load->model('tool/tool_model');
-        $data = $this->tool_model->range_price('day');
+        if(date('w') ==0 || date('w') ==6){
+            $data = $this->tool_model->range_price('month');
+            $data['title'] = $this->lang->line('text_price_month','default');
+            $data['subtitle'] = $this->lang->line('text_price_desc','default');
+        }else{
+            $data = $this->tool_model->range_price('day');
+            $data['title'] = $this->lang->line('text_price_today','default');
+            $data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice().$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
+        }
         if($data){
-            $data['last'] = $this->tool_model->lastprice();
             json_success($data);
         }
         json_error();
