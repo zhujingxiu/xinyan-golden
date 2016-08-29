@@ -16,7 +16,10 @@ define(function(require,exports,modules){
                 "serverSide": true,
                 "ajax": {
                     url: '/project/investing/index',
-                    data: {draw: 1},
+                    data: {list: 1},
+                    dataSrc: function (json) {
+                        return json.data
+                    },
                     type: 'get'
                 },
                 "columns": [

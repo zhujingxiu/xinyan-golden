@@ -18,7 +18,7 @@ class Investing extends Project {
 		$data['success'] = $this->session->flashdata('success');
 		$data['warning'] = $this->session->flashdata('warning');
 
-		if($this->input->get('draw')){
+		if($this->input->get('list')){
 			json_response($this->_list($this->input->get()));
 		}
 		$this->layout->view('investing/index',$data);
@@ -69,7 +69,7 @@ class Investing extends Project {
 			}
 		}
 		return array(
-			'draw' 				=> 1,
+			'draw' 				=> $this->input->get('draw'),
 			'recordsTotal' 		=> $total,
 			'recordsFiltered' 	=> $total,
 			'data' => $rows
