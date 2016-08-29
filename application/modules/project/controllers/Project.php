@@ -24,69 +24,63 @@ class Project extends XY_Controller
         switch((int)$status)
         {
             case $this->config->item('investing_initial'):
+                //$buttons[] = lang('label_booked');
                 if($this->inRole('manager')) {
-                    $buttons[] = '<a class="btn btn-primary btn-checking">核实</a>';
-                }else{
-                    $buttons[] = '<a class="btn btn-default disabled">待核实</a>';
+                    $buttons[] = lang('button_checking');
                 }
                 if($this->inRole('booker')){
-                    $buttons[] = '<a class="btn btn-default btn-update">编辑</a>';
+                    $buttons[] = lang('button_update');
                 }
                 break;
             case $this->config->item('investing_checked'):
+                //$buttons[] = lang('label_checked');
                 if($this->inRole('warehouser')) {
-                    $buttons[] = '<a class="btn btn-primary btn-confirming">确认</a>';
-                }else{
-                    $buttons[] = '<a class="btn btn-info disabled">待确认</a>';
+                    $buttons[] = lang('button_confirming');
                 }
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-warning btn-refused">驳回</a>';
+                    $buttons[] = lang('button_refusing');
                 }
                 break;
             case $this->config->item('investing_confirmed'):
-
-                $buttons[] = '<a class="btn btn-success disabled">进行中</a>';
-
+                //$buttons[] = lang('label_confirmed');
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-success btn-appling">提金</a>';
+                    $buttons[] = lang('button_appling');
                 }
                 break;
             case $this->config->item('investing_expired'):
+                //$buttons[] = lang('label_expired');
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-success btn-appling">提金</a>';
-                }else{
-                    $buttons[] = '<a class="btn btn-success disabled">可提金</a>';
+                    $buttons[] = lang('button_appling');
                 }
                 break;
             case $this->config->item('investing_applied'):
+                //$buttons[] = lang('label_applied');
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_cancle');
+                }
                 if($this->inRole('warehouser')){
-                    $buttons[] = '<a class="btn btn-success btn-taking">确认提金</a>';
-                }else{
-                    $buttons[] = '<a class="btn btn-success disabled">待提金</a>';
+                    $buttons[] = lang('button_taking');
                 }
                 break;
             case $this->config->item('investing_finished'):
-
-                $buttons[] = '<a class="btn btn-default disabled">已完结</a>';
+                //$buttons[] = lang('label_finished');
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-link btn-trashed">删除</a>';
+                    $buttons[] = lang('button_trashing');
                 }
                 break;
             case $this->config->item('investing_refused'):
-
-                $buttons[] = '<a class="btn btn-warning disabled">已驳回</a>';
+                //$buttons[] = lang('label_refused');
                 if($this->inRole('booker')){
-                    $buttons[] = '<a class="btn btn-default btn-update">编辑</a>';
+                    $buttons[] = lang('button_update');
                 }
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-danger btn-terminated">终止</a>';
+                    $buttons[] = lang('button_terminating');
                 }
                 break;
             case $this->config->item('investing_terminated'):
-
-                $buttons[] = '<a class="btn btn-danger disabled">已终止</a>';
+                //$buttons[] = lang('label_terminated');
                 if($this->inRole('manager')){
-                    $buttons[] = '<a class="btn btn-link btn-trashed">删除</a>';
+                    $buttons[] = lang('button_trashing');
                 }
                 break;
         }

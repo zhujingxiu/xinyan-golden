@@ -13,7 +13,7 @@ class Login extends MX_Controller {
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(array('ion_auth','form_validation'));
+        $this->load->library(array('ion_auth','form_validation','setting'));
         $this->load->helper(array('url','language','server'));
 
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
@@ -84,6 +84,15 @@ class Login extends MX_Controller {
             $data = $this->tool_model->range_price('day');
             $data['title'] = $this->lang->line('text_price_today','default');
             $data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice().$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
+
+            $setting = $this->setting->get_setting('golden_price');
+            if(!empty($setting['apikey']) && !empty($setting['apiurl'])){
+                $result = curl_get($setting['apiurl'],array('appkey'=>$setting['apikey']));
+                $jsonarr = json_decode($result, true);
+                if($jsonarr['status'] == 0){
+                    $data['current'] = $this->tool_model->gold_price($jsonarr['result']);
+                }
+            }
         }
         if($data){
             json_success($data);

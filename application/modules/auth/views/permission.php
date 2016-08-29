@@ -53,7 +53,7 @@
                     <div class="box-header">
                         <div class="pull-right buttons">
 
-                            <button id="node-save" type="submit" form="form-worker" class="btn btn-success"><i class="fa fa-save"></i> </button>
+                            <button id="node-save" type="button" form="form-worker" class="btn btn-success"><i class="fa fa-save"></i> </button>
                         </div>
                     </div>
                     <!-- /.box-header -->

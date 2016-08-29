@@ -1,23 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version phpStudy 2014
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2016 �?08 �?29 �?00:07
--- 服务器版本: 5.5.47
--- PHP 版本: 5.5.30
+-- Host: 127.0.0.1
+-- Generation Time: 2016-08-29 12:46:23
+-- 服务器版本： 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库: `golden`
+-- Database: `golden`
 --
 
 -- --------------------------------------------------------
@@ -26,17 +26,16 @@ SET time_zone = "+00:00";
 -- 表的结构 `gd_article`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_article` (
-  `article_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_article` (
+  `article_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci,
   `is_top` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `author_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_article`
@@ -53,16 +52,15 @@ INSERT INTO `gd_article` (`article_id`, `category_id`, `title`, `text`, `is_top`
 -- 表的结构 `gd_article_category`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_article_category` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_article_category` (
+  `category_id` int(11) NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_article_category`
@@ -79,8 +77,8 @@ INSERT INTO `gd_article_category` (`category_id`, `code`, `title`, `is_admin`, `
 -- 表的结构 `gd_customer`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer` (
+  `customer_id` int(11) NOT NULL,
   `realname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   `idnumber` char(18) COLLATE utf8_unicode_ci NOT NULL,
@@ -88,9 +86,8 @@ CREATE TABLE IF NOT EXISTS `gd_customer` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `referrer` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,15 +95,14 @@ CREATE TABLE IF NOT EXISTS `gd_customer` (
 -- 表的结构 `gd_golden_price`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_golden_price` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_golden_price` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `price` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_golden_price`
@@ -145,7 +141,7 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 -- 表的结构 `gd_golden_today`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_golden_today` (
+CREATE TABLE `gd_golden_today` (
   `date` date DEFAULT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -157,9 +153,7 @@ CREATE TABLE IF NOT EXISTS `gd_golden_today` (
   `lastclosing` decimal(8,2) NOT NULL DEFAULT '0.00',
   `tradeamount` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `updatetime` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL,
-  KEY `date` (`date`),
-  KEY `updatetime` (`updatetime`)
+  `addtime` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -167,17 +161,105 @@ CREATE TABLE IF NOT EXISTS `gd_golden_today` (
 --
 
 INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `maxprice`, `minprice`, `change`, `lastclosing`, `tradeamount`, `updatetime`, `addtime`) VALUES
-('2016-08-26', 'Au(T+D)', '黄金延期', '284.48', '285.30', '287.90', '283.52', '-0.05', '284.61', '58702.0000', 1472227080, 1472400392),
-('2016-08-26', 'mAu(T+D)', '迷你黄金延期', '284.52', '285.15', '287.98', '283.60', '-0.08', '284.75', '6241.6000', 1472227080, 1472400392),
-('2016-08-26', 'Au99.99', '沪金99', '284.52', '285.20', '287.28', '284.00', '-0.13', '284.89', '182.4800', 1472227034, 1472400392),
-('2016-08-26', 'Au(T+N2)', '延期双金', '285.20', '286.00', '288.50', '284.55', '0.09', '284.95', '133.8000', 1472227050, 1472400392),
-('2016-08-26', 'Au(T+N1)', '延期单金', '287.00', '286.05', '289.45', '286.05', '0.00', '287.00', '71.2000', 1472226948, 1472400392),
-('2016-08-26', 'Au100g', '沪金100G', '285.00', '286.20', '287.55', '284.20', '0.05', '284.86', '8.2000', 1472227064, 1472400392),
-('2016-08-26', 'Au99.95', '沪金95', '286.00', '268.99', '286.00', '268.99', '0.53', '284.49', '4.0000', 1472226380, 1472400392),
-('2016-08-26', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.51', '0.0000', 1472226801, 1472400392),
-('2016-08-26', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472213695, 1472400392),
-('2016-08-26', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472211631, 1472400392),
-('2016-08-26', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '283.98', '0.0000', 1472227080, 1472400392);
+('2016-08-29', 'Au(T+D)', '黄金延期', '284.30', '285.30', '287.90', '283.52', '-0.11', '284.61', '66742.0000', 1472408995, 1472432430),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '284.55', '285.15', '287.98', '283.60', '-0.07', '284.75', '7167.8000', 1472408993, 1472432430),
+('2016-08-29', 'Au99.99', '沪金99', '285.00', '285.20', '287.28', '284.00', '0.04', '284.89', '195.7800', 1472408871, 1472432430),
+('2016-08-29', 'Au(T+N2)', '延期双金', '285.20', '286.00', '288.50', '284.55', '0.09', '284.95', '134.2000', 1472406508, 1472432430),
+('2016-08-29', 'Au(T+N1)', '延期单金', '287.50', '286.05', '290.00', '286.05', '0.17', '287.00', '83.0000', 1472408677, 1472432430),
+('2016-08-29', 'Au100g', '沪金100G', '285.00', '286.20', '287.55', '284.20', '0.05', '284.86', '8.2000', 1472408979, 1472432430),
+('2016-08-29', 'Au99.95', '沪金95', '286.00', '268.99', '286.00', '268.99', '0.53', '284.49', '4.0000', 1472408548, 1472432430),
+('2016-08-29', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.51', '0.0000', 1472408953, 1472432430),
+('2016-08-28', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472386495, 1472432430),
+('2016-08-28', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472384431, 1472432430),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '283.98', '0.0000', 1472408965, 1472432430),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.48', '285.30', '287.90', '283.11', '-0.40', '284.61', '77368.0000', 1472434992, 1472435529),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.58', '285.15', '287.98', '283.27', '-0.41', '284.75', '7953.2000', 1472434990, 1472435529),
+('2016-08-29', 'Au99.99', '沪金99', '283.69', '285.20', '287.28', '283.50', '-0.42', '284.89', '748.7600', 1472434985, 1472435529),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.30', '286.00', '288.50', '284.00', '-0.23', '284.95', '147.4000', 1472434908, 1472435529),
+('2016-08-29', 'Au(T+N1)', '延期单金', '285.65', '286.05', '290.00', '285.65', '-0.47', '287.00', '100.6000', 1472434995, 1472435529),
+('2016-08-29', 'Au99.95', '沪金95', '283.60', '268.99', '286.00', '268.99', '-0.31', '284.49', '26.0000', 1472434917, 1472435529),
+('2016-08-29', 'Au100g', '沪金100G', '283.51', '286.20', '287.55', '283.51', '-0.47', '284.86', '16.0000', 1472434927, 1472435529),
+('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '2.0000', 1472432837, 1472435529),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472434991, 1472435529),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.21', '285.30', '287.90', '283.00', '-0.49', '284.61', '84216.0000', 1472438573, 1472440453),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.32', '285.15', '287.98', '283.08', '-0.50', '284.75', '8321.0000', 1472438574, 1472440453),
+('2016-08-29', 'Au99.99', '沪金99', '283.31', '285.20', '287.28', '283.30', '-0.55', '284.89', '2399.0600', 1472438575, 1472440453),
+('2016-08-29', 'Au99.95', '沪金95', '283.10', '268.99', '286.00', '268.99', '-0.49', '284.49', '260.0000', 1472438557, 1472440453),
+('2016-08-29', 'Au(T+N2)', '延期双金', '283.95', '286.00', '288.50', '283.80', '-0.35', '284.95', '184.8000', 1472438524, 1472440453),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.00', '286.05', '290.00', '285.65', '-0.35', '287.00', '101.6000', 1472438537, 1472440453),
+('2016-08-29', 'Au100g', '沪金100G', '283.20', '286.20', '287.55', '283.20', '-0.58', '284.86', '27.2000', 1472438544, 1472440453),
+('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '8.0000', 1472435562, 1472440453),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472438566, 1472440453),
+('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472438018, 1472440453),
+('2016-08-28', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472384414, 1472440453),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.27', '285.30', '287.90', '283.00', '-0.47', '284.61', '86162.0000', 1472440370, 1472440916),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.48', '285.15', '287.98', '283.08', '-0.45', '284.75', '8450.0000', 1472440347, 1472440916),
+('2016-08-29', 'Au99.99', '沪金99', '283.49', '285.20', '287.28', '283.30', '-0.49', '284.89', '4927.2800', 1472440360, 1472440916),
+('2016-08-29', 'Au99.95', '沪金95', '283.25', '268.99', '286.00', '268.99', '-0.44', '284.49', '382.0000', 1472440171, 1472440916),
+('2016-08-29', 'Au(T+N2)', '延期双金', '283.95', '286.00', '288.50', '283.80', '-0.35', '284.95', '184.8000', 1472440313, 1472440916),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.00', '286.05', '290.00', '285.65', '-0.35', '287.00', '101.8000', 1472440340, 1472440916),
+('2016-08-29', 'Au100g', '沪金100G', '283.50', '286.20', '287.55', '283.20', '-0.48', '284.86', '29.8000', 1472440250, 1472440916),
+('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '8.0000', 1472439803, 1472440916),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472440277, 1472440916),
+('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472438805, 1472440916),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.40', '285.30', '287.90', '283.00', '-0.43', '284.61', '88470.0000', 1472441367, 1472442709),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.49', '285.15', '287.98', '283.08', '-0.44', '284.75', '8564.0000', 1472441366, 1472442709),
+('2016-08-29', 'Au99.99', '沪金99', '283.48', '285.20', '287.28', '283.30', '-0.49', '284.89', '5390.5600', 1472441360, 1472442709),
+('2016-08-29', 'Au99.95', '沪金95', '283.10', '268.99', '286.00', '268.99', '-0.49', '284.49', '564.0000', 1472441358, 1472442709),
+('2016-08-29', 'Au(T+N2)', '延期双金', '283.85', '286.00', '288.50', '283.80', '-0.39', '284.95', '185.0000', 1472441367, 1472442709),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.15', '286.05', '290.00', '285.65', '-0.30', '287.00', '102.4000', 1472441368, 1472442709),
+('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '34.0000', 1472441206, 1472442709),
+('2016-08-29', 'Au100g', '沪金100G', '284.49', '286.20', '287.55', '283.20', '-0.13', '284.86', '32.8000', 1472441356, 1472442709),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472441331, 1472442709),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.52', '285.30', '287.90', '283.00', '-0.38', '284.61', '90486.0000', 1472449433, 1472450035),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.59', '285.15', '287.98', '283.08', '-0.41', '284.75', '8718.0000', 1472449424, 1472450035),
+('2016-08-29', 'Au99.99', '沪金99', '283.64', '285.20', '287.28', '283.30', '-0.44', '284.89', '6398.3200', 1472449430, 1472450035),
+('2016-08-29', 'Au99.95', '沪金95', '283.40', '268.99', '286.00', '268.99', '-0.38', '284.49', '634.0000', 1472449404, 1472450035),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.30', '286.00', '288.50', '283.80', '-0.23', '284.95', '195.8000', 1472449415, 1472450035),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.15', '286.05', '290.00', '285.65', '-0.30', '287.00', '102.4000', 1472449394, 1472450035),
+('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '54.0000', 1472448993, 1472450035),
+('2016-08-29', 'Au100g', '沪金100G', '284.40', '286.20', '287.55', '283.20', '-0.16', '284.86', '36.0000', 1472449420, 1472450035),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472449408, 1472450035),
+('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472449421, 1472450035),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.50', '285.30', '287.90', '283.00', '-0.39', '284.61', '94434.0000', 1472451255, 1472452223),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.59', '285.15', '287.98', '283.08', '-0.41', '284.75', '8833.4000', 1472451261, 1472452223),
+('2016-08-29', 'Au99.99', '沪金99', '283.69', '285.20', '287.28', '283.30', '-0.42', '284.89', '8267.6600', 1472451261, 1472452223),
+('2016-08-29', 'Au99.95', '沪金95', '283.40', '268.99', '286.00', '268.99', '-0.38', '284.49', '920.0000', 1472451179, 1472452223),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.35', '286.00', '288.50', '283.80', '-0.21', '284.95', '210.4000', 1472451256, 1472452223),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.30', '286.05', '290.00', '285.65', '-0.24', '287.00', '102.8000', 1472451257, 1472452223),
+('2016-08-29', 'Pt99.95', '沪铂95', '245.00', '244.00', '245.00', '244.00', '-0.21', '245.51', '66.0000', 1472450530, 1472452223),
+('2016-08-29', 'Au100g', '沪金100G', '284.35', '286.20', '287.55', '283.20', '-0.18', '284.86', '53.0000', 1472451087, 1472452223),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '283.70', '284.60', '284.60', '283.70', '-0.10', '283.98', '0.0400', 1472451253, 1472452223),
+('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472449894, 1472452223),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.44', '285.30', '287.90', '283.00', '-0.41', '284.61', '96794.0000', 1472453036, 1472455596),
+('2016-08-29', 'Au99.99', '沪金99', '283.60', '285.20', '287.28', '283.30', '-0.45', '284.89', '9425.8200', 1472453033, 1472455596),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.42', '285.15', '287.98', '283.08', '-0.47', '284.75', '8996.4000', 1472453037, 1472455596),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.20', '286.00', '288.50', '283.80', '-0.26', '284.95', '4245.6000', 1472453016, 1472455596),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.15', '286.05', '290.00', '285.65', '-0.30', '287.00', '4112.8000', 1472453020, 1472455596),
+('2016-08-29', 'Au99.95', '沪金95', '283.50', '268.99', '286.00', '268.99', '-0.35', '284.49', '962.0000', 1472453009, 1472455596),
+('2016-08-29', 'Pt99.95', '沪铂95', '245.25', '244.00', '245.25', '244.00', '-0.11', '245.51', '72.0000', 1472453032, 1472455596),
+('2016-08-29', 'Au100g', '沪金100G', '283.50', '286.20', '287.55', '283.20', '-0.48', '284.86', '55.2000', 1472452991, 1472455596),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '283.70', '284.60', '284.60', '283.70', '-0.10', '283.98', '0.0400', 1472453027, 1472455596),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.48', '285.30', '287.90', '283.00', '-0.40', '284.61', '99182.0000', 1472454892, 1472457101),
+('2016-08-29', 'Au99.99', '沪金99', '283.64', '285.20', '287.28', '283.30', '-0.44', '284.89', '11791.0600', 1472454848, 1472457101),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.53', '285.15', '287.98', '283.08', '-0.43', '284.75', '9230.0000', 1472454889, 1472457101),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.15', '286.00', '288.50', '283.80', '-0.28', '284.95', '4373.6000', 1472454842, 1472457101),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.30', '286.05', '290.00', '285.65', '-0.24', '287.00', '4113.4000', 1472454752, 1472457101),
+('2016-08-29', 'Au99.95', '沪金95', '283.50', '268.99', '286.00', '268.99', '-0.35', '284.49', '1014.0000', 1472454858, 1472457101),
+('2016-08-29', 'Pt99.95', '沪铂95', '245.00', '244.00', '245.25', '244.00', '-0.21', '245.51', '110.0000', 1472454751, 1472457101),
+('2016-08-29', 'Au100g', '沪金100G', '283.51', '286.20', '287.55', '283.20', '-0.47', '284.86', '57.4000', 1472454882, 1472457101),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '283.70', '284.60', '284.60', '283.70', '-0.10', '283.98', '0.0400', 1472454866, 1472457101),
+('2016-08-29', 'Au(T+D)', '黄金延期', '283.45', '285.30', '287.90', '283.00', '-0.41', '284.61', '99842.0000', 1472455766, 1472459053),
+('2016-08-29', 'Au99.99', '沪金99', '283.50', '285.20', '287.28', '283.30', '-0.49', '284.89', '12243.2400', 1472455767, 1472459053),
+('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.65', '285.15', '287.98', '283.08', '-0.39', '284.75', '9299.8000', 1472455767, 1472459053),
+('2016-08-29', 'Au(T+N2)', '延期双金', '284.15', '286.00', '288.50', '283.80', '-0.28', '284.95', '4373.6000', 1472455743, 1472459053),
+('2016-08-29', 'Au(T+N1)', '延期单金', '286.30', '286.05', '290.00', '285.65', '-0.24', '287.00', '4113.4000', 1472455739, 1472459053),
+('2016-08-29', 'Au99.95', '沪金95', '283.50', '268.99', '286.00', '268.99', '-0.35', '284.49', '1030.0000', 1472455767, 1472459053),
+('2016-08-29', 'Pt99.95', '沪铂95', '245.00', '244.00', '245.25', '244.00', '-0.21', '245.51', '110.0000', 1472455767, 1472459053),
+('2016-08-29', 'Au100g', '沪金100G', '283.51', '286.20', '287.55', '283.20', '-0.47', '284.86', '57.4000', 1472455767, 1472459053),
+('2016-08-29', 'iAu99.99', 'IAU99.99', '283.70', '284.60', '284.60', '283.70', '-0.10', '283.98', '0.0400', 1472455767, 1472459053),
+('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472455767, 1472459053),
+('2016-08-29', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472455767, 1472459053);
 
 -- --------------------------------------------------------
 
@@ -185,8 +267,8 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 -- 表的结构 `gd_node`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_node` (
-  `node_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_node` (
+  `node_id` int(11) NOT NULL,
   `mode` enum('auth','menu') NOT NULL DEFAULT 'auth',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `level` tinyint(4) NOT NULL DEFAULT '1',
@@ -196,16 +278,15 @@ CREATE TABLE IF NOT EXISTS `gd_node` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `sort` smallint(6) NOT NULL DEFAULT '0',
-  `note` text,
-  PRIMARY KEY (`node_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=96 ;
+  `note` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_node`
 --
 
 INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`, `path`, `status`, `auth`, `sort`, `note`) VALUES
-(1, 'auth', 0, 1, 'tool', '小工具', '', 1, 1, 0, NULL),
+(1, 'auth', 0, 1, 'tool', '小工具', 'tool', 1, 1, 0, NULL),
 (2, 'auth', 1, 1, 'API', '通用接口', 'tool/api', 1, 0, 0, ''),
 (3, 'auth', 2, 1, 'golden_price', '获取黄金价格', 'tool/api/price', 1, 0, 0, ''),
 (4, 'auth', 0, 1, 'auth', '用户模块', '', 1, 1, 0, ''),
@@ -265,7 +346,7 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (61, 'auth', 54, 1, 'confirmed', '库管确认', 'project/investing/confirmed', 1, 1, 0, ''),
 (63, 'auth', 54, 1, 'applied', '申请取金', 'project/investing/applied', 1, 1, 0, ''),
 (65, 'auth', 54, 1, 'taken', '确认提金', 'project/investing/taken', 1, 1, 0, ''),
-(67, 'auth', 54, 1, 'refused', '拒绝申请', 'project/investing/refused', 1, 1, 0, ''),
+(67, 'auth', 54, 1, 'refused', '驳回项目', 'project/investing/refused', 1, 1, 0, ''),
 (68, 'auth', 54, 1, 'trashed', '废弃项目', 'project/investing/trashed', 1, 1, 0, ''),
 (69, 'auth', 53, 1, 'recycling', '金生金', 'project/recycling', 1, 1, 0, ''),
 (70, 'auth', 69, 1, 'index', '读取项目列表', 'project/recycling/index', 1, 1, 0, ''),
@@ -284,7 +365,11 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (91, 'auth', 90, 1, 'permission', '无此授权', 'error/permission', 1, 0, 0, NULL),
 (92, 'auth', 90, 1, 'permission', '无此授权', 'error/permission/index', 1, 0, 0, NULL),
 (93, 'auth', 54, 1, 'update', '编辑项目', 'project/investing/update', 1, 1, 0, ''),
-(94, 'auth', 54, 1, 'terminated', '终止项目', 'project/investing/terminated', 1, 1, 0, '');
+(94, 'auth', 54, 1, 'terminated', '终止项目', 'project/investing/terminated', 1, 1, 0, ''),
+(96, 'auth', 54, 1, 'cancle', '取消申请提金', 'project/investing/cancle', 1, 1, 0, ''),
+(98, 'auth', 1, 1, 'filemanager', '文件管理', 'tool/filemanager', 1, 0, 0, ''),
+(100, 'auth', 98, 1, 'upload', '上传文件', 'tool/filemanager/upload', 1, 0, 0, ''),
+(101, 'auth', 98, 1, 'upload', '上传文件', 'tool/filemanager/upload', 1, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -292,24 +377,17 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 -- 表的结构 `gd_project_apply`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_apply` (
-  `apply_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_apply` (
+  `apply_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
+  `phone` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
-  `mode` enum('taking','order') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'taking',
+  `mode` enum('appling','order') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'appling',
   `note` text COLLATE utf8_unicode_ci,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`apply_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
-
---
--- 转存表中的数据 `gd_project_apply`
---
-
-INSERT INTO `gd_project_apply` (`apply_id`, `project_id`, `weight`, `mode`, `note`, `status`, `worker_id`, `addtime`) VALUES
-(1, 7, '6.00', 'taking', NULL, 1, 3, 1472399968);
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -317,8 +395,8 @@ INSERT INTO `gd_project_apply` (`apply_id`, `project_id`, `weight`, `mode`, `not
 -- 表的结构 `gd_project_investing`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing` (
+  `project_id` int(11) NOT NULL,
   `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` int(11) NOT NULL DEFAULT '0',
   `realname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -339,9 +417,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_investing` (
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
+  `locker` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing`
@@ -350,11 +427,11 @@ CREATE TABLE IF NOT EXISTS `gd_project_investing` (
 INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `realname`, `phone`, `idnumber`, `wechat`, `referrer`, `price`, `weight`, `amount`, `period`, `start`, `end`, `total`, `note`, `is_del`, `status_id`, `worker_id`, `addtime`, `lasttime`, `locker`) VALUES
 (1, 'SD20156454564522', 0, 'OKOK', '18800011000', NULL, NULL, NULL, '288.88', '100.00', '28888.00', 6, NULL, NULL, '0.00', NULL, 0, 1, 0, 1470000000, 0, 0),
 (2, 'SD20155454564511', 0, '林木森', '18800011001', '599455198505050808', '', '', '288.88', '100.00', '28888.00', 1, '2016-08-01', '2016-08-31', '101.50', 'hh', 0, 2, 3, 1470000000, 1472384841, 0),
-(3, '1608188031093542', 0, '朱景修', '18850911111', '321324200808080415', '', 'XX', '287.35', '10.00', '2873.50', 3, NULL, NULL, '10.15', 'sadsadsadsa', 0, 7, 3, 1471509342, 1472392903, 0),
+(3, '1608188031093542', 0, '朱景修', '18850911111', '321324200808080415', '', 'XX', '287.35', '10.00', '2873.50', 3, NULL, NULL, '10.15', '信息不全，且失效期已过', 1, 8, 3, 1471509342, 1472464982, 0),
 (4, '1608188261053809', 0, '朱景修', '13813801380', '321325199902024510', '', '', '287.98', '100.00', '28798.00', 12, NULL, NULL, '106.00', '&lt;p&gt;okok&lt;/p&gt;', 0, 1, 3, 1471509489, 1472048310, 0),
 (5, '1608181371034554', 0, '沈万三', '18888888888', '325326150008080808', '', '', '287.35', '1000000.00', '287350000.00', 12, NULL, NULL, '1060000.00', '去问问企鹅完全', 1, 1, 3, 1471509954, 1472289031, 0),
-(6, '1608186671184447', 0, '赵公明', '15815801580', '321324198808080808', '', '', '287.35', '10.00', '2873.50', 3, '2016-08-18', '2016-11-17', '10.15', '', 0, 3, 7, 1471513487, 1472388755, 0),
-(7, '1608183471764952', 0, '马晓云', '13913901390', '500250196606080806', '', '', '287.35', '10.00', '2873.50', 3, '2016-08-18', '2016-11-17', '10.15', 'sadsadsa', 0, 3, 3, 1471513792, 1472399968, 0),
+(6, '1608186671184447', 0, '赵公明', '15815801580', '321324198808080808', '', '', '287.35', '10.00', '2873.50', 3, '2016-08-18', '2016-11-17', '10.15', '', 1, 6, 3, 1471513487, 1472464146, 0),
+(7, '1608183471764952', 0, '马晓云', '13913901390', '500250196606080806', '', '', '287.35', '10.00', '2873.50', 3, '2016-08-18', '2016-11-17', '10.15', '', 1, 6, 3, 1471513792, 1472464905, 0),
 (8, '1608222241360343', 0, '朱景修', '18850911766', '321324155010254569', '', '', '286.80', '12.00', '3441.60', 9, NULL, NULL, '12.72', '&lt;p&gt;asdasdsadsa&lt;/p&gt;', 0, 1, 5, 1471842223, 1471856775, 0),
 (9, '1608229881435008', 0, '朱景修', '18850911766', '321245198905080904', '', '', '290.00', '100.00', '29000.00', 6, '2016-08-22', '2017-02-21', '106.00', '', 0, 2, 3, 1471848608, 1472386688, 0),
 (10, '1608229951425621', 0, '朱景修', '18850911766', '321245198905080904', '', '', '289.67', '100.00', '28967.00', 3, NULL, NULL, '106.00', '', 0, 1, 5, 1471848981, 1471856834, 0),
@@ -362,7 +439,7 @@ INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `
 (12, '1608222511510103', 0, '陈国', '18850911766', '321245198905080904', '', '', '288.39', '12.00', '3460.68', 12, '2016-08-22', '2017-08-21', '12.72', '', 0, 2, 3, 1471849263, 1472386760, 0),
 (13, '1608252211011343', 0, '朱景修', '18850911223', '321324196606060606', '', '', '288.15', '12.00', '3457.80', 12, '2016-08-25', '2017-08-24', '12.72', 'sadsadsadsadsadsadsa', 0, 2, 3, 1472091223, 1472289668, 0),
 (14, '1608272541144202', 0, '华大妈', '13316618899', '110120199909090909', '', '', '284.52', '1000.00', '284520.00', 12, '2016-08-27', '2017-08-26', '1060.00', '&lt;p&gt;撒打算打算的撒&lt;/p&gt;', 0, 2, 4, 1472269322, 1472278417, 0),
-(15, '1608281632155533', 0, '测试', '13344556677', '234123198709089876', '', '', '284.52', '100.00', '28452.00', 12, '2016-08-28', '2017-08-27', '106.00', 'asdsdd', 0, 2, 3, 1472392533, 1472392834, 0);
+(15, '1608281632155533', 0, '测试', '13344556677', '234123198709089876', '', '', '284.52', '100.00', '28452.00', 12, '2016-08-28', '2017-08-27', '106.00', 'sadsadsadsa', 1, 6, 3, 1472392533, 1472462185, 0);
 
 -- --------------------------------------------------------
 
@@ -370,17 +447,16 @@ INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `
 -- 表的结构 `gd_project_investing_history`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing_history` (
+  `history_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=49 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing_history`
@@ -429,7 +505,17 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 (45, 7, 3, '', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''13913901390'',\n  ''_phone'' =&gt; ''13913901390'',\n)', 7, 1472388933, '127.0.0.1'),
 (46, 15, 1, '撒的撒的撒', '', 5, 1472392533, '127.0.0.1'),
 (47, 15, 2, 'asdsdd', 'array (\n  ''amount'' =&gt; ''28452.00'',\n  ''_amount'' =&gt; ''28452.00'',\n  ''phone'' =&gt; ''13344556677'',\n  ''_phone'' =&gt; ''13344556677'',\n)', 3, 1472392834, '127.0.0.1'),
-(48, 3, 7, 'sadsadsadsa', '', 3, 1472392903, '127.0.0.1');
+(48, 3, 7, 'sadsadsadsa', '', 3, 1472392903, '127.0.0.1'),
+(49, 7, 5, 'sdsadsadsadsadsa', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; NULL,\n  ''phone'' =&gt; ''13913901390'',\n  ''_phone'' =&gt; ''13913901390'',\n)', 3, 1472441239, '127.0.0.1'),
+(50, 7, 3, 'sadsadsadsadsa', '', 3, 1472442851, '127.0.0.1'),
+(51, 7, 5, '', 'array (\n  ''weight'' =&gt; ''10'',\n  ''_weight'' =&gt; NULL,\n  ''phone'' =&gt; ''13913901390'',\n  ''_phone'' =&gt; ''13913901390'',\n)', 3, 1472443012, '127.0.0.1'),
+(52, 7, 6, '', 'array (\n  ''weight'' =&gt; ''6.00'',\n  ''_weight'' =&gt; ''6.00'',\n  ''phone'' =&gt; ''13913901390'',\n  ''_phone'' =&gt; ''13913901390'',\n  ''_file'' =&gt; NULL,\n  ''_path'' =&gt; NULL,\n)', 7, 1472461119, '127.0.0.1'),
+(53, 6, 5, 'dsdfsdf', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; NULL,\n  ''phone'' =&gt; ''15815801580'',\n  ''_phone'' =&gt; ''15815801580'',\n)', 3, 1472461279, '127.0.0.1'),
+(54, 6, 6, '', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''15815801580'',\n  ''_phone'' =&gt; ''15815801580'',\n  ''_file'' =&gt; ''工作内容朱景修.txt'',\n  ''_path'' =&gt; ''public/uploads/2016/08/29170539a9718f.txt'',\n)', 7, 1472461542, '127.0.0.1'),
+(55, 15, 3, 'ruku', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; ''100.00'',\n  ''phone'' =&gt; ''13344556677'',\n  ''_phone'' =&gt; ''13344556677'',\n)', 7, 1472461644, '127.0.0.1'),
+(56, 15, 5, '萨达是否', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; NULL,\n  ''phone'' =&gt; ''13344556677'',\n  ''_phone'' =&gt; ''13344556677'',\n)', 3, 1472462041, '127.0.0.1'),
+(57, 15, 6, 'sadsadsadsa', 'array (\n  ''weight'' =&gt; ''100.00'',\n  ''_weight'' =&gt; ''100.00'',\n  ''phone'' =&gt; ''13344556677'',\n  ''_phone'' =&gt; ''13344556677'',\n  ''_file'' =&gt; ''工作内容朱景修.txt'',\n  ''_path'' =&gt; ''public/uploads/2016/08/29171436087661.txt'',\n)', 7, 1472462083, '127.0.0.1'),
+(58, 3, 8, '信息不全，且失效期已过', '', 3, 1472464970, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -437,28 +523,28 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_investing_status`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing_status` (
-  `status_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing_status` (
+  `status_id` int(11) NOT NULL,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing_status`
 --
 
-INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `note`, `status`) VALUES
-(1, '已登记', 'booked', '登记客户买金信息', 1),
-(2, '已核实', 'checked', '上级主管核对客户及库存信息，并确认', 1),
-(3, '已确认', 'confirmed', '库管确认并标记', 1),
-(4, '已到期', 'expired', '项目到期，生金', 1),
-(5, '已申请', 'applied', '申请提金', 1),
-(6, '已完结', 'finished', '到期取金，项目完结 （可转到金生金）', 1),
-(7, '已驳回', 'refused', '客户信息等问题造成', 1),
-(8, '已终止', 'terminated', '客户提前终止项目', 1);
+INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `list_label`, `note`, `status`) VALUES
+(1, '已登记', 'booked', NULL, '登记客户买金信息', 1),
+(2, '已核实', 'checked', NULL, '上级主管核对客户及库存信息，并确认', 1),
+(3, '已确认', 'confirmed', NULL, '库管确认并标记', 1),
+(4, '已到期', 'expired', NULL, '项目到期，生金', 1),
+(5, '已申请', 'applied', NULL, '申请提金', 1),
+(6, '已完结', 'finished', NULL, '到期取金，项目完结 （可转到金生金）', 1),
+(7, '已驳回', 'refused', NULL, '客户信息等问题造成', 1),
+(8, '已终止', 'terminated', NULL, '客户提前终止项目', 1);
 
 -- --------------------------------------------------------
 
@@ -466,8 +552,8 @@ INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `note`,
 -- 表的结构 `gd_project_recycling`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_recycling` (
+  `project_id` int(11) NOT NULL,
   `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` int(11) NOT NULL DEFAULT '0',
@@ -479,9 +565,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
   `status_id` tinyint(1) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_recycling`
@@ -497,14 +582,13 @@ INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `title`, `custom
 -- 表的结构 `gd_project_recycling_status`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_recycling_status` (
-  `status_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_recycling_status` (
+  `status_id` int(11) NOT NULL,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_recycling_status`
@@ -528,32 +612,62 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `note`,
 -- 表的结构 `gd_project_stock`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_stock` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_stock` (
+  `project_id` int(11) NOT NULL,
   `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling','stock') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'investing',
   `info` text COLLATE utf8_unicode_ci,
   `weight` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `file` text COLLATE utf8_unicode_ci,
   `note` text COLLATE utf8_unicode_ci,
   `status` tinyint(4) NOT NULL,
   `worker_id` int(11) NOT NULL,
   `addtime` int(11) NOT NULL,
-  `lasttime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_stock`
 --
 
-INSERT INTO `gd_project_stock` (`project_id`, `project_sn`, `title`, `mode`, `info`, `weight`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
-(1, 'SD201564545645', '测试titleA', 'investing', 'OKOK', '0.00', NULL, 1, 0, 1470000000, 0),
-(2, 'SD201554545645', '测试titleB', 'investing', 'OKOK', '0.00', NULL, 1, 1, 1470000000, 0),
-(3, '1608229881435008', '朱景修:18850911766:100.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608229881435008";s:8:"realname";s:9:"朱景修";s:5:"phone";s:11:"18850911766";s:8:"idnumber";s:18:"321245198905080904";s:5:"price";s:6:"290.00";s:6:"weight";s:6:"100.00";s:6:"amount";s:8:"29000.00";s:6:"period";s:2:"12";s:5:"total";s:6:"106.00";s:5:"start";N;s:3:"end";N;}', '100.00', '&lt;p&gt;fdsfsdggdgfdgfd&lt;br/&gt;&lt;/p&gt;', 1, 7, 1472277224, 1472277224),
-(4, '1608186671184447', '赵公明:15815801580:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608186671184447";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:8:"idnumber";s:18:"321324198808080808";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', '', 1, 7, 1472388632, 1472388632),
-(5, '1608186671184447', '赵公明:15815801580:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608186671184447";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:8:"idnumber";s:18:"321324198808080808";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', '', 1, 7, 1472388755, 1472388755),
-(6, '1608183471764952', '马晓云:13913901390:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608183471764952";s:8:"realname";s:9:"马晓云";s:5:"phone";s:11:"13913901390";s:8:"idnumber";s:18:"500250196606080806";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', '', 1, 7, 1472388933, 1472388933);
+INSERT INTO `gd_project_stock` (`project_id`, `project_sn`, `title`, `mode`, `info`, `weight`, `file`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
+(3, '1608229881435008', '朱景修:18850911766:100.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608229881435008";s:8:"realname";s:9:"朱景修";s:5:"phone";s:11:"18850911766";s:8:"idnumber";s:18:"321245198905080904";s:5:"price";s:6:"290.00";s:6:"weight";s:6:"100.00";s:6:"amount";s:8:"29000.00";s:6:"period";s:2:"12";s:5:"total";s:6:"106.00";s:5:"start";N;s:3:"end";N;}', '100.00', NULL, '&lt;p&gt;fdsfsdggdgfdgfd&lt;br/&gt;&lt;/p&gt;', 1, 7, 1472277224, 1472277224),
+(4, '1608186671184447', '赵公明:15815801580:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608186671184447";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:8:"idnumber";s:18:"321324198808080808";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', NULL, '', 1, 7, 1472388632, 1472388632),
+(5, '1608186671184447', '赵公明:15815801580:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608186671184447";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:8:"idnumber";s:18:"321324198808080808";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', NULL, '', 1, 7, 1472388755, 1472388755),
+(6, '1608183471764952', '马晓云:13913901390:10.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608183471764952";s:8:"realname";s:9:"马晓云";s:5:"phone";s:11:"13913901390";s:8:"idnumber";s:18:"500250196606080806";s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"total";s:5:"10.15";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', NULL, '', 1, 7, 1472388933, 1472388933),
+(7, '1608183471764952', '', 'stock', 'a:6:{s:10:"project_sn";s:16:"1608183471764952";s:8:"realname";s:9:"马晓云";s:5:"phone";s:11:"13913901390";s:6:"weight";s:5:"10.00";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-6.00', NULL, NULL, 0, 0, 0, 0),
+(8, '1608186671184447', '', 'stock', 'a:6:{s:10:"project_sn";s:16:"1608186671184447";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:6:"weight";s:5:"10.00";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";}', '-10.00', NULL, NULL, 0, 0, 0, 0),
+(9, '1608281632155533', '测试:13344556677:100.00', 'investing', 'a:11:{s:10:"project_sn";s:16:"1608281632155533";s:8:"realname";s:6:"测试";s:5:"phone";s:11:"13344556677";s:8:"idnumber";s:18:"234123198709089876";s:5:"price";s:6:"284.52";s:6:"weight";s:6:"100.00";s:6:"amount";s:8:"28452.00";s:6:"period";s:2:"12";s:5:"total";s:6:"106.00";s:5:"start";s:10:"2016-08-28";s:3:"end";s:10:"2017-08-27";}', '-100.00', NULL, 'ruku', 1, 7, 1472461644, 1472461644),
+(10, '1608281632155533', '', 'stock', 'a:6:{s:10:"project_sn";s:16:"1608281632155533";s:8:"realname";s:6:"测试";s:5:"phone";s:11:"13344556677";s:6:"weight";s:6:"100.00";s:5:"start";s:10:"2016-08-28";s:3:"end";s:10:"2017-08-27";}', '-100.00', '[{"file":"\\u5de5\\u4f5c\\u5185\\u5bb9\\u6731\\u666f\\u4fee.txt","path":"public\\/uploads\\/2016\\/08\\/29171436087661.txt"}]', NULL, 0, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gd_project_trash`
+--
+
+CREATE TABLE `gd_project_trash` (
+  `trash_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `project_sn` char(16) COLLATE utf8_unicode_ci NOT NULL,
+  `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
+  `customer` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `gold` text COLLATE utf8_unicode_ci,
+  `status_id` tinyint(4) NOT NULL DEFAULT '0',
+  `note` text COLLATE utf8_unicode_ci,
+  `worker_id` int(11) NOT NULL DEFAULT '0',
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_project_trash`
+--
+
+INSERT INTO `gd_project_trash` (`trash_id`, `project_id`, `project_sn`, `mode`, `customer`, `gold`, `status_id`, `note`, `worker_id`, `addtime`) VALUES
+(1, 6, '1608186671184447', 'investing', 'a:3:{s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"15815801580";s:8:"referrer";s:0:"";}', 'a:7:{s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";s:7:"addtime";s:10:"1471513487";}', 6, '', 3, 1472464146),
+(2, 7, '1608183471764952', 'investing', 'a:3:{s:8:"realname";s:9:"马晓云";s:5:"phone";s:11:"13913901390";s:8:"referrer";s:0:"";}', 'a:7:{s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"start";s:10:"2016-08-18";s:3:"end";s:10:"2016-11-17";s:7:"addtime";s:10:"1471513792";}', 6, '', 3, 1472464905),
+(3, 3, '1608188031093542', 'investing', 'a:3:{s:8:"realname";s:9:"朱景修";s:5:"phone";s:11:"18850911111";s:8:"referrer";s:2:"XX";}', 'a:7:{s:5:"price";s:6:"287.35";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2873.50";s:6:"period";s:1:"3";s:5:"start";N;s:3:"end";N;s:7:"addtime";s:10:"1471509342";}', 8, '', 3, 1472464982);
 
 -- --------------------------------------------------------
 
@@ -561,12 +675,11 @@ INSERT INTO `gd_project_stock` (`project_id`, `project_sn`, `title`, `mode`, `in
 -- 表的结构 `gd_sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_sessions` (
+CREATE TABLE `gd_sessions` (
   `sess_id` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
-  `data` text COLLATE utf8_unicode_ci NOT NULL,
-  KEY `ci_sessions_timestamp` (`timestamp`)
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `data` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -743,11 +856,11 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('4402334a4521f08bc810771be378eee018dc7da9', '127.0.0.1', 1472091380, '__ci_last_regenerate|i:1472091068;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"Wytiu7Iw";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"r0Gq52lMohFJwWxgj6Ac";'),
 ('059af2961b037ac8e83e38d8d5017bff7d4cde87', '127.0.0.1', 1472091713, '__ci_last_regenerate|i:1472091382;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"bFESgdUN";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"bkeDFu5O7ZjHzwLgStMJ";'),
 ('45312fd96ebd05c441c32ff35469c8a899bc543d', '127.0.0.1', 1472093730, '__ci_last_regenerate|i:1472091776;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";success|s:42:"项目已驳回！编号: 1608181371034554";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('27f429be411ae8977baa3cf2685a1e9a8529e24c', '127.0.0.1', 1472092601, '__ci_last_regenerate|i:1472092442;code|s:4:"y3du";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471838237";csrfkey|s:8:"7CSFXBz8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"JTmP5iXQ8RLGOoUEM6ey";');
-INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
+('27f429be411ae8977baa3cf2685a1e9a8529e24c', '127.0.0.1', 1472092601, '__ci_last_regenerate|i:1472092442;code|s:4:"y3du";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471838237";csrfkey|s:8:"7CSFXBz8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"JTmP5iXQ8RLGOoUEM6ey";'),
 ('01e096e7c92e82befe9d6672893a604f35bf064d', '127.0.0.1', 1472093854, '__ci_last_regenerate|i:1472093730;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";'),
 ('74c001e4891401683b8963bf164bc1006185e803', '127.0.0.1', 1472174190, '__ci_last_regenerate|i:1472173987;code|s:4:"7D3b";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472047016";'),
-('9c5e0597de3c24d8c2f18e76cfe0f2fa06476d92', '127.0.0.1', 1472175601, '__ci_last_regenerate|i:1472175601;code|s:4:"eQmp";'),
+('9c5e0597de3c24d8c2f18e76cfe0f2fa06476d92', '127.0.0.1', 1472175601, '__ci_last_regenerate|i:1472175601;code|s:4:"eQmp";');
+INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('c19dccd1082ee49fc3922e3192fa444e6b2ed3fe', '127.0.0.1', 1472176281, '__ci_last_regenerate|i:1472176184;code|s:4:"VmIP";'),
 ('1d40d4612fbcc0f69353b6e1396c206b534c9c19', '127.0.0.1', 1472176824, '__ci_last_regenerate|i:1472176536;code|s:4:"3zmn";'),
 ('10fdf68caf9e472ed04bdb5bdcd800c94e7672a5', '127.0.0.1', 1472176956, '__ci_last_regenerate|i:1472176902;code|s:4:"g7Es";'),
@@ -887,7 +1000,44 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('12eeac3742499c99ba41113884df24079a174e46', '127.0.0.1', 1472399311, '__ci_last_regenerate|i:1472399019;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"HIzZ6vVa";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"vcOBTCtf6Fl8Mey3uDXV";ajax_permission|s:54:"没有访问授权  <br> [project/investing/confirmed]";'),
 ('d135941ba400f2f237ad99735a0572716e7ba094', '127.0.0.1', 1472399686, '__ci_last_regenerate|i:1472399369;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"u9RQ3ApS";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"nROqo2Tr79FdtgSYL61c";'),
 ('6cbfa3a1596959318026ab2ec71110f12b73578e', '127.0.0.1', 1472399982, '__ci_last_regenerate|i:1472399812;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";'),
-('65b6bcfa25bcc5f86d33b34a9b120be5720ff898', '127.0.0.1', 1472400392, '__ci_last_regenerate|i:1472400381;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";');
+('65b6bcfa25bcc5f86d33b34a9b120be5720ff898', '127.0.0.1', 1472400392, '__ci_last_regenerate|i:1472400381;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";'),
+('ca81feef50b0162b69a94dfe4f862b6ff0992aea', '127.0.0.1', 1472432081, '__ci_last_regenerate|i:1472432080;code|s:4:"bPA8";'),
+('5a3f56a9af2ce8b871fc7b2bfefb3cbcf5c8019d', '127.0.0.1', 1472432638, '__ci_last_regenerate|i:1472432430;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"LKoFSw24";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"tqwnhm9g6VlH4iryPU7F";'),
+('ce43f6c9aba9a00e98b1ca8a2d3500799988f468', '127.0.0.1', 1472435250, '__ci_last_regenerate|i:1472432849;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('de9c3115613078509fc324155af32736332812c6', '127.0.0.1', 1472436989, '__ci_last_regenerate|i:1472435528;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"5gYhLZQr";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"Z3DkWJyACc2nu5toYjza";'),
+('bf24e1d089bd68521d7f2c6fff49611c6f43d565', '127.0.0.1', 1472440829, '__ci_last_regenerate|i:1472440452;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('22d392f87358468be772888fd8d170cc5596925a', '127.0.0.1', 1472441239, '__ci_last_regenerate|i:1472440835;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"Aj2e7ybp";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"E3M91FRj6ya2g4mQqONK";success|s:48:"项目已申请提金！编号: 1608183471764952";'),
+('fab01d6be1af9bc1f6d3a32d2c58227a23a9bc6e', '127.0.0.1', 1472442570, '__ci_last_regenerate|i:1472441239;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('e4c1988a11240573652cb4dd612687a188374f52', '127.0.0.1', 1472442809, '__ci_last_regenerate|i:1472442441;code|s:4:"ZmKI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472394689";success|s:28:"<p>Group details updated</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('4a3a1df0198449e045655746f62e550af6b8f65f', '127.0.0.1', 1472443012, '__ci_last_regenerate|i:1472442709;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"nXoxWyAi";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"Jrf2UgealmtzdA6B7cHq";success|s:48:"项目已申请提金！编号: 1608183471764952";'),
+('2a1fb6fc29ebe273404d9833ef1679a6c45357a7', '127.0.0.1', 1472442835, '__ci_last_regenerate|i:1472442809;code|s:4:"ZmKI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472394689";'),
+('431a177d6a3c93d601345fb8d0d56817ae8be20d', '127.0.0.1', 1472460233, '__ci_last_regenerate|i:1472443012;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"dAow8KRf";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"IbSEGDkaKi3nYlvq4wuX";'),
+('c22b4a5e94fddf9486298dd1837986baa72a61e1', '127.0.0.1', 1472443186, '__ci_last_regenerate|i:1472443186;'),
+('583bcc3c93ea3635228ae4ce0138e79018421a8d', '127.0.0.1', 1472444576, '__ci_last_regenerate|i:1472443195;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('b5321bca64a8353970643c6de371671dc4aa5ad8', '127.0.0.1', 1472453022, '__ci_last_regenerate|i:1472445022;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"xvia7VIG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"sN5OS30HG2pLhUI4fA7E";'),
+('711716ed83c2f45ad6f690483babe94362eac59e', '127.0.0.1', 1472453152, '__ci_last_regenerate|i:1472453073;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('7db621dfdb5ba17315afed3c25656f71b5b179ea', '127.0.0.1', 1472455596, '__ci_last_regenerate|i:1472453381;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"LafoYMKl";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"QVMzZtqRFl9NpTc02DyY";'),
+('ea73d7ba6d285111497f40bb398e9fa8117473ba', '127.0.0.1', 1472456090, '__ci_last_regenerate|i:1472455717;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"j10fFlkb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"c4MsJjrnEb726zpSPWm0";'),
+('f9971c88c27086d993a159cbaeb2cdfd656d75c0', '127.0.0.1', 1472456496, '__ci_last_regenerate|i:1472456450;code|s:4:"Cqav";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472442458";'),
+('78a89728857d0d6ca23f7c3a4fd060a1511d5b88', '127.0.0.1', 1472456899, '__ci_last_regenerate|i:1472456813;code|s:4:"Cqav";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472442458";success|s:15:"节点已保存";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
+('15c8dacd521573c15810dd14f983aa7f9fe6dc54', '127.0.0.1', 1472457392, '__ci_last_regenerate|i:1472457000;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"dnhylaHk";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"Eo2qNflD9VnOQrYt1LU8";'),
+('3e53d5151a204560aca31bccabd865c87453c790', '127.0.0.1', 1472457799, '__ci_last_regenerate|i:1472457705;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"AIg1qeTG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"3J4H9jhV7tokYIeuqpvg";'),
+('763d74018606592dde27e8544147595e9c2991de', '127.0.0.1', 1472460889, '__ci_last_regenerate|i:1472458099;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"tIn8cmeL";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"ITJKrXHL7ZiYDB31FP2o";'),
+('98a67e2236c04c1718e2a40026dfb19f01c14f5e', '127.0.0.1', 1472460230, '__ci_last_regenerate|i:1472460192;code|s:4:"nVTp";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472456458";'),
+('34eba89e84feda2105937e16e28b81284f725cab', '127.0.0.1', 1472461121, '__ci_last_regenerate|i:1472460942;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('a2a35839ef67278bb48cd163ed123706830a96f5', '127.0.0.1', 1472461280, '__ci_last_regenerate|i:1472461047;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('1800518fa73fd75b4b9561ba7c6dd47abec50683', '127.0.0.1', 1472461644, '__ci_last_regenerate|i:1472461301;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"8gIuJLye";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"e35rpWLzO4oMhQG7ZmHS";success|s:48:"项目已入库标记！编号: 1608281632155533";');
+INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
+('e54e6c3cba6dad2721627af93cb479fb2a03b430', '127.0.0.1', 1472461645, '__ci_last_regenerate|i:1472461644;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('a7647e09ccb05c9503c7718329a3c5d66b92de48', '127.0.0.1', 1472463386, '__ci_last_regenerate|i:1472461955;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('45a0f95e027855443d7d405aa613947a376e41cc', '127.0.0.1', 1472463808, '__ci_last_regenerate|i:1472462054;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('ba2f12652be4b878c3bb7edbbd23a924b254cb17', '127.0.0.1', 1472464905, '__ci_last_regenerate|i:1472464111;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";success|s:42:"项目已回收！编号: 1608183471764952";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('2a312b1781e3fa5771dc68edd3c7e3a81ccc94aa', '127.0.0.1', 1472464869, '__ci_last_regenerate|i:1472464157;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"5nBhPvVc";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"jsWHgzN063ZhTDOIE5Rc";'),
+('373cb924a342dd45cef277bebc717581a017659f', '127.0.0.1', 1472464740, '__ci_last_regenerate|i:1472464711;code|s:4:"cnkH";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472460203";'),
+('4c16bb525914a9db2d2f62f3cc6d777a904b9eea', '127.0.0.1', 1472467463, '__ci_last_regenerate|i:1472464905;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
+('26658be217425a89b26595d0219f1cbad6163aa2', '127.0.0.1', 1472467453, '__ci_last_regenerate|i:1472465052;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
+('79c3d779f1f107a610bcc9cf2af89ced9604fdb4', '127.0.0.1', 1472467450, '__ci_last_regenerate|i:1472467253;code|s:4:"UUwP";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472464735";'),
+('53764baafd3ceb6c112e5fdf881ba901169ac00d', '127.0.0.1', 1472467517, '__ci_last_regenerate|i:1472467494;code|s:4:"5Yxh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467266";');
 
 -- --------------------------------------------------------
 
@@ -895,26 +1045,20 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 -- 表的结构 `gd_setting`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_setting` (
-  `setting_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_setting` (
+  `setting_id` int(11) UNSIGNED NOT NULL,
   `code` varchar(64) NOT NULL DEFAULT '',
   `value` text,
   `serialized` tinyint(1) NOT NULL DEFAULT '0',
   `group` varchar(64) NOT NULL DEFAULT 'config',
-  `initial` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`setting_id`,`code`),
-  KEY `option_name` (`code`),
-  KEY `auto_load` (`initial`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+  `initial` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_setting`
 --
 
 INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, `initial`) VALUES
-(1, 'script_version', '', 0, 'script', 0),
-(2, 'script_build', '', 0, 'script', 0),
-(3, 'script_db_version', '', 0, 'script', 0),
 (4, 'site_name', 'Demo Site', 0, 'site', 1),
 (5, 'site_keywords', 'keywords, go, here', 0, 'site', 1),
 (6, 'site_description', 'Demo Site description', 0, 'site', 1),
@@ -932,9 +1076,10 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 (18, 'investing_refused', '7', 0, 'project', 1),
 (19, 'investing_terminated', '8', 0, 'project', 1),
 (20, 'investing_finished', '6', 0, 'project', 1),
-(21, 'investing_appling', '5', 0, 'project', 1),
+(21, 'investing_applied', '5', 0, 'project', 1),
 (22, 'month_taking', '1', 0, 'project', 1),
-(23, 'season_taking', '1', 0, 'project', 1);
+(23, 'season_taking', '1', 0, 'project', 1),
+(24, 'partial_taking', '', 0, 'project', 1);
 
 -- --------------------------------------------------------
 
@@ -942,8 +1087,8 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 -- 表的结构 `gd_worker`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker` (
+  `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(32) DEFAULT NULL,
   `realname` varchar(32) NOT NULL,
   `avatar` varchar(256) DEFAULT NULL,
@@ -955,22 +1100,21 @@ CREATE TABLE IF NOT EXISTS `gd_worker` (
   `last_login` int(11) DEFAULT '0',
   `last_ip` char(15) NOT NULL,
   `status` tinyint(1) DEFAULT '1',
-  `phone` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+  `phone` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker`
 --
 
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472394689, '127.0.0.1', 1, ''),
+(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472467508, '127.0.0.1', 1, ''),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766'),
-(3, 'jingli-demo1', '经理测试A', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472393178, '127.0.0.1', 1, ''),
+(3, 'jingli-demo1', '经理测试A', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472432595, '127.0.0.1', 1, ''),
 (4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1472277405, '127.0.0.1', 1, ''),
 (5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1472392449, '127.0.0.1', 1, ''),
 (6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1472269180, '127.0.0.1', 1, ''),
-(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472388482, '127.0.0.1', 1, ''),
+(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472443230, '127.0.0.1', 1, ''),
 (8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1472280758, '127.0.0.1', 1, ''),
 (9, 'jianding-demo1', '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, ''),
 (10, 'jianding-demo2', '鉴定人B', 'public/images/avatar/user7-128x128.jpg', '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, ''),
@@ -982,13 +1126,12 @@ INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `sa
 -- 表的结构 `gd_worker_activity`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_activity` (
-  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_activity` (
+  `activity_id` int(11) NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `content` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=361 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_worker_activity`
@@ -1362,13 +1505,12 @@ INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtim
 -- 表的结构 `gd_worker_attempt`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_attempt` (
+  `id` int(11) UNSIGNED NOT NULL,
   `ip_address` varchar(15) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `time` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `time` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1376,15 +1518,14 @@ CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
 -- 表的结构 `gd_worker_group`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_group` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_group` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `code` varchar(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `is_system` tinyint(4) NOT NULL DEFAULT '0',
   `permission` text,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `status` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker_group`
@@ -1393,7 +1534,7 @@ CREATE TABLE IF NOT EXISTS `gd_worker_group` (
 INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`, `status`) VALUES
 (1, 'admin', '管理组', 1, '', 1),
 (2, 'members', '未分组', 0, '2997,2999,3001,3003,2998,3000,3002', 1),
-(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,55,59,63,67,68,70,78,84,85,94', 1),
+(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,55,59,63,67,68,70,78,84,85,94,96', 1),
 (4, 'warehouser', '库管', 1, '55,70,82,65,61,87,3,2,1', 1),
 (5, 'appraiser', '鉴定人', 0, '74,73,70,1,3,2', 1),
 (6, 'booker', '登记人', 0, '55,57,70,72,1,3,2,93', 1);
@@ -1404,8 +1545,8 @@ INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`,
 -- 表的结构 `gd_worker_notify`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
-  `notify_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_notify` (
+  `notify_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL DEFAULT '0',
   `receiver_id` int(11) NOT NULL,
   `mode` enum('announcement',' summary') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'announcement',
@@ -1413,9 +1554,8 @@ CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`notify_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1423,15 +1563,11 @@ CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
 -- 表的结构 `gd_worker_rel`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_rel` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `worker_id` int(11) unsigned NOT NULL,
-  `group_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
-  KEY `fk_users_groups_users1_idx` (`worker_id`),
-  KEY `fk_users_groups_groups1_idx` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
+CREATE TABLE `gd_worker_rel` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `worker_id` int(11) UNSIGNED NOT NULL,
+  `group_id` mediumint(8) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker_rel`
@@ -1452,6 +1588,252 @@ INSERT INTO `gd_worker_rel` (`id`, `worker_id`, `group_id`) VALUES
 (23, 11, 5),
 (24, 11, 6);
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `gd_article`
+--
+ALTER TABLE `gd_article`
+  ADD PRIMARY KEY (`article_id`);
+
+--
+-- Indexes for table `gd_article_category`
+--
+ALTER TABLE `gd_article_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `gd_golden_price`
+--
+ALTER TABLE `gd_golden_price`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_golden_today`
+--
+ALTER TABLE `gd_golden_today`
+  ADD KEY `date` (`date`),
+  ADD KEY `updatetime` (`updatetime`);
+
+--
+-- Indexes for table `gd_node`
+--
+ALTER TABLE `gd_node`
+  ADD PRIMARY KEY (`node_id`);
+
+--
+-- Indexes for table `gd_project_apply`
+--
+ALTER TABLE `gd_project_apply`
+  ADD PRIMARY KEY (`apply_id`);
+
+--
+-- Indexes for table `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `gd_project_investing_status`
+--
+ALTER TABLE `gd_project_investing_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_recycling_status`
+--
+ALTER TABLE `gd_project_recycling_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_trash`
+--
+ALTER TABLE `gd_project_trash`
+  ADD PRIMARY KEY (`trash_id`);
+
+--
+-- Indexes for table `gd_sessions`
+--
+ALTER TABLE `gd_sessions`
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+
+--
+-- Indexes for table `gd_setting`
+--
+ALTER TABLE `gd_setting`
+  ADD PRIMARY KEY (`setting_id`,`code`),
+  ADD KEY `option_name` (`code`),
+  ADD KEY `auto_load` (`initial`);
+
+--
+-- Indexes for table `gd_worker`
+--
+ALTER TABLE `gd_worker`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_activity`
+--
+ALTER TABLE `gd_worker_activity`
+  ADD PRIMARY KEY (`activity_id`);
+
+--
+-- Indexes for table `gd_worker_attempt`
+--
+ALTER TABLE `gd_worker_attempt`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_group`
+--
+ALTER TABLE `gd_worker_group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_notify`
+--
+ALTER TABLE `gd_worker_notify`
+  ADD PRIMARY KEY (`notify_id`);
+
+--
+-- Indexes for table `gd_worker_rel`
+--
+ALTER TABLE `gd_worker_rel`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
+  ADD KEY `fk_users_groups_users1_idx` (`worker_id`),
+  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `gd_article`
+--
+ALTER TABLE `gd_article`
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_article_category`
+--
+ALTER TABLE `gd_article_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_golden_price`
+--
+ALTER TABLE `gd_golden_price`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+--
+-- 使用表AUTO_INCREMENT `gd_node`
+--
+ALTER TABLE `gd_node`
+  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+--
+-- 使用表AUTO_INCREMENT `gd_project_apply`
+--
+ALTER TABLE `gd_project_apply`
+  MODIFY `apply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing_status`
+--
+ALTER TABLE `gd_project_investing_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling_status`
+--
+ALTER TABLE `gd_project_recycling_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- 使用表AUTO_INCREMENT `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- 使用表AUTO_INCREMENT `gd_project_trash`
+--
+ALTER TABLE `gd_project_trash`
+  MODIFY `trash_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_setting`
+--
+ALTER TABLE `gd_setting`
+  MODIFY `setting_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
+-- 使用表AUTO_INCREMENT `gd_worker`
+--
+ALTER TABLE `gd_worker`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_activity`
+--
+ALTER TABLE `gd_worker_activity`
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=361;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_attempt`
+--
+ALTER TABLE `gd_worker_attempt`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_group`
+--
+ALTER TABLE `gd_worker_group`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_notify`
+--
+ALTER TABLE `gd_worker_notify`
+  MODIFY `notify_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_rel`
+--
+ALTER TABLE `gd_worker_rel`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- 限制导出的表
 --

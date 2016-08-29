@@ -4,6 +4,7 @@
 define(function (require,exports,modules) {
 
     require('jstree');
+    require('ajaxSubmit');
     // Highlight selected row
     $(function () {
         // 6 create an instance when the DOM is ready
@@ -101,10 +102,7 @@ define(function (require,exports,modules) {
     });
 
     $('#node-save').on('click',function(){
-        $.ajax({
-            url:'/auth/permission/save',
-            type:'post',
-            data:$('#node-form').serialize(),
+        $('#node-form').ajaxSubmit({
             dataType:'json',
             success:function(json){
                 if(json.code==1){

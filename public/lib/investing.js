@@ -204,22 +204,58 @@ define(function(require,exports,modules){
         });
     }
 
+    exports.render_taking = function () {
+        $('#project-list').delegate('.btn-taking','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            require('ajaxUpload');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/taken', {project:sn}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['出库', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-taking').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 '+sn);
+            exports.do_cancle(sn,'/project/investing/refused','填写驳回原因 '+sn);
         });
         $('#project-list').delegate('.btn-terminated','click',function(){
             var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/investing/terminated','请填写终止原因 '+sn);
+            exports.do_cancle(sn,'/project/investing/terminated','填写终止原因 '+sn);
         });
+        $('#project-list').delegate('.btn-cancle','click',function(){
+            var sn = $(this).parent().parent().attr('id');
+            exports.do_cancle(sn,'/project/investing/cancle','填写取消提金申请原因 '+sn);
+        });
+
     }
 
     exports.do_cancle = function (sn,url,title) {
         require('layer');
         layer.prompt({
             formType: 2,
-            placeholder: '内容必须包含该项目的编号',
             title: title
         }, function(value, index, elem){
             if(value.length >= 10) {

@@ -59,7 +59,8 @@ class Permission extends XY_Controller {
         $id = $this->input->get('node_id');
         if ($id) {
             if($this->permission_model->deleteNode($id)){
-                json_response(array('code'=>1,'msg'=>'Deleted!'));
+                $this->session->set_flashdata('success', '节点已删除');
+                json_success();
             }
         }
     }
@@ -75,6 +76,7 @@ class Permission extends XY_Controller {
             if ($this->form_validation->run() == TRUE)
             {
                 $this->permission_model->saveNode($this->input->post());
+                $this->session->set_flashdata('success', '节点已保存');
                 json_success();
             }else {
 
@@ -84,7 +86,7 @@ class Permission extends XY_Controller {
                     'name' => form_error('name'),
                     'title' => form_error('title')
                 );
-                json_response(array('code' => 0, 'errors' => $errors));
+                json_error(array('errors' => $errors));
             }
         }
     }
@@ -97,6 +99,6 @@ class Permission extends XY_Controller {
 
         $user['roles'] = $this->ion_auth->get_users_groups($id)->result_array();
 
-        json_response(array('code'=>1,'info'=>$user));
+        json_success(array('info'=>$user));
     }
 }

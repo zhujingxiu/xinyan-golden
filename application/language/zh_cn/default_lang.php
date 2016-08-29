@@ -17,11 +17,33 @@ $lang['error_confirm_amount'] = '输入的金额与项目的应收金额不相�
 $lang['error_confirm_phone'] = '输入的手机号与项目的登记的手机号码不相符！';
 $lang['error_reason_length'] = '驳回理由的内容长度不足10个字符';
 $lang['error_no_project'] = '项目不存在';
+$lang['error_no_applied'] = '没有找到该项目的提金申请数据';
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['text_agree'] = "我已阅读并同意《%s》";
+
 $lang['text_unknown'] = "未知";
+
 $lang['text_price_desc'] = " 若无特殊说明，本站的黄金价格均指上海黄金交易所的沪金99 （即Au99.99）";
 $lang['text_price_month'] = " 黄金价格走势图 （30日内）";
 $lang['text_price_today'] = " 今日黄金价格走势图";
 $lang['text_price_yestoday'] = " 昨日收盘价";
 $lang['text_price_unit'] = " 元/克";
+
+$lang['label_booked'] = '<a class="btn btn-primary disabled">待核实</a>';
+$lang['label_checked'] = '<a class="btn btn-primary disabled">待确认</a>';
+$lang['label_confirmed'] = '<a class="btn btn-info disabled">进行中</a>';
+$lang['label_expired'] = '<a class="btn btn-success disabled">可提金</a>';
+$lang['label_applied'] = '<a class="btn btn-success disabled">正在提金</a>';
+$lang['label_finished'] = '<a class="btn btn-default disabled">已完结</a>';
+$lang['label_refused'] = '<a class="btn btn-warning disabled">已驳回</a>';
+$lang['label_terminated'] = '<a class="btn btn-danger disabled">已终止</a>';
+
+$lang['button_update'] = '<a class="btn btn-default btn-update">编辑</a>';
+$lang['button_checking'] = '<a class="btn btn-primary btn-checking">核实</a>';
+$lang['button_appling'] = '<a class="btn btn-success btn-appling">提金</a>';
+$lang['button_taking'] = '<a class="btn btn-success btn-taking">出库</a>';
+$lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
+$lang['button_refusing'] = '<a class="btn btn-warning btn-refused">驳回</a>';
+$lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
+$lang['button_confirming'] = '<a class="btn btn-primary btn-confirming">确认</a>';
+$lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';

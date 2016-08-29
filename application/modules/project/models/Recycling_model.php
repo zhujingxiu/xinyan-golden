@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Investing_model extends XY_Model{
+class Recycling_model extends XY_Model{
 
-    private $table = 'project_investing';
-    private $status_table = 'project_investing_status';
-    private $history_table = 'project_investing_history';
+    private $table = 'project_recycling';
+    private $status_table = 'project_recycling_status';
+    private $history_table = 'project_recycling_history';
     private $worker_table = 'worker';
     private $customer_table = 'customer';
     private $stock_table = 'project_stock';
@@ -62,13 +62,13 @@ class Investing_model extends XY_Model{
             'amount' => $data['amount'],
             'total' => $data['total'],
             'note' => $data['note'],
-            'status_id' => $this->config->item('investing_initial'),
+            'status_id' => $this->config->item('recycling_initial'),
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time(),
             'lasttime' => time()
         ));
         $project_id = $this->db->insert_id();
-        $this->history($project_id,$this->config->item('investing_initial'),$data['note']);
+        $this->history($project_id,$this->config->item('recycling_initial'),$data['note']);
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
@@ -126,12 +126,12 @@ class Investing_model extends XY_Model{
             if(isset($data['note'])){
                 $fileds['note'] = $data['note'];
             }
-            $fileds['status_id'] = $this->config->item('investing_initial');
+            $fileds['status_id'] = $this->config->item('recycling_initial');
             $fileds['worker_id'] = $this->ion_auth->get_user_id();
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
             //$this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
-            $history_id = $this->history($project['project_id'],$this->config->item('investing_initial'),$fileds['note']);
+            $history_id = $this->history($project['project_id'],$this->config->item('recycling_initial'),$fileds['note']);
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
@@ -364,7 +364,7 @@ class Investing_model extends XY_Model{
             $this->db->insert($this->trash_table,array(
                 'project_id' => $info['project_id'],
                 'project_sn' => $info['project_sn'],
-                'mode' => 'investing',
+                'mode' => 'recycling',
                 'customer' => maybe_serialize(array(
                     'realname' => $info['realname'],
                     'phone' => $info['phone'],

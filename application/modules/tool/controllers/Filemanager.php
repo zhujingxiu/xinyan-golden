@@ -20,8 +20,12 @@ class Filemanager extends XY_Controller
         $config = array(
             'encrypt_name' => /*$this->input->post('encrypt') ? $this->input->post('encrypt') :*/ TRUE,
             'upload_path' => $this->input->post('upload_path') ? $this->input->post('upload_path') : _UPLOADS_,
+            'date_path' => $this->input->post('date_path') ? $this->input->post('date_path') : FALSE,
             'allowed_types' => $this->input->post('allowed_types') ? $this->input->post('allowed_types') : "*",
         );
+        if($config['date_path']){
+            $config['upload_path'] .= date('Y').'/'.date('m');
+        }
         $this->build_path($config['upload_path']);
         $this->upload->initialize($config);
         if($this->upload->do_upload("uploads")) {

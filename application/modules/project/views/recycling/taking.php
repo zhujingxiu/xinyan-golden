@@ -1,21 +1,18 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
- * Date: 2016/8/28
- * Time: 18:52
+ * Author: zhujingxiu
+ * Date: 2016/8/29 0029
+ * Time: 12:35
  */
 ?>
-
 <div class="col-sm-12" style="padding-top:10px; ">
-    <?php echo form_open('/project/investing/applied',array('id' => "form-appling", 'class'=>'form-horizontal'))?>
+    <?php echo form_open('/project/investing/taken',array('id' => "form-taking", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
-    <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">
-    <input type="hidden" name="_max" id="confirm_max" value="<?php echo $max;?>">
+    <input type="hidden" name="_weight" id="confirm_weight" value="<?php echo $applied_weight;?>">
+    <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $applied_phone;?>">
     <?php echo form_hidden($csrf)?>
-
     <div class="col-sm-12">
-
         <div class="form-group">
             <ul class="timeline" id="timeline-box">
                 <li class="time-label">
@@ -111,24 +108,33 @@
                     </div>
                 </li>
                 <li class="time-label">
-                    <span class="bg-red"> 提金确认 </span>
+                    <span class="bg-red"> 出库确认 </span>
                 </li>
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
                     <div class="timeline-item">
-                        <div class="input-group">
-                            <span class="input-group-addon">客户手机</span>
-                            <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
-                            <span class="input-group-addon">提金克重</span>
-                            <?php if($partial_taking): ?>
-                                <input class="form-control" name="weight" type="text" placeholder="最大值为<?php echo $max;?>">
-                            <?php else : ?>
-                                <input class="form-control" name="weight" type="text" placeholder="请输入克重<?php echo $max;?>">
-                            <?php endif ?>
+                        <div class="input-group ">
+                            <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 客 户 手 机 </span>
+                            <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_phone;?>" disabled>
+                            <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 申 请 重 量 </span>
+                            <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_weight;?>" disabled>
                             <span class="input-group-addon">克</span>
                         </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" > 确 认 手 机 </span>
+                            <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
+                            <span class="input-group-addon" > 确 认 重 量 </span>
+                            <input class="form-control" name="weight" type="text" placeholder="确认申请提金重量" >
+                            <span class="input-group-addon">克</span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" >客户同意书</span>
+                            <span id="uploads" class="form-control" placeholder="上传客户确认书或出库合同"></span>
+                            <span class="input-group-addon" ><a href="javascript:;" id="button-upload"><i class="fa fa-upload"></i> </a> </span>
+
+                        </div>
                         <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
-                        <textarea class="form-control" name="editorValue" placeholder="填写提金备注"></textarea>
+                        <textarea class="form-control" name="editorValue" placeholder="填写出库备注"></textarea>
                     </div>
                 </li>
                 <li class="time-label">
@@ -143,7 +149,6 @@
                             <?php echo $item['status']?>
                             <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
                         </span>
-
                         <h3 class="timeline-header no-border">
                             <a href="javascript:;" class="liveim">
                                 <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
@@ -165,7 +170,6 @@
 </div>
 
 <script type="text/javascript">
-
     $(function () {
         $('#timeline-box').slimScroll({
             height: '560px'
@@ -181,20 +185,17 @@
                 label.remove();
             },
             errorPlacement : function(error, element) {
+
                 if(error.text().length>0)
                     layer.tips(error.text(), element,{tips: 1});
             }
         });
 
-        $("#form-appling").validate({
+        $("#form-taking").validate({
             rules : {
                 weight : {
                     required : true,
-                    <?php if($partial_taking): ?>
-                    maxFloat: '<?php echo $max;?>'
-                    <?php else: ?>
-                    equalTo: '#confirm_max'
-                    <?php endif ?>
+                    equalTo: '#confirm_weight'
                 },
                 phone: {
                     required : true,
@@ -205,11 +206,7 @@
             messages : {
                 weight : {
                     required : '请输入购入重量',
-                    <?php if($partial_taking): ?>
-                    maxFloat: "申请重量不得大于最大重量:<?php echo $max;?>"
-                    <?php else: ?>
-                    equalTo: '请输入有效的黄金克重'
-                    <?php endif ?>
+                    equalTo: "与该项目预购重量不相符"
                 },
                 phone:{
                     required:'手机号码必须',
@@ -232,7 +229,6 @@
                 });
             }
         });
-
     });
     //    var editor =  new UE.ui.Editor({
     //        toolbars: [
@@ -244,4 +240,24 @@
     //        ]
     //    });
     //    editor.render('editor');
+
+    new AjaxUpload('#button-upload', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = json.upload['origin'] + '<input type="hidden" name="_file" value="'+json.upload['origin']+'"  /><input type="hidden" name="_path" value="'+json.upload['path']+'">';
+                $("#uploads").html(_html);
+
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
 </script>
+
