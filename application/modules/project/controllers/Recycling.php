@@ -14,6 +14,7 @@ class Recycling extends Project {
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
@@ -52,7 +53,6 @@ class Recycling extends Project {
         $total = $result->num_rows();
         if($total){
             foreach($result->result_array() as $row){
-
                 $rows[] = array(
                     'DT_RowId'  => $row['project_sn'],
                     'status' 	=> lang('label_'.strtolower($row['code'])),
@@ -84,51 +84,32 @@ class Recycling extends Project {
         }
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             if($this->_valid_csrf_nonce() === FALSE){
-                json_response(array('code' => 0, 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
+                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
             }
-
-            if($price = $this->session->tempdata('current_price')){
-                $price = floatval(XEncrypt($price,'D'));
-                $this->session->set_tempdata('current_price', NULL, -300);
-                if($price*100 <= 0){
-                    json_response(array('code' => 0, 'msg' =>lang('error_current_price'),'title'=>lang('error_title')));
-                }
-            }else{
-                json_response(array('code' => 0, 'msg' =>lang('error_current_price'),'title'=>lang('error_title')));
-            }
-            $this->form_validation->set_rules('weight', '购买克重', 'required');
+            $this->form_validation->set_rules('origin_weight', '黄金重量', 'required');
+            $this->form_validation->set_rules('number', '黄金件数', 'required');
+            $this->form_validation->set_rules('type', '黄金类型', 'required');
+            $this->form_validation->set_rules('appraiser', '鉴定人', 'required');
+            $this->form_validation->set_rules('loss', '损耗比例', 'required');
+            $this->form_validation->set_rules('weight', '鉴定实重', 'required');
             $this->form_validation->set_rules('realname', '真实姓名', 'required');
             $this->form_validation->set_rules('phone', '联系电话', 'required');
             $this->form_validation->set_rules('idnumber', '身份证号', 'required');
-            if($this->config->item('recycling_privacy')){
-                $this->form_validation->set_rules('agree', '同意协议', 'required',array('required'=>'必须同意该条款协议'));
-            }
 
             if ($this->form_validation->run() == TRUE)
             {
-                $weight = $this->input->post('weight');
-                $period = $this->input->post('period');
-                $tmp = array(
-                    'realname' => $this->input->post('realname'),
-                    'phone' => $this->input->post('phone'),
-                    'idnumber' => $this->input->post('idnumber'),
-                    'wechat' => $this->input->post('wechat'),
-                    'referrer' => $this->input->post('referrer'),
-                    'note' => htmlspecialchars($this->input->post('editorValue')),
-                    'price' => $price,
-                    'weight'=> $weight,
-                    'period'=> $period,
-                    'amount'=> $this->calculate_amount($price,$weight),
-                    'total'=> $this->calculate_total($period,$weight),
-                );
-                if($this->recycling_model->insert($tmp)){
+                if($this->recycling_model->insert( $this->input->post()+array('price'=>$this->current_price()))){
                     $this->session->set_flashdata('success', '项目添加成功！');
-                    json_response(array('code' => 1, 'success' => '成功'));
+                    json_success();
                 }
             }else {
-
                 $errors = array(
+                    'origin_weight' => form_error('origin_weight'),
+                    'number' => form_error('number'),
+                    'type' => form_error('type'),
+                    'appraiser' => form_error('appraiser'),
                     'weight' => form_error('weight'),
+                    'loss' => form_error('loss'),
                     'realname' => form_error('realname'),
                     'phone' => form_error('phone'),
                     'idnumber' => form_error('idnumber'),
@@ -136,30 +117,14 @@ class Recycling extends Project {
                 if($this->config->item('recycling_privacy')){
                     $errors['agree'] = form_error('agree');
                 }
-                json_response(array('code' => 0, 'errors' => $errors));
+                json_error(array('errors' => $errors));
             }
         }else{
-
-            $price = $this->current_price();
-            if($price){
-                $price = number_format($price,2);
-            }else{
-                json_response(array('code'=>0,'msg'=>lang("error_params"),'title'=>lang("error_title")));
-            }
-            $this->session->set_tempdata('current_price',XEncrypt($price),1200);
-            $info = array(
-                'price' => $price,
-                'project_id' => '',
-                'project_sn' => 0,
-                'status' => 1,
-                'profit' => $this->profit_weight(),
-                'privacy'=> $this->config->item('recycling_privacy'),
-                'agree'	=> '',
-                'csrf' => $this->_get_csrf_nonce()
-            );
-            if($info['privacy']){
+            $info['agree'] = '';
+            $info['csrf'] = $this->_get_csrf_nonce();
+            if($this->config->item('recycling_privacy')){
                 $this->load->model('article/article_model');
-                $article = $this->article_model->article($info['privacy'])->row_array();
+                $article = $this->article_model->article($this->config->item('recycling_privacy'))->row_array();
                 if(!empty($article['title'])) {
                     $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
                 }

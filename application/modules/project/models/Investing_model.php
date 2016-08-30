@@ -241,7 +241,7 @@ class Investing_model extends XY_Model{
     public function in_stock($data=array())
     {
         $this->db->insert($this->stock_table,array(
-            'project_sn' => empty($data['project_sn']) ? '' : $data['project_sn'],
+            'project_id' => empty($data['project_id']) ? '' : $data['project_id'],
             'title' => empty($data['title']) ? '' : $data['title'],
             'info' => empty($data['info']) ? '' : $data['info'],
             'note' => empty($data['note']) ? '' : $data['note'],
@@ -285,7 +285,7 @@ class Investing_model extends XY_Model{
             $this->cancle_applied($info['project_id']);//删除申请
             //生成出库单 project_stock
             $tmp = array(
-                'project_sn' => $info['project_sn'],
+                'project_id' => $info['project_id'],
                 'title' => $info['realname'].':'.$info['phone'].':'.$info['weight'],
                 'mode' => 'stock',
                 'weight' => (float)$data['weight']*(-1.00),

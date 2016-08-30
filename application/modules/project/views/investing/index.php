@@ -79,15 +79,15 @@
     <!-- /.content -->
     <script type="text/javascript">
 
-        seajs.use('investing',function(inv){
-            inv.render_list();
-            inv.render_appling();
-            inv.render_update();
-            inv.render_checking();
-            inv.render_confirming();
-            inv.render_taking();
-            inv.render_booking();
-            inv.render_cancle();
-            inv.render_hidden();
+        seajs.use('investing',function(project){
+            project.render_list();
+            project.render_appling();
+            project.render_update();
+            project.render_checking();
+            project.render_confirming();
+            project.render_taking();
+            project.render_booking();
+            project.render_cancle();
+            project.render_hidden();
         })
     </script>

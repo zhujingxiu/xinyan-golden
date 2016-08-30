@@ -30,7 +30,16 @@ seajs.config({
         , "layer"           : "layer/layer"
     }
 });
-
+function getImgURL(fileName){
+    var url = '';
+    var ext = fileName.substring(fileName.lastIndexOf(".")+1);
+    if(ext == 'jpg' || ext == 'jpeg' || ext == 'gif' ||ext =='png'){
+        url = fileName;
+    }else{
+        url = HTTP_SERVER+"public/images/icons/"+ext+".png";
+    }
+    return url;
+}
 function math_add(a, b) {
     var c, d, e;
     try {

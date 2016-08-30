@@ -374,4 +374,25 @@ class Ion_auth
 	{
 		return $this->get_user_id() ? $this->ion_auth_model->hash_password_db($this->get_user_id(),$pwd) : false;
 	}
+
+	function group_users($code){
+		$result = $this->ion_auth_model->get_users_by_group_code($code);
+		if($result->num_rows()){
+			return $result->result_array();
+		}
+
+	}
+
+	function filter_users($data){
+		$start = isset($data['start']) ? (int)$data['start'] : 0;
+		$limit = isset($data['limit']) ? (int)$data['limit'] : 20;
+		unset($data['start']);
+		unset($data['limit']);
+
+		$result = $this->ion_auth_model->filter_users($data,$start,$limit);
+		if($result->num_rows()){
+			return $result->result_array();
+		}
+		return FALSE;
+	}
 }

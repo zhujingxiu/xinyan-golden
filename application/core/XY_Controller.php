@@ -123,6 +123,10 @@ class XY_Controller extends MX_Controller {
         }
     }
 
+    public function group_users($code){
+        return $this->Ion_auth->group_users($code);
+    }
+
     public function inRole($role=array())
     {
         if(is_array($role)){
@@ -152,6 +156,7 @@ class XY_Controller extends MX_Controller {
 
     public function _valid_csrf_nonce()
     {
+
         if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
             $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
         {

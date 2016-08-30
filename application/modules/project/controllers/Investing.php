@@ -344,8 +344,8 @@ class Investing extends Project {
 						),TRUE),
 						'call_func' => 'in_stock',
 						'call_param'=> array(
-							'project_sn' => $project_sn,
-							'title' => $project['realname'].':'.$project['phone'].':'.$project['weight'],
+							'project_id' => $project['project_id'],
+							'title' => $project['project_sn'].':'.$project['realname'].':'.$project['phone'].':'.$project['weight'],
 							'weight'=> $weight,
 							'info' => maybe_serialize(array(
 								'project_sn' => $project['project_sn'],

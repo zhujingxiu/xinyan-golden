@@ -11,6 +11,7 @@ class Recycling_model extends XY_Model{
     private $stock_table = 'project_stock';
     private $apply_table = 'project_apply';
     private $trash_table = 'project_trash';
+    private $file_table = 'project_recycling_file';
 
     public function project($sn)
     {
@@ -47,28 +48,79 @@ class Recycling_model extends XY_Model{
         $this->trigger_events('pre_insert_project');
 
         $this->db->trans_begin();
-
+        $customer_id = $this->match_customer(array('phone'=>$data['phone']));
+        if(!$customer_id){
+            $this->db->insert($this->customer_table,array(
+                'realname' => $data['realname'],
+                'phone' => $data['phone'],
+                'idnumber' => $data['idnumber'],
+                'wechat' => $data['wechat'],
+                'referrer_id' => $data['referrer'],
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'lasttime' => time()
+            ));
+            $customer_id = $this->db->insert_id();
+        }
         $this->db->insert($this->table, array(
             'project_sn' => $this->generate_sn(),
-            'customer_id' => $this->match_customer(array('phone'=>$data['phone'])),
-            'realname' => $data['realname'],
-            'phone' => $data['phone'],
-            'idnumber' => $data['idnumber'],
-            'wechat' => $data['wechat'],
-            'referrer' => $data['referrer'],
-            'price' => $data['price'],
-            'weight' => $data['weight'],
-            'period' => $data['period'],
-            'amount' => $data['amount'],
-            'total' => $data['total'],
-            'note' => $data['note'],
+            'customer_id' => $customer_id,
+            'price' => (float)$data['price'],
+            'origin_weight' => (float)$data['origin_weight'],
+            'number' => $data['number'],
+            'appraiser_id' => $data['appraiser'],
+            'weight' => (float)$data['weight'],
+            'loss' => (float)$data['loss'],
+            'note' =>  htmlspecialchars($data['editorValue']),
             'status_id' => $this->config->item('recycling_initial'),
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time(),
             'lasttime' => time()
         ));
         $project_id = $this->db->insert_id();
-        $this->history($project_id,$this->config->item('recycling_initial'),$data['note']);
+        if(isset($data['photo'])){
+            $this->db->insert($this->file_table,array(
+                'project_id' => $project_id,
+                'mode' => 'photo',
+                'file' => $this->format_file_value($data['photo']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        if(isset($data['invoice'])){
+            $this->db->insert($this->file_table,array(
+                'project_id' => $project_id,
+                'mode' => 'invoice',
+                'file' => $this->format_file_value($data['invoice']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        if(isset($data['report'])){
+            $this->db->insert($this->file_table,array(
+                'project_id' => $project_id,
+                'mode' => 'report',
+                'file' => $this->format_file_value($data['report']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        if(isset($data['privacy'])){
+            $this->db->insert($this->file_table,array(
+                'project_id' => $project_id,
+                'mode' => 'privacy',
+                'file' => $this->format_file_value($data['privacy']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        $this->history($project_id,$this->config->item('recycling_initial'),htmlspecialchars($data['editorValue']));
+
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
@@ -82,6 +134,20 @@ class Recycling_model extends XY_Model{
         $this->trigger_events(array('post_insert_project', 'post_insert_project_successful'));
         $this->set_message('insert_successful');
         return TRUE;
+    }
+
+    private function format_file_value($data){
+
+        if(is_array($data) && count($data)){
+            $_file = array();
+            foreach($data as  $item){
+                $_tmp = explode("|",$item);
+                if(count($_tmp) > 1){
+                    $_file[] = array('name'=> $_tmp[0],'path'=>$_tmp[1]);
+                }
+            }
+            return $_file ? json_encode($_file):'';
+        }
     }
 
     public function update($project_sn,$data)
@@ -151,7 +217,7 @@ class Recycling_model extends XY_Model{
 
     public function generate_sn(){
 
-        $_sn = date('ymd').rand(100,999).date('H').rand(1,9).date('is');
+        $_sn = 'GR'.date('ymd').rand(100,999).date('H').rand(1,9).date('is');
 
         $this->db->where(array('project_sn'=>$_sn));
         if($this->db->count_all_results($this->table) >0){
@@ -194,7 +260,7 @@ class Recycling_model extends XY_Model{
             }else{
                 $affected = $this->db->affected_rows();
             }
-
+            //后置回调
             if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
                 $this->{$data['call_func']}($data['call_param']);
             }

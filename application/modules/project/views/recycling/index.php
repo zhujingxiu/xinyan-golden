@@ -54,18 +54,18 @@
                                 </tr>
                             </thead>
                             <tfoot>
-                            <tr>
-                                <th>状态</th>
-                                <th>编号</th>
-                                <th>客户</th>
-                                <th>金价</th>
-                                <th>重量 （克）</th>
-                                <th>周期</th>
-                                <th>金额 （元）</th>
-                                <th>操作人</th>
-                                <th>操作时间</th>
-                                <th></th>
-                            </tr>
+                                <tr>
+                                    <th>状态</th>
+                                    <th>编号</th>
+                                    <th>客户</th>
+                                    <th>金价</th>
+                                    <th>重量 （克）</th>
+                                    <th>周期</th>
+                                    <th>金额 （元）</th>
+                                    <th>操作人</th>
+                                    <th>操作时间</th>
+                                    <th></th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -79,15 +79,15 @@
     <!-- /.content -->
     <script type="text/javascript">
 
-        seajs.use('investing',function(inv){
-            inv.render_list();
-            inv.render_appling();
-            inv.render_update();
-            inv.render_checking();
-            inv.render_confirming();
-            inv.render_taking();
-            inv.render_booking();
-            inv.render_cancle();
-            inv.render_hidden();
+        seajs.use('recycling',function(project){
+            project.render_list();
+            project.render_appling();
+            project.render_update();
+            project.render_checking();
+            project.render_confirming();
+            project.render_taking();
+            project.render_booking();
+            project.render_cancle();
+            project.render_hidden();
         })
     </script>

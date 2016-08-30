@@ -1430,9 +1430,35 @@ class Ion_auth_model extends CI_Model
 	public function get_users_by_group($group_id)
 	{
 		return $this->db->select()
-					->where($this->tables['users_groups'].'.'.$this->join['groups'],$group_id)
+					->where($this->tables['users_groups'].'.code',$group_id)
 					->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
 					->get($this->tables['users_groups']);
+	}
+
+	public function get_users_by_group_code($code)
+	{
+		return $this->db->select()
+			->where(array($this->tables['groups'].'.code' => strtolower($code),'status'=>1))
+			->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
+			->get($this->tables['users_groups']);
+	}
+
+	public function filter_users($where,$start=0,$limit=20){
+		$this->db->where(array($this->tables['users'].'.status' =>1));
+		if(isset($where['filter_role'])){
+			$this->db->where($this->tables['groups'].'.code' , $where['filter_role']);
+		}
+		if(isset($where['filter_name'])){
+			$this->db->group_start();
+			$this->db->or_like($this->tables['users'].'.username', $where['filter_name']);
+			$this->db->or_like($this->tables['users'].'.realname' , $where['filter_name']);
+			$this->db->or_like($this->tables['users'].'.phone' , $where['filter_name']);
+			$this->db->group_end();
+		}
+		return $this->db->select()->limit($start,$limit)
+			->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id','left')
+			->join($this->tables['groups'], $this->tables['users_groups'].'.'.$this->join['groups'].'='.$this->tables['groups'].'.id','left')
+			->get($this->tables['users_groups']);
 	}
 
 	/**

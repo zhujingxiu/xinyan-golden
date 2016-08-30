@@ -207,4 +207,35 @@ class Worker extends XY_Controller {
             redirect('auth', 'refresh');
         }
     }
+
+    public function autocomplete() {
+        $json = array();
+        if ($this->input->get('filter_name')) {
+            $data = array(
+                'filter_name' => $this->input->get('filter_name'),
+                'filter_role' => $this->input->get('filter_role'),
+                'start'       		=> 0,
+                'limit'       		=> 20
+            );
+            $results = $this->ion_auth->filter_users($data);
+            if($results) {
+                foreach ($results as $result) {
+                    $json[] = array(
+                        'entry_id' => $result['id'],
+                        'name' => strip_tags(html_entity_decode($result['realname'], ENT_QUOTES, 'UTF-8')),
+                        'value' => $result['id']
+                    );
+                }
+            }
+        }
+        $sort_order = array();
+        if($json){
+            foreach ($json as $key => $value) {
+                $sort_order[$key] = $value['name'];
+            }
+            array_multisort($sort_order, SORT_ASC, $json);
+            json_response($json);
+        }
+
+    }
 }

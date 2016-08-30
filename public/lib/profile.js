@@ -14,7 +14,7 @@ define(function (require, exports, modules) {
         onComplete: function(file, json) {
             if(json.code=1) {
 
-                $("#uploads").html('<img title="'+json.upload['origin']+'"  src="'+exports.getImgURL(HTTP_SERVER+json.upload['path'])+'" style="width:'+json.upload['width']+'px" class="profile-user-img img-responsive img-circle">');
+                $("#uploads").html('<img title="'+json.upload['origin']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'" style="width:'+json.upload['width']+'px" class="profile-user-img img-responsive img-circle">');
                 $("input[name='avatar']").val(json.upload['path']);
                 $('#save-upload').removeClass('hidden');
 
@@ -37,16 +37,7 @@ define(function (require, exports, modules) {
         })
     })
 
-    exports.getImgURL = function (fileName){
-        var url= '';
-        var ext= fileName.substring(fileName.lastIndexOf(".")+1);
-        if(ext=='jpg'||ext=='jpeg'||ext=='gif'||ext=='png'){
-            url= fileName;
-        }else{
-            url="public/images/icons/"+ext+".png";
-        }
-        return url;
-    }
+
     exports.submit_password = function () {
 
         require('jqueryvalidate');
