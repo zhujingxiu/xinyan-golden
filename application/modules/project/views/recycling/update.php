@@ -2,248 +2,453 @@
 /**
  * Created by PhpStorm.
  * Author: zhujingxiu
- * Date: 2016/8/22 0022
- * Time: 15:07
+ * Date: 2016/8/29 0029
+ * Time: 12:35
  */
 ?>
-
 <div class="col-sm-12" style="padding-top:10px; ">
-    <?php echo form_open_multipart('/project/investing/update',array('id' => "form-update", 'class'=>'form-horizontal'))?>
+    <?php echo form_open('/project/recycling/update',array('id' => "form-update", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('project_sn',$project_sn);?>
     <?php echo form_hidden($csrf)?>
     <div class="col-sm-12">
-        <fieldset>
-            <legend>黄金信息</legend>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">预购周期</span>
-                        <select name="period" class="form-control">
-                            <option value="3" <?php echo $period ==3 ? 'selected' : ''; ?>>3个月</option>
-                            <option value="6" <?php echo $period ==6 ? 'selected' : ''; ?>>6个月</option>
-                            <option value="9" <?php echo $period ==9 ? 'selected' : ''; ?>>9个月</option>
-                            <option value="12" <?php echo $period ==12 ? 'selected' : ''; ?>>12个月</option>
-                            <option value="18" <?php echo $period ==18 ? 'selected' : ''; ?>>18个月</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">预购重量</span>
-                        <input type="text" name="weight" class="form-control" placeholder="最小为1克" value="<?php echo $weight;?>">
-                        <span class="input-group-addon">克</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">应付金额</span>
-                        <span id="update-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo number_format($amount,2);?></span>
-                        <span class="input-group-addon">元</span>
-                    </div>
-                </div>
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">预期收益</span>
-                        <span id="update-total" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo number_format($total,2);?></span>
-                        <span class="input-group-addon">克</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">实时金价</span>
-                        <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price ?> 元/克</span>
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-12">
-        <fieldset>
-            <legend>客户信息</legend>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">客户姓名</span>
-                        <input type="text" name="realname" class="form-control" placeholder="客户的真实姓名" value="<?php echo $realname;?>">
-                    </div>
-                </div>
+        <div class="form-group">
+            <ul class="timeline timeline-inverse" id="timeline-box">
+                <li class="time-label">
+                    <span class="bg-green"> 编辑项目 </span>
+                </li>
+                <li>
+                    <i class="fa fa-user bg-green"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header">黄金信息</h3>
+                        <div class="timeline-body">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金种类</span>
+                                        <select class="form-control" name="type">
+                                            <option value="ornaments" <?php echo $type =='ornaments' ? 'selected' :'' ?>>金饰</option>
+                                            <option value="goldbar" <?php echo $type =='goldbar' ? 'selected' :'' ?>>金条</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
-                        <input type="text" name="referrer" class="form-control" value="<?php echo $referrer;?>">
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金克重</span>
+                                        <input type="text" name="origin_weight" class="form-control" value="<?php echo (float)$origin_weight;?>">
+                                        <span class="input-group-addon">克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金件数</span>
+                                        <input type="text" name="number" class="form-control" value="<?php echo $number?>">
+                                        <span class="input-group-addon">件</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs" id="button-photo">
+                                <i class="fa fa-upload"></i> 实物照片
+                            </a>
+                            <a class="btn btn-primary btn-xs" id="button-invoice">
+                                <i class="fa fa-upload"></i> 发票照片
+                            </a>
+                            <div class="upload-file" id="gold-uploads">
+                            <?php if($photos): ?>
+                                <?php foreach($photos as $item):?>
+                                <div class="uploads-thumb">
+                                    <img title="<?php echo $item['name'];?>" data-entry="photo" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                    <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
+                                </div>
+                                <?php endforeach?>
+                            <?php endif?>
+                            <?php if($invoices): ?>
+                                <?php foreach($invoices as $item):?>
+                                    <div class="uploads-thumb">
+                                        <img title="<?php echo $item['name'];?>" data-entry="invoice" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
+                                    </div>
+                                <?php endforeach?>
+                            <?php endif?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">身份证号</span>
-                        <input type="text" name="idnumber" class="form-control" placeholder="二代身份证号码" value="<?php echo $idnumber;?>">
+                </li>
+
+                <li>
+                    <i class="fa fa-user bg-green"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header">鉴定结果</h3>
+                        <div class="timeline-body">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定人</span>
+                                        <input type="text" id="appraiser" class="form-control" value="<?php echo $appraiser?>">
+                                        <input type="hidden" name="appraiser" value="<?php echo $appraiser_id?>">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定实重</span>
+                                        <input type="text" name="weight" class="form-control" value="<?php echo $weight;?>">
+                                        <span class="input-group-addon">克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">损耗比例</span>
+                                        <input type="text" name="loss" class="form-control" value="<?php echo $loss ?>">
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs" id="button-report">
+                                <i class="fa fa-upload"></i> 鉴定报告
+                            </a>
+                            <div class="upload-file" id="report-uploads">
+                                <?php if($reports): ?>
+                                    <?php foreach($reports as $item):?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $item['name'];?>" data-entry="report" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
+                                        </div>
+                                    <?php endforeach?>
+                                <?php endif?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">微信账号</span>
-                        <input type="text" name="wechat" class="form-control" value="<?php echo $wechat;?>">
+                </li>
+                <li>
+                    <i class="fa fa-user bg-green"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header">客户资料</h3>
+                        <div class="timeline-body" style="clear: both">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">客户姓名</span>
+                                        <span class="form-control"><?php echo $realname?></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">手机号码</span>
+                                        <span class="form-control"><?php echo $phone?></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">推荐人</span>
+                                        <input type="text" id="referrer" class="form-control" <?php echo $referrer?>/>
+                                        <input type="hidden" name="referrer" value="<?php echo $referrer_id?>"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">身份证号</span>
+                                        <span class="form-control"><?php echo $idnumber?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">微信账号</span>
+                                        <span class="form-control"><?php echo $wechat?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-footer" style="clear: both;">
+                            <a class="btn btn-primary btn-xs" id="button-privacy">
+                                <i class="fa fa-upload"></i> 客户同意书
+                            </a>
+                            <div class="upload-file" id="privacy-uploads">
+                                <?php if($privacies): ?>
+                                    <?php foreach($privacies as $item):?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $item['name'];?>" data-entry="privacy" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
+                                        </div>
+                                    <?php endforeach?>
+                                <?php endif?>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="form-group clearfix">
-
-                    <div class="input-group col-sm-11">
-                        <span class="input-group-addon">手机号码</span>
-                        <input type="text" name="phone" class="form-control" placeholder="客户的手机号码" value="<?php echo $phone;?>">
+                </li>
+                <li>
+                    <i class="fa fa-edit bg-blue"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header">项目备注</h3>
+                        <div class="timeline-body">
+                            <textarea class="form-control" name="editorValue" placeholder="填写出库备注"><?php echo $note;?></textarea>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-12">
-        <fieldset>
-            <legend>项目备注</legend>
-            <div class="col-sm-12">
-                <div class="form-group clearfix">
-                    <?php if(false): ?><script type="text/plain" id="editor" style="height:120px;margin:0px 20px;"></script><?php endif ?>
-                    <textarea class="form-control" name="editorValue" placeholder="填写项目备注"><?php echo trim(strip_tags(htmlspecialchars_decode($note)));?></textarea>
-                </div>
-            </div>
-        </fieldset>
+                </li>
+
+            </ul>
+        </div>
     </div>
     <?php echo form_close();?>
 </div>
 
 <script type="text/javascript">
-    var profit = '<?php echo $profit;?>',price='<?php echo $price;?>';
     $(function () {
         $('#timeline-box').slimScroll({
             height: '560px'
         });
+
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
             highlight : function(element) {
-                $(element).closest('.form-group').addClass('has-error');
+                $(element).closest('.input-group').addClass('has-error');
             },
             success : function(label) {
-                label.closest('.form-group').removeClass('has-error');
+                label.closest('.input-group').removeClass('has-error');
                 label.remove();
             },
             errorPlacement : function(error, element) {
-                if(element.parent('div').is('.input-group')){
-                    element.parent('div').parent('div').find('.help-block').remove();
-                    element.parent('div').parent('div').append(error);
-                }else{
-                    element.parent('div').find('.help-block').remove();
-                    element.parent('div').append(error);
-                }
+                if(error.text().length>0)
+                    layer.tips(error.text(), element,{tips: 1});
             }
         });
 
         $("#form-update").validate({
             rules : {
-
+                origin_weight : {
+                    required : true,
+                    isFloatGtZero : true
+                },
+                number: {
+                    required : true,
+                    isIntGtZero : true
+                },
+                appraiser: {
+                    required : true,
+                    isIntGtZero : true
+                },
                 weight: {
                     required : true,
-                    min:1
+                    isFloatGtZero : true
                 },
-                realname: {
+                loss: {
                     required : true,
-                    isChinese : true
+                    isNumber : true
                 },
-                phone: {
-                    required : true,
-                    isMobile :true
-                },
-                idnumber: {
-                    required : true,
-                    isIdCardNo : true
-                },
+
             },
             messages : {
-
+                origin_weight:{
+                    required : '黄金克重必填',
+                    isFloatGtZero : '请输入有效的数字'
+                },
+                number: {
+                    required : '黄金件数必填',
+                    isIntGtZero : '请输入有效的数字'
+                },
+                appraiser: {
+                    required : '请选择一个鉴定人',
+                    isIntGtZero : '请选择一个鉴定人'
+                },
                 weight : {
-                    required : '请输入购入克重',
-                    min:'最小购入克重不能小于1克'
+                    required : '请输入鉴定实重',
+                    isFloatGtZero: "请输入有效的数字"
                 },
-                realname:{
-                    required : '真实姓名必须',
-                    isChinese :'请输入中文字符'
-                },
-                phone:{
-                    required:'手机号码必须',
-                    isMobile : '请输入有效的手机号码'
-                },
-                idnumber:{
-                    required:'身份证号码必须',
-                    isIdCardNo : '请输入正确的身份证号码'
-                }
+
             },
             //提交
             submitHandler : function(form){
+                $.each($('.uploads-thumb img'),function(){
+                    $(form).append('<input type="hidden" name="'+$(this).data('entry')+'[]" value="'+$(this).data('name')+'|'+$(this).data('path')+'">');
+                });
                 $(form).ajaxSubmit({
-                        dataType:'json',
-                        success: function (json) {
-                            if(json.code==1){
-                                location.reload()
-                            }
+                    dataType:'json',
+                    beforeSubmit:function(){
+                        //layer.load();
+                    },
+                    success: function (json) {
+                        if(json.code==1){
+                            location.reload()
                         }
                     }
-                );
+                });
             }
-        });
-
-        $('#form-update input[name="weight"]').bind('keyup blur', function () {
-            var _w = $(this).val(),_t = $('#form-update select[name="period"]').val();
-            if(parseFloat(price,2)*100 <100){
-                layer.tips('数据异常',$('#form-update #update-amount'),{tips: [1, '#CC6666']});
-                return false;
-            }
-            if(parseFloat(_w,2)*100 < 100){
-                //layer.tips('数据异常',$('#form-update #update-amount'),{tips: [1, '#CC6666']});
-                return false;
-            }else{
-                do_amount(_w,price);
-                do_total(_w,_t);
-            }
-        });
-        $('#form-update select[name="period"]').bind('change', function () {
-            var _w = $('#form-update input[name="weight"]').val(),_t = $(this).val();
-            if(parseFloat(_w,2)*100 < 100) {
-                return false;
-            }
-            do_total(_w, _t);
         });
     });
-//    var editor =  new UE.ui.Editor({
-//        toolbars: [
-//            [ 'source', 'undo', 'redo',
-//                '|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-//                '|','insertorderedlist', 'insertunorderedlist',
-//                '|', 'forecolor', 'backcolor',
-//                '|','justifyleft','justifycenter','justifyright','justifyjustify' ]
-//        ]
-//        <?php //if(!empty($note)):?>
-//        ,initialContent:'<?php //echo htmlspecialchars_decode($note)?>//'
-//        <?php //endif?>
-//    });
-//    editor.render('editor');
 
-    function do_amount(weight,price)
-    {
-        $('#form-update #update-amount').text(parseFloat(math_mul(weight,price),2));
-    }
+    new AjaxUpload('#button-photo', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onSubmit : function(file , ext){
+            if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+                alert('错误：此处仅上传图片格式文件jpg、png、jpeg、gif');
+                return false;
+            }
+            if($('#gold-uploads img').length >3){
+                alert('错误：此处图片文件最多可上传4张');
+                return false;
+            }
+        },
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = '<div class="uploads-thumb">';
+                _html += '<img title="'+json.upload['origin']+'" data-entry="photo" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
+                _html += '</div>';
+                $('#gold-uploads').append(_html);
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
+    new AjaxUpload('#button-invoice', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onSubmit : function(file , ext){
+            if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+                alert('错误：此处仅上传图片格式文件jpg、png、jpeg、gif');
+                return false;
+            }
+            if($('#gold-uploads img').length >3){
+                alert('错误：此处图片文件最多可上传4张');
+                return false;
+            }
+        },
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = '<div class="uploads-thumb">';
+                _html += '<img title="'+json.upload['origin']+'" data-entry="invoice" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
+                _html += '</div>';
+                $('#gold-uploads').append(_html);
 
-    function do_total(weight,period)
-    {
-        var _income = math_mul(math_mul(profit,period),weight);
-        $('#form-update #update-total').text(parseFloat(math_add(weight,_income),4));
-    }
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
+    new AjaxUpload('#button-report', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = '<div class="uploads-thumb">';
+                _html += '<img title="'+json.upload['origin']+'" data-entry="report" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
+                _html += '</div>';
+                $('#report-uploads').append(_html);
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
+    new AjaxUpload('#button-privacy', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = '<div class="uploads-thumb">';
+                _html += '<img title="'+json.upload['origin']+'" data-entry="privacy" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
+                _html += '</div>';
+                $('#privacy-uploads').append(_html);
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
 
+    $('#appraiser').autocomplete({
+        delay: 300,
+        source: function(request, response) {
+            $.ajax({
+                url: '/auth/worker/autocomplete',
+                data:{r:Math.random(),filter_role:'appraiser',filter_name:request.term},
+                dataType: 'json',
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item.name,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(e,ui) {
+            $(this).val(ui.item.label);
+            $('input[name="appraiser"]').val(ui.item.value);
+            console.log(ui.item.value);
+            return false;
+        }
+    });
+    $('#referrer').autocomplete({
+        delay: 300,
+        source: function(request, response) {
+            $.ajax({
+                url: '/auth/worker/autocomplete',
+                data:{r:Math.random(),filter_role:'member',filter_name:request.term},
+                dataType: 'json',
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item.name,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        select: function(e,ui) {
+            $(this).val(ui.item.label);
+            $('input[name="referrer"]').val(ui.item.value)
+            return false;
+        }
+    });
 </script>
+

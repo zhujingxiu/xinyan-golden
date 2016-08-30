@@ -64,7 +64,7 @@ class Investing extends Project {
 					'amount'	=> $row['amount'],
 					'operator'	=> $row['operator'],
 					'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
-					'operation'	=> $this->render_operation($row['status_id'])
+					'operation'	=> $this->investing_operation($row['status_id'])
 				);
 			}
 		}

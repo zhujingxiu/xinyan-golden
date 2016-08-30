@@ -44,28 +44,32 @@
                                     <th>状态</th>
                                     <th>编号</th>
                                     <th>客户</th>
-                                    <th>金价</th>
-                                    <th>重量 （克）</th>
-                                    <th>周期</th>
-                                    <th>金额 （元）</th>
+                                    <th>黄金类型</th>
+                                    <th>件数（件）</th>
+                                    <th>重量（克）</th>
+                                    <th>鉴定克重</th>
+                                    <th>鉴定人</th>
+                                    <th>推荐人</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tfoot>
-                                <tr>
-                                    <th>状态</th>
-                                    <th>编号</th>
-                                    <th>客户</th>
-                                    <th>金价</th>
-                                    <th>重量 （克）</th>
-                                    <th>周期</th>
-                                    <th>金额 （元）</th>
-                                    <th>操作人</th>
-                                    <th>操作时间</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>状态</th>
+                                <th>编号</th>
+                                <th>客户</th>
+                                <th>黄金类型</th>
+                                <th>件数（件）</th>
+                                <th>重量（克）</th>
+                                <th>鉴定克重</th>
+                                <th>鉴定人</th>
+                                <th>推荐人</th>
+                                <th>操作人</th>
+                                <th>操作时间</th>
+                                <th></th>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>

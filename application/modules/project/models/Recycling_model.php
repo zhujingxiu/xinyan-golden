@@ -8,18 +8,26 @@ class Recycling_model extends XY_Model{
     private $history_table = 'project_recycling_history';
     private $worker_table = 'worker';
     private $customer_table = 'customer';
+    private $customer_stock_table = 'customer_stock';
     private $stock_table = 'project_stock';
     private $apply_table = 'project_apply';
     private $trash_table = 'project_trash';
     private $file_table = 'project_recycling_file';
 
-    public function project($sn)
+    public function project($sn,$simple=FALSE)
     {
         if(!$sn){return false;}
-        $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
+        if($simple){
+            return $this->db->get_where($this->table,array('project_sn'=>$sn),1);
+        }
+        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,c.idnumber,c.wechat,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
+
+        $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
+        $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         return $this->db->get();
     }
 
@@ -29,15 +37,19 @@ class Recycling_model extends XY_Model{
             $this->db->where($data['where']);
         }
         $this->db->where(array('is_del'=>0));
-        $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username', false);
+        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p');
-        $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
-        $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
+        $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
+        $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
+        $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
+        $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
             $this->db->order_by('p.lasttime desc');
         }
+
         $start = isset($data['start']) ? $data['start'] : 0 ;
         $limit = isset($data['limit']) ? $data['limit'] : 20 ;
         $this->db->limit($start,$limit);
@@ -66,6 +78,8 @@ class Recycling_model extends XY_Model{
         $this->db->insert($this->table, array(
             'project_sn' => $this->generate_sn(),
             'customer_id' => $customer_id,
+            'referrer_id' => $data['referrer'],
+            'type' => $data['type'],
             'price' => (float)$data['price'],
             'origin_weight' => (float)$data['origin_weight'],
             'number' => $data['number'],
@@ -150,6 +164,19 @@ class Recycling_model extends XY_Model{
         }
     }
 
+    public function files($project_sn,$type=FALSE){
+        $info = $this->project($project_sn,TRUE);
+        if($info->num_rows()) {
+            $project = $info->row_array();
+            if($type){
+                $this->db->where(array('mode'=>strtolower($type)));
+            }
+            $this->db->where(array('project_id'=>$project['project_id']));
+            return $this->db->get($this->file_table);
+        }
+
+        return FALSE;
+    }
     public function update($project_sn,$data)
     {
         $this->trigger_events('pre_update_project');
@@ -158,45 +185,62 @@ class Recycling_model extends XY_Model{
         $info = $this->project($project_sn);
         if($info->num_rows()){
             $project = $info->row_array();
-            $fileds = array();
-            if(isset($data['realname'])){
-                $fileds['realname'] = $data['realname'];
-            }
-            if(isset($data['idnumber'])){
-                $fileds['idnumber'] = $data['idnumber'];
-            }
-            if(isset($data['phone'])){
-                $fileds['phone'] = $data['phone'];
-                $fileds['customer_id'] = $this->match_customer(array('phone'=>$data['phone']));
-            }
-            if(isset($data['referrer'])){
-                $fileds['referrer'] = $data['referrer'];
-            }
+            $fileds = array(
+                'type' => $data['type'],
+                'origin_weight' => (float)$data['origin_weight'],
+                'number' => $data['number'],
+                'appraiser_id' => $data['appraiser'],
+                'weight' => (float)$data['weight'],
+                'loss' => (float)$data['loss'],
+                'referrer_id' => $data['referrer'],
+                'note' =>  htmlspecialchars($data['editorValue']),
+                'status_id' => $this->config->item('recycling_initial'),
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'lasttime' => time()
+            );
 
-            if(isset($data['wechat'])){
-                $fileds['wechat'] = $data['wechat'];
-            }
-
-            if(isset($data['weight'])){
-                $fileds['weight'] = $data['weight'];
-            }
-
-            if(isset($data['amount'])){
-                $fileds['amount'] = $data['amount'];
-            }
-
-            if(isset($data['total'])){
-                $fileds['total'] = $data['total'];
-            }
-
-            if(isset($data['note'])){
-                $fileds['note'] = $data['note'];
-            }
-            $fileds['status_id'] = $this->config->item('recycling_initial');
-            $fileds['worker_id'] = $this->ion_auth->get_user_id();
-            $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            //$this->db->delete($this->history_table,array('project_id'=>$project['project_id']));
+            $this->db->delete($this->file_table,array('project_id'=>$project['project_id']));
+            if(isset($data['photo'])){
+                $this->db->insert($this->file_table,array(
+                    'project_id' => $project['project_id'],
+                    'mode' => 'photo',
+                    'file' => $this->format_file_value($data['photo']),
+                    'status' => 1,
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time(),
+                ));
+            }
+            if(isset($data['invoice'])){
+                $this->db->insert($this->file_table,array(
+                    'project_id' => $project['project_id'],
+                    'mode' => 'invoice',
+                    'file' => $this->format_file_value($data['invoice']),
+                    'status' => 1,
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time(),
+                ));
+            }
+            if(isset($data['report'])){
+                $this->db->insert($this->file_table,array(
+                    'project_id' => $project['project_id'],
+                    'mode' => 'report',
+                    'file' => $this->format_file_value($data['report']),
+                    'status' => 1,
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time(),
+                ));
+            }
+            if(isset($data['privacy'])){
+                $this->db->insert($this->file_table,array(
+                    'project_id' => $project['project_id'],
+                    'mode' => 'privacy',
+                    'file' => $this->format_file_value($data['privacy']),
+                    'status' => 1,
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time(),
+                ));
+            }
             $history_id = $this->history($project['project_id'],$this->config->item('recycling_initial'),$fileds['note']);
             if ($this->db->trans_status() === FALSE)
             {
@@ -288,35 +332,34 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function active_period($project_sn)
-    {
-        $info = $this->project($project_sn);
-        if($info->num_rows()) {
-            $project = $info->row_array();
-            $fileds['start'] = date('Y-m-d',$project['addtime']);
-            $start = strtotime($fileds['start']);
-            $fileds['end'] = date('Y-m-d',mktime(0,0,0,date('m',$start)+(int)$project['period'],date('d',$start)-1,date('Y',$start)));
-            $fileds['worker_id'] = $this->ion_auth->get_user_id();
-            $fileds['lasttime'] = time();
-            $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            return $this->db->affected_rows();
-        }
-        return FALSE;
-    }
 
     public function in_stock($data=array())
     {
         $this->db->insert($this->stock_table,array(
-            'project_sn' => empty($data['project_sn']) ? '' : $data['project_sn'],
+
+            'project_id' => empty($data['project_id']) ? '' : $data['project_id'],
             'title' => empty($data['title']) ? '' : $data['title'],
             'info' => empty($data['info']) ? '' : $data['info'],
             'note' => empty($data['note']) ? '' : $data['note'],
-            'weight' => $data['weight']*(-1.00),
+            'weight' => $data['weight'],
+            'mode' => 'recycling',
             'status' => 1,
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time(),
             'lasttime' => time(),
         ));
+
+        if( !empty($data['customer_id']) && !empty($data['project_sn'])){
+            $this->db->insert($this->customer_stock_table,array(
+                'customer_id' => $data['customer_id'],
+                'project_sn' => $data['project_sn'],
+                'mode' => 'in',
+                'weight' => $data['weight'],
+                'note' => '项目存金'.number_format($data['weight'],2).'克',
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
 
         return $this->db->insert_id();
     }

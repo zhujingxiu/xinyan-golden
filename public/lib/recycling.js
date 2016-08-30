@@ -11,6 +11,7 @@ window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs');
+    require('jqueryui');
     exports.render_list = function() {
 
         $(function () {
@@ -35,11 +36,13 @@ define(function(require,exports,modules){
                         "name": "status"
                     },
                     {"data": "sn", "name": "p.project_sn"},
-                    {"data": "realname", "name": "p.realname"},
-                    {"data": "price", "name": "p.price"},
+                    {"data": "customer", "name": "p.realname"},
+                    {"data": "gold", "name": "p.type"},
+                    {"data": "number", "name": "p.number"},
+                    {"data": "origin", "name": "p.origin_weight"},
                     {"data": "weight", "name": "p.weight"},
-                    {"data": "period", "name": "p.period"},
-                    {"data": "amount", "name": "p.amount"},
+                    {"data": "appraiser", "name": "appraiser"},
+                    {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "lasttime", "name": "p.lasttime"},
                     {"data": "operation"}
@@ -56,9 +59,9 @@ define(function(require,exports,modules){
             //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('jqueryui');
 
-            $.get('/project/recycling/booked', {project: false}, function (json) {
+
+            $.get('/project/recycling/booked', {r:Math.random()}, function (json) {
                 if (json.code == 1) {
                     layer.open({
                         type: 1,

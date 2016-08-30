@@ -16,3 +16,8 @@
     font-size: 12px;
     text-decoration: underline;
 }
+
+.list-img{
+    border-radius: 50%;
+    width: 100px;
+}

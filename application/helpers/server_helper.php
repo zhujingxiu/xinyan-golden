@@ -265,7 +265,17 @@ function str_truncate($string, $length = 60, $etc = '...', $count_words = true) 
 	}
 	return join ( "", array_slice ( $info [0], 0, $length ) ) . $etc;
 }
+function get_image_url($fileName){
 
+	$ext = substr($fileName,strrpos($fileName,'.') + 1);
+	if(in_array($ext,array('jpg','jpeg','gif','png'))){
+		$imgurl = $fileName;
+	}else{
+
+		$imgurl = "public/images/icons/$ext.png";
+	}
+	return $imgurl;
+}
 function days_sub($start,$end=FALSE){
 	$starttime = strtotime($start);
 	if($end){

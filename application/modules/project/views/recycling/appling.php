@@ -24,47 +24,69 @@
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">买入价格</span>
-                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price;?>元/克</span>
+                        <h3 class="timeline-header">黄金信息</h3>
+                        <div class="timeline-body">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金种类</span>
+                                        <span class="form-control">
+                                            <?php echo $type =='goldbar' ? lang('text_goldbar') :lang('text_ornaments') ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa fa-user bg-green"></i>
+                    <div class="timeline-item">
+                        <h3 class="timeline-header">鉴定结果</h3>
+                        <div class="timeline-body">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定人</span>
+                                        <span class="form-control" ><?php echo $appraiser?></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定实重</span>
+                                        <span class="form-control"><?php echo $weight;?>克</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">买入重量</span>
-                                    <span class="form-control"><?php echo $weight;?> 克</span>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">损耗比例</span>
+                                        <span class="form-control"><?php echo $loss ?>%</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">应付金额</span>
-                                    <span id="checking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $amount;?>元</span>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">买入周期</span>
-                                    <span class="form-control"><?php echo $period ?>个月</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-12">
-                                    <span class="input-group-addon">到期收益</span>
-                                    <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $total ?>克</span>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-12">
-                                    <span class="form-control"><?php echo $start ?></span>
-                                    <span class="input-group-addon">-</span>
-                                    <span class="form-control"><?php echo $end ?></span>
-                                </div>
+                        <div class="timeline-footer">
+                            <a class="btn btn-primary btn-xs" id="button-report">
+                                鉴定报告
+                            </a>
+                            <div class="upload-file" id="report-uploads">
+                                <?php if($reports): ?>
+                                    <?php foreach($reports as $item):?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        </div>
+                                    <?php endforeach?>
+                                <?php endif?>
                             </div>
                         </div>
                     </div>
@@ -72,40 +94,63 @@
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">客户姓名</span>
-                                    <span class="form-control"><?php echo $realname;?></span>
+                        <h3 class="timeline-header">客户资料</h3>
+                        <div class="timeline-body" style="clear: both">
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">客户姓名</span>
+                                        <span class="form-control"><?php echo $realname?></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">手机号码</span>
+                                        <span class="form-control"><?php echo $phone?></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">推荐人</span>
+                                        <span class="form-control" ><?php echo $referrer?></span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
-                                    <span class="form-control"><?php echo $referrer;?></span>
+                            <div class="col-sm-8">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">身份证号</span>
+                                        <span class="form-control"><?php echo $idnumber?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">微信账号</span>
+                                        <span class="form-control"><?php echo $wechat?></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">手机号码</span>
-                                    <span class="form-control"><?php echo $phone?></span>
-                                </div>
-                            </div>
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-11">
-                                    <span class="input-group-addon">微信账号</span>
-                                    <span class="form-control"><?php echo $wechat ?></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group clearfix">
-                                <div class="input-group col-sm-12">
-                                    <span class="input-group-addon">身份证号</span>
-                                    <span class="form-control"><?php echo $idnumber;?></span>
-                                </div>
+                        <div class="timeline-footer" style="clear: both;">
+                            <a class="btn btn-primary btn-xs" id="button-privacy">
+                                客户同意书
+                            </a>
+                            <div class="upload-file" id="privacy-uploads">
+                                <?php if($privacies): ?>
+                                    <?php foreach($privacies as $item):?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        </div>
+                                    <?php endforeach?>
+                                <?php endif?>
                             </div>
                         </div>
                     </div>

@@ -53,18 +53,30 @@ class Recycling extends Project {
         $total = $result->num_rows();
         if($total){
             foreach($result->result_array() as $row){
+                $photo = $this->recycling_model->files($row['project_sn'],'photo');
+                $cover = '';
+                if($photo->num_rows()){
+                    $_info = $photo->row_array();
+                    $photos = json_decode($_info['file'],TRUE);
+                    if(is_array($photos)){
+                        $first = current($photos);
+                        $cover = '<img class="list-img" src="'.site_url($first['path']).'" title="'.$first['name'].'" />';
+                    }
+                }
                 $rows[] = array(
                     'DT_RowId'  => $row['project_sn'],
                     'status' 	=> lang('label_'.strtolower($row['code'])),
                     'sn'		=> $row['project_sn'],
-                    'realname' 	=> $row['realname'].'<br>'.$row['phone'],
-                    'price'		=> $row['price'],
-                    'weight'	=> $row['weight'],
-                    'period'	=> empty($row['start']) ?  $row['period'].'个月' : $row['start'].'<br> -- <br>'.$row['end'],
-                    'amount'	=> $row['amount'],
+                    'customer' 	=> $row['realname'].'<br>'.$row['phone'],
+                    'referrer' 	=> $row['referrer'],
+                    'gold'      => $row['type']=='goldbar' ? lang('text_goldbar'):lang('text_ornaments') . '<br>'.$cover,
+                    'number'	=> $row['number'].lang('text_number_unit') ,
+                    'origin'	=> number_format($row['origin_weight'],2) ,
+                    'appraiser'	=> $row['appraiser'],
+                    'weight'	=> number_format($row['weight'],2),
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
-                    'operation'	=> $this->render_operation($row['status_id'])
+                    'operation'	=> $this->recycling_operation($row['status_id'])
                 );
             }
         }
@@ -79,6 +91,7 @@ class Recycling extends Project {
 
     public function booked()
     {
+
         if($msg = $this->session->flashdata('ajax_permission')){
             json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('permission')));
         }
@@ -121,7 +134,6 @@ class Recycling extends Project {
             }
         }else{
             $info['agree'] = '';
-            $info['csrf'] = $this->_get_csrf_nonce();
             if($this->config->item('recycling_privacy')){
                 $this->load->model('article/article_model');
                 $article = $this->article_model->article($this->config->item('recycling_privacy'))->row_array();
@@ -129,7 +141,9 @@ class Recycling extends Project {
                     $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
                 }
             }
-            json_response(array('code'=>1,'title'=>'添加项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
+            $info['csrf'] = $this->_get_csrf_nonce();
+            //var_dump($this->session->flashdata('csrfkey'));
+            json_success(array('title'=>'添加项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
         }
     }
 
@@ -141,14 +155,15 @@ class Recycling extends Project {
         }
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             if($this->_valid_csrf_nonce() === FALSE){
-                json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
+                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
             }
 
-            $this->form_validation->set_rules('project_sn', '项目编号', 'required');
-            $this->form_validation->set_rules('weight', '购买克重', 'required');
-            $this->form_validation->set_rules('realname', '真实姓名', 'required');
-            $this->form_validation->set_rules('phone', '联系电话', 'required');
-            $this->form_validation->set_rules('idnumber', '身份证号', 'required');
+            $this->form_validation->set_rules('origin_weight', '黄金重量', 'required');
+            $this->form_validation->set_rules('number', '黄金件数', 'required');
+            $this->form_validation->set_rules('type', '黄金类型', 'required');
+            $this->form_validation->set_rules('appraiser', '鉴定人', 'required');
+            $this->form_validation->set_rules('loss', '损耗比例', 'required');
+            $this->form_validation->set_rules('weight', '鉴定实重', 'required');
             if ($this->form_validation->run() == TRUE)
             {
                 $result = $this->recycling_model->project($this->input->post('project_sn'));
@@ -156,50 +171,61 @@ class Recycling extends Project {
                 if(!$result->num_rows()){
                     json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
                 }
-                $info = $result->row_array();
-                $weight = $this->input->post('weight');
-                $period = $this->input->post('period');
-                $tmp = array(
-                    'realname' => $this->input->post('realname'),
-                    'phone' => $this->input->post('phone'),
-                    'idnumber' => $this->input->post('idnumber'),
-                    'wechat' => $this->input->post('wechat'),
-                    'referrer' => $this->input->post('referrer'),
-                    'note' => htmlspecialchars($this->input->post('editorValue')),
-                    'weight'=> $weight,
-                    'period'=> $period,
-                    'amount'=> $this->calculate_amount($info['price'],$weight),
-                    'total'=> $this->calculate_total($period,$weight),
-                );
-                if($this->recycling_model->update($this->input->post('project_sn'),$tmp)){
+
+                if($this->recycling_model->update($this->input->post('project_sn'),$this->input->post())){
                     $this->session->set_flashdata('success', '项目编辑成功！');
                     json_success();
                 }
             }else {
 
                 $errors = array(
-                    'project_sn' => form_error('project_sn'),
+                    'origin_weight' => form_error('origin_weight'),
+                    'number' => form_error('number'),
+                    'type' => form_error('type'),
+                    'appraiser' => form_error('appraiser'),
                     'weight' => form_error('weight'),
-                    'realname' => form_error('realname'),
-                    'phone' => form_error('phone'),
-                    'idnumber' => form_error('idnumber'),
+                    'loss' => form_error('loss'),
                 );
                 if($this->config->item('recycling_privacy')){
-                    $errors['agree'] = form_error('agree');
+                    //$errors['agree'] = form_error('agree');
                 }
                 json_error(array('errors' => $errors));
             }
         }else{
             $result = $this->recycling_model->project($this->input->get('project'));
-
             if($result->num_rows()){
                 $info = $result->row_array();
-
                 $info['csrf'] = $this->_get_csrf_nonce();
-                $info['profit'] = (float)($this->config->item('profit')/(12*100));
-                $title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
-
-                json_success(array('title'=>$title,'msg'=>$this->load->view('recycling/update',$info,TRUE)));
+                $info['photos'] = $info['invoices'] =$info['reports']=$info['privacies'] = FALSE;
+                $_photo = $this->recycling_model->files($info['project_sn'],'photo');
+                if($_photo->num_rows()){
+                    $_info = $_photo->result_array();
+                    foreach($_info as $item){
+                        $info['photos'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_invoice = $this->recycling_model->files($info['project_sn'],'invoice');
+                if($_invoice->num_rows()){
+                    $_info = $_invoice->result_array();
+                    foreach($_info as $item){
+                        $info['invoices'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_report = $this->recycling_model->files($info['project_sn'],'report');
+                if($_report->num_rows()){
+                    $_info = $_report->result_array();
+                    foreach($_info as $item){
+                        $info['reports'] = json_decode($item['file'],TRUE);
+                    };
+                }
+                $_privacy = $this->recycling_model->files($info['project_sn'],'privacy');
+                if($_privacy->num_rows()){
+                    $_info = $_privacy->result_array();
+                    foreach($_info as $item){
+                        $info['privacies'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                json_success(array('title'=>'编辑项目 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/update',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
             }
@@ -216,44 +242,42 @@ class Recycling extends Project {
             if($this->_valid_csrf_nonce() === FALSE){
                 //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
             }
-            $this->form_validation->set_rules('amount', '实收金额', 'required');
+            $this->form_validation->set_rules('weight', '鉴定克重', 'required');
             $this->form_validation->set_rules('phone', '联系电话', 'required');
 
             if ($this->form_validation->run() == TRUE)
             {
                 $project_sn = $this->input->post('project_sn');
                 $note = htmlspecialchars($this->input->post('editorValue'));
-                $amount = $this->input->post('amount');
+                $weight = $this->input->post('weight');
                 $phone = $this->input->post('phone');
                 $result = $this->recycling_model->project($project_sn);
                 if(!$result->num_rows()){
                     json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
                 }
                 $project = $result->row_array();
-                if(($project['amount']*100 == $amount*100) && $project['phone'] == $phone){
+                if(($project['weight']*100 == $weight*100) && $project['phone'] == $phone){
                     $this->recycling_model->push_state($project_sn,array(
                         'request'	=> var_export(array(
-                            'amount' =>$amount,
-                            '_amount' =>$this->input->post('_amount'),
+                            'weight' =>$weight,
+                            '_weight' =>$this->input->post('_weight'),
                             'phone' =>$phone,
                             '_phone' =>$this->input->post('_phone')
                         ),TRUE),
                         'status'	=> $this->config->item('recycling_checked'),
                         'note' 		=> $note,
-                        'call_func' => 'active_period',
-                        'call_param' => $project_sn,
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
                     json_success();
                 }else{
                     json_error(array('errors' => array(
-                        'amount' => lang("error_confirm_amount"),
+                        'weight' => lang("error_confirm_weight"),
                         'phone' => lang("error_confirm_phone"),
                     )));
                 }
             }else {
                 json_error(array('errors' => array(
-                    'amount' => form_error('amount'),
+                    'weight' => form_error('weight'),
                     'phone' => form_error('phone'),
                 )));
             }
@@ -262,12 +286,38 @@ class Recycling extends Project {
             if($result->num_rows()){
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
-                $info['start'] = date('Y-m-d',$info['addtime']);
-                $info['end'] = $this->calculate_expired($info['addtime'],$info['period']);
                 $info['histories'] = $this->recycling_model->histories($info['project_sn']);
-                $title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
 
-                json_success(array('title'=>$title,'msg'=>$this->load->view('recycling/checking',$info,TRUE)));
+                $info['photos'] = $info['invoices'] =$info['reports']=$info['privacies'] = FALSE;
+                $_photo = $this->recycling_model->files($info['project_sn'],'photo');
+                if($_photo->num_rows()){
+                    $_info = $_photo->result_array();
+                    foreach($_info as $item){
+                        $info['photos'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_invoice = $this->recycling_model->files($info['project_sn'],'invoice');
+                if($_invoice->num_rows()){
+                    $_info = $_invoice->result_array();
+                    foreach($_info as $item){
+                        $info['invoices'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_report = $this->recycling_model->files($info['project_sn'],'report');
+                if($_report->num_rows()){
+                    $_info = $_report->result_array();
+                    foreach($_info as $item){
+                        $info['reports'] = json_decode($item['file'],TRUE);
+                    };
+                }
+                $_privacy = $this->recycling_model->files($info['project_sn'],'privacy');
+                if($_privacy->num_rows()){
+                    $_info = $_privacy->result_array();
+                    foreach($_info as $item){
+                        $info['privacies'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                json_success(array('title'=>'项目核实 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/checking',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
             }
@@ -310,6 +360,8 @@ class Recycling extends Project {
                         'call_func' => 'in_stock',
                         'call_param'=> array(
                             'project_sn' => $project_sn,
+                            'project_id' => $project['project_id'],
+                            'customer_id' => $project['customer_id'],
                             'title' => $project['realname'].':'.$project['phone'].':'.$project['weight'],
                             'weight'=> $weight,
                             'info' => maybe_serialize(array(
@@ -317,13 +369,13 @@ class Recycling extends Project {
                                 'realname' => $project['realname'],
                                 'phone' => $project['phone'],
                                 'idnumber' => $project['idnumber'],
-                                'price' => $project['price'],
+                                'referrer_id' => $project['referrer_id'],
+                                'type' => $project['type'],
+                                'number' => $project['number'],
+                                'origin_weight' => $project['origin_weight'],
                                 'weight' => $project['weight'],
-                                'amount' => $project['amount'],
-                                'period' => $project['period'],
-                                'total' => $project['total'],
-                                'start' => $project['start'],
-                                'end' => $project['end'],
+                                'loss' => $project['loss'],
+                                'appraiser_id' => $project['appraiser_id'],
                             )),
                             'note' => $note
                         )
@@ -350,9 +402,36 @@ class Recycling extends Project {
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['histories'] = $this->recycling_model->histories($info['project_sn']);
-
-                $title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
-                json_success(array('title'=>$title,'msg'=>$this->load->view('recycling/confirming',$info,TRUE)));
+                $info['photos'] = $info['invoices'] =$info['reports']=$info['privacies'] = FALSE;
+                $_photo = $this->recycling_model->files($info['project_sn'],'photo');
+                if($_photo->num_rows()){
+                    $_info = $_photo->result_array();
+                    foreach($_info as $item){
+                        $info['photos'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_invoice = $this->recycling_model->files($info['project_sn'],'invoice');
+                if($_invoice->num_rows()){
+                    $_info = $_invoice->result_array();
+                    foreach($_info as $item){
+                        $info['invoices'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                $_report = $this->recycling_model->files($info['project_sn'],'report');
+                if($_report->num_rows()){
+                    $_info = $_report->result_array();
+                    foreach($_info as $item){
+                        $info['reports'] = json_decode($item['file'],TRUE);
+                    };
+                }
+                $_privacy = $this->recycling_model->files($info['project_sn'],'privacy');
+                if($_privacy->num_rows()){
+                    $_info = $_privacy->result_array();
+                    foreach($_info as $item){
+                        $info['privacies'] = json_decode($item['file'],TRUE);
+                    }
+                }
+                json_success(array('title'=>'项目入库 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/confirming',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
             }

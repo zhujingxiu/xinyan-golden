@@ -396,18 +396,7 @@
                                                             <?php endforeach?>
                                                         </select>
                                                     </div>
-                                                    <label for="" class="control-label col-sm-2">项目到期</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_expired" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_expired']) && $setting['recycling_expired']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
+
                                                 </div>
                                                 <div class="form-group ">
                                                     <label for="" class="control-label col-sm-2">申请提金</label>

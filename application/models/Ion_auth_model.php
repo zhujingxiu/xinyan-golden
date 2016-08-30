@@ -1430,7 +1430,7 @@ class Ion_auth_model extends CI_Model
 	public function get_users_by_group($group_id)
 	{
 		return $this->db->select()
-					->where($this->tables['users_groups'].'.code',$group_id)
+					->where($this->tables['users_groups'].'.'.$this->join['groups'],$group_id)
 					->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
 					->get($this->tables['users_groups']);
 	}

@@ -8,7 +8,6 @@
 ?>
 <div class="col-sm-12" style="padding-top:10px; ">
 	<?php echo form_open('/project/recycling/booked',array('id' => "form-booking", 'class'=>'form-horizontal'))?>
-
 	<?php echo form_hidden($csrf)?>
 	<div class="col-sm-12">
 		<div class="form-group">
@@ -26,8 +25,8 @@
 									<div class="input-group col-sm-11">
 										<span class="input-group-addon">黄金种类</span>
 										<select class="form-control" name="type">
-											<option value="0">金条</option>
-											<option value="1">金饰</option>
+											<option value="ornaments">金饰</option>
+											<option value="goldbar">金条</option>
 										</select>
 									</div>
 								</div>
@@ -277,11 +276,11 @@
 				$(form).ajaxSubmit({
 					dataType:'json',
 					beforeSubmit:function(){
-						layer.load();
+						//layer.load();
 					},
 					success: function (json) {
 						if(json.code==1){
-							//location.reload()
+							location.reload()
 						}
 					}
 				});
@@ -381,6 +380,7 @@
 			if(json.code=1) {
 				var _html = '<div class="uploads-thumb">';
 				_html += '<img title="'+json.upload['origin']+'" data-entry="privacy" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+				_html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
 				_html += '</div>';
 				$('#privacy-uploads').append(_html);
 			}else{

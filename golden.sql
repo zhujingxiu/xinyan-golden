@@ -1,23 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version phpStudy 2014
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: 2016-08-30 12:21:53
--- 服务器版本： 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- 主机: localhost
+-- 生成日期: 2016 �?08 �?31 �?00:58
+-- 服务器版本: 5.5.47
+-- PHP 版本: 5.5.30
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `golden`
+-- 数据库: `golden`
 --
 
 -- --------------------------------------------------------
@@ -26,16 +26,17 @@ SET time_zone = "+00:00";
 -- 表的结构 `gd_article`
 --
 
-CREATE TABLE `gd_article` (
-  `article_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_article` (
+  `article_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci,
   `is_top` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `author_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL,
+  PRIMARY KEY (`article_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_article`
@@ -52,15 +53,16 @@ INSERT INTO `gd_article` (`article_id`, `category_id`, `title`, `text`, `is_top`
 -- 表的结构 `gd_article_category`
 --
 
-CREATE TABLE `gd_article_category` (
-  `category_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_article_category` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_article_category`
@@ -77,8 +79,8 @@ INSERT INTO `gd_article_category` (`category_id`, `code`, `title`, `is_admin`, `
 -- 表的结构 `gd_customer`
 --
 
-CREATE TABLE `gd_customer` (
-  `customer_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `realname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
   `idnumber` char(18) COLLATE utf8_unicode_ci NOT NULL,
@@ -88,15 +90,17 @@ CREATE TABLE `gd_customer` (
   `referrer_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `lasttime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_customer`
 --
 
 INSERT INTO `gd_customer` (`customer_id`, `realname`, `phone`, `idnumber`, `wechat`, `qq`, `status`, `referrer_id`, `worker_id`, `addtime`, `lasttime`) VALUES
-(2, '朱景修', '18850911766', '321245198905080904', '', NULL, 1, '2', 5, 1472552472, 1472552472);
+(2, '景修', '18850911766', '321245198905080904', '', NULL, 1, '2', 5, 1472552472, 1472552472),
+(3, '朱静', '18959506595', '321324199008080808', '', NULL, 1, '2', 5, 1472559583, 1472559583);
 
 -- --------------------------------------------------------
 
@@ -104,15 +108,24 @@ INSERT INTO `gd_customer` (`customer_id`, `realname`, `phone`, `idnumber`, `wech
 -- 表的结构 `gd_customer_stock`
 --
 
-CREATE TABLE `gd_customer_stock` (
-  `stock_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer_stock` (
+  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `mode` enum('in','out','profit','free') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'profit',
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
+  `weight` decimal(13,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stock_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `gd_customer_stock`
+--
+
+INSERT INTO `gd_customer_stock` (`stock_id`, `customer_id`, `mode`, `project_sn`, `weight`, `note`, `worker_id`, `addtime`) VALUES
+(1, 3, 'in', 'GR1608307502051943', '10.00', '项目存金10.00克', 7, 1472575739);
 
 -- --------------------------------------------------------
 
@@ -120,14 +133,15 @@ CREATE TABLE `gd_customer_stock` (
 -- 表的结构 `gd_golden_price`
 --
 
-CREATE TABLE `gd_golden_price` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_golden_price` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `price` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=29 ;
 
 --
 -- 转存表中的数据 `gd_golden_price`
@@ -159,7 +173,8 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 (24, '2016-08-26', 'Au99.99', '沪金99', '284.89', 1472260847),
 (25, '2016-08-27', 'Au99.99', '沪金99', '284.89', 1472399839),
 (26, '2016-08-28', 'Au99.99', '沪金99', '284.89', 1472400119),
-(27, '2016-08-29', 'Au99.99', '沪金99', '283.50', 1472518017);
+(27, '2016-08-29', 'Au99.99', '沪金99', '283.50', 1472518017),
+(28, '2016-08-30', 'Au99.99', '沪金99', '283.99', 1472573192);
 
 -- --------------------------------------------------------
 
@@ -167,7 +182,7 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 -- 表的结构 `gd_golden_today`
 --
 
-CREATE TABLE `gd_golden_today` (
+CREATE TABLE IF NOT EXISTS `gd_golden_today` (
   `date` date DEFAULT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -179,7 +194,9 @@ CREATE TABLE `gd_golden_today` (
   `lastclosing` decimal(8,2) NOT NULL DEFAULT '0.00',
   `tradeamount` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `updatetime` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL
+  `addtime` int(11) NOT NULL,
+  KEY `date` (`date`),
+  KEY `updatetime` (`updatetime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -195,8 +212,6 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 ('2016-08-29', 'Au100g', '沪金100G', '285.00', '286.20', '287.55', '284.20', '0.05', '284.86', '8.2000', 1472408979, 1472432430),
 ('2016-08-29', 'Au99.95', '沪金95', '286.00', '268.99', '286.00', '268.99', '0.53', '284.49', '4.0000', 1472408548, 1472432430),
 ('2016-08-29', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.51', '0.0000', 1472408953, 1472432430),
-('2016-08-28', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472386495, 1472432430),
-('2016-08-28', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472384431, 1472432430),
 ('2016-08-29', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '283.98', '0.0000', 1472408965, 1472432430),
 ('2016-08-29', 'Au(T+D)', '黄金延期', '283.48', '285.30', '287.90', '283.11', '-0.40', '284.61', '77368.0000', 1472434992, 1472435529),
 ('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.58', '285.15', '287.98', '283.27', '-0.41', '284.75', '7953.2000', 1472434990, 1472435529),
@@ -217,7 +232,6 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 ('2016-08-29', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.62', '245.51', '8.0000', 1472435562, 1472440453),
 ('2016-08-29', 'iAu99.99', 'IAU99.99', '284.60', '284.60', '284.60', '284.60', '0.22', '283.98', '0.0200', 1472438566, 1472440453),
 ('2016-08-29', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472438018, 1472440453),
-('2016-08-28', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472384414, 1472440453),
 ('2016-08-29', 'Au(T+D)', '黄金延期', '283.27', '285.30', '287.90', '283.00', '-0.47', '284.61', '86162.0000', 1472440370, 1472440916),
 ('2016-08-29', 'mAu(T+D)', '迷你黄金延期', '283.48', '285.15', '287.98', '283.08', '-0.45', '284.75', '8450.0000', 1472440347, 1472440916),
 ('2016-08-29', 'Au99.99', '沪金99', '283.49', '285.20', '287.28', '283.30', '-0.49', '284.89', '4927.2800', 1472440360, 1472440916),
@@ -369,7 +383,56 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 ('2016-08-30', 'Au100g', '沪金100G', '284.54', '284.01', '285.00', '284.01', '0.23', '283.88', '30.2000', 1472542174, 1472545464),
 ('2016-08-30', 'iAu99.99', 'IAU99.99', '284.69', '284.69', '284.69', '284.69', '0.19', '284.15', '0.0800', 1472542174, 1472545464),
 ('2016-08-30', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472542174, 1472545464),
-('2016-08-30', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472542174, 1472545464);
+('2016-08-30', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472542174, 1472545464),
+('2016-08-30', 'Au(T+D)', '黄金延期', '283.70', '284.03', '284.27', '283.61', '-0.06', '283.87', '3306.0000', 1472561944, 1472564273),
+('2016-08-30', 'mAu(T+D)', '迷你黄金延期', '283.90', '284.13', '284.50', '283.80', '-0.08', '284.12', '277.6000', 1472561943, 1472564273),
+('2016-08-30', 'Au(T+N1)', '延期单金', '289.95', '284.10', '289.95', '284.10', '1.10', '286.80', '52.2000', 1472561935, 1472564274),
+('2016-08-30', 'Au99.99', '沪金99', '283.98', '284.99', '284.99', '283.98', '0.00', '283.99', '3.1400', 1472561924, 1472564274),
+('2016-08-30', 'Au100g', '沪金100G', '285.44', '285.44', '285.44', '285.44', '0.33', '284.51', '0.2000', 1472561825, 1472564274),
+('2016-08-30', 'Au99.95', '沪金95', '0.00', '0.00', '0.00', '0.00', '0.00', '283.61', '0.0000', 1472561638, 1472564274),
+('2016-08-30', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.00', '0.0000', 1472560961, 1472564274),
+('2016-08-30', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472559015, 1472564274),
+('2016-08-30', 'iAu99.5', 'IAU99.5', '0.00', '0.00', '0.00', '0.00', '0.00', '237.80', '0.0000', 1472557214, 1472564274),
+('2016-08-30', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '284.69', '0.0000', 1472561942, 1472564274),
+('2016-08-30', 'Au(T+N2)', '延期双金', '0.00', '0.00', '0.00', '0.00', '0.00', '284.70', '0.0000', 1472561407, 1472564274),
+('2016-08-30', 'Au(T+D)', '黄金延期', '283.85', '284.03', '284.27', '283.58', '-0.01', '283.87', '7388.0000', 1472565572, 1472566457),
+('2016-08-30', 'mAu(T+D)', '迷你黄金延期', '284.15', '284.13', '284.50', '283.75', '0.01', '284.12', '541.6000', 1472565572, 1472566457),
+('2016-08-30', 'Au(T+N1)', '延期单金', '286.85', '284.10', '289.95', '284.10', '0.02', '286.80', '58.6000', 1472565564, 1472566457),
+('2016-08-30', 'Au99.99', '沪金99', '284.10', '284.99', '284.99', '283.90', '0.04', '283.99', '14.3600', 1472565560, 1472566457),
+('2016-08-30', 'Au(T+N2)', '延期双金', '284.00', '284.00', '284.00', '284.00', '-0.25', '284.70', '0.6000', 1472565348, 1472566457),
+('2016-08-30', 'Au100g', '沪金100G', '284.00', '285.44', '285.44', '284.00', '-0.18', '284.51', '0.6000', 1472565425, 1472566457),
+('2016-08-30', 'Au99.95', '沪金95', '0.00', '0.00', '0.00', '0.00', '0.00', '283.61', '0.0000', 1472565302, 1472566457),
+('2016-08-30', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472563057, 1472566457),
+('2016-08-30', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '284.69', '0.0000', 1472565572, 1472566457),
+('2016-08-30', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.00', '0.0000', 1472564419, 1472566457),
+('2016-08-30', 'Au(T+D)', '黄金延期', '283.84', '284.03', '284.27', '283.58', '-0.01', '283.87', '6316.0000', 1472564371, 1472567643),
+('2016-08-30', 'mAu(T+D)', '迷你黄金延期', '283.98', '284.13', '284.50', '283.75', '-0.05', '284.12', '475.6000', 1472564370, 1472567643),
+('2016-08-30', 'Au(T+N1)', '延期单金', '289.95', '284.10', '289.95', '284.10', '1.10', '286.80', '52.2000', 1472564311, 1472567643),
+('2016-08-30', 'Au99.99', '沪金99', '284.10', '284.99', '284.99', '283.90', '0.04', '283.99', '13.5000', 1472564365, 1472567643),
+('2016-08-30', 'Au100g', '沪金100G', '285.44', '285.44', '285.44', '285.44', '0.33', '284.51', '0.2000', 1472564364, 1472567643),
+('2016-08-30', 'Au99.95', '沪金95', '0.00', '0.00', '0.00', '0.00', '0.00', '283.61', '0.0000', 1472563481, 1472567643),
+('2016-08-30', 'Pt99.95', '沪铂95', '0.00', '0.00', '0.00', '0.00', '0.00', '245.00', '0.0000', 1472563207, 1472567643),
+('2016-08-30', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '284.69', '0.0000', 1472564368, 1472567643),
+('2016-08-30', 'Au(T+N2)', '延期双金', '0.00', '0.00', '0.00', '0.00', '0.00', '284.70', '0.0000', 1472564331, 1472567643),
+('2016-08-30', 'Au(T+D)', '黄金延期', '283.93', '284.03', '284.27', '283.51', '0.02', '283.87', '10542.0000', 1472569204, 1472569538),
+('2016-08-30', 'mAu(T+D)', '迷你黄金延期', '284.10', '284.13', '284.50', '283.75', '-0.01', '284.12', '771.2000', 1472569204, 1472569538),
+('2016-08-30', 'Au(T+N1)', '延期单金', '286.30', '284.10', '289.95', '284.10', '-0.17', '286.80', '60.4000', 1472569202, 1472569538),
+('2016-08-30', 'Au99.99', '沪金99', '283.92', '284.99', '284.99', '283.90', '-0.02', '283.99', '19.4200', 1472569147, 1472569538),
+('2016-08-30', 'Au100g', '沪金100G', '284.96', '285.44', '285.44', '284.00', '0.16', '284.51', '5.8000', 1472568071, 1472569538),
+('2016-08-30', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.41', '245.00', '2.0000', 1472568387, 1472569538),
+('2016-08-30', 'Au(T+N2)', '延期双金', '284.00', '284.00', '284.00', '284.00', '-0.25', '284.70', '1.0000', 1472569204, 1472569538),
+('2016-08-30', 'iAu100g', 'IAU100G', '0.00', '0.00', '0.00', '0.00', '0.00', '282.53', '0.0000', 1472567525, 1472569538),
+('2016-08-30', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '284.69', '0.0000', 1472569197, 1472569538),
+('2016-08-30', 'Au99.95', '沪金95', '0.00', '0.00', '0.00', '0.00', '0.00', '283.61', '0.0000', 1472568642, 1472569538),
+('2016-08-30', 'Au(T+D)', '黄金延期', '283.69', '284.03', '284.27', '283.50', '-0.06', '283.87', '12122.0000', 1472571655, 1472573192),
+('2016-08-30', 'mAu(T+D)', '迷你黄金延期', '283.92', '284.13', '284.50', '283.70', '-0.07', '284.12', '872.8000', 1472571657, 1472573192),
+('2016-08-30', 'Au(T+N1)', '延期单金', '286.30', '284.10', '289.95', '284.10', '-0.17', '286.80', '60.4000', 1472571638, 1472573192),
+('2016-08-30', 'Au99.99', '沪金99', '284.00', '284.99', '284.99', '283.90', '0.00', '283.99', '21.4600', 1472571608, 1472573192),
+('2016-08-30', 'Au100g', '沪金100G', '284.00', '285.44', '285.44', '284.00', '-0.18', '284.51', '6.6000', 1472571636, 1472573192),
+('2016-08-30', 'Pt99.95', '沪铂95', '244.00', '244.00', '244.00', '244.00', '-0.41', '245.00', '2.0000', 1472569902, 1472573192),
+('2016-08-30', 'Au(T+N2)', '延期双金', '284.10', '284.00', '284.10', '284.00', '-0.21', '284.70', '1.2000', 1472571615, 1472573192),
+('2016-08-30', 'iAu99.99', 'IAU99.99', '0.00', '0.00', '0.00', '0.00', '0.00', '284.69', '0.0000', 1472571616, 1472573192),
+('2016-08-30', 'Au99.95', '沪金95', '0.00', '0.00', '0.00', '0.00', '0.00', '283.61', '0.0000', 1472570596, 1472573192);
 
 -- --------------------------------------------------------
 
@@ -377,8 +440,8 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 -- 表的结构 `gd_node`
 --
 
-CREATE TABLE `gd_node` (
-  `node_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_node` (
+  `node_id` int(11) NOT NULL AUTO_INCREMENT,
   `mode` enum('auth','menu') NOT NULL DEFAULT 'auth',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `level` tinyint(4) NOT NULL DEFAULT '1',
@@ -388,8 +451,9 @@ CREATE TABLE `gd_node` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `sort` smallint(6) NOT NULL DEFAULT '0',
-  `note` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `note` text,
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=104 ;
 
 --
 -- 转存表中的数据 `gd_node`
@@ -462,7 +526,7 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (70, 'auth', 69, 1, 'index', '读取项目列表', 'project/recycling/index', 1, 1, 0, ''),
 (72, 'auth', 69, 1, 'booked', '登记项目', 'project/recycling/booked', 1, 1, 0, ''),
 (78, 'auth', 69, 1, 'checked', '核实项目信息', 'project/recycling/checked', 1, 1, 0, ''),
-(80, 'auth', 69, 3, 'certificated', '申请取金凭证', 'project/recycling/certificated', 1, 1, 0, ''),
+(80, 'auth', 69, 3, 'applied', '申请取金凭证', 'project/recycling/applied', 1, 1, 0, ''),
 (82, 'auth', 69, 1, 'taken', '确认提金', 'project/recycling/taken', 1, 1, 0, ''),
 (84, 'auth', 69, 1, 'refused', '拒绝申请', 'project/recycling/refused', 1, 1, 0, ''),
 (85, 'auth', 69, 1, 'trashed', '废弃项目', 'project/recycling/trashed', 1, 1, 0, ''),
@@ -478,7 +542,8 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (98, 'auth', 1, 1, 'filemanager', '文件管理', 'tool/filemanager', 1, 0, 0, ''),
 (100, 'auth', 98, 1, 'upload', '上传文件', 'tool/filemanager/upload', 1, 0, 0, ''),
 (101, 'auth', 98, 1, 'upload', '上传文件', 'tool/filemanager/upload', 1, 0, 0, ''),
-(102, 'auth', 5, 1, 'autocomplete', '自动匹配', 'auth/worker/autocomplete', 1, 0, 0, '');
+(102, 'auth', 5, 1, 'autocomplete', '自动匹配', 'auth/worker/autocomplete', 1, 0, 0, ''),
+(103, 'auth', 69, 1, 'update', '编辑项目', 'project/recycling/update', 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -486,8 +551,8 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 -- 表的结构 `gd_project_apply`
 --
 
-CREATE TABLE `gd_project_apply` (
-  `apply_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_apply` (
+  `apply_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `phone` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
@@ -495,8 +560,9 @@ CREATE TABLE `gd_project_apply` (
   `note` text COLLATE utf8_unicode_ci,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`apply_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -504,8 +570,8 @@ CREATE TABLE `gd_project_apply` (
 -- 表的结构 `gd_project_investing`
 --
 
-CREATE TABLE `gd_project_investing` (
-  `project_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `customer_id` int(11) NOT NULL DEFAULT '0',
   `realname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -526,8 +592,9 @@ CREATE TABLE `gd_project_investing` (
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `locker` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=16 ;
 
 --
 -- 转存表中的数据 `gd_project_investing`
@@ -556,16 +623,17 @@ INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `customer_id`, `
 -- 表的结构 `gd_project_investing_history`
 --
 
-CREATE TABLE `gd_project_investing_history` (
-  `history_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=59 ;
 
 --
 -- 转存表中的数据 `gd_project_investing_history`
@@ -632,14 +700,15 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_investing_status`
 --
 
-CREATE TABLE `gd_project_investing_status` (
-  `status_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing_status` (
+  `status_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `gd_project_investing_status`
@@ -661,16 +730,17 @@ INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `list_l
 -- 表的结构 `gd_project_recycling`
 --
 
-CREATE TABLE `gd_project_recycling` (
-  `project_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
+  `referrer_id` int(11) NOT NULL DEFAULT '0',
   `price` decimal(6,2) NOT NULL DEFAULT '0.00',
   `origin_weight` decimal(9,2) NOT NULL DEFAULT '0.00',
   `weight` decimal(9,2) NOT NULL DEFAULT '0.00',
   `number` tinyint(4) NOT NULL DEFAULT '0',
-  `type` tinyint(4) DEFAULT '0',
+  `type` enum('ornaments','goldbar','other') COLLATE utf8_unicode_ci DEFAULT 'ornaments',
   `appraiser_id` int(11) NOT NULL DEFAULT '0',
   `loss` decimal(5,2) NOT NULL DEFAULT '0.00',
   `note` text COLLATE utf8_unicode_ci,
@@ -678,15 +748,17 @@ CREATE TABLE `gd_project_recycling` (
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `locker` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling`
 --
 
-INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `customer_id`, `price`, `origin_weight`, `weight`, `number`, `type`, `appraiser_id`, `loss`, `note`, `is_del`, `worker_id`, `addtime`, `lasttime`, `locker`) VALUES
-(2, 'GR1608306501832112', 1, 2, '283.98', '15.00', '12.00', 2, 0, 5, '20.00', 'ssss', 0, 5, 1472552472, 1472552472, 0);
+INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `price`, `origin_weight`, `weight`, `number`, `type`, `appraiser_id`, `loss`, `note`, `is_del`, `worker_id`, `addtime`, `lasttime`, `locker`) VALUES
+(2, 'GR1608306501832112', 1, 2, 2, '283.98', '15.00', '12.00', 2, 'goldbar', 5, '20.00', 'sssssss', 0, 5, 1472552472, 1472570351, 0),
+(3, 'GR1608307502051943', 3, 3, 2, '283.98', '16.00', '10.00', 2, 'goldbar', 5, '10.00', '', 0, 7, 1472559583, 1472575739, 0);
 
 -- --------------------------------------------------------
 
@@ -694,22 +766,29 @@ INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `cu
 -- 表的结构 `gd_project_recycling_file`
 --
 
-CREATE TABLE `gd_project_recycling_file` (
-  `file_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `mode` enum('photo','invoice','report','privacy') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'photo',
   `file` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=19 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling_file`
 --
 
 INSERT INTO `gd_project_recycling_file` (`file_id`, `project_id`, `mode`, `file`, `status`, `worker_id`, `addtime`) VALUES
-(0, 2, 'privacy', '[{"name":"user2-160x160.jpg","path":"public\\/uploads\\/2016\\/08\\/301821078f0ecf.jpg"}]', 1, 5, 1472552472);
+(11, 2, 'photo', '[{"name":"121034209220f1.jpg","path":"public\\/uploads\\/2016\\/08\\/302312556975e7.jpg"}]', 1, 5, 1472570351),
+(12, 2, 'invoice', '[{"name":"user6-128x128.jpg","path":"public\\/uploads\\/2016\\/08\\/3023130308544d.jpg"}]', 1, 5, 1472570351),
+(13, 2, 'privacy', '[{"name":"user2-160x160.jpg","path":"public\\/uploads\\/2016\\/08\\/301821078f0ecf.jpg"}]', 1, 5, 1472570351),
+(15, 3, 'photo', '[{"name":"user5-128x128.jpg","path":"public\\/uploads\\/2016\\/08\\/30201936b4d0e3.jpg"}]', 1, 5, 1472574278),
+(16, 3, 'invoice', '[{"name":"avatar4.png","path":"public\\/uploads\\/2016\\/08\\/31002303eab7ed.png"}]', 1, 5, 1472574278),
+(17, 3, 'report', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/08\\/310023447bd092.txt"}]', 1, 5, 1472574278),
+(18, 3, 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/08\\/310023375c34ea.txt"}]', 1, 5, 1472574278);
 
 -- --------------------------------------------------------
 
@@ -717,23 +796,34 @@ INSERT INTO `gd_project_recycling_file` (`file_id`, `project_id`, `mode`, `file`
 -- 表的结构 `gd_project_recycling_history`
 --
 
-CREATE TABLE `gd_project_recycling_history` (
-  `history_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling_history`
 --
 
 INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_id`, `note`, `request`, `worker_id`, `addtime`, `ip`) VALUES
-(1, 2, 1, 'ssss', '', 5, 1472552472, '127.0.0.1');
+(1, 2, 1, 'ssss', '', 5, 1472552472, '127.0.0.1'),
+(2, 3, 1, '', '', 5, 1472559583, '127.0.0.1'),
+(3, 3, 1, '', '', 5, 1472569733, '127.0.0.1'),
+(4, 2, 1, 'sssssss', '', 5, 1472570023, '127.0.0.1'),
+(5, 2, 1, 'sssssss', '', 5, 1472570351, '127.0.0.1'),
+(6, 3, 1, '', '', 5, 1472571476, '127.0.0.1'),
+(7, 3, 2, 'sadsadsa', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 3, 1472573871, '127.0.0.1'),
+(8, 3, 6, 'sadsadsadasdsadsa', '', 3, 1472573908, '127.0.0.1'),
+(9, 3, 1, 'sadsadsadasdsadsasadsadsadsa', '', 5, 1472574278, '127.0.0.1'),
+(10, 3, 2, 'okok', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 3, 1472574326, '127.0.0.1'),
+(14, 3, 3, '', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 7, 1472575739, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -741,14 +831,15 @@ INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_recycling_status`
 --
 
-CREATE TABLE `gd_project_recycling_status` (
-  `status_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling_status` (
+  `status_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling_status`
@@ -758,11 +849,10 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `list_l
 (1, '已登记', 'booked', NULL, '登记客户存金信息，含鉴定结果及客户同意书', 1),
 (2, '已核实', 'checked', NULL, '上级主管核对客户、物品及鉴定结果', 1),
 (3, '已确认', 'confirmed', NULL, '库管确认并标记', 1),
-(4, '已到期', 'expired', NULL, '项目到期，生金', 1),
-(5, '已申请', 'applied', NULL, '申请提金', 1),
-(6, '已完结', 'finished', NULL, '到期取金，项目完结', 1),
-(7, '已驳回', 'refused', NULL, '客户信息或黄金物品等问题造成', 1),
-(8, '已终止', 'terminated', NULL, '提前终止项目', 1);
+(4, '已申请', 'applied', NULL, '申请提金', 1),
+(5, '已完结', 'finished', NULL, '到期取金，项目完结', 1),
+(6, '已驳回', 'refused', NULL, '客户信息或黄金物品等问题造成', 1),
+(7, '已终止', 'terminated', NULL, '提前终止项目', 1);
 
 -- --------------------------------------------------------
 
@@ -770,8 +860,8 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `list_l
 -- 表的结构 `gd_project_stock`
 --
 
-CREATE TABLE `gd_project_stock` (
-  `stock_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_stock` (
+  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling','stock') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'investing',
@@ -782,8 +872,16 @@ CREATE TABLE `gd_project_stock` (
   `status` tinyint(4) NOT NULL,
   `worker_id` int(11) NOT NULL,
   `addtime` int(11) NOT NULL,
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `lasttime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stock_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `gd_project_stock`
+--
+
+INSERT INTO `gd_project_stock` (`stock_id`, `project_id`, `title`, `mode`, `info`, `weight`, `file`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
+(2, 3, '朱静:18959506595:10.00', 'recycling', 'a:11:{s:10:"project_sn";s:18:"GR1608307502051943";s:8:"realname";s:6:"朱静";s:5:"phone";s:11:"18959506595";s:8:"idnumber";s:18:"321324199008080808";s:11:"referrer_id";s:1:"2";s:4:"type";s:7:"goldbar";s:6:"number";s:1:"2";s:13:"origin_weight";s:5:"16.00";s:6:"weight";s:5:"10.00";s:4:"loss";s:5:"10.00";s:12:"appraiser_id";s:1:"5";}', '10.00', NULL, '', 1, 7, 1472575739, 1472575739);
 
 -- --------------------------------------------------------
 
@@ -791,8 +889,8 @@ CREATE TABLE `gd_project_stock` (
 -- 表的结构 `gd_project_trash`
 --
 
-CREATE TABLE `gd_project_trash` (
-  `trash_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_trash` (
+  `trash_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
@@ -801,8 +899,9 @@ CREATE TABLE `gd_project_trash` (
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`trash_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -810,11 +909,12 @@ CREATE TABLE `gd_project_trash` (
 -- 表的结构 `gd_sessions`
 --
 
-CREATE TABLE `gd_sessions` (
+CREATE TABLE IF NOT EXISTS `gd_sessions` (
   `sess_id` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `data` text COLLATE utf8_unicode_ci NOT NULL
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -822,407 +922,38 @@ CREATE TABLE `gd_sessions` (
 --
 
 INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
-('65cbddb189774dd545b62df029469e382b1b0afa', '127.0.0.1', 1471490220, '__ci_last_regenerate|i:1471490212;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('b93750528814f33bec864c2537e42d30f6a87133', '127.0.0.1', 1471491055, '__ci_last_regenerate|i:1471490847;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('f27adfbc16638f80851daf284c1464ab21c5c509', '127.0.0.1', 1471493212, '__ci_last_regenerate|i:1471493155;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('0d292df4c8ae3e2f7abfe91e6308372c8c6bc1cc', '127.0.0.1', 1471495288, '__ci_last_regenerate|i:1471495052;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('ff4278e63a33619094958d7123eabfa8bad05f52', '127.0.0.1', 1471495659, '__ci_last_regenerate|i:1471495373;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('66fe0c3b42ac5aabddcfc1dad2447b1f1ca91529', '127.0.0.1', 1471495980, '__ci_last_regenerate|i:1471495748;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('148bf144b3a672a1857b96e7ce4feee2fba2221e', '127.0.0.1', 1471497178, '__ci_last_regenerate|i:1471496926;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('14f588e1b24f8802c91d597b13b7a2abcb4452e4', '127.0.0.1', 1471497724, '__ci_last_regenerate|i:1471497523;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('7e422835bd4e504a3dc7b053c010e63c8024a0a4', '127.0.0.1', 1471497908, '__ci_last_regenerate|i:1471497907;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('afee63e8d18529fb2ce8e777cf855148296056d3', '127.0.0.1', 1471498776, '__ci_last_regenerate|i:1471498506;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('f62cd11731832272bcf1fbaeed7a6ea567a16b6e', '127.0.0.1', 1471499001, '__ci_last_regenerate|i:1471498921;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('b5af92e5cc4605b6b88a283c0dc0371812995398', '127.0.0.1', 1471503284, '__ci_last_regenerate|i:1471501213;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('b628482674c9b1f2a1a49941891ab29d344233c5', '127.0.0.1', 1471503773, '__ci_last_regenerate|i:1471503524;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('b1957948e8a6da67e4e5bb7b0780ff1595840814', '127.0.0.1', 1471503920, '__ci_last_regenerate|i:1471503919;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('9b2c21488a95fe4fbaaf984174298b233e2fec9c', '127.0.0.1', 1471504493, '__ci_last_regenerate|i:1471504268;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('1d34bd47c009ed5ab689d5d9a422eb27ca093293', '127.0.0.1', 1471504995, '__ci_last_regenerate|i:1471504717;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('a1aa7efb256436f4de6d7583ef49e3ec2b0f09af', '127.0.0.1', 1471505406, '__ci_last_regenerate|i:1471505169;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('8dfbae881ffafa601267eadb8cfd2e151916a666', '127.0.0.1', 1471505619, '__ci_last_regenerate|i:1471505555;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('1257801b1bf950307826bb90b08231925f3efbbb', '127.0.0.1', 1471507015, '__ci_last_regenerate|i:1471506736;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('0fc5cd87e84b9a86e3db279bb4143cdf69db8287', '127.0.0.1', 1471507274, '__ci_last_regenerate|i:1471507058;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('ae4bc431ae178fa154e2596913ce8c47119aa5f3', '127.0.0.1', 1471509342, '__ci_last_regenerate|i:1471508690;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('536edb630e565a9c27643acb312f38c1a516f3e3', '127.0.0.1', 1471509489, '__ci_last_regenerate|i:1471509342;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('b87597e08661d2c1d82d2792248cf2a6c953c3d0', '127.0.0.1', 1471509955, '__ci_last_regenerate|i:1471509842;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('7bd00bd7afc8e7c85e8364b988610787eb5306a3', '127.0.0.1', 1471511579, '__ci_last_regenerate|i:1471510194;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('95a68add0f5e42aac71f5a477086deac9a5bd989', '127.0.0.1', 1471511829, '__ci_last_regenerate|i:1471511694;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('3be924685c88eed0951aee9d05b9710f3b896bec', '127.0.0.1', 1471512103, '__ci_last_regenerate|i:1471512071;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('e6753aec0158b42bcdd29b16f3a67859d460fb64', '127.0.0.1', 1471512835, '__ci_last_regenerate|i:1471512629;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('de5e53c07b15a1b24c06405e01eea0def22891df', '127.0.0.1', 1471513792, '__ci_last_regenerate|i:1471513358;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('fe7651e9ad36c3ae8e3db61bdf2478f8141f4aff', '127.0.0.1', 1471513975, '__ci_last_regenerate|i:1471513792;code|s:4:"2v8d";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471416781";'),
-('bbd10a70c0093c0bab1c51c7d351df447fb403da', '127.0.0.1', 1471567959, '__ci_last_regenerate|i:1471567314;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('0985d3ac040f496274a45bd3ad08f6a3c382b763', '127.0.0.1', 1471568186, '__ci_last_regenerate|i:1471567978;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('92ae71806d869673c352431277185e6d4bb58844', '127.0.0.1', 1471568721, '__ci_last_regenerate|i:1471568440;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('5f8db2a60df920413a24b3de06052a64a9c6d888', '127.0.0.1', 1471569982, '__ci_last_regenerate|i:1471568818;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('adbfb678e80fdd32f3fd286a94af8e5bb7cd6fc7', '127.0.0.1', 1471571347, '__ci_last_regenerate|i:1471570040;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('324d35b2d48aa0216557625ba5498feffcfa955c', '127.0.0.1', 1471572776, '__ci_last_regenerate|i:1471571412;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('0e22d57c6eb2133d56950cbcc58e164937bcc9dc', '127.0.0.1', 1471573294, '__ci_last_regenerate|i:1471573103;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('724ede72e47b5da0df5a4b5d42b82d1be5b02664', '127.0.0.1', 1471574328, '__ci_last_regenerate|i:1471574009;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";success|s:28:"<p>Group details updated</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('d034a0f31e8aaa977dd1d5cb0b5094c7209fce55', '127.0.0.1', 1471574329, '__ci_last_regenerate|i:1471574328;code|s:4:"jAbR";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471481330";'),
-('4e8e0170fc4c96a97aa968d2d44581e91310b658', '127.0.0.1', 1471589851, '__ci_last_regenerate|i:1471588407;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('82794c7b4a60c3a817cb6badf5fba2acfda3cea3', '127.0.0.1', 1471590339, '__ci_last_regenerate|i:1471590035;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('99093435f722c0888858bde54835cec0a6e78484', '127.0.0.1', 1471592084, '__ci_last_regenerate|i:1471590622;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";success|s:33:"<p>Group created Successfully</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('e3185f29a1005d6e41d3fdddefa4fb72646b5911', '127.0.0.1', 1471592311, '__ci_last_regenerate|i:1471592084;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('327e04f2178179ce5caed1f96ae01989224b5f8e', '127.0.0.1', 1471592591, '__ci_last_regenerate|i:1471592590;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('7370352bb19a73831a8b8478df538df4e3820229', '127.0.0.1', 1471594696, '__ci_last_regenerate|i:1471594395;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";success|s:28:"<p>Group details updated</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('c605799bb6537430f9eacab19ca42a8c7f193a7a', '127.0.0.1', 1471594915, '__ci_last_regenerate|i:1471594696;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('d558e87ad4ee3e41562be6c467ae74107381a423', '127.0.0.1', 1471595249, '__ci_last_regenerate|i:1471595107;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('a4f9ddd40661a8a8ee5de897f482d6e243bf5c28', '127.0.0.1', 1471596286, '__ci_last_regenerate|i:1471596131;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('6a47373f410eb51a67175de882ef75f7fa590483', '127.0.0.1', 1471597915, '__ci_last_regenerate|i:1471596689;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";'),
-('f5dde0debbf5fe6c6490fda4baeea5afaa8b2252', '127.0.0.1', 1471598720, '__ci_last_regenerate|i:1471598304;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";success|s:25:"<p>账号创建成功</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('0d21bbe546425f1f4641f26764b47f88899909be', '127.0.0.1', 1471599152, '__ci_last_regenerate|i:1471598800;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";success|s:25:"<p>账号创建成功</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('cc9db36f1e20f0d5b7267fb74ba79fe9aab1e984', '127.0.0.1', 1471599856, '__ci_last_regenerate|i:1471599152;code|s:4:"yeVT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471567319";success|s:25:"<p>账号创建成功</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('cfc14e11f8290a7947a7ebbfc931eb8891b24fa9', '127.0.0.1', 1471600252, '__ci_last_regenerate|i:1471599954;code|s:4:"wQy6";identity|s:9:"all-demo1";username|s:9:"all-demo1";email|s:8:"all@b.cc";user_id|s:2:"11";old_last_login|s:1:"0";'),
-('3e8f66b958a6a1d4e5b71beb0a1a26a6f6c857b8', '127.0.0.1', 1471600510, '__ci_last_regenerate|i:1471600468;code|s:4:"7RRP";identity|s:9:"all-demo1";username|s:9:"all-demo1";email|s:8:"all@b.cc";user_id|s:2:"11";old_last_login|s:10:"1471599969";'),
-('5c90715a7ce631fb6799b7bc3fe264d90b1bb376', '127.0.0.1', 1471601087, '__ci_last_regenerate|i:1471600871;code|s:4:"7RRP";identity|s:9:"all-demo1";username|s:9:"all-demo1";email|s:8:"all@b.cc";user_id|s:2:"11";old_last_login|s:10:"1471599969";'),
-('3cc073886372dec9e5239f58169061827a88e9aa', '127.0.0.1', 1471672476, '__ci_last_regenerate|i:1471672401;code|s:4:"Bwry";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471600409";'),
-('2c2e41a6a1caaead9e2998430a2e4e76e2072cc6', '127.0.0.1', 1471673273, '__ci_last_regenerate|i:1471672825;code|s:4:"Bwry";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471600409";'),
-('1dc89a8ee7b4716b0dd2fec80fddeae6dce18481', '127.0.0.1', 1471687850, '__ci_last_regenerate|i:1471687840;code|s:4:"qCj2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471672450";'),
-('c335fe6b8209df22500a1be63f75255e37413e3a', '127.0.0.1', 1471688918, '__ci_last_regenerate|i:1471688918;code|s:4:"qCj2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471672450";'),
-('ce04cfe25b9352a32159bf80dc30edaa9421e17c', '127.0.0.1', 1471698578, '__ci_last_regenerate|i:1471698363;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('df3325afb80434c134ee2c57d3557de4e75a119f', '127.0.0.1', 1471698759, '__ci_last_regenerate|i:1471698691;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('17a60ab79f8866a8b26e398fd3cb9c2a64570292', '127.0.0.1', 1471701279, '__ci_last_regenerate|i:1471701249;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('857046182853e133b902c7b9e4759274a7ca054c', '127.0.0.1', 1471702028, '__ci_last_regenerate|i:1471701787;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('8dd30687c0bfda2fad5837ab76ea15f63f5eb5cb', '127.0.0.1', 1471702722, '__ci_last_regenerate|i:1471702620;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('840882a70df6205883183380d6bc8baab5d5635d', '127.0.0.1', 1471703433, '__ci_last_regenerate|i:1471703133;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('a1478523f750526029e4b58368582bd0c8950663', '127.0.0.1', 1471703834, '__ci_last_regenerate|i:1471703556;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('7e5a31cc793f8a3c10947f5185a123230bc6e87e', '127.0.0.1', 1471704977, '__ci_last_regenerate|i:1471704545;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('a7408e17bf21b15d67e20c93c68df1175afdfc41', '127.0.0.1', 1471705398, '__ci_last_regenerate|i:1471705006;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('a853354770584e06c92db0978ba16a957262356f', '127.0.0.1', 1471705427, '__ci_last_regenerate|i:1471705402;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('3f7f14f4829c8d1411a78b52ba4261703303f42b', '127.0.0.1', 1471706060, '__ci_last_regenerate|i:1471705995;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('bc154190beeb812558eb393567f2a9b85641dbef', '127.0.0.1', 1471707629, '__ci_last_regenerate|i:1471707348;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('3b8d01a125f54b996e5907221b554e4d79ec3b7b', '127.0.0.1', 1471707734, '__ci_last_regenerate|i:1471707718;code|s:4:"A58N";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471687844";'),
-('9b4d4ee4f6b9bfc101abd419ea63bf07aa7ecabc', '127.0.0.1', 1471742855, '__ci_last_regenerate|i:1471742294;code|s:4:"VFhn";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471698367";'),
-('2730873e26bed97f63053ed2db816d1487a6bf65', '127.0.0.1', 1471742901, '__ci_last_regenerate|i:1471742900;code|s:4:"VFhn";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471698367";'),
-('609c2400db1641c87ac95bc4137572f7a0a9e5c8', '127.0.0.1', 1471752287, '__ci_last_regenerate|i:1471752251;code|s:4:"xadF";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471742299";'),
-('5286c8722ca54443e27c77ec98ec9646412bce01', '127.0.0.1', 1471755424, '__ci_last_regenerate|i:1471755141;code|s:4:"GfsJ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:1:"0";error_permission|s:46:"未被授权访问该页面 [error/permission]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('c86877d0473a4e61cab215ac1ed8188226e940c1', '127.0.0.1', 1471755729, '__ci_last_regenerate|i:1471755442;code|s:4:"GfsJ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:1:"0";error_permission|s:46:"未被授权访问该页面 [error/permission]";__ci_vars|a:1:{s:16:"error_permission";s:3:"new";}'),
-('7cf85d9704b748c5977e4af04b7e627bbdce7502', '127.0.0.1', 1471756033, '__ci_last_regenerate|i:1471755748;code|s:4:"GfsJ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:1:"0";'),
-('ec757ed84d877a2cd47d03fadadbb8e85ed3ff05', '127.0.0.1', 1471756359, '__ci_last_regenerate|i:1471756075;code|s:4:"GfsJ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:1:"0";error_permission|s:51:"未被授权访问该页面 [auth/permission/index]";__ci_vars|a:1:{s:16:"error_permission";s:3:"new";}'),
-('14875f24fd6486cb44c849990a8c9d8f2159329d', '127.0.0.1', 1471772879, '__ci_last_regenerate|i:1471772583;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:46:"未被授权访问该页面 [article/category]";__ci_vars|a:1:{s:16:"error_permission";s:3:"new";}'),
-('e306bcee1899133380d20e1364f02ef4018627e4', '127.0.0.1', 1471773580, '__ci_last_regenerate|i:1471773295;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:46:"未被授权访问该页面 [article/category]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('c2f186d35e28548105754cff53dee732c58dd380', '127.0.0.1', 1471773719, '__ci_last_regenerate|i:1471773665;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:45:"未被授权访问该页面 [auth/permission]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('4c4aa15204736f10a38e8bbff7e7fb9c417902ec', '127.0.0.1', 1471774244, '__ci_last_regenerate|i:1471774098;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:41:"未被授权访问该页面 [setting/api]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('fd6a6597b5137448bafc18e67a0be64efba365ee', '127.0.0.1', 1471774813, '__ci_last_regenerate|i:1471774530;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:45:"未被授权访问该页面 [auth/permission]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('0557a1c085f141ad013dad5ddc98b1164e5d43aa', '127.0.0.1', 1471775246, '__ci_last_regenerate|i:1471775019;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:46:"未被授权访问该页面 [article/category]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('1ab8a12481b97b5d373787c9ce9dc0c8b92784ea', '127.0.0.1', 1471775642, '__ci_last_regenerate|i:1471775343;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:50:"未被授权访问该页面 <br> [auth/permission]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('1f4e1b4548f8ad5eaca248f7e70f6264b78e2364', '127.0.0.1', 1471776244, '__ci_last_regenerate|i:1471775652;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";error_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:16:"error_permission";s:3:"old";}'),
-('676b06081332798485a04b5facf30042b77406c8', '127.0.0.1', 1471777311, '__ci_last_regenerate|i:1471776509;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";'),
-('f488e923b0df41d3e2cdf583f6bced8177a711d2', '127.0.0.1', 1471777537, '__ci_last_regenerate|i:1471777319;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";'),
-('24de1a6a0b2b72a962793aad14564edf0b84d305', '127.0.0.1', 1471778228, '__ci_last_regenerate|i:1471778105;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('793ea9d7223e5e3526c9a47c32d289a1633e85cf', '127.0.0.1', 1471780745, '__ci_last_regenerate|i:1471778408;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('faaa14c48480984dd96814037277a93d593a23d4', '127.0.0.1', 1471781045, '__ci_last_regenerate|i:1471780756;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('2a4941078d37269d88a432887cc3246379ee9f1f', '127.0.0.1', 1471781336, '__ci_last_regenerate|i:1471781060;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";'),
-('8a9df1eefe5d8b6ec146adaf2a2ba4dd8167a01a', '127.0.0.1', 1471781947, '__ci_last_regenerate|i:1471781393;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('db0df05e1b94abdb1aefad80d226acdde0a5a85d', '127.0.0.1', 1471782262, '__ci_last_regenerate|i:1471781964;code|s:4:"VKVV";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471755165";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('2f68122898f90a5a99ec367cb2a41f4afcf6573d', '127.0.0.1', 1471782563, '__ci_last_regenerate|i:1471782269;code|s:4:"TvH2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471752253";'),
-('050019661ab29821ad383a292d979120fd20466a', '127.0.0.1', 1471783498, '__ci_last_regenerate|i:1471783224;code|s:4:"TvH2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471752253";'),
-('983053722209a8206c76a96be3f8c02f0fd7c117', '127.0.0.1', 1471783848, '__ci_last_regenerate|i:1471783783;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('9f3b267ce117485be8c401fc0a0ce0d0ad0d0d45', '127.0.0.1', 1471784399, '__ci_last_regenerate|i:1471784352;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('17a64c695835f39ed5417860b962edcf0d269e00', '127.0.0.1', 1471784790, '__ci_last_regenerate|i:1471784682;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('02a6bbd4675776b9b6a43579b3328031c886de52', '127.0.0.1', 1471785339, '__ci_last_regenerate|i:1471785290;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('a982ee60e76b642449af25319a01b703e58a7c9d', '127.0.0.1', 1471785932, '__ci_last_regenerate|i:1471785679;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('94db0e8ec6d1855d343988736543c8787ff252d2', '127.0.0.1', 1471787369, '__ci_last_regenerate|i:1471786219;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('0bb582e0d913de04036cd6d0181d7844f19da395', '127.0.0.1', 1471786651, '__ci_last_regenerate|i:1471786580;code|s:4:"NEEz";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:1:"0";'),
-('60c865e3871ad5144d97c1a0da10f9b6278bf89f', '127.0.0.1', 1471787176, '__ci_last_regenerate|i:1471787175;code|s:4:"NEEz";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:1:"0";'),
-('76a42939b60c114e52e3e5a0537eca2051b69136', '127.0.0.1', 1471788387, '__ci_last_regenerate|i:1471787764;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('d262f1ad78305bb02fa89941c6ae5583db6df296', '127.0.0.1', 1471788907, '__ci_last_regenerate|i:1471788585;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('4e0bc86cbba81e57307ea6443daf24dddee5ac80', '127.0.0.1', 1471789613, '__ci_last_regenerate|i:1471788916;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('742f6c51211a870da5cb05ec9d33d8b5495faa30', '127.0.0.1', 1471790093, '__ci_last_regenerate|i:1471789828;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('747ced704cdcafae85f9bac447839b4c869c0d2e', '127.0.0.1', 1471790390, '__ci_last_regenerate|i:1471790141;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('122bf7869b45378bf138d809a43cc317f04990c2', '127.0.0.1', 1471790602, '__ci_last_regenerate|i:1471790497;code|s:4:"yf8v";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471772618";'),
-('162786dc7f6f9b18767d85224bf40bc4a34ad520', '127.0.0.1', 1471826300, '__ci_last_regenerate|i:1471826298;code|s:4:"5tuq";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471782279";'),
-('ec37f0957bb98330581c44c540e481e906eab42f', '127.0.0.1', 1471827737, '__ci_last_regenerate|i:1471827457;code|s:4:"5tuq";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471782279";'),
-('5c12ae70fd0b26f480a2b539150779576977fed4', '127.0.0.1', 1471827780, '__ci_last_regenerate|i:1471827769;code|s:4:"5tuq";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471782279";'),
-('daf1020101251acba84209a1480b48811a95cbf0', '127.0.0.1', 1471828756, '__ci_last_regenerate|i:1471828662;code|s:4:"3pRy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471783801";'),
-('3f3cb18b3b0976539149b84770fe4e4587cabc24', '127.0.0.1', 1471829046, '__ci_last_regenerate|i:1471829046;code|s:4:"3pRy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471783801";'),
-('ef0cb63d51a1fcaf346bfdd6596d435a1e51038b', '127.0.0.1', 1471829387, '__ci_last_regenerate|i:1471829367;code|s:4:"TpFJ";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471786595";'),
-('6f9650604e62d143c46a8b0c5446de718cbe4f54', '127.0.0.1', 1471829886, '__ci_last_regenerate|i:1471829484;code|s:4:"3pRy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471783801";'),
-('8b1d092b583dfa1ddbed61a3e041e4c17d8ea780', '127.0.0.1', 1471829956, '__ci_last_regenerate|i:1471829956;code|s:4:"TpFJ";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471786595";'),
-('c8b13a7948db7f90fbd76042ddb7799a2cde9e39', '127.0.0.1', 1471837698, '__ci_last_regenerate|i:1471837396;code|s:4:"2NnP";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471828681";ajax_permission|s:60:"未被授权访问该页面 <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('c608ff335ab39fec629753b8f369f2717cdc8b56', '127.0.0.1', 1471837704, '__ci_last_regenerate|i:1471837413;code|s:4:"nefX";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471829383";current_price|s:6:"287.35";__ci_vars|a:1:{s:13:"current_price";s:3:"new";}'),
-('829afef13a79607c961d11a93c88057b85969045', '127.0.0.1', 1471838005, '__ci_last_regenerate|i:1471837727;code|s:4:"nefX";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471829383";current_price|s:6:"288.39";__ci_vars|a:1:{s:13:"current_price";s:3:"new";}'),
-('ffa4026b92e61fcced92db701fe261962e9fa97a', '127.0.0.1', 1471838204, '__ci_last_regenerate|i:1471838040;code|s:4:"nefX";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471829383";current_price|s:6:"288.15";__ci_vars|a:1:{s:13:"current_price";s:3:"new";}'),
-('2283c82a7dabef1d71d058545fad797782d32e2f', '127.0.0.1', 1471838457, '__ci_last_regenerate|i:1471838228;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:6:"287.84";__ci_vars|a:1:{s:13:"current_price";s:3:"new";}'),
-('0f3058c6c5db3511a7946ac1a228dd3c6291698b', '127.0.0.1', 1471840633, '__ci_last_regenerate|i:1471840367;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:19:"p3GpB7ur7kFIQIoTCvU";__ci_vars|a:1:{s:13:"current_price";i:1471841833;}'),
-('8e4046035845ce69623ec94dd6e61efc381aa688', '127.0.0.1', 1471841120, '__ci_last_regenerate|i:1471840951;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:19:"9iH0Vbysu09IQIUTCvQ";__ci_vars|a:1:{s:13:"current_price";i:1471842256;}'),
-('6a4e4083e1aee07766f2c4f5f55f558e2a90e12c', '127.0.0.1', 1471842223, '__ci_last_regenerate|i:1471841849;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:19:"8HKsAr2r7hVIQIsTC/0";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('d16cc6c588e542e56f618b7d47c5d9edb6518d44', '127.0.0.1', 1471848376, '__ci_last_regenerate|i:1471842223;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:19:"9iH0Vbysu09IQIUTCvQ";__ci_vars|a:3:{s:13:"current_price";i:1471849576;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"bGYs1H8B";csrfvalue|s:20:"crQgPxTvLyAmfY8uX7Oj";'),
-('fd82b6435ded31c00fe89b3b051fdda1e82efafa', '127.0.0.1', 1471848609, '__ci_last_regenerate|i:1471848390;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|N;__ci_vars|a:1:{s:13:"current_price";i:1471849764;}'),
-('5da25f30388bb0ac3727c64907f2c77392ac7d0f', '127.0.0.1', 1471849264, '__ci_last_regenerate|i:1471848965;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|N;__ci_vars|a:1:{s:13:"current_price";i:1471850447;}'),
-('32d96535d1f70c72f4e992e2a5f15bd49880e1f5', '127.0.0.1', 1471850325, '__ci_last_regenerate|i:1471850048;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";current_price|s:19:"p3GpB7ur7kFIQIoTCvU";__ci_vars|a:1:{s:13:"current_price";i:1471851440;}'),
-('4fe28e9f8a262fccf5f36fa4746c709cc020b420', '127.0.0.1', 1471852111, '__ci_last_regenerate|i:1471850443;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"TPbMwQjJ";csrfvalue|s:20:"XwRf3MNeZIbahUlPT81p";'),
-('d5ed1f38163aef3e9bf686b4a44a0312c59c2c1c', '127.0.0.1', 1471851065, '__ci_last_regenerate|i:1471850970;code|s:4:"RQjt";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471826299";'),
-('0f48fd326acb414b15122f5304fe80ba18e40f1f', '127.0.0.1', 1471855375, '__ci_last_regenerate|i:1471852148;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";csrfkey|s:8:"yZgBL4kl";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"SDTO0d1yuJZ5EXx4Bz6e";'),
-('aa642fd7ab23fd5f2ee0e17984b295bb1b9aeadc', '127.0.0.1', 1471862284, '__ci_last_regenerate|i:1471856760;code|s:4:"shVa";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471837429";csrfkey|s:8:"aw9nFM7Y";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"GOHUYuP4ZLtQrFqbElwj";'),
-('5c9f929b1e233719df9e07d02be63d735f913a09', '127.0.0.1', 1471862332, '__ci_last_regenerate|i:1471859629;code|s:4:"HQwK";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471837398";csrfkey|s:8:"iSPtDJmM";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"NVXkOdMuJZ3Y98C6mnEL";'),
-('510408d123d7fdb0e1d07349a89d32b77327558a', '127.0.0.1', 1471862774, '__ci_last_regenerate|i:1471862356;code|s:4:"HQwK";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471837398";csrfkey|s:8:"lGL72rfF";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"eHqLI2WwQyu3598kmgsZ";'),
-('ba859381da6284fa31bb3236271da0c850baf66b', '127.0.0.1', 1471873294, '__ci_last_regenerate|i:1471873267;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('8f6d742f575b8c5cb15540d33ebf9ce323958db3', '127.0.0.1', 1471873850, '__ci_last_regenerate|i:1471873757;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('801e80598e6950f975da951b574a0e333d9d41c1', '127.0.0.1', 1471874269, '__ci_last_regenerate|i:1471874185;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('14a2bb74cf3a4d4dc1b903e6546ae1e3adf3119d', '127.0.0.1', 1471874895, '__ci_last_regenerate|i:1471874635;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('757dbc49fdd61475f60a80626cf731a211d8286a', '127.0.0.1', 1471877110, '__ci_last_regenerate|i:1471875917;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('65824e051cd82539a2031cb0936f127ee777cce6', '127.0.0.1', 1471878636, '__ci_last_regenerate|i:1471878357;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('ae8955d7bd6d825f411e0839f0ce87fdbdc922f6', '127.0.0.1', 1471879512, '__ci_last_regenerate|i:1471878766;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('7b4b80c3fe5222bd57e7c0709e534d5c24170df7', '127.0.0.1', 1471879724, '__ci_last_regenerate|i:1471879529;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('8a556c4cfe9c2a312194417e227c5ba1bc48f7dd', '127.0.0.1', 1471880088, '__ci_last_regenerate|i:1471879885;code|s:4:"rv9H";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1471850991";'),
-('32127e03a50e7f9a412962868c68cbd893922892', '127.0.0.1', 1471966248, '__ci_last_regenerate|i:1471966247;code|s:4:"qTWs";'),
-('96527af42c9206abd7885317c1b4f029ab7608d1', '127.0.0.1', 1472041287, '__ci_last_regenerate|i:1472040860;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"sy7QVjPF";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"dxSaGrg8THpKXBfeloF7";'),
-('ba1d43ab21b0777da4df45c1986ac44ae841a2d7', '127.0.0.1', 1472041471, '__ci_last_regenerate|i:1472041390;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"82nvWG0u";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"yVdl9XJ7ScIszLxAaTbW";'),
-('d3a53744f39ad2c37c97b988ce7b9ddd5baf76e9', '127.0.0.1', 1472042797, '__ci_last_regenerate|i:1472042548;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";ajax_permission|s:47:"没有访问授权  <br> [setting/project/save]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('dd1f9f308be1358d169eb51c7dfd237a1e36cc78', '127.0.0.1', 1472048310, '__ci_last_regenerate|i:1472043074;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";success|s:34:"项目1608188261053809已核实！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('08475cf63692cbb21badbc5af92ed48ecde056fa', '127.0.0.1', 1472047101, '__ci_last_regenerate|i:1472047006;code|s:4:"FfJi";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472040827";'),
-('93f82fe82b3482726411e47867ceb6ff7006e2ba', '127.0.0.1', 1472048701, '__ci_last_regenerate|i:1472048311;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"d5xSn82E";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"xpVk4Ugorlm5TKSQZ3y2";'),
-('df883459f1ab9fc4103101aa75004d5dc384cd24', '127.0.0.1', 1472049634, '__ci_last_regenerate|i:1472048836;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";success|s:34:"项目SD20155454564511已核实！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('e6962834a9d0086afb9daba63b97e4c4e2aff40f', '127.0.0.1', 1472049992, '__ci_last_regenerate|i:1472049635;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"oaTPcVdB";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"VnxeRDkt1qGcEAPXoL4a";success|s:34:"项目1608222511510103已核实！";'),
-('1afbedd4a9b15acf19a723c3426faedcef728d8f', '127.0.0.1', 1472050234, '__ci_last_regenerate|i:1472049993;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"BuMaE7ew";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"pvyYrCRSA8DslWE3VnjL";'),
-('a98f78d18242baae8b19656c04d01538283139a6', '127.0.0.1', 1472050708, '__ci_last_regenerate|i:1472050306;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"s1aQTpFJ";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"rnRgxBzd3LWktKyjDIU8";'),
-('598421128e319633743b24d33aa784ed1fb8b0ab', '127.0.0.1', 1472051017, '__ci_last_regenerate|i:1472050813;code|s:4:"ZR8E";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1471859647";csrfkey|s:8:"IKj14yb3";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wFHpBsehqE9Xr7xSPyIG";'),
-('f9cc42f5805493a910817ff474e5e3bae6737975', '127.0.0.1', 1472051167, '__ci_last_regenerate|i:1472051150;code|s:4:"bQpq";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:1:"0";'),
-('3c9f82f41fd5a13a5cecc00486b98f3159169436', '127.0.0.1', 1472085444, '__ci_last_regenerate|i:1472085140;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"hRolOErg";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"ld09oFkXtYCqHrQ4wLj2";success|s:34:"项目1608229881435008已核实！";'),
-('5d87ef91e6b36552a443e30a631f8077a2ca1fda', '127.0.0.1', 1472085539, '__ci_last_regenerate|i:1472085444;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"0YctVTqe";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"gtqsiu9oEm3PDZCnldb5";'),
-('6d005e5f73d7dfbe24431dbf93d152a53be689f1', '127.0.0.1', 1472085813, '__ci_last_regenerate|i:1472085764;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";'),
-('737effdfa46381ded535b0649579b3c0c80e4b8d', '127.0.0.1', 1472086545, '__ci_last_regenerate|i:1472086311;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"DN0ivp7n";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"pn2KGkQ89XlbgyqFV3YW";'),
-('d2bc52c19b0bfac5a5c38b635ca94a918352b3fe', '127.0.0.1', 1472086807, '__ci_last_regenerate|i:1472086807;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";'),
-('f3a7c3712cb661a9f53012d7ea53ee00b7e0356d', '127.0.0.1', 1472090755, '__ci_last_regenerate|i:1472087137;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"mv87RxbZ";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"7CDYgNq3xvRXb9PzmJWf";'),
-('14c1199698b510c84cfbb585e14d33cdad8b9e38', '127.0.0.1', 1472091008, '__ci_last_regenerate|i:1472090760;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";ajax_permission|s:52:"没有访问授权  <br> [project/investing/applied]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('1902af18798b4ec3891283bcffc1e9f88f6370a0', '127.0.0.1', 1472092426, '__ci_last_regenerate|i:1472091032;code|s:4:"y3du";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471838237";csrfkey|s:8:"wxcp8nUS";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"w7YzZylE3SbfDr9QAnOp";'),
-('4402334a4521f08bc810771be378eee018dc7da9', '127.0.0.1', 1472091380, '__ci_last_regenerate|i:1472091068;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"Wytiu7Iw";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"r0Gq52lMohFJwWxgj6Ac";'),
-('059af2961b037ac8e83e38d8d5017bff7d4cde87', '127.0.0.1', 1472091713, '__ci_last_regenerate|i:1472091382;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";csrfkey|s:8:"bFESgdUN";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"bkeDFu5O7ZjHzwLgStMJ";'),
-('45312fd96ebd05c441c32ff35469c8a899bc543d', '127.0.0.1', 1472093730, '__ci_last_regenerate|i:1472091776;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";success|s:42:"项目已驳回！编号: 1608181371034554";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('27f429be411ae8977baa3cf2685a1e9a8529e24c', '127.0.0.1', 1472092601, '__ci_last_regenerate|i:1472092442;code|s:4:"y3du";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1471838237";csrfkey|s:8:"7CSFXBz8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"JTmP5iXQ8RLGOoUEM6ey";'),
-('01e096e7c92e82befe9d6672893a604f35bf064d', '127.0.0.1', 1472093854, '__ci_last_regenerate|i:1472093730;code|s:4:"4EMk";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472040901";'),
-('74c001e4891401683b8963bf164bc1006185e803', '127.0.0.1', 1472174190, '__ci_last_regenerate|i:1472173987;code|s:4:"7D3b";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472047016";'),
-('9c5e0597de3c24d8c2f18e76cfe0f2fa06476d92', '127.0.0.1', 1472175601, '__ci_last_regenerate|i:1472175601;code|s:4:"eQmp";');
-INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
-('c19dccd1082ee49fc3922e3192fa444e6b2ed3fe', '127.0.0.1', 1472176281, '__ci_last_regenerate|i:1472176184;code|s:4:"VmIP";'),
-('1d40d4612fbcc0f69353b6e1396c206b534c9c19', '127.0.0.1', 1472176824, '__ci_last_regenerate|i:1472176536;code|s:4:"3zmn";'),
-('10fdf68caf9e472ed04bdb5bdcd800c94e7672a5', '127.0.0.1', 1472176956, '__ci_last_regenerate|i:1472176902;code|s:4:"g7Es";'),
-('d42bdbee71146a4b7eaa576a5c9834b84113c1b6', '127.0.0.1', 1472177612, '__ci_last_regenerate|i:1472177361;code|s:4:"pd3K";'),
-('29f24ae695d97433f592b539a014dd19a051680f', '127.0.0.1', 1472178515, '__ci_last_regenerate|i:1472177817;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('8640428f019ee8201a4ea8a308aee4fb089671bf', '127.0.0.1', 1472178722, '__ci_last_regenerate|i:1472178515;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('c2dcf2936cd7e74fdececf15e574d15dc2528110', '127.0.0.1', 1472179108, '__ci_last_regenerate|i:1472178859;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('731ddcfdfe019a0fbc6580b32f357beb32eca1cb', '127.0.0.1', 1472179453, '__ci_last_regenerate|i:1472179207;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('f93501f3701dea0a699bb168ba28e532fe53ff86', '127.0.0.1', 1472179768, '__ci_last_regenerate|i:1472179512;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('63bddd210ee00e04a243287747a95d09e6a5add7', '127.0.0.1', 1472179833, '__ci_last_regenerate|i:1472179833;code|s:4:"I2Np";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472173997";'),
-('b358d34b53d6d254097bb72af21b6a6e7912b9d2', '127.0.0.1', 1472179994, '__ci_last_regenerate|i:1472179833;code|s:4:"y3xr";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472178515";'),
-('c6aa0d5eef9140ba414f316d980c296acaeb08b7', '127.0.0.1', 1472180366, '__ci_last_regenerate|i:1472180109;code|s:4:"n6hz";'),
-('9a8db4f1cf546ea3945dc6269a384dfe4de3a182', '127.0.0.1', 1472180446, '__ci_last_regenerate|i:1472180259;code|s:4:"y3xr";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472178515";'),
-('73a78f6e41b23dd26e415b97739a171db864b47b', '127.0.0.1', 1472180528, '__ci_last_regenerate|i:1472180459;code|s:4:"UQYT";'),
-('afc2d01112876d06477708020fc3238549b9994f', '127.0.0.1', 1472181193, '__ci_last_regenerate|i:1472180999;code|s:4:"UQYT";'),
-('f25600d7452d2e1f50c81aadac9f82caeb67dd04', '127.0.0.1', 1472181763, '__ci_last_regenerate|i:1472181345;code|s:4:"5Nsa";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472173888";'),
-('a7b9e6cc26dd8e027fbb430c4adc4c153fe5f137', '127.0.0.1', 1472181745, '__ci_last_regenerate|i:1472181531;code|s:4:"y3xr";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472178515";'),
-('415d3d2222df2f6524d861085b08a97f43bfbdd9', '127.0.0.1', 1472181921, '__ci_last_regenerate|i:1472181763;code|s:4:"5Nsa";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472173888";'),
-('729884e0144aa4fb125d82bb384606ab5b030d6c', '127.0.0.1', 1472182273, '__ci_last_regenerate|i:1472182013;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('2e565b218c4a46b7b126c7d0e59ebf39c44c70ad', '127.0.0.1', 1472182190, '__ci_last_regenerate|i:1472182189;code|s:4:"5Nsa";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472173888";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('5c58aa28132c771469804eb95115aad752dcf2cd', '127.0.0.1', 1472182594, '__ci_last_regenerate|i:1472182450;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('f993a720887a0b0f3814319156e91f6417440b5b', '127.0.0.1', 1472183030, '__ci_last_regenerate|i:1472182773;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('431a77671a751142944b689c231174fc280f4228', '127.0.0.1', 1472184003, '__ci_last_regenerate|i:1472183715;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('0aa3b3a974ba6557b95cbf1bb87aa6c20c1d13e6', '127.0.0.1', 1472184063, '__ci_last_regenerate|i:1472184063;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('b868d69a3a0ee2423f1d90a4ddf9569e20bbcaea', '127.0.0.1', 1472186512, '__ci_last_regenerate|i:1472186218;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('f65025988df5a65d6af8bc41971d65f348b090a3', '127.0.0.1', 1472186901, '__ci_last_regenerate|i:1472186754;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('00dcb538538444235c45b9159c91a899076ac7b0', '127.0.0.1', 1472188392, '__ci_last_regenerate|i:1472188391;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('baff3d9a3cc57bbaeac7b602c512fd5e6751fc4f', '127.0.0.1', 1472193610, '__ci_last_regenerate|i:1472193453;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('5200fb11c66f11afdea4d29510227df829b8cb15', '127.0.0.1', 1472194072, '__ci_last_regenerate|i:1472193774;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('251b43209749fcd2bf48acc8610f2093611112d9', '127.0.0.1', 1472194098, '__ci_last_regenerate|i:1472194096;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('7c9f3f192192c35daae8fad3e1cd1bdb9c00457a', '127.0.0.1', 1472195748, '__ci_last_regenerate|i:1472194409;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('e2442559926f40e1947f7fa29b7b386b562b5f1e', '127.0.0.1', 1472196187, '__ci_last_regenerate|i:1472195946;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('925de11bee62c64caf7486100cf5baa3f7cf1481', '127.0.0.1', 1472196828, '__ci_last_regenerate|i:1472196512;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('a562dd5d071ba8b5c41d2fb9569c5e2016099a20', '127.0.0.1', 1472198894, '__ci_last_regenerate|i:1472197088;code|s:4:"FJqz";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472179846";'),
-('f58f18d2ebf1d5392cfac18b7f749740455449d8', '127.0.0.1', 1472199689, '__ci_last_regenerate|i:1472199047;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
-('bde5202bbb93fa9f0b4f3a87cad61a432ef75447', '127.0.0.1', 1472200518, '__ci_last_regenerate|i:1472199689;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
-('f9a1007f102c654e40649f190e097a57000a599c', '127.0.0.1', 1472200854, '__ci_last_regenerate|i:1472200611;code|s:4:"sf23";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472182032";'),
-('40f6e8801eac233d78c91fb1e0f136812b8c4afa', '127.0.0.1', 1472206873, '__ci_last_regenerate|i:1472201007;code|s:4:"pn7M";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472199689";'),
-('ec5c7ff2a6637299706328a7fd03c240d2e58dbb', '127.0.0.1', 1472201716, '__ci_last_regenerate|i:1472201455;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('ecbd47113bc02b1ac6ea85588afadc3067a554f4', '127.0.0.1', 1472202888, '__ci_last_regenerate|i:1472201780;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('c5c5fc7168f85e5d81269ebaa252ad2cb52751e1', '127.0.0.1', 1472204608, '__ci_last_regenerate|i:1472202993;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"LRJQbwug";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"B0cA6os1vgqTYCDR5LdP";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('5d1c2d340231ee9788dccb4194345bb404cb4fb8', '127.0.0.1', 1472203472, '__ci_last_regenerate|i:1472203472;code|s:4:"NIUx";'),
-('410f4b7aa8484943e278fbeff1d0771fdac85c55', '127.0.0.1', 1472203472, '__ci_last_regenerate|i:1472203472;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"old";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('09fc4dff7dede6ca61f39d3d68f75b94a3aca61e', '127.0.0.1', 1472205396, '__ci_last_regenerate|i:1472204615;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('17032648a3913514a107a13e70ffe6bef48e9340', '127.0.0.1', 1472206638, '__ci_last_regenerate|i:1472205436;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"uxNYS3T2";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"e95Blprtuw32gQb1dPVM";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('5ef8b47996ded2482ccd693921bc6fcaac57b049', '127.0.0.1', 1472207369, '__ci_last_regenerate|i:1472206847;code|s:4:"ZbAS";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472051161";csrfkey|s:8:"U6PRlotD";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"e14CJlrXzLPBEj8AIhwR";'),
-('b03d929fbe82ab018537843df8584ffd179346d3', '127.0.0.1', 1472207211, '__ci_last_regenerate|i:1472206928;code|s:4:"pn7M";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472199689";current_price|s:19:"83H8A72u7hNIQIkTC/g";__ci_vars|a:3:{s:13:"current_price";i:1472208206;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"ob5A0xsz";csrfvalue|s:20:"L2AXFlvONmRbU5ugG64w";'),
-('fab59e772053977b21e64212ee25bd8e29492148', '127.0.0.1', 1472207499, '__ci_last_regenerate|i:1472207394;code|s:4:"EDaI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472201129";'),
-('1163468b98318fb1d537ec80540e3f3e87e41654', '127.0.0.1', 1472260860, '__ci_last_regenerate|i:1472260557;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('5ca4facc0ed44f69516486e73827e7cb5b4c3fc8', '127.0.0.1', 1472262125, '__ci_last_regenerate|i:1472260923;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('b11526082a5f8e66ed6f8b11fc31a908f858e06e', '127.0.0.1', 1472277751, '__ci_last_regenerate|i:1472262150;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('dfcb47bda737fbaf1876d3367f2a2d8b3ad24686', '127.0.0.1', 1472263850, '__ci_last_regenerate|i:1472262197;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"K7V4tiHy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"ONyIhU8Ef2CRpjTiF4Ko";'),
-('b0dbcfa1640b880a1164c823ce3dbb193c0e1b6b', '127.0.0.1', 1472265940, '__ci_last_regenerate|i:1472264121;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"jENqwtIy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"DBtygapbSxdO1HJ7LVzm";'),
-('57896e33f4c04da2d03eadd2e907deb4829295d8', '127.0.0.1', 1472267254, '__ci_last_regenerate|i:1472266384;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"ZjYGFRHl";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"TQh38yMupS5coxKFPBVO";'),
-('6f250a8f34840940ecbf3f4633b00cea9c1178ca', '127.0.0.1', 1472267984, '__ci_last_regenerate|i:1472267254;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"7FC3SPA8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"TiEdp4Dn1HafYeWARBq0";'),
-('1958aa015de198c961672a167a1af99b5f85cc9b', '127.0.0.1', 1472269926, '__ci_last_regenerate|i:1472268032;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"xP2YdrDb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"DErOFz1RMa6plXuxJBiL";'),
-('b491eb35d76c5edfef457eb445e67806feb48bbd', '127.0.0.1', 1472269125, '__ci_last_regenerate|i:1472269124;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('ee1d35e957475f620e8e0e0195c8205cd5c62acd', '127.0.0.1', 1472269846, '__ci_last_regenerate|i:1472269154;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";current_price|s:19:"832pVbj06UBIQIkTBv8";__ci_vars|a:3:{s:13:"current_price";i:1472271046;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"6ASqtpbe";csrfvalue|s:20:"WxP5vpSTErZO3MhoqXF2";'),
-('de436b8b8fcb9594b7621d95c84bd90bedd76e6f', '127.0.0.1', 1472269792, '__ci_last_regenerate|i:1472269333;code|s:4:"QdPf";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:1:"0";csrfkey|s:8:"V7oTF2ze";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"BZ06WoMUQAFLGb1zOxn3";'),
-('3cc52b24d2954ccc4d52f31e3e13d6d39234da13', '127.0.0.1', 1472278928, '__ci_last_regenerate|i:1472269894;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
-('3d05aab6be05a51273a72100bb621ef760e08c7c', '127.0.0.1', 1472274888, '__ci_last_regenerate|i:1472270087;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('9af03a200f807d26a77847386342c20e7eb9918a', '127.0.0.1', 1472275430, '__ci_last_regenerate|i:1472275126;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"old";}ajax_permission|s:41:"没有访问授权  <br> [tool/api/price]";'),
-('4da2af2cbcffa77e59b801b4107eb6d0c0b496bf', '127.0.0.1', 1472275752, '__ci_last_regenerate|i:1472275434;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"4l2JZ5g6";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"dwh2FXQ3Wi0YNRepIyUj";'),
-('8010bbee2a96b1ebe05ec7e758a94d3d241cf12c', '127.0.0.1', 1472276945, '__ci_last_regenerate|i:1472275797;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";success|s:48:"项目已入库标记！编号: SD20155454564511";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('31355580cbe6d8bc2633423a3c8202c0a018947f', '127.0.0.1', 1472279501, '__ci_last_regenerate|i:1472276945;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"gnI0SRCK";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"ZglrftqzVJc5n8P3kCQM";'),
-('9161d8710259322d219539f1673c2e494d777b22', '127.0.0.1', 1472277747, '__ci_last_regenerate|i:1472277376;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";csrfkey|s:8:"K4fUsmFJ";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"DJY5IQmzoTW2ZL1v3k9E";success|s:42:"项目已核实！编号: 1608272541144202";'),
-('63e51ad350946799c059948bec6a4efa37915022', '127.0.0.1', 1472277748, '__ci_last_regenerate|i:1472277747;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";'),
-('71ea5369b33a198dbff6747dbeb752105bf2f452', '127.0.0.1', 1472278418, '__ci_last_regenerate|i:1472278166;code|s:4:"ekqK";identity|s:12:"jingli-demo2";username|s:12:"jingli-demo2";email|s:6:"a@a.cc";user_id|s:1:"4";old_last_login|s:10:"1472269345";'),
-('99614ba2e63eb32ae4905be487a33009f6b40d57', '127.0.0.1', 1472278683, '__ci_last_regenerate|i:1472278432;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('35fb532dd99e7b1c71cfb10bbb96ce54b6fcf3bd', '127.0.0.1', 1472278898, '__ci_last_regenerate|i:1472278897;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('3fdbdb6bef9155072687d41c43ed8349196b4376', '127.0.0.1', 1472278971, '__ci_last_regenerate|i:1472278931;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
-('3b74579b048ffaa6a72b3479fc20a2dfc0f3ba24', '127.0.0.1', 1472279556, '__ci_last_regenerate|i:1472279507;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";'),
-('de987c001d401c9774758994edf3f6c58758c83b', '127.0.0.1', 1472280751, '__ci_last_regenerate|i:1472279547;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
-('0e3fde35fdb00d1f4b2ac44636309b5c99bacda4', '127.0.0.1', 1472279663, '__ci_last_regenerate|i:1472279568;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"ZxEXv3DN";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"IOYUCtRqm24sTKwAeBLd";'),
-('8f6188f0d9657dfc020299d368caa672abd5a05e', '127.0.0.1', 1472279762, '__ci_last_regenerate|i:1472279731;code|s:4:"s8Wh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472207498";'),
-('969b81e8956c670ce3d952b56f0ead306208ebbd', '127.0.0.1', 1472280357, '__ci_last_regenerate|i:1472280094;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"8ktJ9Lfb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"qDbQdwP8r5npsKNlLZgW";'),
-('2d2bc3bb9d92dccd715640762fd06ea3ab4ce19e', '127.0.0.1', 1472280757, '__ci_last_regenerate|i:1472280430;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"2IJSxk6G";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"NOC36rUBjusQflGHbaXm";'),
-('2014d7c7e08bfa71ecc99295c6808a64df9eb2ec', '127.0.0.1', 1472281506, '__ci_last_regenerate|i:1472280748;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"Ytq4xPWv";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wOC3mJIijkUlQ0rzMVLR";'),
-('b8125ccc7af17ff6db6ac92a8d18992a0435c8b3', '127.0.0.1', 1472281196, '__ci_last_regenerate|i:1472280856;code|s:4:"RbTw";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472201475";csrfkey|s:8:"gF0bPrad";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"EosfR1Fz8mjiGXdHq7Un";'),
-('3ad70ee6b065cbf3f730f98ae0a4c2450fa94e3d', '127.0.0.1', 1472281957, '__ci_last_regenerate|i:1472281564;code|s:4:"gMBy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472280529";csrfkey|s:8:"EkOJoBIF";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"E109RPrjikqapCuWOlvc";'),
-('5d7250e82fdcd1b5fac638596f7cf2977356dff7', '127.0.0.1', 1472287946, '__ci_last_regenerate|i:1472281648;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";'),
-('94d877ae2aeb6ee4af7cdbec57c1f63b6aa23410', '127.0.0.1', 1472282385, '__ci_last_regenerate|i:1472281909;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"DKUmwMGk";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"caKHsSrgzI4eOdytECB1";'),
-('a8c6a5e780bdc2a5e419f1c6356a8b37fe1aa746', '127.0.0.1', 1472287957, '__ci_last_regenerate|i:1472282517;code|s:4:"gMBy";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472280529";'),
-('a6b64e13da345025821212b49a0d34611125343c', '127.0.0.1', 1472283385, '__ci_last_regenerate|i:1472282617;code|s:4:"iyED";identity|s:12:"kuguan-demo2";username|s:12:"kuguan-demo2";email|s:11:"kuguan@a.cc";user_id|s:1:"8";old_last_login|s:1:"0";csrfkey|s:8:"u4clskqR";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"sqwuvnh2HkG15UmYRito";'),
-('97fac9ccec22ab6c70338056912d365ae7678fd5', '127.0.0.1', 1472284617, '__ci_last_regenerate|i:1472283410;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
-('3d67caed8f0f5609de3bd55954660183d160502a', '127.0.0.1', 1472285832, '__ci_last_regenerate|i:1472285575;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
-('0d21fd77bb6df9be6ad8e017ad7c0b04c3b273e4', '127.0.0.1', 1472286352, '__ci_last_regenerate|i:1472286304;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
-('3f4156d20328887e4b09847aa9a4432b502de82d', '127.0.0.1', 1472287317, '__ci_last_regenerate|i:1472287091;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
-('a6dd8fd7f3cbe1151c5c29b6f88c33fe0c107e46', '127.0.0.1', 1472287971, '__ci_last_regenerate|i:1472287950;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"ZMaNsUeu";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"l9dHVeAu0rPvZjwqQDcs";'),
-('ad3a890b757498bd0644e2cc634f6eadb21dc667', '127.0.0.1', 1472288351, '__ci_last_regenerate|i:1472288169;code|s:4:"eIqT";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472260756";'),
-('8bb223dbc078e4d66d113b30bc0eddb16a9b7e02', '127.0.0.1', 1472288779, '__ci_last_regenerate|i:1472288558;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";csrfkey|s:8:"vJgbqrzA";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wsQSx97jAdXcJybZWa0O";'),
-('50ce80f6081fe48d5ec1d41f2b176622c3d9f9de', '127.0.0.1', 1472289031, '__ci_last_regenerate|i:1472288662;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";success|s:42:"项目已回收！编号: 1608181371034554";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('751c9f60697a8655566d841bc8af2fbf0051ccd9', '127.0.0.1', 1472290701, '__ci_last_regenerate|i:1472288838;code|s:4:"M5be";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472262219";'),
-('bd8b08cbad0d3cbbbc4ef55ee9741310ce7aa4b2', '127.0.0.1', 1472289668, '__ci_last_regenerate|i:1472289031;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"8d4T5bN9";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"0WBsQGVOlKbjk7ItF1yP";success|s:42:"项目已核实！编号: 1608252211011343";'),
-('b87ba3b9b1318fe177269b2975fdb4e840591c6f', '127.0.0.1', 1472289922, '__ci_last_regenerate|i:1472289668;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";'),
-('dab9e204e74d034967117c6500fae27833df4288', '127.0.0.1', 1472290890, '__ci_last_regenerate|i:1472289936;code|s:4:"XJAF";identity|s:12:"dengji-demo2";username|s:12:"dengji-demo2";email|s:10:"ludan@b.cc";user_id|s:1:"6";old_last_login|s:1:"0";csrfkey|s:8:"lWaQm72p";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"w9zQd7hbO3Zxi8DUGJ6R";'),
-('5b96526e39fcf12d45e1f774ce8ce1c6acdc4b9e', '127.0.0.1', 1472290899, '__ci_last_regenerate|i:1472290246;code|s:4:"7sym";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472281575";csrfkey|s:8:"pyx0J3MD";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"UHfrnDlJQ1bGAhWjsmz0";'),
-('2e5fd3f9468aa33fc0691f2ce0c0b0771241aabd', '127.0.0.1', 1472290861, '__ci_last_regenerate|i:1472290701;code|s:4:"M5be";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472262219";csrfkey|s:8:"MQLVxBvK";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"JNUbdYLC8WehIjo2HEcn";'),
-('970c54c34294611473c2336db279d215948ae0ab', '127.0.0.1', 1472355784, '__ci_last_regenerate|i:1472355495;code|s:4:"WI6k";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472288906";'),
-('1150c906a3601f2111ad8cb0a16ee6f0061e8a25', '127.0.0.1', 1472356523, '__ci_last_regenerate|i:1472356390;code|s:4:"s58v";'),
-('b7cf16b5930f008d7b733de0d7179d5102ea41ce', '127.0.0.1', 1472357319, '__ci_last_regenerate|i:1472357079;code|s:4:"3QFt";'),
-('dca3abed8e9b358d9663c810c7191a5f102402f6', '127.0.0.1', 1472358082, '__ci_last_regenerate|i:1472357786;code|s:4:"rxSR";'),
-('9249a6854f40569c0e49c4745ffa4ee4b1d535df', '127.0.0.1', 1472359115, '__ci_last_regenerate|i:1472358093;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";'),
-('4aa33b99876aeaeab83591df4589c34fd2157d00', '127.0.0.1', 1472359276, '__ci_last_regenerate|i:1472359138;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"kbs6Idgf";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"9EyfX5owzAxCdUBRMFKv";'),
-('613c7290923e6643bb73a3fafa0a65c42f50054d', '127.0.0.1', 1472359542, '__ci_last_regenerate|i:1472359485;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";'),
-('948ef0bcf5ec87f6ada5289d973290d30b6c91ab', '127.0.0.1', 1472363703, '__ci_last_regenerate|i:1472360092;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";'),
-('44e2867fdb0532134671a80cebeefa3447665419', '127.0.0.1', 1472380875, '__ci_last_regenerate|i:1472364015;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";'),
-('1849177d0a9bde9d6b4effb65cf6892cab1bbbe5', '127.0.0.1', 1472381147, '__ci_last_regenerate|i:1472381117;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"tk5JAzLy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"Dbehc7LKNd8Xula5fpEA";'),
-('97f88a954ddbf2ef09874eb45a6e220dc8568cdd', '127.0.0.1', 1472381844, '__ci_last_regenerate|i:1472381696;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"rWgvYIMm";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"5ClnP9L7rX1zsqu2gpB8";'),
-('e4f3c6a3452fb8d3b77f2163fd883aa130080aaf', '127.0.0.1', 1472382645, '__ci_last_regenerate|i:1472382335;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"fhc401ZR";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"7Kg0ivCZGQrBTJYanc8H";'),
-('76e3893075838b82f55ce53c1fbdbcd5a1b11bfe', '127.0.0.1', 1472383314, '__ci_last_regenerate|i:1472382968;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"I0oQMyxS";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"5yR1WOu46irUc0EfY7SV";'),
-('ef5b4ee95839a90fb891f58e96945581ed3e8a07', '127.0.0.1', 1472383511, '__ci_last_regenerate|i:1472383393;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"VGodZIvn";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"HestmWhBCU5QGTcxLgl6";'),
-('dc9dc738d8c4e1f4115a3eb3d627774748f8f6a8', '127.0.0.1', 1472384608, '__ci_last_regenerate|i:1472383759;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"5AwopzOf";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"On1rKS0VaXDZ4svjxdBP";'),
-('409d2d71d8c9f72c5f2df34d3e5a444ade4aa7f6', '127.0.0.1', 1472386523, '__ci_last_regenerate|i:1472384712;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"kUVHxBmu";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"iR5uqKdHgWVfNG8zoQXw";'),
-('b713dc077c3e21300ea1fea166c689dab547f28f', '127.0.0.1', 1472387102, '__ci_last_regenerate|i:1472386650;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"rSfvstJA";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"LXoNi9qp2H74EOak1wdy";'),
-('0ee1b0c36aaec7e5fa119aee0c40d0af244eea0f', '127.0.0.1', 1472387579, '__ci_last_regenerate|i:1472387210;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";csrfkey|s:8:"VqPezgHp";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"X8k36fWrTZYsOUpdQlnN";success|s:42:"项目已核实！编号: 1608186671184447";'),
-('7529a19360650d8ef620c686efec625f43f075c0', '127.0.0.1', 1472387593, '__ci_last_regenerate|i:1472387581;code|s:4:"2fN2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472283412";'),
-('fdff3afc01f3d6eb32c6f5c646b548cd121479a3', '127.0.0.1', 1472392486, '__ci_last_regenerate|i:1472387627;code|s:4:"rz6I";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472290701";'),
-('cdb840d67e366ea1fdee4ba523d4593ee00b7a19', '127.0.0.1', 1472388187, '__ci_last_regenerate|i:1472387924;code|s:4:"MEnr";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472387674";csrfkey|s:8:"5AsyqPHw";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"4rDKT9LC1G8aJfYbvcQu";'),
-('e67a79f0839515056903c24b55535aa2fc11300f', '127.0.0.1', 1472388755, '__ci_last_regenerate|i:1472388273;code|s:4:"MEnr";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472387674";__ci_vars|a:1:{s:7:"success";s:3:"new";}success|s:48:"项目已入库标记！编号: 1608186671184447";'),
-('750b54997d5f44b5cd545a0d03503a87b533f866', '127.0.0.1', 1472388499, '__ci_last_regenerate|i:1472388463;code|s:4:"XQyb";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472387936";csrfkey|s:8:"PlGXSnU8";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"wDUOfLdAE1n7WpVt4qYl";'),
-('869792f5009266f07cf822aa1b43eccb712970d7', '127.0.0.1', 1472391336, '__ci_last_regenerate|i:1472388755;code|s:4:"MEnr";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472387674";'),
-('aa68bf1c99b1604b0d3e3884719724596c7e9fb4', '127.0.0.1', 1472389317, '__ci_last_regenerate|i:1472389001;code|s:4:"2BT2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472355497";success|s:12:"保存成功";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
-('76e97772c10baad8c97a4d195ff25f7d353c846e', '127.0.0.1', 1472391238, '__ci_last_regenerate|i:1472390029;code|s:4:"2BT2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472355497";'),
-('d509c94b71f75a49304d21e8df3b23ae9e7aa431', '127.0.0.1', 1472392303, '__ci_last_regenerate|i:1472392014;code|s:4:"2BT2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472355497";'),
-('83ca6ab09d57d6a3b5f0c97189a6ab1bb78f337c', '127.0.0.1', 1472392535, '__ci_last_regenerate|i:1472392435;code|s:4:"r7Rf";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472091043";current_price|N;__ci_vars|a:1:{s:13:"current_price";i:1472393665;}'),
-('5fa5a5eee98aac41777f7e22cad452e0f68acd09', '127.0.0.1', 1472392731, '__ci_last_regenerate|i:1472392553;code|s:4:"2BT2";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472355497";'),
-('74db100d5535b43b52afccb3f343a85fba7fbd2b', '127.0.0.1', 1472393077, '__ci_last_regenerate|i:1472392776;code|s:4:"2MbQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472358269";ajax_permission|s:57:"没有访问授权  <br> [project/investing/certificated]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('3a64ce35bf218d3968b83af47865f106b740eac8', '127.0.0.1', 1472400119, '__ci_last_regenerate|i:1472392872;code|s:4:"r7Rf";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472091043";'),
-('d66b6e7c9a8b35a705330c1d9a8ccf50ce2975b5', '127.0.0.1', 1472393129, '__ci_last_regenerate|i:1472393120;code|s:4:"2MbQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472358269";csrfkey|s:8:"nAUmq41K";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"PrCdhMyQgID7qSVRpsOk";'),
-('9d402a05be8a330d04b55e5482bed9be1f2ab49a', '127.0.0.1', 1472397068, '__ci_last_regenerate|i:1472393140;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"LJdal36w";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"nIsMokx5OCRHmPb2VDL9";'),
-('c3f91fbe364c08136d2fdd2f43205f2093cc8bda', '127.0.0.1', 1472394841, '__ci_last_regenerate|i:1472394677;code|s:4:"tRZG";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472389014";'),
-('020d61af15c856047161a189ba9a2ec1c5a06015', '127.0.0.1', 1472395541, '__ci_last_regenerate|i:1472395269;code|s:4:"tRZG";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472389014";'),
-('1fc33ce30deee98237e5233571405d1e05e3dbe3', '127.0.0.1', 1472399268, '__ci_last_regenerate|i:1472395667;code|s:4:"tRZG";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472389014";'),
-('e0fbd8771ee41e5e36d9f227f99b4fd0ef6d5c86', '127.0.0.1', 1472398294, '__ci_last_regenerate|i:1472397086;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"I26lfYxa";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"qTAvU2iLo9KMglXPRptu";'),
-('2b1db2c89769dcb6f56b1c32f0bad08b6a6b75ce', '127.0.0.1', 1472398383, '__ci_last_regenerate|i:1472398373;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"Ni1Jqk4x";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"l3onhfu7R2Hv9DpFxJPq";'),
-('12eeac3742499c99ba41113884df24079a174e46', '127.0.0.1', 1472399311, '__ci_last_regenerate|i:1472399019;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"HIzZ6vVa";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:15:"ajax_permission";s:3:"new";}csrfvalue|s:20:"vcOBTCtf6Fl8Mey3uDXV";ajax_permission|s:54:"没有访问授权  <br> [project/investing/confirmed]";'),
-('d135941ba400f2f237ad99735a0572716e7ba094', '127.0.0.1', 1472399686, '__ci_last_regenerate|i:1472399369;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";csrfkey|s:8:"u9RQ3ApS";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"nROqo2Tr79FdtgSYL61c";'),
-('6cbfa3a1596959318026ab2ec71110f12b73578e', '127.0.0.1', 1472399982, '__ci_last_regenerate|i:1472399812;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";'),
-('65b6bcfa25bcc5f86d33b34a9b120be5720ff898', '127.0.0.1', 1472400392, '__ci_last_regenerate|i:1472400381;code|s:4:"dq4D";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472392785";'),
-('ca81feef50b0162b69a94dfe4f862b6ff0992aea', '127.0.0.1', 1472432081, '__ci_last_regenerate|i:1472432080;code|s:4:"bPA8";'),
-('5a3f56a9af2ce8b871fc7b2bfefb3cbcf5c8019d', '127.0.0.1', 1472432638, '__ci_last_regenerate|i:1472432430;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"LKoFSw24";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"tqwnhm9g6VlH4iryPU7F";'),
-('ce43f6c9aba9a00e98b1ca8a2d3500799988f468', '127.0.0.1', 1472435250, '__ci_last_regenerate|i:1472432849;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('de9c3115613078509fc324155af32736332812c6', '127.0.0.1', 1472436989, '__ci_last_regenerate|i:1472435528;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"5gYhLZQr";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"Z3DkWJyACc2nu5toYjza";'),
-('bf24e1d089bd68521d7f2c6fff49611c6f43d565', '127.0.0.1', 1472440829, '__ci_last_regenerate|i:1472440452;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('22d392f87358468be772888fd8d170cc5596925a', '127.0.0.1', 1472441239, '__ci_last_regenerate|i:1472440835;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"Aj2e7ybp";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"E3M91FRj6ya2g4mQqONK";success|s:48:"项目已申请提金！编号: 1608183471764952";'),
-('fab01d6be1af9bc1f6d3a32d2c58227a23a9bc6e', '127.0.0.1', 1472442570, '__ci_last_regenerate|i:1472441239;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('e4c1988a11240573652cb4dd612687a188374f52', '127.0.0.1', 1472442809, '__ci_last_regenerate|i:1472442441;code|s:4:"ZmKI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472394689";success|s:28:"<p>Group details updated</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('4a3a1df0198449e045655746f62e550af6b8f65f', '127.0.0.1', 1472443012, '__ci_last_regenerate|i:1472442709;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"nXoxWyAi";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"Jrf2UgealmtzdA6B7cHq";success|s:48:"项目已申请提金！编号: 1608183471764952";'),
-('2a1fb6fc29ebe273404d9833ef1679a6c45357a7', '127.0.0.1', 1472442835, '__ci_last_regenerate|i:1472442809;code|s:4:"ZmKI";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472394689";'),
-('431a177d6a3c93d601345fb8d0d56817ae8be20d', '127.0.0.1', 1472460233, '__ci_last_regenerate|i:1472443012;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";csrfkey|s:8:"dAow8KRf";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"IbSEGDkaKi3nYlvq4wuX";'),
-('c22b4a5e94fddf9486298dd1837986baa72a61e1', '127.0.0.1', 1472443186, '__ci_last_regenerate|i:1472443186;'),
-('583bcc3c93ea3635228ae4ce0138e79018421a8d', '127.0.0.1', 1472444576, '__ci_last_regenerate|i:1472443195;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('b5321bca64a8353970643c6de371671dc4aa5ad8', '127.0.0.1', 1472453022, '__ci_last_regenerate|i:1472445022;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"xvia7VIG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"sN5OS30HG2pLhUI4fA7E";'),
-('711716ed83c2f45ad6f690483babe94362eac59e', '127.0.0.1', 1472453152, '__ci_last_regenerate|i:1472453073;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('7db621dfdb5ba17315afed3c25656f71b5b179ea', '127.0.0.1', 1472455596, '__ci_last_regenerate|i:1472453381;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"LafoYMKl";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"QVMzZtqRFl9NpTc02DyY";'),
-('ea73d7ba6d285111497f40bb398e9fa8117473ba', '127.0.0.1', 1472456090, '__ci_last_regenerate|i:1472455717;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"j10fFlkb";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"c4MsJjrnEb726zpSPWm0";'),
-('f9971c88c27086d993a159cbaeb2cdfd656d75c0', '127.0.0.1', 1472456496, '__ci_last_regenerate|i:1472456450;code|s:4:"Cqav";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472442458";'),
-('78a89728857d0d6ca23f7c3a4fd060a1511d5b88', '127.0.0.1', 1472456899, '__ci_last_regenerate|i:1472456813;code|s:4:"Cqav";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472442458";success|s:15:"节点已保存";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
-('15c8dacd521573c15810dd14f983aa7f9fe6dc54', '127.0.0.1', 1472457392, '__ci_last_regenerate|i:1472457000;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"dnhylaHk";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"Eo2qNflD9VnOQrYt1LU8";'),
-('3e53d5151a204560aca31bccabd865c87453c790', '127.0.0.1', 1472457799, '__ci_last_regenerate|i:1472457705;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"AIg1qeTG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"3J4H9jhV7tokYIeuqpvg";'),
-('763d74018606592dde27e8544147595e9c2991de', '127.0.0.1', 1472460889, '__ci_last_regenerate|i:1472458099;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"tIn8cmeL";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"ITJKrXHL7ZiYDB31FP2o";'),
-('98a67e2236c04c1718e2a40026dfb19f01c14f5e', '127.0.0.1', 1472460230, '__ci_last_regenerate|i:1472460192;code|s:4:"nVTp";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472456458";'),
-('34eba89e84feda2105937e16e28b81284f725cab', '127.0.0.1', 1472461121, '__ci_last_regenerate|i:1472460942;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('a2a35839ef67278bb48cd163ed123706830a96f5', '127.0.0.1', 1472461280, '__ci_last_regenerate|i:1472461047;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('1800518fa73fd75b4b9561ba7c6dd47abec50683', '127.0.0.1', 1472461644, '__ci_last_regenerate|i:1472461301;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"8gIuJLye";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"e35rpWLzO4oMhQG7ZmHS";success|s:48:"项目已入库标记！编号: 1608281632155533";');
-INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
-('e54e6c3cba6dad2721627af93cb479fb2a03b430', '127.0.0.1', 1472461645, '__ci_last_regenerate|i:1472461644;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('a7647e09ccb05c9503c7718329a3c5d66b92de48', '127.0.0.1', 1472463386, '__ci_last_regenerate|i:1472461955;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('45a0f95e027855443d7d405aa613947a376e41cc', '127.0.0.1', 1472463808, '__ci_last_regenerate|i:1472462054;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('ba2f12652be4b878c3bb7edbbd23a924b254cb17', '127.0.0.1', 1472464905, '__ci_last_regenerate|i:1472464111;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";success|s:42:"项目已回收！编号: 1608183471764952";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('2a312b1781e3fa5771dc68edd3c7e3a81ccc94aa', '127.0.0.1', 1472464869, '__ci_last_regenerate|i:1472464157;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";csrfkey|s:8:"5nBhPvVc";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"jsWHgzN063ZhTDOIE5Rc";'),
-('373cb924a342dd45cef277bebc717581a017659f', '127.0.0.1', 1472464740, '__ci_last_regenerate|i:1472464711;code|s:4:"cnkH";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472460203";'),
-('4c16bb525914a9db2d2f62f3cc6d777a904b9eea', '127.0.0.1', 1472471063, '__ci_last_regenerate|i:1472464905;code|s:4:"BBSw";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472393178";'),
-('26658be217425a89b26595d0219f1cbad6163aa2', '127.0.0.1', 1472471117, '__ci_last_regenerate|i:1472465052;code|s:4:"sx9p";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472388482";'),
-('79c3d779f1f107a610bcc9cf2af89ced9604fdb4', '127.0.0.1', 1472467450, '__ci_last_regenerate|i:1472467253;code|s:4:"UUwP";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472464735";'),
-('53764baafd3ceb6c112e5fdf881ba901169ac00d', '127.0.0.1', 1472467517, '__ci_last_regenerate|i:1472467494;code|s:4:"5Yxh";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467266";'),
-('087a32617bbccafbe0dc056631b67b2f743ec71d', '127.0.0.1', 1472517560, '__ci_last_regenerate|i:1472517436;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";'),
-('5cf1ff7bd151e4b8c80778de2ecabbb973916d09', '127.0.0.1', 1472518923, '__ci_last_regenerate|i:1472518017;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";'),
-('08590a563b9cce7f77b2232a3ef277a19d9bd2dc', '127.0.0.1', 1472519097, '__ci_last_regenerate|i:1472518935;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";'),
-('15ae82ee39e7e5dd9d9ff84e345970f31f2a89aa', '127.0.0.1', 1472519384, '__ci_last_regenerate|i:1472519310;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";'),
-('e5120678df08be81839b3feb4e0f247d74e45686', '127.0.0.1', 1472520606, '__ci_last_regenerate|i:1472519620;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";ajax_permission|s:51:"没有访问授权  <br> [project/recycling/booked]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('062d603fb8878247b458e0d6d1d38411fd3d2345', '127.0.0.1', 1472521973, '__ci_last_regenerate|i:1472520609;code|s:4:"kXxA";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472432595";ajax_permission|s:51:"没有访问授权  <br> [project/recycling/booked]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
-('2e18ab26d39b0549b5156856adc4f7983ed31640', '127.0.0.1', 1472521851, '__ci_last_regenerate|i:1472520629;code|s:4:"iMFv";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467508";'),
-('b661b2c5a933a128c444cffb75378986aa5d11ab', '127.0.0.1', 1472523330, '__ci_last_regenerate|i:1472521987;code|s:4:"iMFv";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467508";success|s:28:"<p>Group details updated</p>";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
-('bdba9ac8d4217f71c0bd016d7f85c9e85fca95c3', '127.0.0.1', 1472522043, '__ci_last_regenerate|i:1472522009;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"p3b9Auyo6RVIQIkTBfg";__ci_vars|a:3:{s:13:"current_price";i:1472523243;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"8ZAUumjr";csrfvalue|s:20:"vt0B5hK9SWaR8CNuqmiH";'),
-('7fcffc8c0354d76183d23332e4c24c752f45ef2c', '127.0.0.1', 1472523342, '__ci_last_regenerate|i:1472523161;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"p3b9Auyo6RVIQIkTBfg";__ci_vars|a:1:{s:13:"current_price";i:1472524493;}'),
-('8e940a23c4eea7fd36174d7db7ca6f68df105e18', '127.0.0.1', 1472523613, '__ci_last_regenerate|i:1472523330;code|s:4:"iMFv";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467508";'),
-('54e68465e311f8bb2180cadee20f3720af73ce1f', '127.0.0.1', 1472544074, '__ci_last_regenerate|i:1472523673;code|s:4:"iMFv";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467508";'),
-('f59f311279ea7d4a3212a2cd6de57347f3cd19a5', '127.0.0.1', 1472524607, '__ci_last_regenerate|i:1472523719;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"p3b9Auyo6RVIQIkTBfg";__ci_vars|a:3:{s:13:"current_price";i:1472525807;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"iuUSbrFt";csrfvalue|s:20:"Z0B1zPguXhF4SmkQ8j5G";'),
-('7a2dbe8e2052425fa4a91a06504d15f6c1a8df91', '127.0.0.1', 1472525011, '__ci_last_regenerate|i:1472524759;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"p3b9Auyo6RVIQIkTBfg";__ci_vars|a:3:{s:13:"current_price";i:1472526211;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"g6FecLPy";csrfvalue|s:20:"HI1k7xjA8CDeLGaviqYy";'),
-('1b6c051dc5bb88c4f9cd9dc0ec6da8f270149689', '127.0.0.1', 1472526046, '__ci_last_regenerate|i:1472525068;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472527246;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"xzL5D3sn";csrfvalue|s:20:"xI5TznjfF31q7lPuS0gh";'),
-('b02e234ffc23463edbf9a8119c0a73191ad8568a', '127.0.0.1', 1472527839, '__ci_last_regenerate|i:1472526102;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472529039;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"HycdaNbG";csrfvalue|s:20:"a3N2jkKPdZHqXysT9nwl";'),
-('c08b6c6f0acf374000a1de9ef3e531a234efad94', '127.0.0.1', 1472528280, '__ci_last_regenerate|i:1472527922;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472529480;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"CXOMJ8Qn";csrfvalue|s:20:"QlmJGZu2SgRkW1oaUidv";'),
-('be363cb2e2371de42039461c2b34761c38248324', '127.0.0.1', 1472528631, '__ci_last_regenerate|i:1472528342;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472529831;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"85QP3qUw";csrfvalue|s:20:"f5WZbTOqHrwKmPYN0uLt";'),
-('67df0b246098c793b0f8284b3bb40dd3407b1d3b', '127.0.0.1', 1472528939, '__ci_last_regenerate|i:1472528671;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472530139;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"SoxYgFlL";csrfvalue|s:20:"egxolkH7d5SJAbcFuBwh";'),
-('c4521ad607ffc34f6cf0a2a3bd24cf8cc3872297', '127.0.0.1', 1472529199, '__ci_last_regenerate|i:1472528980;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oCOsDOmo7E5IQIkTBPU";__ci_vars|a:3:{s:13:"current_price";i:1472530399;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"eoRfmiVp";csrfvalue|s:20:"AQUXrvBagkzsOP6ImVR2";'),
-('266472a27c5ab4b2a73aa8819064dcd101134d2f', '127.0.0.1', 1472529547, '__ci_last_regenerate|i:1472529282;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oCOsDOmo7E5IQIkTBPU";__ci_vars|a:3:{s:13:"current_price";i:1472530747;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"bps0LV4E";csrfvalue|s:20:"dgkZBV8SU3nsFuGX7OCL";'),
-('c3afeb0c1d65339b2f03e56566589ed2cc2d3fae', '127.0.0.1', 1472530932, '__ci_last_regenerate|i:1472529590;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oCOsDOmo7E5IQIkTBPU";__ci_vars|a:3:{s:13:"current_price";i:1472530933;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"XNskZ259";csrfvalue|s:20:"xqOvEm0AjyJzbs87GoVF";'),
-('4662ccf16ce488ba42ef0155c26029cd09a964cf', '127.0.0.1', 1472531298, '__ci_last_regenerate|i:1472531093;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8HCsV+D+vBFIQIkTC/o";__ci_vars|a:3:{s:13:"current_price";i:1472532498;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"h2UjK9R3";csrfvalue|s:20:"OCgQuteq9Dw2YB0mPS36";'),
-('7da5c4f115dcf9e0bbdaf077a367248dff0c26b8', '127.0.0.1', 1472532625, '__ci_last_regenerate|i:1472531424;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8HCsV+D+vBFIQIkTC/o";__ci_vars|a:3:{s:13:"current_price";i:1472533143;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"Q1Sj4JKZ";csrfvalue|s:20:"WIQUlE2JYXLsqto4zRVm";'),
-('e65147380c86ff4752e5d2975cda710574861002', '127.0.0.1', 1472533244, '__ci_last_regenerate|i:1472532981;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8HCsV+D+vBFIQIkTC/o";__ci_vars|a:1:{s:13:"current_price";i:1472534434;}'),
-('df29975a4ca869208dfc419080a50ebf5b4eb5f1', '127.0.0.1', 1472533308, '__ci_last_regenerate|i:1472533302;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8HCsV+D+vBFIQIkTC/o";__ci_vars|a:3:{s:13:"current_price";i:1472534505;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"GTaCUmhz";csrfvalue|s:20:"SqXrkn3Wx19ZyPIvKC8U";'),
-('a8594d7d2780d6b269e0e34b9325888021e8bcdd', '127.0.0.1', 1472536199, '__ci_last_regenerate|i:1472533636;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('1f1fe96f0d63dc14ffb6fd70de81e8647995546d', '127.0.0.1', 1472537399, '__ci_last_regenerate|i:1472537256;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('2564d5ba10444d4e4ea26667e091ca60e9d66845', '127.0.0.1', 1472537664, '__ci_last_regenerate|i:1472537661;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472538864;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"nkvsEGrO";csrfvalue|s:20:"xeOYzt1gPL4wX6mUa8hc";'),
-('ab61f55c8b52fd268a41276cf56041d61566cd97', '127.0.0.1', 1472538779, '__ci_last_regenerate|i:1472538566;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:1:{s:13:"current_price";i:1472539938;}'),
-('01c818d65b6b6f3c4e6f3666a526cd863a236c37', '127.0.0.1', 1472539362, '__ci_last_regenerate|i:1472539101;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472540559;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"1KAtzbXD";csrfvalue|s:20:"5OV82vreuIFTRPUNJ3QA";'),
-('c92b8aa327c26216c11c6ed9daed5c5a5301c331', '127.0.0.1', 1472539696, '__ci_last_regenerate|i:1472539403;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"oyGrDO6uuxVIQIkTC/0";__ci_vars|a:3:{s:13:"current_price";i:1472540893;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"eRUC9Zlr";csrfvalue|s:20:"MSAgPOCT29NWf6oVF3HI";'),
-('444c3052b9bc404c384d6f7e547b36dffdcdfcf8', '127.0.0.1', 1472540017, '__ci_last_regenerate|i:1472539748;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8XWpBev17UFIQIkTAP0";__ci_vars|a:3:{s:13:"current_price";i:1472541168;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"GZOsnwbE";csrfvalue|s:20:"xdvL4POfmM7UkWsHgEVp";'),
-('94b732dae5e4e1e94c445a9d6c6cf26a86644d9e', '127.0.0.1', 1472541036, '__ci_last_regenerate|i:1472540056;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";current_price|s:19:"8XWpBev17UFIQIkTAP0";__ci_vars|a:1:{s:13:"current_price";i:1472541168;}'),
-('87a77d6c1db8b7465f95c92db3aba29db4dffff9', '127.0.0.1', 1472541640, '__ci_last_regenerate|i:1472541411;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('15cd2dcecca0deeb2bdb9ebff9b493fd316a45e7', '127.0.0.1', 1472542126, '__ci_last_regenerate|i:1472541845;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";csrfkey|s:8:"i9dOfSkB";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"cDvEA9BRFjz26dSXHQsk";'),
-('01930cecf2afc7077fad1f4345c6a04fc2fbe65e', '127.0.0.1', 1472544506, '__ci_last_regenerate|i:1472542147;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('118fa7b658b2f89bed30c0373e840f16020b40ab', '127.0.0.1', 1472552233, '__ci_last_regenerate|i:1472545032;code|s:4:"iMFv";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472467508";'),
-('f8763ed3ad30164cbd931b9a28ea17bafefad8b2', '127.0.0.1', 1472545351, '__ci_last_regenerate|i:1472545146;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";csrfkey|s:8:"bwOquzyR";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"8vqV1OXSuLIZ9edQDJHR";'),
-('ce9efbe9a23d0c2f3a46827512e51fb91de221db', '127.0.0.1', 1472545745, '__ci_last_regenerate|i:1472545464;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";csrfkey|s:8:"xCqjsonr";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"Bb2tMlfNP96YZeQU0VkH";'),
-('2a9f365a7a6c937f0f0f22b0ff6328149eb1e921', '127.0.0.1', 1472546702, '__ci_last_regenerate|i:1472545985;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('ca505b967a0658322e17033a86d39612c3fa6149', '127.0.0.1', 1472547052, '__ci_last_regenerate|i:1472546788;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('f5a540b4e80f5a958770f78d88869432b9051ecf', '127.0.0.1', 1472547357, '__ci_last_regenerate|i:1472547100;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";csrfkey|s:8:"TCxv9e6U";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"R8yOrUoDcn2BjhlgXxJW";'),
-('82dbc8344595aa5c3a8bce27d28e507d7744f9e8', '127.0.0.1', 1472547931, '__ci_last_regenerate|i:1472547441;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('7206b81fcf519c5978a73f390b5fcefa44af3f02', '127.0.0.1', 1472548172, '__ci_last_regenerate|i:1472547981;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";csrfkey|s:8:"NsjTQRxn";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"t8faJYqUrvTh2NQosz5l";'),
-('d9c889995db079e64cf321d24c64b0b37f27609b', '127.0.0.1', 1472550909, '__ci_last_regenerate|i:1472548383;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('e47ca9fcdd96bd23b628b2c17bbff5bee6f3a65f', '127.0.0.1', 1472551403, '__ci_last_regenerate|i:1472550960;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('cb84b9bd7a2ee60e87abe6eb84fb9c09235413ab', '127.0.0.1', 1472551705, '__ci_last_regenerate|i:1472551426;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('7acc88cb8d6a4d57dc3648cd04cb810991fd44ab', '127.0.0.1', 1472552222, '__ci_last_regenerate|i:1472551854;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";'),
-('8030a5a5acc0fc1610cc15c1b2e56f61ad65ee8c', '127.0.0.1', 1472552472, '__ci_last_regenerate|i:1472552257;code|s:4:"4IIm";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472392449";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}');
+('657d2b55b59f89cd9a472c8e4d752bc4a45b716c', '127.0.0.1', 1472561241, '__ci_last_regenerate|i:1472561235;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('1f445b8ff2736f232f7658659d3d49b6acfdea03', '127.0.0.1', 1472562237, '__ci_last_regenerate|i:1472561962;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('ae65e8b5bbceb505872b0403aa9139b8c182130e', '127.0.0.1', 1472562310, '__ci_last_regenerate|i:1472562267;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('5ed2780f9ea7364891b11a07bbaf7b98b09da261', '127.0.0.1', 1472562970, '__ci_last_regenerate|i:1472562697;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('c398f17f4c785622bf26c06389a956bd56558f83', '127.0.0.1', 1472564274, '__ci_last_regenerate|i:1472563017;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('fad9201d98a2ee7898d997dd8342dda65f2662df', '127.0.0.1', 1472564582, '__ci_last_regenerate|i:1472564368;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('f2e9bfef44f928782f5c92c2fcfc3505fedfe1e8', '127.0.0.1', 1472564750, '__ci_last_regenerate|i:1472564736;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('812d4c668236bcf44e96c2d8d46d776be3127f7a', '127.0.0.1', 1472565293, '__ci_last_regenerate|i:1472565223;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('51d0db29b50ac39c4f6ea626f2ec4d9300b47d51', '127.0.0.1', 1472567026, '__ci_last_regenerate|i:1472566457;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";ajax_permission|s:51:"没有访问授权  <br> [project/recycling/update]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
+('b4cf1f98c5a3ad238694a92b711b4595d9310ea2', '127.0.0.1', 1472567081, '__ci_last_regenerate|i:1472567070;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";ajax_permission|s:51:"没有访问授权  <br> [project/recycling/update]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
+('5c12e142b9e1bfb6f167355166a87aa0d9bb7a89', '127.0.0.1', 1472573192, '__ci_last_regenerate|i:1472567111;code|s:4:"8KGZ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472520641";'),
+('84324e132c2fb01684f470bbf8ecba6578c0fff4', '127.0.0.1', 1472571007, '__ci_last_regenerate|i:1472567252;code|s:4:"GhJX";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472567128";'),
+('5e6033df84cdb3355eaabb7909ce41103879b33a', '127.0.0.1', 1472567800, '__ci_last_regenerate|i:1472567411;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"r12LAWZp";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"L2Ai7jztCuTrbfIw06SQ";'),
+('dbd9cf040f77fdca0e038ccdb24cb222db41d20c', '127.0.0.1', 1472567800, '__ci_last_regenerate|i:1472567800;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"r12LAWZp";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"L2Ai7jztCuTrbfIw06SQ";'),
+('d9890b7393fd57c3c98df579faef21a18b456640', '127.0.0.1', 1472567945, '__ci_last_regenerate|i:1472567800;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"adrtgj45";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"fr5nMyLVvs8lRNxaAXjY";'),
+('9f008a204bdf1de8ded5155bb14be58f754f5793', '127.0.0.1', 1472569538, '__ci_last_regenerate|i:1472568220;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"hUriypAM";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"ebgBhJHdzsmo1SxEtNI5";'),
+('5209019ad5bd55d6f59af4428c6643bd9665e390', '127.0.0.1', 1472569802, '__ci_last_regenerate|i:1472569586;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"i0QJmMcq";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"18ls7TmZuxrDFBQ4dfV5";'),
+('9ee53a77c0a1275307adf81d7e3d8792a9ec8863', '127.0.0.1', 1472570351, '__ci_last_regenerate|i:1472569900;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";success|s:21:"项目编辑成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('e5c3e525ec4b3657a350f91cd21c6f35d6dad359', '127.0.0.1', 1472570847, '__ci_last_regenerate|i:1472570352;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('f6776bbecc44860aad46f7b8d3363289c6debb81', '127.0.0.1', 1472571209, '__ci_last_regenerate|i:1472570859;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";csrfkey|s:8:"CIrX9ioh";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"oeZgWTzGnX5PBR3rYu0j";'),
+('a0aa9c905becde347e3a8c5bfa5c3c839721e41b', '127.0.0.1', 1472573888, '__ci_last_regenerate|i:1472571218;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('48b631d2080578420ddc01d6cbf408112ea2f063', '127.0.0.1', 1472572508, '__ci_last_regenerate|i:1472571585;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";csrfkey|s:8:"AB8Ckesq";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"rYJKlhitS5ENkx9yFju6";'),
+('4f31ab272bcc4ddbb4c9d798155d1d0d6d6d3ad1', '127.0.0.1', 1472572961, '__ci_last_regenerate|i:1472572624;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";csrfkey|s:8:"MtAyVgbT";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"4BKPcit8efEHImkblhMX";'),
+('c9bf276f2e1853440f56c091421f5558ff704b20', '127.0.0.1', 1472573526, '__ci_last_regenerate|i:1472573090;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";csrfkey|s:8:"BO6laUHG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"s3lE8oaCSQd4TrhAgiqk";'),
+('be3e2b3bb994fcbe63355ae24baa3b9d760bd4bf', '127.0.0.1', 1472574982, '__ci_last_regenerate|i:1472573564;code|s:4:"8KGZ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472520641";'),
+('1eec3f39a4575fcc9992fb379a144352086b5f32', '127.0.0.1', 1472573909, '__ci_last_regenerate|i:1472573847;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";'),
+('ff3cb7b3ca1e20e3db236679e0a244800941fb3e', '127.0.0.1', 1472574217, '__ci_last_regenerate|i:1472573917;code|s:4:"R64f";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1472522032";'),
+('7a75e28ce78b8164e485ee1de0172c122265d6c0', '127.0.0.1', 1472575527, '__ci_last_regenerate|i:1472574297;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";'),
+('1ae0b94a24d87f5fe6a768ab207534628667321e', '127.0.0.1', 1472575277, '__ci_last_regenerate|i:1472574352;code|s:4:"uzsq";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472443230";csrfkey|s:8:"ftP57EWS";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"XfiMt91TLrGbvCS638I0";'),
+('f6088879619098ccb1b73c24abcc20aa854616e2', '127.0.0.1', 1472575754, '__ci_last_regenerate|i:1472575582;code|s:4:"mUiU";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1472574366";'),
+('1d35dac0cdbf3470f8c906936e8fa350732a807e', '127.0.0.1', 1472575949, '__ci_last_regenerate|i:1472575825;code|s:4:"KwrD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1472556783";csrfkey|s:8:"BtmSTxz4";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"XhocBb6K1ZzFsj3OwdGS";'),
+('48050735f99b6ac0b0cf376ceece04fcdf6a96a8', '127.0.0.1', 1472575934, '__ci_last_regenerate|i:1472575906;code|s:4:"8KGZ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1472520641";');
 
 -- --------------------------------------------------------
 
@@ -1230,14 +961,17 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 -- 表的结构 `gd_setting`
 --
 
-CREATE TABLE `gd_setting` (
-  `setting_id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_setting` (
+  `setting_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(64) NOT NULL DEFAULT '',
   `value` text,
   `serialized` tinyint(1) NOT NULL DEFAULT '0',
   `group` varchar(64) NOT NULL DEFAULT 'config',
-  `initial` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `initial` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`setting_id`,`code`),
+  KEY `option_name` (`code`),
+  KEY `auto_load` (`initial`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=32 ;
 
 --
 -- 转存表中的数据 `gd_setting`
@@ -1264,7 +998,14 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 (21, 'investing_applied', '5', 0, 'project', 1),
 (22, 'month_taking', '1', 0, 'project', 1),
 (23, 'season_taking', '1', 0, 'project', 1),
-(24, 'partial_taking', '', 0, 'project', 1);
+(24, 'partial_taking', '', 0, 'project', 1),
+(25, 'recycling_checked', '2', 0, 'project', 1),
+(26, 'recycling_confirmed', '3', 0, 'project', 1),
+(27, 'recycling_expired', '4', 0, 'project', 1),
+(28, 'recycling_applied', '4', 0, 'project', 1),
+(29, 'recycling_finished', '5', 0, 'project', 1),
+(30, 'recycling_refused', '6', 0, 'project', 1),
+(31, 'recycling_terminated', '7', 0, 'project', 1);
 
 -- --------------------------------------------------------
 
@@ -1272,8 +1013,8 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 -- 表的结构 `gd_worker`
 --
 
-CREATE TABLE `gd_worker` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) DEFAULT NULL,
   `realname` varchar(32) NOT NULL,
   `avatar` varchar(256) DEFAULT NULL,
@@ -1285,25 +1026,27 @@ CREATE TABLE `gd_worker` (
   `last_login` int(11) DEFAULT '0',
   `last_ip` char(15) NOT NULL,
   `status` tinyint(1) DEFAULT '1',
-  `phone` varchar(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- 转存表中的数据 `gd_worker`
 --
 
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472520641, '127.0.0.1', 1, ''),
+(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1472567261, '127.0.0.1', 1, ''),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766'),
-(3, 'jingli-demo1', '经理测试A', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472517483, '127.0.0.1', 1, ''),
+(3, 'jingli-demo1', '经理测试A', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1472571603, '127.0.0.1', 1, ''),
 (4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1472277405, '127.0.0.1', 1, ''),
-(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1472522032, '127.0.0.1', 1, ''),
+(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1472558674, '127.0.0.1', 1, ''),
 (6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1472269180, '127.0.0.1', 1, ''),
-(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472443230, '127.0.0.1', 1, ''),
+(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1472575616, '127.0.0.1', 1, ''),
 (8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1472280758, '127.0.0.1', 1, ''),
 (9, 'jianding-demo1', '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, ''),
 (10, 'jianding-demo2', '鉴定人B', 'public/images/avatar/user7-128x128.jpg', '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, ''),
-(11, 'all-demo1', '综合账户', 'public/images/avatar/user2-160x160.jpg', '$2y$08$bnDehV48c1sDsmwPNmmTHOdMMxUE1MHNGItvkmvL7CC2G20doVhcq', NULL, 'all@b.cc', NULL, 1471599856, 1471600479, '127.0.0.1', 1, '');
+(11, 'all-demo1', '综合账户', 'public/images/avatar/user2-160x160.jpg', '$2y$08$bnDehV48c1sDsmwPNmmTHOdMMxUE1MHNGItvkmvL7CC2G20doVhcq', NULL, 'all@b.cc', NULL, 1471599856, 1471600479, '127.0.0.1', 1, ''),
+(12, 'zhujingxiu1', '朱景修2', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766');
 
 -- --------------------------------------------------------
 
@@ -1311,12 +1054,13 @@ INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `sa
 -- 表的结构 `gd_worker_activity`
 --
 
-CREATE TABLE `gd_worker_activity` (
-  `activity_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_activity` (
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `content` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `addtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=361 ;
 
 --
 -- 转存表中的数据 `gd_worker_activity`
@@ -1690,12 +1434,13 @@ INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtim
 -- 表的结构 `gd_worker_attempt`
 --
 
-CREATE TABLE `gd_worker_attempt` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(15) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `time` int(11) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1703,14 +1448,15 @@ CREATE TABLE `gd_worker_attempt` (
 -- 表的结构 `gd_worker_group`
 --
 
-CREATE TABLE `gd_worker_group` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_group` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `is_system` tinyint(4) NOT NULL DEFAULT '0',
   `permission` text,
-  `status` tinyint(4) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `gd_worker_group`
@@ -1719,10 +1465,10 @@ CREATE TABLE `gd_worker_group` (
 INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`, `status`) VALUES
 (1, 'admin', '管理组', 1, '', 1),
 (2, 'member', '业务员', 0, '2997,2999,3001,3003,2998,3000,3002', 1),
-(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,55,59,63,67,68,70,78,84,85,94,96', 1),
+(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,55,59,63,67,68,70,78,80,84,85,94,96,98,100,101,102', 1),
 (4, 'warehouser', '库管', 1, '55,70,82,65,61,87,3,2,1', 1),
 (5, 'appraiser', '鉴定人', 0, '74,73,70,1,3,2', 1),
-(6, 'booker', '登记人', 0, '1,2,3,52,55,57,70,72,93,98,100,101', 1);
+(6, 'booker', '登记人', 0, '1,2,3,52,55,57,70,72,93,98,100,101,103', 1);
 
 -- --------------------------------------------------------
 
@@ -1730,8 +1476,8 @@ INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`,
 -- 表的结构 `gd_worker_notify`
 --
 
-CREATE TABLE `gd_worker_notify` (
-  `notify_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
+  `notify_id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` int(11) NOT NULL DEFAULT '0',
   `receiver_id` int(11) NOT NULL,
   `mode` enum('announcement',' summary') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'announcement',
@@ -1739,8 +1485,9 @@ CREATE TABLE `gd_worker_notify` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`notify_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1748,11 +1495,15 @@ CREATE TABLE `gd_worker_notify` (
 -- 表的结构 `gd_worker_rel`
 --
 
-CREATE TABLE `gd_worker_rel` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `worker_id` int(11) UNSIGNED NOT NULL,
-  `group_id` mediumint(8) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `gd_worker_rel` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `worker_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`worker_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- 转存表中的数据 `gd_worker_rel`
@@ -1760,7 +1511,6 @@ CREATE TABLE `gd_worker_rel` (
 
 INSERT INTO `gd_worker_rel` (`id`, `worker_id`, `group_id`) VALUES
 (20, 1, 1),
-(3, 2, 2),
 (5, 3, 3),
 (7, 4, 3),
 (9, 5, 6),
@@ -1771,276 +1521,9 @@ INSERT INTO `gd_worker_rel` (`id`, `worker_id`, `group_id`) VALUES
 (19, 10, 5),
 (22, 11, 3),
 (23, 11, 5),
-(24, 11, 6);
+(24, 11, 6),
+(21, 12, 2);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `gd_article`
---
-ALTER TABLE `gd_article`
-  ADD PRIMARY KEY (`article_id`);
-
---
--- Indexes for table `gd_article_category`
---
-ALTER TABLE `gd_article_category`
-  ADD PRIMARY KEY (`category_id`);
-
---
--- Indexes for table `gd_customer`
---
-ALTER TABLE `gd_customer`
-  ADD PRIMARY KEY (`customer_id`);
-
---
--- Indexes for table `gd_customer_stock`
---
-ALTER TABLE `gd_customer_stock`
-  ADD PRIMARY KEY (`stock_id`);
-
---
--- Indexes for table `gd_golden_price`
---
-ALTER TABLE `gd_golden_price`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_golden_today`
---
-ALTER TABLE `gd_golden_today`
-  ADD KEY `date` (`date`),
-  ADD KEY `updatetime` (`updatetime`);
-
---
--- Indexes for table `gd_node`
---
-ALTER TABLE `gd_node`
-  ADD PRIMARY KEY (`node_id`);
-
---
--- Indexes for table `gd_project_apply`
---
-ALTER TABLE `gd_project_apply`
-  ADD PRIMARY KEY (`apply_id`);
-
---
--- Indexes for table `gd_project_investing`
---
-ALTER TABLE `gd_project_investing`
-  ADD PRIMARY KEY (`project_id`);
-
---
--- Indexes for table `gd_project_investing_history`
---
-ALTER TABLE `gd_project_investing_history`
-  ADD PRIMARY KEY (`history_id`);
-
---
--- Indexes for table `gd_project_investing_status`
---
-ALTER TABLE `gd_project_investing_status`
-  ADD PRIMARY KEY (`status_id`);
-
---
--- Indexes for table `gd_project_recycling`
---
-ALTER TABLE `gd_project_recycling`
-  ADD PRIMARY KEY (`project_id`);
-
---
--- Indexes for table `gd_project_recycling_history`
---
-ALTER TABLE `gd_project_recycling_history`
-  ADD PRIMARY KEY (`history_id`);
-
---
--- Indexes for table `gd_project_recycling_status`
---
-ALTER TABLE `gd_project_recycling_status`
-  ADD PRIMARY KEY (`status_id`);
-
---
--- Indexes for table `gd_project_stock`
---
-ALTER TABLE `gd_project_stock`
-  ADD PRIMARY KEY (`stock_id`);
-
---
--- Indexes for table `gd_project_trash`
---
-ALTER TABLE `gd_project_trash`
-  ADD PRIMARY KEY (`trash_id`);
-
---
--- Indexes for table `gd_sessions`
---
-ALTER TABLE `gd_sessions`
-  ADD KEY `ci_sessions_timestamp` (`timestamp`);
-
---
--- Indexes for table `gd_setting`
---
-ALTER TABLE `gd_setting`
-  ADD PRIMARY KEY (`setting_id`,`code`),
-  ADD KEY `option_name` (`code`),
-  ADD KEY `auto_load` (`initial`);
-
---
--- Indexes for table `gd_worker`
---
-ALTER TABLE `gd_worker`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_activity`
---
-ALTER TABLE `gd_worker_activity`
-  ADD PRIMARY KEY (`activity_id`);
-
---
--- Indexes for table `gd_worker_attempt`
---
-ALTER TABLE `gd_worker_attempt`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_group`
---
-ALTER TABLE `gd_worker_group`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_notify`
---
-ALTER TABLE `gd_worker_notify`
-  ADD PRIMARY KEY (`notify_id`);
-
---
--- Indexes for table `gd_worker_rel`
---
-ALTER TABLE `gd_worker_rel`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
-  ADD KEY `fk_users_groups_users1_idx` (`worker_id`),
-  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `gd_article`
---
-ALTER TABLE `gd_article`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- 使用表AUTO_INCREMENT `gd_article_category`
---
-ALTER TABLE `gd_article_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- 使用表AUTO_INCREMENT `gd_customer`
---
-ALTER TABLE `gd_customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `gd_customer_stock`
---
-ALTER TABLE `gd_customer_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_golden_price`
---
-ALTER TABLE `gd_golden_price`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
---
--- 使用表AUTO_INCREMENT `gd_node`
---
-ALTER TABLE `gd_node`
-  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
---
--- 使用表AUTO_INCREMENT `gd_project_apply`
---
-ALTER TABLE `gd_project_apply`
-  MODIFY `apply_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_project_investing`
---
-ALTER TABLE `gd_project_investing`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
---
--- 使用表AUTO_INCREMENT `gd_project_investing_history`
---
-ALTER TABLE `gd_project_investing_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
---
--- 使用表AUTO_INCREMENT `gd_project_investing_status`
---
-ALTER TABLE `gd_project_investing_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling`
---
-ALTER TABLE `gd_project_recycling`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling_history`
---
-ALTER TABLE `gd_project_recycling_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling_status`
---
-ALTER TABLE `gd_project_recycling_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- 使用表AUTO_INCREMENT `gd_project_stock`
---
-ALTER TABLE `gd_project_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_project_trash`
---
-ALTER TABLE `gd_project_trash`
-  MODIFY `trash_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_setting`
---
-ALTER TABLE `gd_setting`
-  MODIFY `setting_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
---
--- 使用表AUTO_INCREMENT `gd_worker`
---
-ALTER TABLE `gd_worker`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
---
--- 使用表AUTO_INCREMENT `gd_worker_activity`
---
-ALTER TABLE `gd_worker_activity`
-  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=361;
---
--- 使用表AUTO_INCREMENT `gd_worker_attempt`
---
-ALTER TABLE `gd_worker_attempt`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_worker_group`
---
-ALTER TABLE `gd_worker_group`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_worker_notify`
---
-ALTER TABLE `gd_worker_notify`
-  MODIFY `notify_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_worker_rel`
---
-ALTER TABLE `gd_worker_rel`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- 限制导出的表
 --

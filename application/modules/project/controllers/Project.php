@@ -18,7 +18,7 @@ class Project extends XY_Controller
 
     }
 
-    protected function render_operation($status)
+    protected function investing_operation($status)
     {
         $buttons = array();
         switch((int)$status)
@@ -78,6 +78,71 @@ class Project extends XY_Controller
                 }
                 break;
             case $this->config->item('investing_terminated'):
+                //$buttons[] = lang('label_terminated');
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_trashing');
+                }
+                break;
+        }
+
+        return implode(" ",$buttons);
+    }
+
+    protected function recycling_operation($status)
+    {
+        $buttons = array();
+        switch((int)$status)
+        {
+            case $this->config->item('recycling_initial'):
+                //$buttons[] = lang('label_booked');
+                if($this->inRole('manager')) {
+                    $buttons[] = lang('button_checking');
+                }
+                if($this->inRole('booker')){
+                    $buttons[] = lang('button_update');
+                }
+                break;
+            case $this->config->item('recycling_checked'):
+                //$buttons[] = lang('label_checked');
+                if($this->inRole('warehouser')) {
+                    $buttons[] = lang('button_confirming');
+                }
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_refusing');
+                }
+                break;
+            case $this->config->item('recycling_confirmed'):
+                //$buttons[] = lang('label_confirmed');
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_appling');
+                }
+                break;
+
+            case $this->config->item('recycling_applied'):
+                //$buttons[] = lang('label_applied');
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_cancle');
+                }
+                if($this->inRole('warehouser')){
+                    $buttons[] = lang('button_taking');
+                }
+                break;
+            case $this->config->item('recycling_finished'):
+                //$buttons[] = lang('label_finished');
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_trashing');
+                }
+                break;
+            case $this->config->item('recycling_refused'):
+                //$buttons[] = lang('label_refused');
+                if($this->inRole('booker')){
+                    $buttons[] = lang('button_update');
+                }
+                if($this->inRole('manager')){
+                    $buttons[] = lang('button_terminating');
+                }
+                break;
+            case $this->config->item('recycling_terminated'):
                 //$buttons[] = lang('label_terminated');
                 if($this->inRole('manager')){
                     $buttons[] = lang('button_trashing');

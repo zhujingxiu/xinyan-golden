@@ -156,9 +156,10 @@ class XY_Controller extends MX_Controller {
 
     public function _valid_csrf_nonce()
     {
+        $key = $this->session->flashdata('csrfkey');
+        $value = $this->session->flashdata('csrfvalue');
 
-        if ($this->input->post($this->session->flashdata('csrfkey')) !== FALSE &&
-            $this->input->post($this->session->flashdata('csrfkey')) == $this->session->flashdata('csrfvalue'))
+        if ($this->input->post($key) !== FALSE && $this->input->post($key) == $value)
         {
             return TRUE;
         }

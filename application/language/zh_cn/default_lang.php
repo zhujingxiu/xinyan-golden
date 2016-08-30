@@ -20,6 +20,10 @@ $lang['error_no_project'] = '项目不存在';
 $lang['error_no_applied'] = '没有找到该项目的提金申请数据';
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['text_agree'] = "我已阅读并同意《%s》";
+$lang['text_goldbar'] = "金条";
+$lang['text_ornaments'] = "金饰";
+$lang['text_number_unit'] = "件";
+$lang['text_weight_unit'] = "克";
 
 $lang['text_unknown'] = "未知";
 
