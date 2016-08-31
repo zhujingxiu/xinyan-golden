@@ -355,7 +355,7 @@ class Recycling_model extends XY_Model{
                 'project_sn' => $data['project_sn'],
                 'mode' => 'in',
                 'weight' => $data['weight'],
-                'note' => '项目存金'.number_format($data['weight'],2).'克',
+                'note' => '项目'.$data['project_sn'].'存金'.number_format($data['weight'],2).'克',
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time(),
             ));
@@ -385,47 +385,7 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function out_stock($data)
-    {
-        if(empty($data['project_sn']) || empty($data['weight'])) return FALSE;
-        $project = $this->project($data['project_sn']);
-        if($project->num_rows()){
-            $info = $project->row_array();
-            $this->cancle_applied($info['project_id']);//删除申请
-            //生成出库单 project_stock
-            $tmp = array(
-                'project_sn' => $info['project_sn'],
-                'title' => $info['realname'].':'.$info['phone'].':'.$info['weight'],
-                'mode' => 'stock',
-                'weight' => (float)$data['weight']*(-1.00),
-                'info' => maybe_serialize(array(
-                    'project_sn' => $info['project_sn'],
-                    'realname' => $info['realname'],
-                    'phone' => $info['phone'],
-                    'weight' => $info['weight'],
-                    'start' => $info['start'],
-                    'end' => $info['end'],
-                ))
-            );
-            if(!empty($data['_file']) && !empty($data['_path'])){
-                $tmp['file'] = json_encode(array(
-                    array('file'=>$data['_file'],'path'=>$data['_path'])
-                ));
-            }
-            $this->db->insert($this->stock_table,$tmp);
 
-            //部分提金 修改项目余下的黄金信息
-//            if($this->config->item('partial_taking') && ($info['weight']*100 > $data['weight']*100)){
-//                $this->db->insert($this->table,array(
-//                        'weight'=>(float)($info['weight'] - $data['weight']),
-//                        'total'=>(float)($info['weight'] - $data['weight']),
-//                    ),array('project_sn'=>$info['project_sn']));
-//            }
-
-            return $this->db->insert_id();
-        }
-        return FALSE;
-    }
 
     public function history($project_id,$status_id,$note='',$request=''){
         $this->db->insert($this->history_table,array(

@@ -1455,10 +1455,10 @@ class Ion_auth_model extends CI_Model
 			$this->db->or_like($this->tables['users'].'.phone' , $where['filter_name']);
 			$this->db->group_end();
 		}
-		return $this->db->select()->limit($start,$limit)
+		return $this->db->select($this->tables['users'].'.*,'.$this->tables['groups'].'.id as group_id,'.$this->tables['groups'].'.'.'title as group_name,'.$this->tables['groups'].'.code')
 			->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id','left')
 			->join($this->tables['groups'], $this->tables['users_groups'].'.'.$this->join['groups'].'='.$this->tables['groups'].'.id','left')
-			->get($this->tables['users_groups']);
+			->limit($start,$limit)->get($this->tables['users_groups']);
 	}
 
 	/**

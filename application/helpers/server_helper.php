@@ -352,17 +352,22 @@ function main_menu()
 			),
 			'path' =>'',
 			'children' => array(
-				'investing' => array(
-					'text' => '钱生金',
-					'path' => array('project/investing','project/investing/index')
-				),
+
 				'recycling' => array(
 					'text' => '金生金',
 					'path' => array('project/recycling','project/recycling/index')
 				),
+				'customer' => array(
+					'text' => '客户管理',
+					'path' => array('project/customer','project/customer/index')
+				),
 				'trash' => array(
 					'text' => '回收站',
 					'path' => array('project/trash','project/trash/index')
+				),
+				'investing' => array(
+					'text' => '钱生金',
+					'path' => array('project/investing','project/investing/index')
 				),
 			)
 		),

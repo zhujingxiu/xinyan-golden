@@ -11,6 +11,9 @@ class Recycling extends Project {
     }
     public function index()
     {
+        if($this->input->get('list')){
+            json_response($this->_list($this->input->get()));
+        }
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
@@ -19,9 +22,6 @@ class Recycling extends Project {
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
 
-        if($this->input->get('draw')){
-            json_response($this->_list($this->input->get()));
-        }
         $this->layout->view('recycling/index',$data);
     }
 
@@ -60,7 +60,7 @@ class Recycling extends Project {
                     $photos = json_decode($_info['file'],TRUE);
                     if(is_array($photos)){
                         $first = current($photos);
-                        $cover = '<img class="list-img" src="'.site_url($first['path']).'" title="'.$first['name'].'" />';
+                        $cover = '<img class="list-img" src="'.site_url($first['path']).'" alt="'.$first['name'].'" />';
                     }
                 }
                 $rows[] = array(
@@ -71,9 +71,9 @@ class Recycling extends Project {
                     'referrer' 	=> $row['referrer'],
                     'gold'      => $row['type']=='goldbar' ? lang('text_goldbar'):lang('text_ornaments') . '<br>'.$cover,
                     'number'	=> $row['number'].lang('text_number_unit') ,
-                    'origin'	=> number_format($row['origin_weight'],2) ,
+                    'origin'	=> number_format($row['origin_weight'],2).lang('text_weight_unit') ,
                     'appraiser'	=> $row['appraiser'],
-                    'weight'	=> number_format($row['weight'],2),
+                    'weight'	=> number_format($row['weight'],2).lang('text_weight_unit'),
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
                     'operation'	=> $this->recycling_operation($row['status_id'])
@@ -128,7 +128,7 @@ class Recycling extends Project {
                     'idnumber' => form_error('idnumber'),
                 );
                 if($this->config->item('recycling_privacy')){
-                    $errors['agree'] = form_error('agree');
+                    //$errors['agree'] = form_error('agree');
                 }
                 json_error(array('errors' => $errors));
             }
@@ -523,95 +523,7 @@ class Recycling extends Project {
         }
     }
 
-    public function taken()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        if($this->input->server('REQUEST_METHOD') == 'POST'){
-            if($this->_valid_csrf_nonce() === FALSE){
-                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
-            }
-            $this->form_validation->set_rules('weight', '申请重量', 'required');
-            $this->form_validation->set_rules('phone', '联系电话', 'required');
 
-            if ($this->form_validation->run() == TRUE)
-            {
-                $project_sn = $this->input->post('project_sn');
-                $note = htmlspecialchars($this->input->post('editorValue'));
-                $weight = $this->input->post('weight');
-                $phone = $this->input->post('phone');
-                $result = $this->recycling_model->project($project_sn);
-                if(!$result->num_rows()){
-                    json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
-                }
-                $project = $result->row_array();
-                $applied = $this->recycling_model->applied($project['project_id']);
-                if(!$applied){
-                    json_error(array('msg' => lang('error_no_applied') ));
-                }
-                if(($applied['weight']*100 == $weight*100) && $applied['phone'] == $phone){
-                    $tmp = array(
-                        'note' 		=> $note,
-                        'request'	=> var_export(array(
-                            'weight' =>$weight,
-                            '_weight' =>$this->input->post('_weight'),
-                            'phone' =>$phone,
-                            '_phone' =>$this->input->post('_phone'),
-                            '_file' =>$this->input->post('_file'),
-                            '_path' =>$this->input->post('_path')
-                        ),TRUE),
-                        'call_func' => 'out_stock',
-                        'call_param' => array(
-                            'project_sn'=>$project_sn,
-                            'phone'=>$phone,
-                            'weight'=>$weight,
-                            'note' 	=> $note,
-                            '_file' =>$this->input->post('_file'),
-                            '_path' =>$this->input->post('_path')
-                        )
-                    );
-                    if(!$this->config->item('partial_taking') || $project['weight']*100 == $applied['weight']*100){
-                        $tmp['status'] = $this->config->item('recycling_finished');
-                    }
-
-                    $this->recycling_model->push_state($project_sn,$tmp);
-                    $this->session->set_flashdata('success', sprintf("项目申请提金已出库！编号: %s",$project_sn));
-
-                    json_success();
-                }else{
-                    json_error(array('errors' => array(
-                        'weight' => lang("error_confirm_weight"),
-                        'phone' => lang("error_confirm_phone"),
-                    )));
-                }
-            }else {
-                json_error(array('errors' =>  array(
-                    'weight' => form_error('weight'),
-                    'phone' => form_error('phone'),
-                )));
-            }
-        }else{
-            $result = $this->recycling_model->project($this->input->get('project'));
-            if($result->num_rows()){
-                $info = $result->row_array();
-                $applied = $this->recycling_model->applied($info['project_id']);
-                if(!$applied){
-                    json_error(array('msg' => lang('error_no_applied') ));
-                }
-                $info['applied_weight'] = number_format($applied['weight'],2);
-                $info['applied_phone'] = $applied['phone'];
-                $info['csrf'] = $this->_get_csrf_nonce();
-                $info['histories'] = $this->recycling_model->histories($info['project_sn']);
-
-                $title = '提金出库 '.$info['realname'].':'.$info['project_sn'];
-
-                json_success(array('title'=>$title,'msg'=>$this->load->view('recycling/taking',$info,TRUE)));
-            }else{
-                json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
-            }
-        }
-    }
 
     public function refused()
     {

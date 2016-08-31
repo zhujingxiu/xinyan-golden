@@ -13,10 +13,10 @@
 		<div class="form-group">
 			<ul class="timeline timeline-inverse" id="timeline-box">
 				<li class="time-label">
-					<span class="bg-green"> 登记项目 </span>
+					<span class="bg-light-blue-active"> 登记项目 </span>
 				</li>
 				<li>
-					<i class="fa fa-user bg-green"></i>
+					<i class="fa fa-diamond bg-orange-active"></i>
 					<div class="timeline-item">
 						<h3 class="timeline-header">黄金信息</h3>
 						<div class="timeline-body">
@@ -65,7 +65,7 @@
 				</li>
 
 				<li>
-					<i class="fa fa-user bg-green"></i>
+					<i class="fa fa-gavel bg-navy-active"></i>
 					<div class="timeline-item">
 						<h3 class="timeline-header">鉴定结果</h3>
 						<div class="timeline-body">
@@ -114,20 +114,27 @@
 							<div class="col-sm-4">
 								<div class="form-group clearfix">
 									<div class="input-group col-sm-11">
-										<span class="input-group-addon">客户姓名</span>
-										<input id="realname" type="text" name="realname" class="form-control" />
-									</div>
-								</div>
-
-							</div>
-							<div class="col-sm-4">
-								<div class="form-group clearfix">
-									<div class="input-group col-sm-11">
 										<span class="input-group-addon">手机号码</span>
 										<input id="phone" type="text" name="phone" class="form-control" />
 									</div>
 								</div>
 
+							</div>
+							<div class="col-sm-8">
+								<div class="form-group clearfix">
+									<div class="input-group col-sm-12">
+										<span class="input-group-addon">身份证号</span>
+										<input id="idnumber" type="text" name="idnumber" class="form-control" />
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-group clearfix">
+									<div class="input-group col-sm-11">
+										<span class="input-group-addon">客户姓名</span>
+										<input id="realname" type="text" name="realname" class="form-control" />
+									</div>
+								</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="form-group clearfix">
@@ -138,17 +145,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-8">
-								<div class="form-group clearfix">
-									<div class="input-group col-sm-11">
-										<span class="input-group-addon">身份证号</span>
-										<input id="idnumber" type="text" name="idnumber" class="form-control" />
-									</div>
-								</div>
-							</div>
+
 							<div class="col-sm-4">
 								<div class="form-group clearfix">
-									<div class="input-group col-sm-11">
+									<div class="input-group col-sm-12">
 										<span class="input-group-addon">微信账号</span>
 										<input type="text" name="wechat" class="form-control" />
 									</div>
@@ -276,7 +276,7 @@
 				$(form).ajaxSubmit({
 					dataType:'json',
 					beforeSubmit:function(){
-						//layer.load();
+						layer.load();
 					},
 					success: function (json) {
 						if(json.code==1){
@@ -433,6 +433,39 @@
 		select: function(e,ui) {
 			$(this).val(ui.item.label);
 			$(this).next('input[type="hidden"]').val(ui.item.value)
+			return false;
+		}
+	});
+	$('#phone,#realname,#idnumber').autocomplete({
+		delay: 300,
+		source: function(request, response) {
+			$.ajax({
+				url: '/project/customer/autocomplete',
+				data:{filter_name:request.term},
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item.name+' '+ item.phone +' '+item.idnumber,
+							value: item.value,
+							realname: item.name,
+							phone: item.phone,
+							idnumber: item.idnumber,
+							wechat: item.wechat,
+							referrer: item.referrer,
+							referrer_id: item.referrer_id,
+						}
+					}));
+				}
+			});
+		},
+		select: function(e,ui) {
+			$('#phone').val(ui.item.phone);
+			$('#realname').val(ui.item.realname);
+			$('#idnumber').val(ui.item.idnumber);
+			$('#wechat').val(ui.item.wechat);
+			$('#referrer').val(ui.item.referrer);
+			$('input[name="referrer"]').val(ui.item.referrer_id)
 			return false;
 		}
 	});

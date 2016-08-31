@@ -16,10 +16,10 @@
         <div class="form-group">
             <ul class="timeline" id="timeline-box">
                 <li class="time-label">
-                    <span class="bg-green"> 登记信息 </span>
+                    <span class="bg-light-blue-active"> 登记信息 </span>
                 </li>
                 <li>
-                    <i class="fa fa-user bg-green"></i>
+                    <i class="fa fa-diamond bg-orange-active"></i>
                     <div class="timeline-item">
                         <h3 class="timeline-header">黄金信息</h3>
                         <div class="timeline-body">
@@ -80,7 +80,7 @@
                 </li>
 
                 <li>
-                    <i class="fa fa-user bg-green"></i>
+                    <i class="fa fa-gavel bg-navy-active"></i>
                     <div class="timeline-item">
                         <h3 class="timeline-header">鉴定结果</h3>
                         <div class="timeline-body">
@@ -140,11 +140,19 @@
                                 </div>
 
                             </div>
+                            <div class="col-sm-8">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon">身份证号</span>
+                                        <span class="form-control"><?php echo $idnumber;?></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">手机号码</span>
-                                        <span class="form-control"><?php echo $phone?></span>
+                                        <span class="form-control"><?php echo $phone;?></span>
                                     </div>
                                 </div>
 
@@ -153,23 +161,15 @@
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">推荐人</span>
-                                        <span class="form-control" ><?php echo $referrer?></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-8">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">身份证号</span>
-                                        <span class="form-control"><?php echo $idnumber?></span>
+                                        <span class="form-control"><?php echo $referrer?></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
+                                    <div class="input-group col-sm-12">
                                         <span class="input-group-addon">微信账号</span>
-                                        <span class="form-control"><?php echo $wechat?></span>
+                                        <span class="form-control"><?php echo $wechat;?></span>
                                     </div>
                                 </div>
                             </div>

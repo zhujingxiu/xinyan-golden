@@ -114,7 +114,7 @@ class Project extends XY_Controller
             case $this->config->item('recycling_confirmed'):
                 //$buttons[] = lang('label_confirmed');
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_appling');
+                    //$buttons[] = lang('button_appling');
                 }
                 break;
 

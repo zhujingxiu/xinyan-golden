@@ -502,6 +502,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
+                                            <label for="inputOrderPercent" class="control-label col-sm-3 text-right">门店消费
+                                                <span class="help-block">设置门店黄金消费比例 %</span>
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <input type="text" name="order_percent" class="form-control" id="inputOrderPercent" value="<?php echo empty($setting['order_percent'])? '' :$setting['order_percent']  ?>"/>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
                                             <label for="" class="control-label col-sm-3 text-right">自动回收
                                                 <span class="help-block">自动回收已完结的项目</span>
                                             </label>
