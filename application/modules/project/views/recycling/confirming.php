@@ -191,7 +191,7 @@
                     </div>
                 </li>
                 <li class="time-label">
-                    <span class="bg-red"> 核实项目 </span>
+                    <span class="bg-red"> 入库确认 </span>
                 </li>
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
@@ -203,8 +203,7 @@
                             <input type="text" name="weight" class="form-control" placeholder="确认鉴定克重">
                             <span class="input-group-addon">克</span>
                         </div>
-
-                        <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
+                        <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
                     </div>
                 </li>
                 <li class="time-label">

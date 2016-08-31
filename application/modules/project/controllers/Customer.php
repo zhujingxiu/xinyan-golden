@@ -57,14 +57,13 @@ class Customer extends XY_Controller {
                 $applied = $this->customer_model->applied($row['customer_id']);
                 $status_text = $row['status'] ? lang('label_enabled') : lang('label_disabled');
                 $operation = 'detail';
-                if($row['total']*100>0){
+                if($row['available']*100>0){
                     $operation = 'appling';
                 }
                 if($applied){
                     $status_text = sprintf(lang("label_applied"),number_format($applied['weight']));
                     $operation = 'applied';
                 }
-
                 $cover = ($row['avatar'] && file_exists($row['avatar'])) ? $cover = '<img class="list-img" src="'.site_url($row['avatar']).'" alt="'.$row['realname'].'" />':false;
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
@@ -72,9 +71,9 @@ class Customer extends XY_Controller {
                     'referrer' 	=> $row['referrer'],
                     'phone'	    => $row['phone'],
                     'idnumber'	=> $row['idnumber'] ,
-                    'wechat'	=> $row['wechat'] ,
-                    'qq'	=> $row['qq'] ,
-                    'weight'	=> '<label class="label label-primary">'.number_format($row['total'],2).lang('text_weight_unit').'</label>',
+                    'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
+                    'available'	=> '<label class="label label-success">'.number_format($row['available'],2).lang('text_weight_unit').'</label>',
+                    'frozen'	=> '<a class="btn btn-warning btn-frozen">'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
@@ -123,36 +122,34 @@ class Customer extends XY_Controller {
         }
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             //json_response(['code'=>0]+$this->input->post());
-            $this->form_validation->set_rules('title', '标题', 'trim|required|min_length[2]|max_length[32]');
-
-            $this->form_validation->set_rules('category_id', '分类', 'trim|required');
+            $this->form_validation->set_rules('realname', '真实姓名', 'required');
+            $this->form_validation->set_rules('phone', '联系电话', 'required');
+            $this->form_validation->set_rules('idnumber', '身份证号', 'required');
 
             if ($this->form_validation->run() == TRUE)
             {
-
                 $data = array(
-                    'title' => $this->input->post('title'),
-                    'category_id' => $this->input->post('category_id'),
-                    'is_top' => $this->input->post('is_top'),
+                    'realname' => $this->input->post('realname'),
+                    'group_id' => $this->input->post('group_id'),
+                    'phone' => $this->input->post('phone'),
+                    'idnumber' => $this->input->post('idnumber'),
+                    'wechat' => $this->input->post('wechat'),
+                    'qq' => $this->input->post('qq'),
+                    'referrer_id' => $this->input->post('referrer'),
                     'status' => $this->input->post('status'),
-                    'text' => htmlspecialchars($this->input->post('editorValue')),
+                    'note' => htmlspecialchars($this->input->post('editorValue')),
                 );
-                $res = $this->input->post('article_id') ?
-                			$this->article_model->update_article($this->input->post('article_id'),$data) : $this->article_model->insert_article($data);
+                $this->input->post('customer_id')
+                    ? $this->customer_model->update_customer($this->input->post('customer_id'),$data)
+                    : $this->customer_model->insert_customer($data);
+                $this->session->set_flashdata('success', '客户资料保存成功 : '.$data['realname']);
+                json_success();
 
-                if($res){
-                    $this->session->set_flashdata('success', '文章保存成功');
-                    json_response(array('code' => 1, 'success' => '成功'));
-                }else
-                {
-                	$this->session->set_flashdata('warning', '参数异常');
-                    json_response(array('code' => 0, 'errors' => '参数异常'));
-                }
             }else {
-
                 $errors = array(
-                    'title' => form_error('title'),
-                    'category_id' => form_error('category_id'),
+                    'realname' => form_error('realname'),
+                    'idnumber' => form_error('idnumber'),
+                    'phone' => form_error('phone'),
                 );
                 json_response(array('code' => 0, 'errors' => $errors));
             }
@@ -166,6 +163,7 @@ class Customer extends XY_Controller {
                 'phone' => '',
                 'wechat' => '',
                 'qq' => '',
+                'note' => '',
                 'referrer' => '',
                 'idnumber' => '',
                 'referrer_id' => 0,
@@ -185,7 +183,16 @@ class Customer extends XY_Controller {
 
     public function stock()
     {
+        $result = $this->customer_model->projects($this->input->get('customer'));
+        if($result->num_rows()){
+            $info = $result->row_array();
 
+
+var_dump($info);
+            json_success(array('title'=>'项目列表 '.$info['realname'],'msg'=>$this->load->view('customer/project',$info,TRUE)));
+        }else{
+            json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
+        }
     }
 
 
@@ -214,7 +221,7 @@ class Customer extends XY_Controller {
                 $customer = $result->row_array();
                 if( $customer['phone'] == $phone){
 
-                    if($weight*100 > $customer['total']*100){
+                    if($weight*100 > $customer['available']*100){
                         json_error(array('msg' => lang('error_total_max')));
                     }
                     $this->customer_model->appling_weight($customer_id,array(
@@ -245,7 +252,8 @@ class Customer extends XY_Controller {
                 $info['csrf'] = $this->_get_csrf_nonce();
 
                 $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
-                $info['max'] = (float)$info['total'];
+                $info['max'] = (float)$info['available'];
+                $info['total'] = (float)($info['available']+$info['frozen']);
 
                 json_success(array('title'=>'申请提金 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/appling',$info,TRUE)));
             }else{
@@ -278,7 +286,9 @@ class Customer extends XY_Controller {
                 }
                 $customer = $result->row_array();
                 if( $customer['phone'] == $phone){
-                    $max = $this->config->item('order_percent') ? (float)($customer['total']*($this->config->item('order_percent')/100))*1.00 : (float)$customer['total']*1.00;;
+                    $max = $this->config->item('order_percent')
+                        ? (float)($customer['available']*($this->config->item('order_percent')/100))*1.00
+                        : (float)$customer['available']*1.00;;
 
                     if($weight*100 > $max*100){
                         json_error(array('msg' => lang('error_total_max')));
@@ -312,7 +322,10 @@ class Customer extends XY_Controller {
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['order_percent'] = $this->config->item('order_percent');
-                $info['max'] = $this->config->item('order_percent') ? (float)($info['total']*($this->config->item('order_percent')/100))*1.00 : (float)$info['total']*1.00;
+                $info['max'] = $this->config->item('order_percent')
+                    ? (float)($info['available']*($this->config->item('order_percent')/100))*1.00
+                    : (float)$info['available']*1.00;
+                $info['total'] = (float)($info['available']+$info['frozen']);
                 $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
                 json_success(array('title'=>'门店消费申请 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/order',$info,TRUE)));
             }else{
@@ -404,6 +417,7 @@ class Customer extends XY_Controller {
                 $info['applied_weight'] = number_format($applied['weight'],2);
                 $info['applied_phone'] = $applied['phone'];
                 $info['apply_id'] = $applied['apply_id'];
+                $info['total'] = (float)($info['available']+$info['frozen']);
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
                 json_success(array('title'=>'提金出库 '.$info['realname'].':'.$applied['weight'].lang('text_weight_unit'),'msg'=>$this->load->view('customer/taking',$info,TRUE)));

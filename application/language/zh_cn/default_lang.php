@@ -7,7 +7,7 @@
  */
 
 $lang['error_csrf'] = '该表单提交未通过我们的安全性检查.';
-$lang['error_no_permission'] = "没有访问授权 ";
+$lang['error_no_permission'] = "没有授权访问 ";
 $lang['error_permission'] = '没权限';
 $lang['error_title'] = '出错了';
 $lang['error_no_result'] = '没找到结果';
@@ -34,18 +34,18 @@ $lang['text_price_today'] = " 今日黄金价格走势图";
 $lang['text_price_yestoday'] = " 昨日收盘价";
 $lang['text_price_unit'] = " 元/克";
 
-$lang['label_booked'] = '<a class="btn btn-primary disabled">待核实</a>';
+$lang['label_booked'] = '<a class="btn btn-info disabled">待核实</a>';
 $lang['label_checked'] = '<a class="btn btn-primary disabled">待确认</a>';
-$lang['label_confirmed'] = '<a class="btn btn-success disabled">进行中</a>';
-$lang['label_expired'] = '<a class="btn btn-success disabled">可提金</a>';
-
-$lang['label_finished'] = '<a class="btn btn-default disabled">已完结</a>';
+$lang['label_confirmed'] = '<a class="btn btn-primary disabled">已确认</a>';
+$lang['label_growing'] = '<a class="btn btn-success disabled">增值中</a>';
 $lang['label_refused'] = '<a class="btn btn-warning disabled">已驳回</a>';
 $lang['label_terminated'] = '<a class="btn btn-danger disabled">已终止</a>';
+
 $lang['label_disabled'] = '<label class="label label-danger">已禁用</label>';
 $lang['label_enabled'] = '<label class="label label-success">已启用</label>';
 $lang['label_applied'] = '<label class="label label-warning">申请提金 %s 克</label>';
 
+$lang['button_edit'] = '<a class="btn btn-default btn-edit">修改</a>';
 $lang['button_update'] = '<a class="btn btn-default btn-update">编辑</a>';
 $lang['button_checking'] = '<a class="btn btn-primary btn-checking">核实</a>';
 $lang['button_appling'] = '<a class="btn btn-success btn-appling">提金</a>';

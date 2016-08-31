@@ -49,13 +49,13 @@
                     <table id="list" class="table table-bordered table-striped">
                         <thead>
                         <tr>
-
-                            <th>黄金</th>
+                            <th>可提克重</th>
+                            <th>冻结克重</th>
                             <th>客户</th>
                             <th>手机号</th>
                             <th>身份证号</th>
-                            <th>微信</th>
-                            <th>QQ</th>
+                            <th>微信 QQ</th>
+
                             <th>推荐人</th>
                             <th>操作人</th>
                             <th>编辑时间</th>
@@ -69,12 +69,12 @@
                         </tbody>
                         <tfoot>
                         <tr>
-                            <th>黄金</th>
+                            <th>可提克重</th>
+                            <th>冻结克重</th>
                             <th>客户</th>
                             <th>手机号</th>
                             <th>身份证号</th>
-                            <th>微信</th>
-                            <th>QQ</th>
+                            <th>微信 QQ</th>
                             <th>推荐人</th>
                             <th>操作人</th>
                             <th>编辑时间</th>
@@ -102,5 +102,6 @@
         c.render_order();
         c.render_cancle();
         c.render_taking();
+        c.render_project();
     });
 </script>

@@ -72,6 +72,14 @@
             </div>
         </div>
     </div>
+    <div class="col-sm-12">
+        <div class="form-group clearfix">
+            <div class="input-group col-sm-12">
+
+                <textarea name="editorValue" class="form-control" placeholder="输入客户备注信息"><?php echo $note;?></textarea>
+            </div>
+        </div>
+    </div>
     <?php echo form_close();?>
 </div>
 

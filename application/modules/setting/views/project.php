@@ -357,99 +357,84 @@
                                             </div>
 
 
-                                                <div class="form-group ">
-                                                    <label for="" class="control-label col-sm-2">初始状态</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_initial" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_initial']) && $setting['recycling_initial']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
-                                                    <label for="" class="control-label col-sm-2">主管核实</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_checked" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_checked']) && $setting['recycling_checked']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">初始状态</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_initial" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_initial']) && $setting['recycling_initial']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group ">
-                                                    <label for="" class="control-label col-sm-2">库管确认</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_confirmed" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_confirmed']) && $setting['recycling_confirmed']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
+                                                <label for="" class="control-label col-sm-2">主管核实</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_checked" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_checked']) && $setting['recycling_checked']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">库管确认</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_confirmed" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_confirmed']) && $setting['recycling_confirmed']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
 
+                                                <label for="" class="control-label col-sm-2">正在增值</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_growing" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_growing']) && $setting['recycling_growing']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group ">
-                                                    <label for="" class="control-label col-sm-2">申请提金</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_applied" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_applied']) && $setting['recycling_applied']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
-                                                    <label for="" class="control-label col-sm-2">项目完结</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_finished" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_finished']) && $setting['recycling_finished']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
-
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">项目被拒绝</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_refused" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_refused']) && $setting['recycling_refused']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group ">
-                                                    <label for="" class="control-label col-sm-2">项目被拒绝</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_refused" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_refused']) && $setting['recycling_refused']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
-                                                    <label for="" class="control-label col-sm-2">项目终止</label>
-                                                    <div class="col-sm-4">
-                                                        <select name="recycling_terminated" class="form-control">
-                                                            <option value="0">--请选择--</option>
-                                                            <?php foreach($recycling_statuses as $item): ?>
-                                                                <option value="<?php echo $item['status_id']?>"
-                                                                    <?php echo (!empty($setting['recycling_terminated']) && $setting['recycling_terminated']== $item['status_id']) ? 'selected' : ''?>>
-                                                                    <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                                </option>
-                                                            <?php endforeach?>
-                                                        </select>
-                                                    </div>
+                                                <label for="" class="control-label col-sm-2">项目终止</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_terminated" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_terminated']) && $setting['recycling_terminated']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
                                             </div>
                                         </filedset>
                                         <?php echo form_close()?>
@@ -464,56 +449,41 @@
                                     <div class="col-sm-4">
 
                                         <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-3 text-right">生金克数 (g)
+                                            <label for="" class="control-label col-sm-4 text-right">生金克数 (g)
                                                 <span class="help-block">按100克每年</span>
                                             </label>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-8">
                                                 <input type="text" name="profit_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit_weight'])? '' :$setting['profit_weight']  ?>"/>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-3 text-right">月取金
-                                                <span class="help-block">支持按月取金</span>
+                                            <label for="" class="control-label col-sm-4 text-right">生金周期
+                                                <span class="help-block">支持生金的时间模式</span>
                                             </label>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-8">
+                                                <select name="gold_growing" class="form-control">
+                                                    <option value="year">按年生金</option>
+                                                    <option value="season">按季生金</option>
+                                                    <option value="month">按月生金</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <label for="inputOrderPercent" class="control-label col-sm-4 text-right">门店消费
+                                                <span class="help-block">门店黄金消费比例</span>
+                                            </label>
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <label><input type="checkbox" name="month_taking" value="1" <?php echo !empty($setting['month_taking']) ? 'checked' : '' ?>/>是</label>
+                                                    <input type="text" name="order_percent" class="form-control" id="inputOrderPercent" value="<?php echo empty($setting['order_percent'])? '' :$setting['order_percent']  ?>"/>
+                                                    <span class="input-group-addon">%</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-3 text-right">季度取金
-                                                <span class="help-block">支持按季度取金</span>
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group">
-                                                    <label><input type="checkbox" name="season_taking" value="1" <?php echo !empty($setting['season_taking']) ? 'checked' : '' ?>/>是</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-3 text-right">部分提金
-                                                <span class="help-block">支持提部分黄金</span>
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <div class="input-group">
-                                                    <label><input type="checkbox" name="partial_taking" value="1" <?php echo !empty($setting['partial_taking']) ? 'checked' : '' ?>/>是</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="inputOrderPercent" class="control-label col-sm-3 text-right">门店消费
-                                                <span class="help-block">设置门店黄金消费比例 %</span>
-                                            </label>
-                                            <div class="col-sm-9">
-                                                <input type="text" name="order_percent" class="form-control" id="inputOrderPercent" value="<?php echo empty($setting['order_percent'])? '' :$setting['order_percent']  ?>"/>
-                                            </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-3 text-right">自动回收
+                                            <label for="" class="control-label col-sm-4 text-right">自动回收
                                                 <span class="help-block">自动回收已完结的项目</span>
                                             </label>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-8">
                                                 <div class="input-group">
                                                     <label><input type="checkbox" name="finished_trash" value="1" <?php echo !empty($setting['finished_trash']) ? 'checked' : '' ?>/>是</label>
                                                 </div>

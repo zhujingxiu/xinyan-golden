@@ -305,8 +305,16 @@ class Recycling_model extends XY_Model{
                 $affected = $this->db->affected_rows();
             }
             //后置回调
-            if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
-                $this->{$data['call_func']}($data['call_param']);
+            if(isset($data['call_func']) ){
+                if(is_array($data['call_func'])){
+                    foreach($data['call_func'] as $method => $params){
+                        if(method_exists($this,$method)){
+                            $this->{$method}($params);
+                        }
+                    }
+                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
+                    $this->{$data['call_func']}($data['call_param']);
+                }
             }
             if ($this->db->trans_status() === FALSE)
             {
@@ -324,67 +332,56 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function applied($project_id){
-        $query = $this->db->get_where($this->apply_table,array('project_id'=>$project_id,'status'=>1,'mode'=>'appling'));
-        if($query->num_rows()){
-            return $query->row_array();
-        }
-        return FALSE;
-    }
-
-
-    public function in_stock($data=array())
+    public function project_instock($data)
     {
-        $this->db->insert($this->stock_table,array(
-
-            'project_id' => empty($data['project_id']) ? '' : $data['project_id'],
-            'title' => empty($data['title']) ? '' : $data['title'],
-            'info' => empty($data['info']) ? '' : $data['info'],
-            'note' => empty($data['note']) ? '' : $data['note'],
-            'weight' => $data['weight'],
-            'mode' => 'recycling',
-            'status' => 1,
-            'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time(),
-            'lasttime' => time(),
-        ));
-
-        if( !empty($data['customer_id']) && !empty($data['project_sn'])){
-            $this->db->insert($this->customer_stock_table,array(
-                'customer_id' => $data['customer_id'],
-                'project_sn' => $data['project_sn'],
-                'mode' => 'in',
-                'weight' => $data['weight'],
-                'note' => '项目'.$data['project_sn'].'存金'.number_format($data['weight'],2).'克',
+        if(empty($data['project_sn'])) return FALSE;
+        $project_sn = $data['project_sn'];
+        $info = $this->project($project_sn);
+        if($info->num_rows()) {
+            $project = $info->row_array();
+            $tmp = array(
+                'project_id' => $project['project_id'],
+                'customer_id' => $project['customer_id'],
+                'referrer_id' => $project['referrer_id'],
+                'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
+                'weight'=> (float)$project['weight'],
+                'start'=> date('Y-m-d',$project['addtime']),
+                'info' => maybe_serialize(array(
+                    'project_sn' => $project_sn,
+                    'realname' => $project['realname'],
+                    'phone' => $project['phone'],
+                    'idnumber' => $project['idnumber'],
+                    'type' => $project['type']=='goldbar' ?'金条':'金饰',
+                    'number' => $project['number'],
+                    'origin_weight' => $project['origin_weight'],
+                    'weight' => $project['weight'],
+                    'appraiser_id' => $project['appraiser_id'],
+                )),
+                'note' => empty($data['note'])?'':$data['note'],
+                'mode' => 'recycling',
+                'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time(),
-            ));
+                'lasttime' => time(),
+            );
         }
-
+        $this->db->insert($this->stock_table,$tmp);
         return $this->db->insert_id();
     }
 
-    public function appling_weight($data=array())
-    {
-        if(empty($data['project_sn'])) return FALSE;
-        $project = $this->project($data['project_sn']);
-        if($project->num_rows()){
-            $info = $project->row_array();
-            $this->db->insert($this->apply_table,array(
-                'project_id' => $info['project_id'],
-                'phone' => $data['phone'],
-                'weight' => (float)$data['weight'],
-                'mode' => 'appling',
-                'note' => $data['note'],
-                'status' => 1,
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
+    public function project_growing($project_sn){
+        if(empty($project_sn)) return FALSE;
+
+        $info = $this->project($project_sn);
+        if($info->num_rows()) {
+            return $this->push_state($project_sn,array(
+                'status'	=> $this->config->item('recycling_growing'),
+                'note' 		=> '库存已确认标记，自动推进到正在增值',
             ));
-            return $this->db->insert_id();
         }
+
         return FALSE;
     }
-
 
 
     public function history($project_id,$status_id,$note='',$request=''){
@@ -422,14 +419,34 @@ class Recycling_model extends XY_Model{
         return $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'删除项目'));
     }
 
+    public function erp_stock($data=array()){
+        if(empty($data['project_sn']) ) return FALSE;
+        $project = $this->project($data['project_sn']);
+        if($project->num_rows()){
+            $info = $project->row_array();
+            $this->db->update($this->stock_table,array('status'=>0,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_id'=>$info['project_id']));
+            $this->db->insert($this->customer_stock_table,array(
+                'customer_id' => $info['customer_id'],
+                'mode' => 'in',
+                'project_sn' => $info['project_sn'],
+                'weight' => $info['weight'],
+                'notify' => 1,
+                'note' => empty($data['reason']) ? $data['reason'] : '',
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            ));
+            return $this->db->insert_id();
+        }
+        return FALSE;
+    }
+
     public function trash_bin($data=array())
     {
         if(empty($data['project_sn']) ) return FALSE;
         $project = $this->project($data['project_sn']);
         if($project->num_rows()){
             $info = $project->row_array();
-            $this->db->update($this->table,array('is_del'=>1,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_sn'=>$info['project_sn']));
-
+            $this->db->update($this->table,array('is_del'=>1,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_id'=>$info['project_id']));
             $this->db->insert($this->trash_table,array(
                 'project_id' => $info['project_id'],
                 'project_sn' => $info['project_sn'],
@@ -437,16 +454,17 @@ class Recycling_model extends XY_Model{
                 'customer' => maybe_serialize(array(
                     'realname' => $info['realname'],
                     'phone' => $info['phone'],
+                    'idnumber' => $info['idnumber'],
                     'referrer' => $info['referrer'],
                 )),
                 'gold' => maybe_serialize(array(
                     'price' => $info['price'],
+                    'type' => $info['type']=='goldbar' ?'金条':'金饰',
+                    'number' => $info['number'],
+                    'origin_weight' => $info['origin_weight'],
                     'weight' => $info['weight'],
-                    'amount' => $info['amount'],
-                    'period' => $info['period'],
-                    'start' => $info['start'],
-                    'end' => $info['end'],
-                    'addtime' => $info['addtime'],
+                    'appraiser' => $info['appraiser'],
+                    'start' => date('Y-m-d',$info['addtime']),
                 )),
                 'status_id' => $info['status_id'],
                 'note' => empty($data['reason']) ? $data['reason'] : '',

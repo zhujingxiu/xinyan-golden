@@ -113,24 +113,14 @@ class Project extends XY_Controller
                 break;
             case $this->config->item('recycling_confirmed'):
                 //$buttons[] = lang('label_confirmed');
-                if($this->inRole('manager')){
-                    //$buttons[] = lang('button_appling');
+                if($this->inRole('warehouser')){
+                    $buttons[] = lang('button_edit');
                 }
                 break;
 
-            case $this->config->item('recycling_applied'):
-                //$buttons[] = lang('label_applied');
+            case $this->config->item('recycling_propagating'):
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_cancle');
-                }
-                if($this->inRole('warehouser')){
-                    $buttons[] = lang('button_taking');
-                }
-                break;
-            case $this->config->item('recycling_finished'):
-                //$buttons[] = lang('label_finished');
-                if($this->inRole('manager')){
-                    $buttons[] = lang('button_trashing');
+                    $buttons[] = lang('button_terminating');
                 }
                 break;
             case $this->config->item('recycling_refused'):

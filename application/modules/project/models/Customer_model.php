@@ -5,6 +5,8 @@ class Customer_model extends XY_Model{
 
     private $table = 'customer';
     private $stock_table = 'customer_stock';
+    private $project_stock_table = 'project_stock';
+    private $project_table = 'project_stock';
     private $group_table = 'customer_group';
     private $apply_table = 'customer_apply';
     private $history_table = 'customer_history';
@@ -15,8 +17,9 @@ class Customer_model extends XY_Model{
         if($simple){
             return $this->get_where($this->table,array('customer_id'=>$customer_id));
         }
-        $sum_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
-        $this->db->select('c.*,g.title group_name,g.code,w.realname operator, w.username,w2.realname referrer,('.$sum_weight.') total', false);
+        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
+        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_project_stock` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
+        $this->db->select('c.*,g.title group_name,g.code,w.realname operator, w.username,w2.realname referrer,('.$available_weight.') available,('.$frozen_weight.') frozen', false);
         $this->db->from($this->table.' AS c')->order_by('c.addtime')->where("c.customer_id = ".$customer_id)->limit(1);
         $this->db->join($this->group_table.' AS g','g.group_id = c.group_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = c.worker_id','left');
@@ -29,9 +32,10 @@ class Customer_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-        $sum_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
+        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
+        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_project_stock` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
 
-        $this->db->select('c.*,g.title group_name,g.code,w2.realname referrer,w.realname operator, w.username,('.$sum_weight.') total', false);
+        $this->db->select('c.*,g.title group_name,g.code,w2.realname referrer,w.realname operator, w.username,('.$available_weight.') available,('.$frozen_weight.') frozen', false);
         $this->db->from($this->table.' AS c');
         $this->db->join($this->group_table.' AS g', 'g.group_id = c.group_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = c.worker_id','left');
@@ -148,10 +152,11 @@ class Customer_model extends XY_Model{
             'realname'=>$data['realname'],
             'group_id'=>$data['group_id'],
             'phone'=>$data['phone'],
+            'idnumber'=>(int)$data['idnumber'],
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
-            'referrer_id'=>$data['referrer'],
-            'idnumber'=>(int)$data['idnumber'],
+            'referrer_id'=>(int)$data['referrer_id'],
+            'note'=>empty($data['note']) ? '' : $data['note'],
             'status'=>(int)$data['status'],
             'worker_id'=> $this->ion_auth->get_user_id(),
             'lasttime' => time()
@@ -171,6 +176,7 @@ class Customer_model extends XY_Model{
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
             'referrer_id'=>(int)$data['referrer_id'],
+            'note'=>empty($data['note']) ? '' : $data['note'],
             'status'=>(int)$data['status'],
             'worker_id'=> $this->ion_auth->get_user_id(),
             'addtime' => time(),
@@ -254,21 +260,15 @@ class Customer_model extends XY_Model{
     }
 
     public function cancle_applied($customer_id,$data=array()){
-        $this->trigger_events('pre_cancle_customer');
+        $this->trigger_events('pre_cancle_appling');
 
         $this->db->trans_begin();
         $customer = $this->customer($customer_id);
         if($customer->num_rows()) {
-            $info = $customer->row_array();
+            //$info = $customer->row_array();
             $applied = $this->applied($customer_id);
             if($applied){
-//                if(!isset($data['mode']))
-//                {
-//                    $data['mode'] = 'appling';
-//                }
-//                if($data['mode']!='all'){
-//                    $this->db->where(array('mode'=>$data['mode']));
-//                }
+
                 $this->db->delete($this->apply_table, array('customer_id' => $customer_id,'mode'=>'appling'));
                 //后置回调
                 if (isset($data['call_func']) && method_exists($this, $data['call_func'])) {
@@ -277,18 +277,36 @@ class Customer_model extends XY_Model{
                 $affected = $this->history($customer_id, array('note' => '取消提金：' . number_format($applied['weight'], 2) . '克'.(empty($data['note']) ? '' : '<br>'.$data['note'])));
                 if ($this->db->trans_status() === FALSE) {
                     $this->db->trans_rollback();
-                    $this->trigger_events(array('post_cancle_customer', 'post_cancle_customer_unsuccessful'));
+                    $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_unsuccessful'));
                     $this->set_error('cancle_unsuccessful');
                     return FALSE;
                 }
                 $this->db->trans_commit();
 
-                $this->trigger_events(array('post_cancle_customer', 'post_cancle_customer_successful'));
+                $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_successful'));
                 $this->set_message('cancle_successful');
                 return $affected;
             }
         }
         return FALSE;
+    }
+
+    public function projects($customer_id,$data=array())
+    {
+        $customer = $this->customer($customer_id);
+        if($customer->num_rows()){
+
+            if(is_array($data) && count($data)){
+                $this->db->where($data);
+            }
+            $this->db->where(array('ps.customer_id'=>$customer_id));
+            $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
+            $this->db->select("ps.weight,ps.start,ps.info,( ".$profit_weight." ) profit ",FALSE)
+                ->from($this->project_stock_table." AS ps")
+                ->join($this->project_table." AS p","p.project_id = ps.project_id")->order_by('ps.addtime DESC');
+        }
+        return FALSE;
+
     }
 
     public function history($customer_id,$data=array()){
@@ -303,41 +321,61 @@ class Customer_model extends XY_Model{
     }
 
     public function get_apply($apply_id){
-        return $this->db->select("a.*,c.realname,c.phone")
-            ->where(array('apply_id'=>$apply_id))->from($this->apply_table." AS a")
-            ->join($this->table." AS c ","c.customer_id = a.customer_id")->limit(1)->get();
+        return $this->db->select("a.*,c.realname")->from($this->apply_table." AS a")
+            ->join($this->table." AS c","c.customer_id = a.customer_id",'left')
+            ->where(array('a.apply_id'=>$apply_id))
+            ->limit(1)->get();
     }
 
     public function taken_weight($apply_id,$data)
     {
         if(empty($apply_id)) return FALSE;
+        $this->trigger_events('pre_cancle_appling');
+
+        $this->db->trans_begin();
         $applied = $this->get_apply($apply_id);
         if($applied->num_rows()){
             $info = $applied->row_array();
             $this->db->delete($this->apply_table,array('apply_id'=>$apply_id));//删除申请
             //生成出库单 project_stock
             $tmp = array(
-                'project_sn' => $info['project_sn'],
-                'title' => $info['realname'].':'.$info['phone'].':'.$info['weight'],
+                'project_sn' => '',
+                'note' => empty($data['note']) ? '' :$data['note'],
+                'customer_id' => $info['customer_id'],
                 'mode' => 'out',
-                'weight' => (float)$data['weight']*(-1.00),
-                'info' => maybe_serialize(array(
-                    'project_sn' => $info['project_sn'],
-                    'realname' => $info['realname'],
-                    'phone' => $info['phone'],
-                    'weight' => $info['weight'],
-                    'start' => $info['start'],
-                    'end' => $info['end'],
-                ))
+                'notify' => 1,
+                'weight' => (float)$info['weight']*(-1.00),
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
             );
-            if(!empty($data['_file']) && !empty($data['_path'])){
-                $tmp['file'] = json_encode(array(
-                    array('file'=>$data['_file'],'path'=>$data['_path'])
-                ));
+            if(isset($data['file'])){
+                $tmp['file'] = $this->format_file_value($data['file']);
             }
             $this->db->insert($this->stock_table,$tmp);
+            $affected = $this->db->insert_id();
+            //后置回调
+            if(isset($data['call_func']) ){
+                if(is_array($data['call_func'])){
+                    foreach($data['call_func'] as $method => $params){
+                        if(method_exists($this,$method)){
+                            $this->{$method}($params);
+                        }
+                    }
+                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
+                    $this->{$data['call_func']}($data['call_param']);
+                }
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_unsuccessful'));
+                $this->set_error('cancle_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
 
-            return $this->db->insert_id();
+            $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_successful'));
+            $this->set_message('cancle_successful');
+            return $affected;
         }
         return FALSE;
     }

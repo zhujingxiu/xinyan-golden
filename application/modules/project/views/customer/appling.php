@@ -97,7 +97,8 @@
                             </div>
                         </div>
                         <div class="timeline-footer" style="clear: both;">
-                            &nbsp; &nbsp;
+                            <label for="" class="label label-success">可提克重 <?php echo number_format($available,2).lang('text_weight_unit')?></label>
+                            <label for="" class="label label-warning">冻结克重 <?php echo number_format($frozen,2).lang('text_weight_unit')?></label>
                         </div>
                     </div>
 
@@ -118,7 +119,7 @@
                             </div>
                         </div>
                         <div class="timeline-footer">
-                            <textarea class="form-control" name="editorValue" placeholder="填写提金备注"></textarea>
+                            <textarea class="form-control" name="editorValue" placeholder="填写提金申请备注"></textarea>
                         </div>
                     </div>
                 </li>
@@ -195,7 +196,7 @@
                 weight : {
                     required : '请输入购入重量',
 
-                    maxFloat: "申请重量不得大于最大重量:<?php echo $total;?>"
+                    maxFloat: "申请重量不得大于最大重量:<?php echo $max;?>"
 
                 },
                 phone:{

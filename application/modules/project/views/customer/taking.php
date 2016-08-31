@@ -22,7 +22,6 @@
                 <li class="time-label">
                     <span class="bg-green"> 客户提金 </span>
                 </li>
-
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">

@@ -134,4 +134,9 @@ class Tool_model extends XY_Model
         }
         return $tmp ? array('time'=>array_keys($tmp),'price'=>array_values($tmp),'date'=>date('Y-m-d')) : FALSE;
     }
+
+    public function growing_gold()
+    {
+        $growing_mode = $this->config->item('gold_growing');
+    }
 }

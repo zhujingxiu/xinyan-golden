@@ -22,12 +22,12 @@ define(function (require, exports, modules) {
                     type: 'get'
                 },
                 "columns": [
-                    {"data": "weight", "name": "weight"},
+                    {"data": "available", "name": "available"},
+                    {"data": "frozen", "name": "frozen"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "phone", "name": "c.phone"},
                     {"data": "idnumber", "name": "c.idnumber"},
-                    {"data": "wechat", "name": "c.wechat"},
-                    {"data": "qq", "name": "c.qq"},
+                    {"data": "wechatqq", "name": "c.wechat"},
                     {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "lasttime", "name": "c.lasttime"},
@@ -89,7 +89,7 @@ define(function (require, exports, modules) {
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['确认标记', '取消'],
+                        btn: ['确认申请', '取消'],
                         content: json.msg ,
                         yes: function(index, layero){
                             $('#form-appling').submit();
@@ -203,6 +203,64 @@ define(function (require, exports, modules) {
                 layer.tips('内容长度不小于10个字符', elem,{tips: 1});
             }
 
+        });
+    }
+
+    exports.render_project = function () {
+        $('#list').delegate('.btn-frozen','click', function () {
+            require('layer');
+            require('slimscroll');
+            var id = $(this).parent().parent().attr('id');
+            $.get('/project/customer/stock', {customer:id}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['关闭', '取消'],
+                        content: json.msg ,
+
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
+
+    exports.render_taking_bk = function () {
+        $('#project-list').delegate('.btn-taking','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            require('ajaxUpload');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/recycling/taken', {project:sn}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['出库', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-taking').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
         });
     }
 });

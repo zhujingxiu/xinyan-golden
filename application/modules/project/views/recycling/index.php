@@ -85,11 +85,9 @@
 
         seajs.use('recycling',function(project){
             project.render_list();
-            project.render_appling();
             project.render_update();
             project.render_checking();
             project.render_confirming();
-            project.render_taking();
             project.render_booking();
             project.render_cancle();
             project.render_hidden();

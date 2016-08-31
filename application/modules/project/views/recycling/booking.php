@@ -150,7 +150,7 @@
 								<div class="form-group clearfix">
 									<div class="input-group col-sm-12">
 										<span class="input-group-addon">微信账号</span>
-										<input type="text" name="wechat" class="form-control" />
+										<input id="wechat" type="text" name="wechat" class="form-control" />
 									</div>
 								</div>
 							</div>
@@ -169,8 +169,7 @@
 					<div class="timeline-item">
 						<h3 class="timeline-header">项目备注</h3>
 						<div class="timeline-body">
-							<?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
-							<textarea class="form-control" name="editorValue" placeholder="填写出库备注"></textarea>
+							<textarea class="form-control" name="editorValue" placeholder="填写存金备注"></textarea>
 						</div>
 					</div>
 				</li>

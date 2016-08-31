@@ -60,7 +60,7 @@ define(function(require,exports,modules){
             require('jqueryvalidate');
             require('customValidate');
 
-
+            require('ajaxUpload');
             $.get('/project/recycling/booked', {r:Math.random()}, function (json) {
                 if (json.code == 1) {
                     layer.open({
@@ -92,6 +92,7 @@ define(function(require,exports,modules){
             //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
+            require('ajaxUpload');
             $.get('/project/recycling/update', {project: $(this).parent().parent().attr('id')}, function (json) {
                 if (json.code == 1) {
                     layer.open({
@@ -185,70 +186,7 @@ define(function(require,exports,modules){
         });
     };
 
-    exports.render_appling = function () {
-        $('#project-list').delegate('.btn-appling','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('slimscroll');
-            var sn = $(this).parent().parent().attr('id');
-            $.get('/project/recycling/applied', {project:sn}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['确认标记', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-appling').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
 
-    exports.render_taking = function () {
-        $('#project-list').delegate('.btn-taking','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('slimscroll');
-            require('ajaxUpload');
-            var sn = $(this).parent().parent().attr('id');
-            $.get('/project/recycling/taken', {project:sn}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['出库', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-taking').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');
@@ -258,10 +196,7 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             exports.do_cancle(sn,'/project/recycling/terminated','填写终止原因 '+sn);
         });
-        $('#project-list').delegate('.btn-cancle','click',function(){
-            var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/recycling/cancle','填写取消提金申请原因 '+sn);
-        });
+
 
     }
 
