@@ -10,7 +10,6 @@ class Api extends XY_Controller {
 
 	public function price()
 	{
-
 		$mode = $this->input->get('mode');
 		if(!$mode)
 			$mode = 'current';

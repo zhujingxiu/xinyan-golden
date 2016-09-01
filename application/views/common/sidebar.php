@@ -20,8 +20,7 @@
         <li class="header">主菜单</li>
         <?php foreach($menu as $item ): ?>
         <li <?php echo empty($item['style']) ? '' : 'class="'.$item['style'].'"'?>>
-            <?php $item['path'] = is_array($item['path']) ? $item['path'] : array($item['path']);?>
-            <?php $item['link'] = current($item['path']) ?>
+
             <a href="<?php echo empty($item['link']) ? '#' : site_url($item['link']);?>">
                 <?php echo empty($item['icon']) ? '<i class="fa fa-circle-o"></i>' : $item['icon'];?>
                 <span><?php echo $item['text'] ?></span>
@@ -34,9 +33,8 @@
             <?php if(isset($item['children']) && is_array($item['children'])) : ?>
                 <ul class="treeview-menu">
                 <?php foreach($item['children'] as $child ): ?>
-                    <?php $child['path'] = is_array($child['path']) ? $child['path'] : array($child['path']);?>
-                    <?php $child['link'] = current($child['path']) ?>
-                    <li>
+
+                    <li <?php echo empty($child['style']) ? '' : 'class="'.$child['style'].'"'?>>
                         <a href="<?php echo site_url($child['link'])?>">
                             <i class="fa fa-circle-o"></i> 
                             <?php echo $child['text'] ?>

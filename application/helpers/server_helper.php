@@ -337,19 +337,21 @@ function curl_get($url,$data){
 	return $output;
 }
 
-function main_menu()
+function main_menu($module,$current)
 {
+
+	$module = strtolower(trim($module));
 	return array(
 		'dashbord' => array(
 			'text' => '控制面板',
 			'icon' => '<i class="fa fa-dashboard"></i>',
-			'style'=> 'active',
-			'path' => array('/','home','home/index')
+			'style'=> $module=='home'?' active':'',
+			'link' => '/',
 		),
 		'project'  => array(
 			'text' => '项目列表',
 			'icon' => '<i class="fa fa-cubes"></i>',
-			'style'=> 'treeview',
+			'style'=> 'treeview'.($module=='project'?' active':''),
 			'widget'=>array(
 				'callback_topsale',array('args1','args2')
 			),
@@ -358,91 +360,101 @@ function main_menu()
 
 				'recycling' => array(
 					'text' => '金生金',
-					'path' => array('project/recycling','project/recycling/index')
+					'link' => 'project/recycling',
+					'style' => in_array($current,array('project/recycling','project/recycling/index')) ? ' active':''
 				),
 				'customer' => array(
 					'text' => '客户管理',
-					'path' => array('project/customer','project/customer/index')
+					'link' => 'project/customer',
+					'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':''
 				),
 				'trash' => array(
 					'text' => '回收站',
-					'path' => array('project/trash','project/trash/index')
+					'link' => 'project/trash',
+					'style' => in_array($current,array('project/trash','project/trash/index')) ? ' active':''
 				),
 				'investing' => array(
 					'text' => '钱生金',
-					'path' => array('project/investing','project/investing/index')
+					'link' => 'project/investing',
+					'style' => in_array($current,array('project/investing','project/investing/index')) ? ' active':''
 				),
 			)
 		),
 		'article'  => array(
 			'text' => '文章管理',
 			'icon' => '<i class="fa fa-files-o"></i>',
-			'style'=> 'treeview',
+			'style'=> 'treeview'.($module=='article'?' active':''),
 			'path' =>'',
 			'children' => array(
 				'article' => array(
 					'text' => '文章列表',
-					'path' => array('article/article','article/article/index')
+					'link' => 'article/article',
+					'style' => in_array($current,array('article/article','article/article/index')) ? ' active':''
 				),
-//				'privacy' => array(
-//					'text' => '条款协议',
-//					'path' => array('article/privacy','article/privacy/index')
-//				),
+
 				'category' => array(
 					'text' => '文章分类',
-					'path' => array('article/category','article/category/index')
+					'link' => 'article/category',
+					'style' => in_array($current,array('article/category','article/category/index')) ? ' active':''
 				),
 			)
 		),
 		'setting'  => array(
 			'text' => '选项设定',
 			'icon' => '<i class="fa fa-cogs"></i>',
-			'style'=> 'treeview',
+			'style'=> 'treeview'.($module=='setting'?' active':''),
 			'path' =>'',
 			'children' => array(
 				'system' => array(
 					'text' => '系统参数',
-					'path' => array('setting/system','setting/system/index')
+					'link' => 'setting/system',
+					'style' => in_array($current,array('setting/system','setting/system/index')) ? ' active':''
 				),
 				'project' => array(
 					'text' => '业务参数',
-					'path' => array('setting/project','setting/project/index')
+					'link' => 'setting/project',
+					'style' => in_array($current,array('setting/project','setting/project/index')) ? ' active':''
 				),
 				'api' => array(
 					'text' => 'API',
-					'path' => array('setting/api','setting/api/index')
+					'link' => 'setting/api',
+					'style' => in_array($current,array('setting/api','setting/api/index')) ? ' active':''
 				),
 			)
 		),
 		'auth'  => array(
 			'text' => '员工管理',
 			'icon' => '<i class="fa fa-user"></i>',
-			'style'=> 'treeview',
+			'style'=> 'treeview'.($module=='auth'?' active':''),
 			'path' =>'',
 			'children' => array(
 				'worker' => array(
 					'text' => '员工列表',
-					'path' => array('auth/worker','auth/worker/index')
+					'link' => 'auth/worker',
+					'style' => in_array($current,array('auth/worker','auth/worker/index')) ? ' active':''
 				),
 				'role' => array(
 					'text' => '角色管理',
-					'path' => array('auth/role','auth/role/index')
+					'link' => 'auth/role',
+					'style' => in_array($current,array('auth/role','auth/role/index')) ? ' active':''
 				),
 				'permission' => array(
 					'text' => '权限节点',
-					'path' => array('auth/permission','auth/permission/index')
+					'link' => 'auth/permission',
+					'style' => in_array($current,array('auth/permission','auth/permission/index')) ? ' active':''
 				),
 			)
 		),
 		'document' => array(
 			'text' => '帮助文档',
 			'icon' => '<i class="fa fa-book"></i>',
-			'style'=> 'treeview',
+			'style'=> 'treeview'.($module=='document'?' active':''),
 			'path' => '',
 			'children' => array(
 				'multiupload' => array(
 					'text' => 'Multi-Upload',
-					'path' => array('tool/document/multi_upload','help/index')
+					'link' => 'tool/document/multi_upload',
+					'style' => in_array($current,array('tool/document/multi_upload','help/index')) ? ' active':''
 				)
 			)
 		),

@@ -3,16 +3,16 @@
 /**
  * Created by PhpStorm.
  * User: Administrator
- * Date: 2016/8/25
- * Time: 21:56
+ * Date: 2016/9/1
+ * Time: 22:37
  */
-class Tool_model extends XY_Model
+class Cron_model extends CI_Model
 {
     public function gold_price($data){
         if(is_array($data) && count($data))
         {
             $this->db->trans_begin();
-            $last_day = $delete_day = FALSE;
+            $current_price = $last_day = $delete_day = FALSE;
             foreach($data as $item)
             {
                 if(empty($item['type']) || empty($item['price']) || empty($item['updatetime']))
@@ -30,9 +30,6 @@ class Tool_model extends XY_Model
                 $updatetime = strtotime($item['updatetime']);
                 $query = $this->db->where(array("updatetime"=>$updatetime,"type"=>$item['type']))->from("golden_today")->get();
                 if($query->num_rows()){
-                    if(strtolower($item['type']) == 'au99.99') {
-                        $current_price = (float)$item['price'];
-                    }
                     continue;
                 }
                 // insert
@@ -51,6 +48,8 @@ class Tool_model extends XY_Model
                     'addtime' => time()
                 ));
 
+                $affected = $this->db->insert_id();
+
                 if(strtolower($item['type']) == 'au99.99'){
                     // lastday price
                     $yestoday = date("Y-m-d",strtotime("-1 day"));
@@ -67,7 +66,8 @@ class Tool_model extends XY_Model
                                 'price' => (float)$item['lastclosingprice'],
                                 'addtime' => time()
                             ));
-                            if ($this->db->insert_id())
+                            $affected = $this->db->insert_id();
+                            if ($affected)
                                 $last_day = TRUE;
                         }
                     }
@@ -77,61 +77,23 @@ class Tool_model extends XY_Model
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
-
+                return FALSE;
             }
             $this->db->trans_commit();
 
-        }
 
-        $query = $this->db->where(array('type'=>'Au99.99'))->from("golden_today")->order_by("updatetime desc")->limit(1)->get();
-        if($query->num_rows()){
-            $result = $query->row_array();
-            return (float)$result['price'];
-        }
-
-        return FALSE;
-    }
-
-    public function lastprice()
-    {
-        $date = ( date('w') == 0 || date('w') == 6 ) ? date('Y-m-d',strtotime('last Friday')) : date('Y-m-d',strtotime("-1 day"));
-        $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_price")->get();
-        if($query->num_rows()){
-            $result = $query->row_array();
-            return (float)$result['price'];
+            return $affected;
         }
         return FALSE;
     }
 
-    public function range_price($mode)
+    function push_growing()
     {
-        $table = "golden_price";$primary = "date";$date_format = FALSE;
-        switch(strtolower($mode)){
-            case 'day':
-                $table = "golden_today";
-                $where = array('date'=>date('Y-m-d'));
-                $primary = "updatetime";
-                $date_format = "H:i";
-                break;
-            case 'week':
-                $where = array('date >= '=>date('Y-m-d',strtotime("-1 week")));
-                break;
-            case 'month':
-                $where = array('date >= '=>date('Y-m-d',strtotime("last month")));
-                break;
-        }
-        $tmp = array();
-        $query = $this->db->where(array('type'=>'Au99.99')+$where)->from($table)->order_by($primary)->get();
-        if($query->num_rows()){
-            $result = $query->result_array();
-            foreach($result as $item){
-                if(isset($item[$primary]) && isset($item['price'])){
-                    $key = $date_format ? date($date_format,$item[$primary]) : $item[$primary];
-                    $tmp[$key] = $item['price'];
-                }
-            }
-        }
-        return $tmp ? array('time'=>array_keys($tmp),'price'=>array_values($tmp),'date'=>date('Y-m-d')) : FALSE;
+
     }
 
+    function growing()
+    {
+
+    }
 }

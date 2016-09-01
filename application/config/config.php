@@ -512,7 +512,29 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-
+/*
+|--------------------------------------------------------------------------
+| Cron Schedule Variables
+|--------------------------------------------------------------------------
+|
+| 'enable_cron' = 是否开启cron schedule
+| 'cron_schedule_table_name' = 保存cron schedule的表
+| 'cron_schedule_generate_every' = 生成cron schedule的时间间隔
+| 'cron_schedule_ahead_for' = 每次产生多少时间内的cron schedule
+| 'cron_schedule_lifetime' = cron schedule的有效期
+| 'cron_history_cleanup_every' = 清除cron schedule的时间间隔
+| 'cron_history_success_lifetime' = 运行成功的cron schedule的保存时间
+| 'cron_history_failure_lifetime' = 运行失败的cron schedule的保存时间
+|
+*/
+$config['enable_cron'] = TRUE;
+$config['cron_schedule_table_name'] = 'cron_schedule';
+$config['cron_schedule_generate_every'] = 15;
+$config['cron_schedule_ahead_for'] = 20;
+$config['cron_schedule_lifetime'] = 15;
+$config['cron_history_cleanup_every'] = 10;
+$config['cron_history_success_lifetime'] = 60;
+$config['cron_history_failure_lifetime'] = 600;
 //
 //	+ HMVC
 //

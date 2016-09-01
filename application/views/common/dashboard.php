@@ -106,7 +106,7 @@
                         <!-- /. tools -->
                     </div>
                     <div class="box-body">
-                        <div id="gold-price-charts" style="margin: 0;padding: 0;width:90%;height:360px;">
+                        <div id="gold-price-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
                         </div>
                         <ul class="tu clear" id="toggle-charts">
                             <li><input type="radio" name="price_charts" value="day" checked="checked"  />今天</li>
