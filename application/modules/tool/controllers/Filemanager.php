@@ -15,6 +15,11 @@ class Filemanager extends XY_Controller
         //$this->load->library('Mupload');
 
     }
+    public function download()
+    {
+        var_dump($this->input->get('file'));
+    }
+
     public function upload()
     {
         $config = array(

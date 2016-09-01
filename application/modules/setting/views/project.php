@@ -181,45 +181,18 @@
                                                         <?php endforeach?>
                                                     </select>
                                                 </div>
-                                                <label for="" class="control-label col-sm-2">项目到期</label>
+                                                <label for="" class="control-label col-sm-2">正在增值</label>
                                                 <div class="col-sm-4">
-                                                    <select name="investing_expired" class="form-control">
+                                                    <select name="investing_growing" class="form-control">
                                                         <option value="0">--请选择--</option>
                                                         <?php foreach($investing_statuses as $item): ?>
                                                             <option value="<?php echo $item['status_id']?>"
-                                                                <?php echo (!empty($setting['investing_expired']) && $setting['investing_expired']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo (!empty($setting['investing_growing']) && $setting['investing_growing']== $item['status_id']) ? 'selected' : ''?>>
                                                                 <?php echo $item['status_id'].' - '.$item['title'];?>
                                                             </option>
                                                         <?php endforeach?>
                                                     </select>
                                                 </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label for="" class="control-label col-sm-2">申请提金</label>
-                                                <div class="col-sm-4">
-                                                    <select name="investing_applied" class="form-control">
-                                                        <option value="0">--请选择--</option>
-                                                        <?php foreach($investing_statuses as $item): ?>
-                                                            <option value="<?php echo $item['status_id']?>"
-                                                                <?php echo (!empty($setting['investing_applied']) && $setting['investing_applied']== $item['status_id']) ? 'selected' : ''?>>
-                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                            </option>
-                                                        <?php endforeach?>
-                                                    </select>
-                                                </div>
-                                                <label for="" class="control-label col-sm-2">项目完结</label>
-                                                <div class="col-sm-4">
-                                                    <select name="investing_finished" class="form-control">
-                                                        <option value="0">--请选择--</option>
-                                                        <?php foreach($investing_statuses as $item): ?>
-                                                            <option value="<?php echo $item['status_id']?>"
-                                                                <?php echo (!empty($setting['investing_finished']) && $setting['investing_finished']== $item['status_id']) ? 'selected' : ''?>>
-                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
-                                                            </option>
-                                                        <?php endforeach?>
-                                                    </select>
-                                                </div>
-
                                             </div>
                                             <div class="form-group ">
                                                 <label for="" class="control-label col-sm-2">项目被拒绝</label>
@@ -457,14 +430,25 @@
                                             </div>
                                         </div>
                                         <div class="form-group clearfix">
+                                            <label for="" class="control-label col-sm-4 text-right">生金模式
+                                                <span class="help-block">计息模式</span>
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select name="growing_mode" class="form-control">
+                                                    <option value="t0" <?php echo $setting['growing_mode'] == 't0' ? 'selected' :''  ?>>T+0 登记当日即为计息日</option>
+                                                    <option value="t1" <?php echo $setting['growing_mode'] == 't1' ? 'selected' :''  ?>>T+1 登记当日隔天即为计息日</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
                                             <label for="" class="control-label col-sm-4 text-right">生金周期
-                                                <span class="help-block">支持生金的时间模式</span>
+                                                <span class="help-block">支持生金的周期模式</span>
                                             </label>
                                             <div class="col-sm-8">
                                                 <select name="gold_growing" class="form-control">
-                                                    <option value="year">按年生金</option>
-                                                    <option value="season">按季生金</option>
-                                                    <option value="month">按月生金</option>
+                                                    <option value="year" <?php echo $setting['gold_growing'] == 'year' ? 'selected' :''  ?>>按年生金</option>
+                                                    <option value="season" <?php echo $setting['gold_growing'] == 'season' ? 'selected' :''  ?>>按季生金</option>
+                                                    <option value="month" <?php echo $setting['gold_growing'] == 'month' ? 'selected' :''  ?>>按月生金</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -479,13 +463,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group clearfix">
+                                        <div class="form-group clearfix hidden">
                                             <label for="" class="control-label col-sm-4 text-right">自动回收
-                                                <span class="help-block">自动回收已完结的项目</span>
+                                                <span class="help-block">自动回收终止的项目</span>
                                             </label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <label><input type="checkbox" name="finished_trash" value="1" <?php echo !empty($setting['finished_trash']) ? 'checked' : '' ?>/>是</label>
+                                                    <label><input type="checkbox" name="terminated_trash" value="1" <?php echo !empty($setting['terminated_trash']) ? 'checked' : '' ?>/>是</label>
                                                 </div>
                                             </div>
                                         </div>

@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once('Project.php');
-class Trash extends Project
+class Stock extends Project
 {
 
     public function __construct()
     {
         parent::__construct();
-        $this->load->model(array('trash_model'));
+        $this->load->model(array('stock_model'));
     }
 
     public function index()
@@ -24,7 +24,7 @@ class Trash extends Project
         if ($this->input->get('list')) {
             json_response($this->_list($this->input->get()));
         }
-        $this->layout->view('trash', $data);
+        $this->layout->view('stock', $data);
     }
 
     protected function _list($filter)
@@ -51,7 +51,7 @@ class Trash extends Project
             //$temp['where'] = FALSE;//ToDo
         }
         $rows = array();
-        $result = $this->trash_model->projects($temp);
+        $result = $this->stock_model->projects($temp);
         $total = $result->num_rows();
         if ($total) {
             foreach ($result->result_array() as $row) {
@@ -119,7 +119,7 @@ class Trash extends Project
 
     }
 
-    public function remove()
+    public function storage()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
             json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
@@ -129,7 +129,7 @@ class Trash extends Project
             json_error();
         }
 
-        if($this->trash_model->delete($trash_id)){
+        if($this->stock_model->delete($trash_id)){
             $this->session->set_flashdata('success', "项目已删除");
             json_success();
         }

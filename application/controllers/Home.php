@@ -23,4 +23,6 @@ class Home extends XY_Controller {
 
 		$this->layout->view('common/dashboard');
 	}
+
+
 }

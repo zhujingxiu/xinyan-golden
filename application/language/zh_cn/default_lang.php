@@ -27,6 +27,7 @@ $lang['text_number_unit'] = "件";
 $lang['text_weight_unit'] = "克";
 
 $lang['text_unknown'] = "未知";
+$lang['text_not_open'] = "尚未开启";
 
 $lang['text_price_desc'] = " 若无特殊说明，本站的黄金价格均指上海黄金交易所的沪金99 （即Au99.99）";
 $lang['text_price_month'] = " 黄金价格走势图 （30日内）";

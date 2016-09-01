@@ -2,12 +2,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            钱生金
+            金库
             <small>项目列表</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="<?php echo site_url() ?>"><i class="fa fa-dashboard"></i> 控制面板</a></li>
-            <li class="active">钱生金</li>
+            <li class="active">金库</li>
         </ol>
     </section>
 
@@ -38,18 +38,13 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="project-list" class="table table-bordered table-hover">
+                        <table id="list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>状态</th>
+                                    <th>项目</th>
                                     <th>编号</th>
                                     <th>客户</th>
-
-                                    <th>金价</th>
-                                    <th>重量 （克）</th>
-                                    <th>金额 （元）</th>
-                                    <th>计息日</th>
-                                    <th>推荐人</th>
+                                    <th>黄金</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
                                     <th></th>
@@ -57,14 +52,10 @@
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>状态</th>
+                                <th>项目</th>
                                 <th>编号</th>
                                 <th>客户</th>
-                                <th>金价</th>
-                                <th>重量 （克）</th>
-                                <th>金额 （元）</th>
-                                <th>计息日</th>
-                                <th>推荐人</th>
+                                <th>黄金</th>
                                 <th>操作人</th>
                                 <th>操作时间</th>
                                 <th></th>
@@ -82,13 +73,9 @@
     <!-- /.content -->
     <script type="text/javascript">
 
-        seajs.use('investing',function(project){
+        seajs.use('trash',function(project){
             project.render_list();
-            project.render_update();
-            project.render_checking();
-            project.render_confirming();
-            project.render_booking();
             project.render_cancle();
-            project.render_hidden();
+            project.render_remove();
         })
     </script>

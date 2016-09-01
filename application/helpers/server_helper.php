@@ -287,7 +287,10 @@ function days_sub($start,$end=FALSE){
 
 	return round(($endtime - $starttime)/(60*60*24));
 }
-
+function calculate_amount($price,$weight)
+{
+	return round((float)$price*$weight,2);
+}
 function format_time($time,$simple=false){
 	if(!is_numeric($time)){
 		$time = strtotime($time);

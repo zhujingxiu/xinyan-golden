@@ -137,6 +137,9 @@
             submitHandler : function(form){
                 $(form).ajaxSubmit({
                         dataType:'json',
+                        beforeSubmit:function(){
+                            layer.load()
+                        },
                         success: function (json) {
                             if(json.code==1){
                                 location.reload()

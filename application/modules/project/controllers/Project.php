@@ -20,6 +20,7 @@ class Project extends XY_Controller
 
     protected function investing_operation($status)
     {
+
         $buttons = array();
         switch((int)$status)
         {
@@ -44,28 +45,14 @@ class Project extends XY_Controller
             case $this->config->item('investing_confirmed'):
                 //$buttons[] = lang('label_confirmed');
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_appling');
+                    $buttons[] = lang('button_refusing');
                 }
                 break;
-            case $this->config->item('investing_expired'):
-                //$buttons[] = lang('label_expired');
-                if($this->inRole('manager')){
-                    $buttons[] = lang('button_appling');
-                }
-                break;
-            case $this->config->item('investing_applied'):
-                //$buttons[] = lang('label_applied');
-                if($this->inRole('manager')){
-                    $buttons[] = lang('button_cancle');
-                }
-                if($this->inRole('warehouser')){
-                    $buttons[] = lang('button_taking');
-                }
-                break;
-            case $this->config->item('investing_finished'):
+
+            case $this->config->item('investing_growing'):
                 //$buttons[] = lang('label_finished');
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_trashing');
+                    $buttons[] = lang('button_terminating');
                 }
                 break;
             case $this->config->item('investing_refused'):
@@ -118,7 +105,7 @@ class Project extends XY_Controller
                 }
                 break;
 
-            case $this->config->item('recycling_propagating'):
+            case $this->config->item('recycling_growing'):
                 if($this->inRole('manager')){
                     $buttons[] = lang('button_terminating');
                 }
@@ -152,9 +139,18 @@ class Project extends XY_Controller
         return round((float)$price*$weight,2);
     }
 
-    protected function calculate_total($period,$weight)
+    protected function calculate_start($addtime)
     {
-        return round(($weight+(float)($period*$weight*$this->profit_weight())),2);
+        $start = FALSE;
+        switch(strtolower($this->config->item('growing_mode'))){
+            case 't0':
+                $start = date('Y-m-d',$addtime);
+                break;
+            case 't1':
+                $start = date('Y-m-d',$addtime+24*60*60);
+                break;
+        }
+        return $start;
     }
 
     protected function calculate_expired($starttime,$period)

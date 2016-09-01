@@ -16,7 +16,7 @@ class Recycling extends Project {
         }
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
-            array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
+            //array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
         ));
         $data['success'] = $this->session->flashdata('success');
@@ -266,6 +266,8 @@ class Recycling extends Project {
                         ),TRUE),
                         'status'	=> $this->config->item('recycling_checked'),
                         'note' 		=> $note,
+                        'call_func' => 'active_start',
+                        'call_param'=> $project_sn
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
                     json_success();
@@ -348,6 +350,16 @@ class Recycling extends Project {
                 }
                 $project = $result->row_array();
                 if(($project['weight']*100 == $weight*100) && $project['phone'] == $phone){
+                    $callback = array(
+                        'project_instock'=> array(
+                            'project_sn' => $project_sn,
+                            'note' => $note
+                        ),
+                    );
+                    if($this->config->item('growing_mode') == 't0'){
+                        //T+0
+                        $callback['project_growing'] = $project_sn;
+                    }
                     $this->recycling_model->push_state($project_sn,array(
                         'status'	=> $this->config->item('recycling_confirmed'),
                         'note' 		=> $note,
@@ -357,13 +369,7 @@ class Recycling extends Project {
                             'phone' =>$phone,
                             '_phone' =>$this->input->post('_phone')
                         ),TRUE),
-                        'call_func' => array(
-                            'project_instock'=> array(
-                                'project_sn' => $project_sn,
-                                'note' => $note
-                            ),
-                            'project_growing' => $project_sn
-                        )
+                        'call_func' => $callback
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已入库标记！编号: %s",$project_sn));
 
@@ -423,8 +429,6 @@ class Recycling extends Project {
         }
     }
 
-
-
     public function refused()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
@@ -469,14 +473,17 @@ class Recycling extends Project {
         if(!$result->num_rows()){
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
         }
-        if($this->recycling_model->push_state($project_sn,array(
+        $tmp =array(
             'status'=> $this->config->item('recycling_terminated'),
             'note' 	=> $reason,
-            'call_func' => array(
+        );
+        if($this->config->item('terminated_trash')){
+            $tmp['call_func'] = array(
                 'trash_bin'=> array('project_sn' => $project_sn,'reason' => $reason),
                 'erp_stock'=> array('project_sn' => $project_sn,'reason' => $reason)
-            )
-        ))){
+            );
+        }
+        if($this->recycling_model->push_state($project_sn,$tmp)){
             $this->session->set_flashdata('success', sprintf("项目已终止！编号: %s",$project_sn));
             json_success();
         }

@@ -25,3 +25,11 @@ function parse_route($url)
     }
     return $url;
 }
+
+function download_link($path,$title='',$data=array()){
+
+    if(empty($title)){
+        $title = basename($title);
+    }
+    return anchor(site_url('tool/filemanager/download?file='.$path),$title,$data);
+}

@@ -3,10 +3,11 @@
  */
 window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
-
+    require('datatables')
+    require('datatables.bs');
+    require('jqueryui');
     exports.render_list = function() {
-        require('datatables')
-        require('datatables.bs');
+
         $(function () {
             $('#project-list').DataTable({
                 "language": {
@@ -32,8 +33,9 @@ define(function(require,exports,modules){
                     {"data": "realname", "name": "p.realname"},
                     {"data": "price", "name": "p.price"},
                     {"data": "weight", "name": "p.weight"},
-                    {"data": "period", "name": "p.period"},
                     {"data": "amount", "name": "p.amount"},
+                    {"data": "start", "name": "p.start"},
+                    {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "lasttime", "name": "p.lasttime"},
                     {"data": "operation"}
@@ -50,7 +52,7 @@ define(function(require,exports,modules){
             //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-
+            require('ajaxUpload');
             $.get('/project/investing/booked', {project: false}, function (json) {
                 if (json.code == 1) {
                     layer.open({
@@ -175,70 +177,7 @@ define(function(require,exports,modules){
         });
     };
 
-    exports.render_appling = function () {
-        $('#project-list').delegate('.btn-appling','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('slimscroll');
-            var sn = $(this).parent().parent().attr('id');
-            $.get('/project/investing/applied', {project:sn}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['确认标记', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-appling').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
 
-    exports.render_taking = function () {
-        $('#project-list').delegate('.btn-taking','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('slimscroll');
-            require('ajaxUpload');
-            var sn = $(this).parent().parent().attr('id');
-            $.get('/project/investing/taken', {project:sn}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['出库', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-taking').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');
@@ -248,10 +187,7 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             exports.do_cancle(sn,'/project/investing/terminated','填写终止原因 '+sn);
         });
-        $('#project-list').delegate('.btn-cancle','click',function(){
-            var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/investing/cancle','填写取消提金申请原因 '+sn);
-        });
+
 
     }
 

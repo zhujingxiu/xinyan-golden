@@ -1,23 +1,11 @@
 <div id="form-result" class="do-result"></div>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open_multipart('/project/investing/booked',array('id' => "form-booking", 'class'=>'form-horizontal'))?>
+	<?php echo form_open('/project/investing/booked',array('id' => "form-booking", 'class'=>'form-horizontal'))?>
 		<?php echo form_hidden($csrf)?>
 		<div class="col-sm-12">
 			<fieldset>
 				<legend>黄金信息</legend>
 				<div class="col-sm-4">
-					<div class="form-group clearfix">
-						<div class="input-group col-sm-11">
-							<span class="input-group-addon">预购周期</span>
-							<select name="period" class="form-control">
-								<option value="3">3个月</option>
-								<option value="6">6个月</option>
-								<option value="9">9个月</option>
-								<option value="12" selected>12个月</option>
-								<option value="18">18个月</option>
-							</select>
-						</div>
-					</div>
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">预购重量</span>
@@ -32,13 +20,6 @@
 							<span class="input-group-addon">应付金额</span>
 							<span id="booking-amount" class="form-control" style="color:#CC9900;font-weight: bold;"></span>
 							<span class="input-group-addon">元</span>
-						</div>
-					</div>
-					<div class="form-group clearfix">
-						<div class="input-group col-sm-11">
-							<span class="input-group-addon">预期收益</span>
-							<span id="booking-total" class="form-control" style="color:#CC9900;font-weight: bold;"></span>
-							<span class="input-group-addon">克</span>
 						</div>
 					</div>
 				</div>
@@ -56,39 +37,54 @@
 			<fieldset>
 				<legend>客户信息</legend>
 				<div class="col-sm-4">
-					<div class="form-group clearfix">
-							<div class="input-group col-sm-11">
-							<span class="input-group-addon">客户姓名</span>
-							<input type="text" name="realname" class="form-control" placeholder="客户的真实姓名">
-						</div>
-					</div>
 
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
-							<span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
-							<input type="text" name="referrer" class="form-control">
+							<span class="input-group-addon">手机号码</span>
+							<input id="phone" type="text" name="phone" class="form-control" placeholder="客户的手机号码">
+						</div>
+					</div>
+
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group clearfix">
+						<div class="input-group col-sm-12">
+							<span class="input-group-addon">身份证号</span>
+							<input id="idnumber" type="text" name="idnumber" class="form-control" placeholder="二代身份证号码">
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
-							<span class="input-group-addon">手机号码</span>
-							<input type="text" name="phone" class="form-control" placeholder="客户的手机号码">
+							<span class="input-group-addon">客户姓名</span>
+							<input id="realname" type="text" name="realname" class="form-control" placeholder="客户的真实姓名">
 						</div>
 					</div>
+				</div>
+				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
-							<span class="input-group-addon">微信账号</span>
-							<input type="text" name="wechat" class="form-control">
+							<span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
+							<input type="text" id="referrer" class="form-control" />
+							<input type="hidden" name="referrer"  />
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-12">
-							<span class="input-group-addon">身份证号</span>
-							<input type="text" name="idnumber" class="form-control" placeholder="二代身份证号码">
+							<span class="input-group-addon">微信账号</span>
+							<input id="wechat" type="text" name="wechat" class="form-control">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="form-group clearfix">
+						<div class="input-group col-sm-12">
+							<span class="input-group-addon">客户同意认购书</span>
+							<span id="uploads" class="form-control" placeholder="上传客户确认书或认购合同"></span>
+							<span class="input-group-addon" ><a href="javascript:;" id="button-upload"><i class="fa fa-upload"></i> </a> </span>
 						</div>
 					</div>
 				</div>
@@ -99,29 +95,18 @@
 			<fieldset>
 				<legend>项目备注</legend>
 				<div class="col-sm-12">
-				<div class="form-group clearfix">
-					<?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
-					<textarea class="form-control" name="editorValue" placeholder="填写项目备注"></textarea>
-				</div>
+					<div class="form-group clearfix">
+						<textarea class="form-control" name="editorValue" placeholder="填写项目备注"></textarea>
 					</div>
-			</fieldset>
-		</div>
-		<?php if($privacy) : ?>
-		<div class="col-sm-12">
-			<fieldset>
-				<legend></legend>
-				<div class="pull-right">
-					<input type="checkbox" name="agree" value="1" checked>
-					<?php echo $agree;?>
 				</div>
 			</fieldset>
 		</div>
-		<?php endif ?>
+
 	<?php echo form_close();?>
 </div>
 
 <script type="text/javascript">
-	var profit = '<?php echo $profit;?>',price='<?php echo $price;?>';
+	var price='<?php echo $price;?>';
 	$(function () {
 
 		$.validator.setDefaults({
@@ -199,7 +184,7 @@
 		});
 
 		$('#form-booking input[name="weight"]').bind('keyup blur', function () {
-			var _w = $(this).val(),_t = $('#form-booking select[name="period"]').val();
+			var _w = $(this).val();
 			if(parseFloat(price,2)*100 <100){
 				layer.tips('数据异常',$('#form-booking #booking-amount'),{tips: [1, '#CC6666']});
 				return false;
@@ -209,37 +194,86 @@
 				return false;
 			}else{
 				do_amount(_w,price);
-				do_total(_w,_t);
 			}
 		});
-		$('#form-booking select[name="period"]').bind('change', function () {
-			var _w = $('#form-booking input[name="weight"]').val(),_t = $(this).val();
-			if(parseFloat(_w,2)*100 < 100) {
-				return false;
-			}
-			do_total(_w, _t);
-		});
+
 	});
-//	var editor =  new UE.ui.Editor({
-//		toolbars: [
-//			[ 'source', 'undo', 'redo',
-//				'|','bold', 'italic', 'underline', 'fontborder',  'strikethrough','|', 'superscript', 'subscript', 'removeformat',
-//				'|','insertorderedlist', 'insertunorderedlist',
-//				'|', 'forecolor', 'backcolor',
-//				'|','justifyleft','justifycenter','justifyright','justifyjustify']
-//		]
-//	});
-//	editor.render('editor');
 
 	function do_amount(weight,price)
 	{
 		$('#form-booking #booking-amount').text(parseFloat(math_mul(weight,price),2));
 	}
-
-	function do_total(weight,period)
-	{
-		var _income = math_mul(math_mul(profit,period),weight);
-		$('#form-booking #booking-total').text(parseFloat(math_add(weight,_income),4));
-	}
+	new AjaxUpload('#button-upload', {
+		action: '/tool/filemanager/upload',
+		name: 'uploads',
+		data: { date_path : true,'encrypt' : true },
+		autoSubmit: false,
+		responseType: 'json',
+		onChange: function(file, extension) {this.submit();},
+		onComplete: function(file, json) {
+			if(json.code=1) {
+				$("#uploads").html(json.upload['origin'] + '<input type="hidden" name="privacy[]" value="'+json.upload['origin']+'|'+json.upload['path']+'">');
+			}else{
+				alert(json.error);
+			}
+			$('.loading').remove();
+		}
+	});
+	$('#referrer').autocomplete({
+		delay: 300,
+		source: function(request, response) {
+			$.ajax({
+				url: '/auth/worker/autocomplete',
+				data:{filter_role:'member',filter_name:request.term},
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item.name,
+							value: item.value
+						}
+					}));
+				}
+			});
+		},
+		select: function(e,ui) {
+			$(this).val(ui.item.label);
+			$(this).next('input[type="hidden"]').val(ui.item.value)
+			return false;
+		}
+	});
+	$('#phone,#realname,#idnumber').autocomplete({
+		delay: 300,
+		source: function(request, response) {
+			$.ajax({
+				url: '/project/customer/autocomplete',
+				data:{filter_name:request.term},
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item.name+' '+ item.phone +' '+item.idnumber,
+							value: item.value,
+							realname: item.name,
+							phone: item.phone,
+							idnumber: item.idnumber,
+							wechat: item.wechat,
+							referrer: item.referrer,
+							referrer_id: item.referrer_id,
+						}
+					}));
+				}
+			});
+		},
+		select: function(e,ui) {
+			$('#phone').val(ui.item.phone);
+			$('#realname').val(ui.item.realname);
+			$('#idnumber').val(ui.item.idnumber);
+			$('#wechat').val(ui.item.wechat);
+			$('#referrer').val(ui.item.referrer);
+			$('input[name="referrer"]').val(ui.item.referrer_id)
+			return false;
+		}
+	});
 
 </script>

@@ -295,15 +295,16 @@ class Customer_model extends XY_Model{
     {
         $customer = $this->customer($customer_id);
         if($customer->num_rows()){
-
             if(is_array($data) && count($data)){
                 $this->db->where($data);
             }
             $this->db->where(array('ps.customer_id'=>$customer_id));
             $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
-            $this->db->select("ps.weight,ps.start,ps.info,( ".$profit_weight." ) profit ",FALSE)
+            $query = $this->db->select("p.addtime,ps.mode,ps.project_sn,ps.weight,ps.start,ps.info,w2.realname referrer,( ".$profit_weight." ) profit ",FALSE)
                 ->from($this->project_stock_table." AS ps")
-                ->join($this->project_table." AS p","p.project_id = ps.project_id")->order_by('ps.addtime DESC');
+                ->join($this->worker_table.' AS w2', 'w2.id = ps.referrer_id','left')
+                ->join($this->project_table." AS p","p.project_sn = ps.project_sn")->order_by('ps.addtime DESC')->get();
+            return $query->num_rows() ? $query->result_array() : FALSE;
         }
         return FALSE;
 

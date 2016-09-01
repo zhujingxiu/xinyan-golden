@@ -181,14 +181,15 @@ class Customer extends XY_Controller {
         }
     }
 
-    public function stock()
+    public function project()
     {
-        $result = $this->customer_model->projects($this->input->get('customer'));
-        if($result->num_rows()){
+        $result = $this->customer_model->customer($this->input->get('customer'));
+        if($result){
             $info = $result->row_array();
 
+            $info['projects'] = $this->customer_model->projects($this->input->get('customer'));
 
-var_dump($info);
+            $info['csrf'] = $this->_get_csrf_nonce();
             json_success(array('title'=>'项目列表 '.$info['realname'],'msg'=>$this->load->view('customer/project',$info,TRUE)));
         }else{
             json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));

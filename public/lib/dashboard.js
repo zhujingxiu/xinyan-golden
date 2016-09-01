@@ -1,15 +1,10 @@
 define(function(require, exports, module) {
-    require('moment');
-    
+    //require('moment');
     require('jqueryui');
-    //require('raphael');
 
-    //require('daterangepicker');
-    //require('knob');
-    //require('sparkline');
-    require('datepicker');
+    //require('daterangepicker
+    //require('datepicker');
     require('slimscroll');
-    //require('morris');
     $.widget.bridge('uibutton', $.ui.button);
 
     $(document).ready(function () {
@@ -31,138 +26,99 @@ define(function(require, exports, module) {
             forcePlaceholderSize: true,
             zIndex: 999999
         });
-
-/*
-        $('.daterange').daterangepicker({
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            startDate: moment().subtract(29, 'days'),
-            endDate: moment()
-        }, function (start, end) {
-            window.alert("You chose: " + start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        });
-*/
-        //$(".knob").knob();
-        //
-        ////Sparkline charts
-/*        var myvalues = [1000, 1200, 920, 927, 931, 1027, 819, 930, 1021];
-        $('#sparkline-1').sparkline(myvalues, {
-            type: 'line',
-            lineColor: '#92c1dc',
-            fillColor: "#ebf4f9",
-            height: '50',
-            width: '80'
-        });
-        myvalues = [515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921];
-        $('#sparkline-2').sparkline(myvalues, {
-            type: 'line',
-            lineColor: '#92c1dc',
-            fillColor: "#ebf4f9",
-            height: '50',
-            width: '80'
-        });
-        myvalues = [15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21];
-        $('#sparkline-3').sparkline(myvalues, {
-            type: 'line',
-            lineColor: '#92c1dc',
-            fillColor: "#ebf4f9",
-            height: '50',
-            width: '80'
-        });*/
-
-
-        //The Calender
-        $("#calendar").datepicker();
-
-        ////SLIMSCROLL FOR CHAT WIDGET
+////SLIMSCROLL FOR CHAT WIDGET
         $('#chat-box').slimScroll({
-            height: '250px'
-        });
-        //// Morris.js Charts
-        //// Sales chart
-/*        var area = new Morris.Area({
-            element: 'revenue-chart',
-            resize: true,
-            data: [
-                {y: '2011 Q1', item1: 2666, item2: 2666},
-                {y: '2011 Q2', item1: 2778, item2: 2294},
-                {y: '2011 Q3', item1: 4912, item2: 1969},
-                {y: '2011 Q4', item1: 3767, item2: 3597},
-                {y: '2012 Q1', item1: 6810, item2: 1914},
-                {y: '2012 Q2', item1: 5670, item2: 4293},
-                {y: '2012 Q3', item1: 4820, item2: 3795},
-                {y: '2012 Q4', item1: 15073, item2: 5967},
-                {y: '2013 Q1', item1: 10687, item2: 4460},
-                {y: '2013 Q2', item1: 8432, item2: 5713}
-            ],
-            xkey: 'y',
-            ykeys: ['item1', 'item2'],
-            labels: ['Item 1', 'Item 2'],
-            lineColors: ['#a0d0e0', '#3c8dbc'],
-            hideHover: 'auto'
-        });
-        var line = new Morris.Line({
-            element: 'line-chart',
-            resize: true,
-            data: [
-                {y: '2011 Q1', item1: 2666},
-                {y: '2011 Q2', item1: 2778},
-                {y: '2011 Q3', item1: 4912},
-                {y: '2011 Q4', item1: 3767},
-                {y: '2012 Q1', item1: 6810},
-                {y: '2012 Q2', item1: 5670},
-                {y: '2012 Q3', item1: 4820},
-                {y: '2012 Q4', item1: 15073},
-                {y: '2013 Q1', item1: 10687},
-                {y: '2013 Q2', item1: 8432}
-            ],
-            xkey: 'y',
-            ykeys: ['item1'],
-            labels: ['Item 1'],
-            lineColors: ['#efefef'],
-            lineWidth: 2,
-            hideHover: 'auto',
-            gridTextColor: "#fff",
-            gridStrokeWidth: 0.4,
-            pointSize: 4,
-            pointStrokeColors: ["#efefef"],
-            gridLineColor: "#efefef",
-            gridTextFamily: "Open Sans",
-            gridTextSize: 10
-        });
-        //
-        ////Donut Chart
-        var donut = new Morris.Donut({
-            element: 'sales-chart',
-            resize: true,
-            colors: ["#3c8dbc", "#f56954", "#00a65a"],
-            data: [
-                {label: "Download Sales", value: 12},
-                {label: "In-Store Sales", value: 30},
-                {label: "Mail-Order Sales", value: 20}
-            ],
-            hideHover: 'auto'
+            height: '350px'
         });
 
-        //Fix for charts under tabs
-        $('.box ul.nav a').on('shown.bs.tab', function () {
-            area.redraw();
-            donut.redraw();
-            line.redraw();
-        });*/
     });
 
     $('#toggle-charts input[name="price_charts"]').bind('change', function () {
         exports.priceGoldView($(this).val());
     })
 
-
+    exports.render_overview = function () {
+        require('echarts');
+        var myChart = echarts.init(document.getElementById('overview-charts')),
+        option = {
+            title: {
+                text: '黄金业务概览'
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : ['周一','周二','周三','周四','周五','周六','周日']
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'邮件营销',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[120, 132, 101, 134, 90, 230, 210]
+                },
+                {
+                    name:'联盟广告',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[220, 182, 191, 234, 290, 330, 310]
+                },
+                {
+                    name:'视频广告',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[150, 232, 201, 154, 190, 330, 410]
+                },
+                {
+                    name:'直接访问',
+                    type:'line',
+                    stack: '总量',
+                    areaStyle: {normal: {}},
+                    data:[320, 332, 301, 334, 390, 330, 320]
+                },
+                {
+                    name:'搜索引擎',
+                    type:'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {normal: {}},
+                    data:[820, 932, 901, 934, 1290, 1330, 1320]
+                }
+            ]
+        };
+        myChart.setOption(option);
+    }
     exports.priceGoldView = function (mode){
         require('echarts');
         $.ajax({

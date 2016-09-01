@@ -10,10 +10,9 @@ class Recycling_model extends XY_Model{
     private $customer_table = 'customer';
     private $customer_stock_table = 'customer_stock';
     private $stock_table = 'project_stock';
-    private $apply_table = 'project_apply';
     private $trash_table = 'project_trash';
-    private $file_table = 'project_recycling_file';
-
+    private $file_table = 'project_file';
+    private $mode = 'recycling';
     public function project($sn,$simple=FALSE)
     {
         if(!$sn){return false;}
@@ -57,7 +56,7 @@ class Recycling_model extends XY_Model{
     }
 
     public function insert($data){
-        $this->trigger_events('pre_insert_project');
+        $this->trigger_events('pre_insert_recycling');
 
         $this->db->trans_begin();
         $customer_id = $this->match_customer(array('phone'=>$data['phone']));
@@ -75,8 +74,9 @@ class Recycling_model extends XY_Model{
             ));
             $customer_id = $this->db->insert_id();
         }
+        $project_sn = $this->generate_sn();
         $this->db->insert($this->table, array(
-            'project_sn' => $this->generate_sn(),
+            'project_sn' => $project_sn ,
             'customer_id' => $customer_id,
             'referrer_id' => $data['referrer'],
             'type' => $data['type'],
@@ -95,8 +95,9 @@ class Recycling_model extends XY_Model{
         $project_id = $this->db->insert_id();
         if(isset($data['photo'])){
             $this->db->insert($this->file_table,array(
-                'project_id' => $project_id,
-                'mode' => 'photo',
+                'project_sn' => $project_sn,
+                'dir' => 'photo',
+                'mode' => $this->mode,
                 'file' => $this->format_file_value($data['photo']),
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -105,8 +106,9 @@ class Recycling_model extends XY_Model{
         }
         if(isset($data['invoice'])){
             $this->db->insert($this->file_table,array(
-                'project_id' => $project_id,
-                'mode' => 'invoice',
+                'project_sn' => $project_sn,
+                'dir' => 'invoice',
+                'mode' => $this->mode,
                 'file' => $this->format_file_value($data['invoice']),
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -115,8 +117,9 @@ class Recycling_model extends XY_Model{
         }
         if(isset($data['report'])){
             $this->db->insert($this->file_table,array(
-                'project_id' => $project_id,
-                'mode' => 'report',
+                'project_sn' => $project_sn,
+                'dir' => 'report',
+                'mode' => $this->mode,
                 'file' => $this->format_file_value($data['report']),
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -125,8 +128,9 @@ class Recycling_model extends XY_Model{
         }
         if(isset($data['privacy'])){
             $this->db->insert($this->file_table,array(
-                'project_id' => $project_id,
-                'mode' => 'privacy',
+                'project_sn' => $project_sn,
+                'dir' => 'privacy',
+                'mode' => $this->mode,
                 'file' => $this->format_file_value($data['privacy']),
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -138,14 +142,14 @@ class Recycling_model extends XY_Model{
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
-            $this->trigger_events(array('post_insert_project', 'post_insert_project_unsuccessful'));
+            $this->trigger_events(array('post_insert_recycling', 'post_insert_recycling_unsuccessful'));
             $this->set_error('insert_unsuccessful');
             return FALSE;
         }
 
         $this->db->trans_commit();
 
-        $this->trigger_events(array('post_insert_project', 'post_insert_project_successful'));
+        $this->trigger_events(array('post_insert_recycling', 'post_insert_recycling_successful'));
         $this->set_message('insert_successful');
         return TRUE;
     }
@@ -167,11 +171,11 @@ class Recycling_model extends XY_Model{
     public function files($project_sn,$type=FALSE){
         $info = $this->project($project_sn,TRUE);
         if($info->num_rows()) {
-            $project = $info->row_array();
+            //$project = $info->row_array();
             if($type){
-                $this->db->where(array('mode'=>strtolower($type)));
+                $this->db->where(array('dir'=>strtolower($type)));
             }
-            $this->db->where(array('project_id'=>$project['project_id']));
+            $this->db->where(array('project_sn'=>$project_sn,'mode'=>$this->mode));
             return $this->db->get($this->file_table);
         }
 
@@ -179,7 +183,7 @@ class Recycling_model extends XY_Model{
     }
     public function update($project_sn,$data)
     {
-        $this->trigger_events('pre_update_project');
+        $this->trigger_events('pre_update_recycling');
 
         $this->db->trans_begin();
         $info = $this->project($project_sn);
@@ -200,11 +204,12 @@ class Recycling_model extends XY_Model{
             );
 
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
-            $this->db->delete($this->file_table,array('project_id'=>$project['project_id']));
+            $this->db->delete($this->file_table,array('project_sn'=>$project_sn,'mode'=>$this->mode));
             if(isset($data['photo'])){
                 $this->db->insert($this->file_table,array(
-                    'project_id' => $project['project_id'],
-                    'mode' => 'photo',
+                    'project_sn' => $project_sn,
+                    'dir' => 'photo',
+                    'mode' => $this->mode,
                     'file' => $this->format_file_value($data['photo']),
                     'status' => 1,
                     'worker_id' => $this->ion_auth->get_user_id(),
@@ -213,8 +218,9 @@ class Recycling_model extends XY_Model{
             }
             if(isset($data['invoice'])){
                 $this->db->insert($this->file_table,array(
-                    'project_id' => $project['project_id'],
-                    'mode' => 'invoice',
+                    'project_sn' => $project_sn,
+                    'dir' => 'invoice',
+                    'mode' => $this->mode,
                     'file' => $this->format_file_value($data['invoice']),
                     'status' => 1,
                     'worker_id' => $this->ion_auth->get_user_id(),
@@ -223,8 +229,9 @@ class Recycling_model extends XY_Model{
             }
             if(isset($data['report'])){
                 $this->db->insert($this->file_table,array(
-                    'project_id' => $project['project_id'],
-                    'mode' => 'report',
+                    'project_sn' => $project_sn,
+                    'dir' => 'report',
+                    'mode' => $this->mode,
                     'file' => $this->format_file_value($data['report']),
                     'status' => 1,
                     'worker_id' => $this->ion_auth->get_user_id(),
@@ -233,8 +240,9 @@ class Recycling_model extends XY_Model{
             }
             if(isset($data['privacy'])){
                 $this->db->insert($this->file_table,array(
-                    'project_id' => $project['project_id'],
-                    'mode' => 'privacy',
+                    'project_sn' => $project_sn,
+                    'dir' => 'privacy',
+                    'mode' => $this->mode,
                     'file' => $this->format_file_value($data['privacy']),
                     'status' => 1,
                     'worker_id' => $this->ion_auth->get_user_id(),
@@ -245,13 +253,13 @@ class Recycling_model extends XY_Model{
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
-                $this->trigger_events(array('post_update_project', 'post_update_project_unsuccessful'));
+                $this->trigger_events(array('post_update_recycling', 'post_update_recycling_unsuccessful'));
                 $this->set_error('update_unsuccessful');
                 return FALSE;
             }
             $this->db->trans_commit();
 
-            $this->trigger_events(array('post_update_project', 'post_update_project_successful'));
+            $this->trigger_events(array('post_update_recycling', 'post_update_recycling_successful'));
             $this->set_message('update_successful');
             return $history_id;
         }else{
@@ -312,7 +320,7 @@ class Recycling_model extends XY_Model{
                             $this->{$method}($params);
                         }
                     }
-                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
+                }else if(is_string($data['call_func']) && method_exists($this,$data['call_func'])){
                     $this->{$data['call_func']}($data['call_param']);
                 }
             }
@@ -332,6 +340,33 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
+    public function active_start($project_sn){
+        if(empty($project_sn) ) return FALSE;
+        $project = $this->project($project_sn);
+        if($project->num_rows()) {
+            $info = $project->row_array();
+            $start = $this->calculate_start($info['addtime']);
+            $this->db->update($this->table,array('start'=>$start,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_sn'=>$info['project_sn']));
+            return $this->db->affected_rows();
+        }
+
+        return FALSE;
+    }
+
+    protected function calculate_start($addtime)
+    {
+        $start = FALSE;
+        switch(strtolower($this->config->item('growing_mode'))){
+            case 't0':
+                $start = date('Y-m-d',$addtime);
+                break;
+            case 't1':
+                $start = date('Y-m-d',$addtime+24*60*60);
+                break;
+        }
+        return $start;
+    }
+
     public function project_instock($data)
     {
         if(empty($data['project_sn'])) return FALSE;
@@ -340,17 +375,18 @@ class Recycling_model extends XY_Model{
         if($info->num_rows()) {
             $project = $info->row_array();
             $tmp = array(
-                'project_id' => $project['project_id'],
+                'project_sn' => $project_sn,
                 'customer_id' => $project['customer_id'],
                 'referrer_id' => $project['referrer_id'],
                 'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
                 'weight'=> (float)$project['weight'],
-                'start'=> date('Y-m-d',$project['addtime']),
+                'start'=> $project['start'],
                 'info' => maybe_serialize(array(
-                    'project_sn' => $project_sn,
+                    'project_id' => $project['project_id'],
                     'realname' => $project['realname'],
                     'phone' => $project['phone'],
                     'idnumber' => $project['idnumber'],
+                    'price' => $project['price'],
                     'type' => $project['type']=='goldbar' ?'金条':'金饰',
                     'number' => $project['number'],
                     'origin_weight' => $project['origin_weight'],
@@ -358,7 +394,7 @@ class Recycling_model extends XY_Model{
                     'appraiser_id' => $project['appraiser_id'],
                 )),
                 'note' => empty($data['note'])?'':$data['note'],
-                'mode' => 'recycling',
+                'mode' => $this->mode,
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time(),
@@ -416,7 +452,8 @@ class Recycling_model extends XY_Model{
 
     public function hidden($project_sn){
 
-        return $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'删除项目'));
+        $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'删除项目'));
+        return $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'回收项目'));
     }
 
     public function erp_stock($data=array()){
@@ -424,14 +461,14 @@ class Recycling_model extends XY_Model{
         $project = $this->project($data['project_sn']);
         if($project->num_rows()){
             $info = $project->row_array();
-            $this->db->update($this->stock_table,array('status'=>0,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_id'=>$info['project_id']));
+            $this->db->delete($this->stock_table, array('project_sn'=>$data['project_sn']));
             $this->db->insert($this->customer_stock_table,array(
                 'customer_id' => $info['customer_id'],
                 'mode' => 'in',
                 'project_sn' => $info['project_sn'],
                 'weight' => $info['weight'],
                 'notify' => 1,
-                'note' => empty($data['reason']) ? $data['reason'] : '',
+                'note' => empty($data['reason']) ? '' : $data['reason'],
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time()
             ));
@@ -446,7 +483,12 @@ class Recycling_model extends XY_Model{
         $project = $this->project($data['project_sn']);
         if($project->num_rows()){
             $info = $project->row_array();
-            $this->db->update($this->table,array('is_del'=>1,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_id'=>$info['project_id']));
+            $this->db->update($this->table,array(
+                'is_del'=>1,
+                'lasttime'=>time(),
+                'worker_id'=>$this->ion_auth->get_user_id()
+            ),array('project_id'=>$info['project_id']));
+
             $this->db->insert($this->trash_table,array(
                 'project_id' => $info['project_id'],
                 'project_sn' => $info['project_sn'],
@@ -466,10 +508,10 @@ class Recycling_model extends XY_Model{
                     'appraiser' => $info['appraiser'],
                     'start' => date('Y-m-d',$info['addtime']),
                 )),
-                'status_id' => $info['status_id'],
-                'note' => empty($data['reason']) ? $data['reason'] : '',
+                'note' => empty($data['reason']) ? '' : $data['reason'],
                 'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
+                'addtime' => time(),
+                'ip'=>$this->_prepare_ip($this->input->ip_address())
             ));
 
             return $this->db->insert_id();
@@ -489,10 +531,6 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function cancle_applied($project_id){
-        $this->db->delete($this->apply_table,array('project_id'=>$project_id));
-        return $this->db->affected_rows();
-    }
 
 
     public function get_status_by_code($code)

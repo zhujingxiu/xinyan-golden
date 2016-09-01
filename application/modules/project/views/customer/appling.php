@@ -125,7 +125,7 @@
                 </li>
                 <?php if(!empty($histories) && is_array($histories)): ?>
                 <li class="time-label">
-                    <span class="bg-purple"> 近期库存明细 </span>
+                    <span class="bg-purple"> 近期金库明细 </span>
                 </li>
                     <?php foreach($histories as $item) :?>
                 <li>

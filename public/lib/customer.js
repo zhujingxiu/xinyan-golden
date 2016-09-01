@@ -44,8 +44,6 @@ define(function (require, exports, modules) {
         })
 
         $('#list').delegate('.btn-update','click',function(){
-
-
             exports.do_detail($(this).parent().parent().attr('id'));
         })
     }
@@ -211,7 +209,7 @@ define(function (require, exports, modules) {
             require('layer');
             require('slimscroll');
             var id = $(this).parent().parent().attr('id');
-            $.get('/project/customer/stock', {customer:id}, function(json){
+            $.get('/project/customer/project', {customer:id}, function(json){
                 if(json.code==1){
                     layer.open({
                         type: 1,
