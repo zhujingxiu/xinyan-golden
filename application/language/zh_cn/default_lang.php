@@ -46,6 +46,7 @@ $lang['label_disabled'] = '<label class="label label-danger">已禁用</label>';
 $lang['label_enabled'] = '<label class="label label-success">已启用</label>';
 $lang['label_applied'] = '<label class="label label-warning">申请提金 %s 克</label>';
 
+$lang['button_detail'] = '<a class="btn btn-default btn-detail">查看</a>';
 $lang['button_edit'] = '<a class="btn btn-default btn-edit">修改</a>';
 $lang['button_update'] = '<a class="btn btn-default btn-update">编辑</a>';
 $lang['button_checking'] = '<a class="btn btn-primary btn-checking">核实</a>';

@@ -73,7 +73,9 @@ class Customer extends XY_Controller {
                     'idnumber'	=> $row['idnumber'] ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> '<label class="label label-success">'.number_format($row['available'],2).lang('text_weight_unit').'</label>',
-                    'frozen'	=> '<a class="btn btn-warning btn-frozen">'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>',
+                    'frozen'	=> ($row['frozen']*100 > 0)
+                        ? '<a class="btn btn-warning btn-frozen">'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>'
+                        : '<label class="label label-default">'.number_format($row['frozen'],2).lang('text_weight_unit').'</label>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
@@ -94,31 +96,32 @@ class Customer extends XY_Controller {
     {
         $buttons = array();
         if($this->inRole('manager')) {
-            $buttons[] = lang('button_update');
+            $buttons['first'] = lang('button_update');
         }else{
-            $buttons[] = lang('button_detail');
+            //$buttons['first'] = lang('button_detail');
         }
         if($operation == 'appling'){
             if($this->inRole('manager')) {
-                $buttons[] = lang('button_appling');
-                //$buttons[] = lang('button_order');
+                $buttons['second'] = lang('button_appling');
+                //$buttons['dropdown'] = lang('button_order');
             }
         }
         if($operation == 'applied'){
             if($this->inRole('manager')) {
-                $buttons[] = lang('button_cancle');
+                $buttons['dropdown'] = lang('button_cancle');
             }
             if($this->inRole('warehouser')){
-                $buttons[] = lang('button_taking');
+                $buttons['second'] = lang('button_taking');
             }
         }
+
         return implode(" ",$buttons);
     }
 
     public function update()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
-            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('permission')));
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
         }
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             //json_response(['code'=>0]+$this->input->post());
@@ -151,7 +154,7 @@ class Customer extends XY_Controller {
                     'idnumber' => form_error('idnumber'),
                     'phone' => form_error('phone'),
                 );
-                json_response(array('code' => 0, 'errors' => $errors));
+                json_error(array('errors' => $errors));
             }
         }else{
             $id = $this->input->get('customer_id');
@@ -181,7 +184,7 @@ class Customer extends XY_Controller {
         }
     }
 
-    public function project()
+    public function projects()
     {
         $result = $this->customer_model->customer($this->input->get('customer'));
         if($result){
@@ -200,7 +203,7 @@ class Customer extends XY_Controller {
     public function applied()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
-            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
         }
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             if($this->_valid_csrf_nonce() === FALSE){
@@ -251,10 +254,21 @@ class Customer extends XY_Controller {
             if($result->num_rows()){
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
-
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
                 $info['max'] = (float)$info['available'];
                 $info['total'] = (float)($info['available']+$info['frozen']);
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
+                        if(!empty($item['file'])){
+                            $_tmp = json_decode($item['file'],TRUE);
+                            if(is_array($_tmp)){
+                                $item['file'] = $_tmp;
+                            }
+                        }
+                        $info['histories'][] = $item;
+                    }
+                }
 
                 json_success(array('title'=>'申请提金 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/appling',$info,TRUE)));
             }else{
@@ -327,7 +341,19 @@ class Customer extends XY_Controller {
                     ? (float)($info['available']*($this->config->item('order_percent')/100))*1.00
                     : (float)$info['available']*1.00;
                 $info['total'] = (float)($info['available']+$info['frozen']);
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
+                        if(!empty($item['file'])){
+                            $_tmp = json_decode($item['file'],TRUE);
+                            if(is_array($_tmp)){
+                                $item['file'] = $_tmp;
+                            }
+                        }
+                        $info['histories'][] = $item;
+                    }
+                }
                 json_success(array('title'=>'门店消费申请 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/order',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
@@ -421,6 +447,16 @@ class Customer extends XY_Controller {
                 $info['total'] = (float)($info['available']+$info['frozen']);
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($info['histories'])){
+                    foreach($info['histories'] as $key => $item){
+                        if(!empty($item['file'])){
+                            $_tmp = json_decode($item['file'],TRUE);
+                            if(is_array($_tmp)){
+                                $info['histories'][$key]['file'] = $item;
+                            }
+                        }
+                    }
+                }
                 json_success(array('title'=>'提金出库 '.$info['realname'].':'.$applied['weight'].lang('text_weight_unit'),'msg'=>$this->load->view('customer/taking',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));

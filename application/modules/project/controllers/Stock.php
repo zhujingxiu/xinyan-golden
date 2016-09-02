@@ -55,58 +55,23 @@ class Stock extends Project
         $total = $result->num_rows();
         if ($total) {
             foreach ($result->result_array() as $row) {
-                $customer = $gold = array();
-                $_customer = maybe_unserialize($row['customer']);
-                $_gold = maybe_unserialize($row['gold']);
-                if(is_array($_customer)){
-                    if(isset($_customer['realname'])){
-                        $customer[] = '客户姓名：'. $_customer['realname'];
-                    }
-                    if(isset($_customer['phone'])){
-                        $customer[] = '手机号码：'. $_customer['phone'];
-                    }
-                    if(isset($_customer['idnumber'])){
-                        $customer[] = '身份证号：'. $_customer['idnumber'];
-                    }
-                    if(isset($_customer['referrer'])){
-                        $customer[] = '推荐人：'. $_customer['referrer'];
-                    }
-                }
-                if(is_array($_gold)){
-                    if(isset($_gold['price'])){
-                        $gold[] = '实时金价：'. $_gold['price'];
-                    }
-                    if(isset($_gold['type'])){
-                        $gold[] = '黄金种类：'. $_gold['type'];
-                    }
-                    if(isset($_gold['number'])){
-                        $gold[] = '黄金件数：'. $_gold['number'];
-                    }
-                    if(isset($_gold['origin_weight'])){
-                        $gold[] = '黄金克重：'. $_gold['origin_weight'];
-                    }
-                    if(isset($_gold['appraiser'])){
-                        $gold[] = '鉴定人：'. $_gold['appraiser'];
-                    }
-                    if(isset($_gold['weight'])){
-                        $gold[] = '实际克重：'. $_gold['weight'];
-                    }
-                    if(isset($_gold['amount'])){
-                        $gold[] = '实收金额：'. $_gold['amount'];
-                    }
-                    if(isset($_gold['start'])){
-                        $gold[] = '计息日期：'. $_gold['start'];
-                    }
+                $info = array();
+                $_info = maybe_unserialize($row['info']);
+                if(is_array($_info)){
+                    $info = $_info;
                 }
                 $rows[] = array(
-                    'DT_RowId' => $row['trash_id'],
+                    'DT_RowId' => $row['stock_id'],
                     'sn' => $row['project_sn'],
-                    'customer' => count($customer) ? implode("<br>",$customer) : lang('text_unknown'),
-                    'gold' => count($gold) ? implode("<br>",$gold) : lang('text_unknown'),
+                    'customer' => $row['realname'].'<br>'.$row['phone'],
+                    'referrer' => $row['referrer'],
+                    'weight' => number_format($row['weight'],2) .lang('text_weight_unit'),
+                    'start' => $row['start'],
                     'mode' => $row['mode'] == 'investing' ? '钱生金' : '金生金',
                     'operator' => $row['operator'],
+                    'profit' => number_format($row['weight'],2) .lang('text_weight_unit'),
                     'addtime' => $row['addtime'] ? date('Y-m-d', $row['addtime']) . '<br>' . date('H:i:s', $row['addtime']) : lang("text_unknown"),
-                    'operation' => lang('button_trashing')
+                    'operation' => ''
                 );
             }
         }

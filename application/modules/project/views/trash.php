@@ -31,9 +31,7 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <div class="buttons">
-                            <button type="button" class="btn btn-primary" id="btn-new"><i class="fa fa-plus"></i> </button>
-                        </div>
+                        已废弃项目
 <!--                        <h3 class="box-title">Hover Data Table</h3>-->
                     </div>
                     <!-- /.box-header -->

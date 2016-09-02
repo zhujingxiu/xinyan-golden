@@ -120,13 +120,11 @@ class Profile extends XY_Controller {
                     'realname' => $this->input->post('realname'),
                     'email'  => $this->input->post('email'),
                     'phone'      => $this->input->post('phone'),
+                    'phone'      => $this->input->post('phone'),
+                    'phone'      => $this->input->post('phone'),
                 );
 
-                // update the password if it was posted
-                if ($this->input->post('password'))
-                {
-                    $data['password'] = $this->input->post('password');
-                }
+
 
                 // check to see if we are updating the user
                 if($this->ion_auth->update($user->id, $data))

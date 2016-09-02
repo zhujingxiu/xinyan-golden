@@ -5,6 +5,7 @@ define(function (require, exports, modules) {
     require('datatables')
     require('datatables.bs');
     require('jqueryui');
+    var load_index = '';
     exports.render_list = function() {
         $(function () {
             $('#list').DataTable({
@@ -70,7 +71,7 @@ define(function (require, exports, modules) {
         },'json');
     }
     exports.render_appling = function () {
-        $('#list').delegate('.btn-appling','click', function () {
+        $('#list').delegate('.btn-appling','click', function (e) {
             require('layer');
             require('ajaxSubmit');
             //require('ueditor/ueditor.config');
@@ -79,25 +80,36 @@ define(function (require, exports, modules) {
             require('customValidate');
             require('slimscroll');
             var id = $(this).parent().parent().attr('id');
-            $.get('/project/customer/applied', {customer:id}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['确认申请', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-appling').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
+
+            $.ajax({
+                url:'/project/customer/applied',
+                data:{customer:id},
+                dataType:'json',
+                beforeSend:function () {
+                    //load_index = layer.load(1);
+                    $(e).attr('disabled','disabled');
+                },
+                success:function(json){
+                    //layer.close(load_index);
+                    if(json.code==1){
+                        layer.open({
+                            type: 1,
+                            title:json.title,
+                            area:'880px',
+                            offset: '100px',
+                            zIndex:99,
+                            btn: ['确认申请', '取消'],
+                            content: json.msg ,
+                            yes: function(index, layero){
+                                $('#form-appling').submit();
+                            }
+                        });
+                    }else{
+                        var l = require('layout');
+                        l.render_message(json.msg,json.title);
+                    }
                 }
-            },'json');
+            });
         });
     }
 
@@ -209,7 +221,7 @@ define(function (require, exports, modules) {
             require('layer');
             require('slimscroll');
             var id = $(this).parent().parent().attr('id');
-            $.get('/project/customer/project', {customer:id}, function(json){
+            $.get('/project/customer/projects', {customer:id}, function(json){
                 if(json.code==1){
                     layer.open({
                         type: 1,
@@ -229,36 +241,4 @@ define(function (require, exports, modules) {
         });
     }
 
-    exports.render_taking_bk = function () {
-        $('#project-list').delegate('.btn-taking','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('slimscroll');
-            require('ajaxUpload');
-            var sn = $(this).parent().parent().attr('id');
-            $.get('/project/recycling/taken', {project:sn}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:'880px',
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['出库', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-taking').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
 });

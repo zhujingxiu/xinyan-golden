@@ -57,7 +57,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">推荐人</span>
+                                        <span class="input-group-addon"> 推 荐 人 </span>
                                         <span class="form-control"><?php echo $referrer?></span>
                                     </div>
                                 </div>
@@ -98,7 +98,7 @@
                         </div>
                         <div class="timeline-footer" style="clear: both;">
                             <a class="btn btn-primary btn-xs" id="button-upload">
-                                <i class="fa fa-upload"></i> 客户同意书
+                                <i class="fa fa-upload"></i> 客户提金协议或相关费用清单
                             </a>
                             <div class="upload-file" id="uploads"></div>
                         </div>
@@ -118,9 +118,9 @@
                                 <span class="input-group-addon">克</span>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon" > 确 认 手 机 </span>
+                                <span class="input-group-addon" ><b> 确 认 手 机 </b></span>
                                 <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
-                                <span class="input-group-addon" > 确 认 重 量 </span>
+                                <span class="input-group-addon" ><b> 确 认 重 量 </b></span>
                                 <input class="form-control" name="weight" type="text" placeholder="确认申请提金重量" >
                                 <span class="input-group-addon">克</span>
                             </div>
@@ -133,25 +133,36 @@
                         <span class="bg-purple"> 近期库存明细 </span>
                     </li>
                     <?php foreach($histories as $item) :?>
-                        <li>
-                            <i class="fa fa-user bg-aqua"></i>
-                            <div class="timeline-item">
-                        <span class="time">
-                            <?php echo ($item['mode'] =='out' ? $item['weight']*(-1.00) : '+'.$item['weight']).lang('text_weight_unit')?>
-                            <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
-                        </span>
-                                <h3 class="timeline-header no-border">
-                                    <a href="javascript:;" class="liveim">
-                                        <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
-                                            <img data-toggle="tooltip" src="<?php echo site_url($item['avatar'])?>" class="user-avatar" title="<?php echo $item['operator']?>" alt="<?php echo $item['operator']?>">
-                                        <?php else: ?>
-                                            <?php echo $item['operator']?>
-                                        <?php endif?>
-                                    </a>
-                                    <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
-                                </h3>
-                            </div>
-                        </li>
+                    <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                            <span class="time">
+                                ssss<?php echo ($item['mode'] =='out' ? $item['weight'] : '+'.$item['weight']).lang('text_weight_unit')?>
+                                <i class="fa fa-clock-o"></i> sssss<?php echo format_time($item['addtime'],true);?>
+                            </span>
+                            <h3 class="timeline-header no-border">
+                                <a href="javascript:;" class="liveim">
+                                    <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
+                                        <img data-toggle="tooltip" src="<?php echo site_url($item['avatar'])?>" class="user-avatar" title="<?php echo $item['operator']?>" alt="<?php echo $item['operator']?>">
+                                    <?php else: ?>
+                                        <?php echo $item['operator']?>
+                                    <?php endif?>
+                                </a>
+                                <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
+                            </h3>
+                            <?php if(is_array($item['file'])):?>
+                                <div class="timeline-footer">
+                                    <div class="upload-file" id="uploads">
+                                <?php foreach($item['file'] as $_file) :?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $_file['name']?>" src="<?php echo base_url(get_image_url($_file['path']));?>"
+                                        </div>
+                                <?php endforeach ?>
+                                    </div>
+                                </div>
+                            <?php endif?>
+                        </div>
+                    </li>
                     <?php endforeach ?>
                 <?php endif ?>
                 <li>

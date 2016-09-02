@@ -132,7 +132,7 @@
                     <i class="fa fa-user bg-aqua"></i>
                     <div class="timeline-item">
                         <span class="time">
-                            <?php echo ($item['mode'] =='out' ? $item['weight']*(-1.00) : '+'.$item['weight']).lang('text_weight_unit')?>
+                            <?php echo ($item['mode'] =='out' ? $item['weight'] : '+'.$item['weight']).lang('text_weight_unit')?>
                             <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
                         </span>
                         <h3 class="timeline-header no-border">
@@ -145,6 +145,17 @@
                             </a>
                             <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
                         </h3>
+                        <?php if(is_array($item['file'])):?>
+                            <div class="timeline-footer">
+                                <div class="upload-file" id="uploads">
+                                    <?php foreach($item['file'] as $_file) :?>
+                                        <div class="uploads-thumb-sm">
+                                            <img title="<?php echo $_file['name']?>" src="<?php echo base_url(get_image_url($_file['path']));?>"
+                                        </div>
+                                    <?php endforeach ?>
+                                </div>
+                            </div>
+                        <?php endif?>
                     </div>
                 </li>
                     <?php endforeach ?>

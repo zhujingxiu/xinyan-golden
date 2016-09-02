@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Stock_model extends XY_Model{
 
-    private $table = 'project_trash';
+    private $table = 'project_stock';
     private $recycling_table = 'project_recycling';
     private $recycling_history_table = 'project_recycling_history';
     private $investing_table = 'project_investing';
@@ -12,7 +12,6 @@ class Stock_model extends XY_Model{
     private $customer_table = 'customer';
     private $apply_table = 'customer_apply';
     private $file_table = 'project_file';
-    private $stock_table = 'project_stock';
     public function project($sn,$simple=FALSE)
     {
         if(!$sn){return false;}
@@ -30,14 +29,15 @@ class Stock_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-
-        $this->db->select('p.*,w.realname operator, w.username', false);
+        $this->db->select('c.realname,c.phone,c.idnumber,p.stock_id,p.project_sn,p.mode,p.weight,p.start,p.info,p.addtime,w.realname operator, w.username,w2.realname referrer,', false);
         $this->db->from($this->table.' AS p');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
+        $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
-            $this->db->order_by('p.addtime desc');
+            $this->db->order_by('p.lasttime desc');
         }
 
         $start = isset($data['start']) ? $data['start'] : 0 ;

@@ -48,7 +48,7 @@ define(function(require, exports, module) {
                 trigger: 'axis'
             },
             legend: {
-                data:['邮件营销','联盟广告','视频广告','直接访问','搜索引擎']
+                data:['存金克重','金生金','钱生金','增值克重','服务客户']
             },
             toolbox: {
                 feature: {
@@ -75,35 +75,35 @@ define(function(require, exports, module) {
             ],
             series : [
                 {
-                    name:'邮件营销',
+                    name:'存金克重',
                     type:'line',
                     stack: '总量',
                     areaStyle: {normal: {}},
                     data:[120, 132, 101, 134, 90, 230, 210]
                 },
                 {
-                    name:'联盟广告',
+                    name:'金生金',
                     type:'line',
                     stack: '总量',
                     areaStyle: {normal: {}},
                     data:[220, 182, 191, 234, 290, 330, 310]
                 },
                 {
-                    name:'视频广告',
+                    name:'钱生金',
                     type:'line',
                     stack: '总量',
                     areaStyle: {normal: {}},
                     data:[150, 232, 201, 154, 190, 330, 410]
                 },
                 {
-                    name:'直接访问',
+                    name:'增值克重',
                     type:'line',
                     stack: '总量',
                     areaStyle: {normal: {}},
                     data:[320, 332, 301, 334, 390, 330, 320]
                 },
                 {
-                    name:'搜索引擎',
+                    name:'服务客户',
                     type:'line',
                     stack: '总量',
                     label: {

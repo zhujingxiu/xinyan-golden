@@ -9,7 +9,9 @@
 
 
 .upload-file .uploads-thumb {display: inline-block;}
-.upload-file .uploads-thumb img{margin: 10px;width: 120px;max-height: 120px;}
+.upload-file .uploads-thumb-sm {display: inline-block;}
+.upload-file .uploads-thumb img{margin: 3px;width: 120px;max-height: 120px;}
+.upload-file .uploads-thumb-sm img{margin: 3px;width: 80px;max-height: 80px;}
 .upload-file .uploads-thumb a{
     text-align: center;
     display:block;

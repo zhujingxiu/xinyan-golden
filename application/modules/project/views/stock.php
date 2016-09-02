@@ -28,11 +28,11 @@
             </div>
         <?php endif ?>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-8">
                 <div class="box">
                     <div class="box-header">
                         <div class="buttons">
-                            <button type="button" class="btn btn-primary" id="btn-new"><i class="fa fa-plus"></i> </button>
+                            <button type="button" class="btn btn-primary" id="btn-new" data-toggle="tooltip" title="补仓"><i class="fa fa-puzzle-piece"></i> </button>
                         </div>
 <!--                        <h3 class="box-title">Hover Data Table</h3>-->
                     </div>
@@ -44,22 +44,26 @@
                                     <th>项目</th>
                                     <th>编号</th>
                                     <th>客户</th>
-                                    <th>黄金</th>
+                                    <th>存金</th>
+                                    <th>计息日</th>
+                                    <th>已收益</th>
+                                    <th>推荐人</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tfoot>
-                            <tr>
-                                <th>项目</th>
-                                <th>编号</th>
-                                <th>客户</th>
-                                <th>黄金</th>
-                                <th>操作人</th>
-                                <th>操作时间</th>
-                                <th></th>
-                            </tr>
+                                <tr>
+                                    <th>项目</th>
+                                    <th>编号</th>
+                                    <th>客户</th>
+                                    <th>存金</th>
+                                    <th>计息日</th>
+                                    <th>已收益</th>
+                                    <th>推荐人</th>
+                                    <th>操作人</th>
+                                    <th>操作时间</th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -67,15 +71,34 @@
                 </div>
             </div>
             <!-- /.col -->
+            <div class="col-xs-4">
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-line-chart"></i>
+
+                        <h3 class="box-title">库存统计</h3>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /. tools -->
+                    </div>
+                    <div class="box-body">
+                        <div id="stock-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- /.row -->
     </section>
     <!-- /.content -->
     <script type="text/javascript">
 
-        seajs.use('trash',function(project){
+        seajs.use('stock',function(project){
             project.render_list();
-            project.render_cancle();
-            project.render_remove();
+            project.render_storage();
+            project.render_stocks();
         })
     </script>
