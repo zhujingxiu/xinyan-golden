@@ -10,7 +10,7 @@ class XY_Controller extends MX_Controller {
     {
         parent::__construct();
         $this->load->driver('cache', array('adapter' => 'file'));
-        $this->load->library(array('Ion_auth','Layout','Setting'));
+        $this->load->library(array('Ion_auth','Layout','Setting','Message'));
         $this->lang->load('default');
         $this->load->model('tool/tool_model');
         $this->layout->set_vars(array(
@@ -45,7 +45,7 @@ class XY_Controller extends MX_Controller {
             //渲染视图
             $this->layout->set_layout('main');
             $this->layout->add_includes($this->load_files());
-            $this->layout->set_title('信研黄金-线下黄金交易平台');
+            $this->layout->set_title($this->config->item('site_title'));
             $this->layout->add_tpl('navbar','common/navbar',$this->navbar());
             $this->layout->add_tpl('sidebar','common/sidebar',$this->sidebar());
             $this->layout->add_tpl('controlbar','common/controlbar',$this->controlbar());
@@ -135,7 +135,7 @@ class XY_Controller extends MX_Controller {
     }
 
     public function group_users($code){
-        return $this->Ion_auth->group_users($code);
+        return $this->ion_auth->group_users($code);
     }
 
     public function inRole($role=array())

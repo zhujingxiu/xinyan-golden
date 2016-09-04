@@ -141,6 +141,7 @@ class Recycling extends Project {
                     $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
                 }
             }
+            $info['transferrers'] = $this->group_users('manager');
             $info['csrf'] = $this->_get_csrf_nonce();
             //var_dump($this->session->flashdata('csrfkey'));
             json_success(array('title'=>'添加项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
@@ -225,6 +226,7 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
+                $info['transferrers'] = $this->group_users('manager');
                 json_success(array('title'=>'编辑项目 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/update',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -319,6 +321,7 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
+                $info['transferrers'] = $this->group_users('warehouser');
                 json_success(array('title'=>'项目核实 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/checking',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));

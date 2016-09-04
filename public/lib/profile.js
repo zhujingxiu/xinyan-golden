@@ -24,7 +24,9 @@ define(function (require, exports, modules) {
             $('.loading').remove();
         }
     });
-
+    $('#save-profile').bind('click', function () {
+        $('#form-profile').submit();
+    })
     $('#save-upload').bind('click', function () {
         $('#form-avatar').ajaxSubmit({
             dataType:'json',
@@ -36,8 +38,6 @@ define(function (require, exports, modules) {
             }
         })
     })
-
-
     exports.submit_password = function () {
 
         require('jqueryvalidate');
@@ -101,17 +101,79 @@ define(function (require, exports, modules) {
 
                 //提交
                 submitHandler: function (form) {
-                    var checked = $('#node-tree').jstree("get_checked", null, true);
-                    $(form).find('input[name="permission"]').val(checked.join());
                     $(form).ajaxSubmit({
-                            dataType: 'json',
-                            success: function (json) {
-                                if (json.code == 1) {
-                                    location.reload()
-                                }
+                        dataType: 'json',
+                        success: function (json) {
+                            if (json.code == 1) {
+                                location.reload()
                             }
                         }
-                    );
+                    });
+                }
+            });
+        });
+    }
+
+    exports.submit_profile = function () {
+
+        require('jqueryvalidate');
+        require('customValidate');
+        $(function () {
+            $.validator.setDefaults({
+                errorElement: 'span',
+                errorClass: 'help-block',
+                highlight: function (element) {
+                    $(element).closest('.form-group').addClass('has-error');
+                },
+
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error');
+                    label.remove();
+                },
+
+                errorPlacement: function (error, element) {
+                    element.parent('div').append(error);
+                }
+            });
+
+            $("#form-profile").validate({
+                rules: {
+                    realname: {
+                        required: true,
+                        isChinese:true
+                    },
+                    phone: {
+                        required: true,
+                        isMobile:true
+                    },
+                    email: {
+                        email: true,
+                    }
+                },
+                messages: {
+                    realname: {
+                        required: '留下您的大名',
+                        isChinese: "中国人用中国字啊"
+                    },
+                    phone: {
+                        required: '留个手机号呗',
+                        isMobile: '这真是国内的手机吗',
+                    },
+                    email: {
+                        email: '给个能用的啊，方便找你',
+                    }
+                },
+
+                //提交
+                submitHandler: function (form) {
+                    $(form).ajaxSubmit({
+                        dataType: 'json',
+                        success: function (json) {
+                            if (json.code == 1) {
+                                location.reload()
+                            }
+                        }
+                    });
                 }
             });
         });

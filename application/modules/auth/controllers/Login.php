@@ -34,9 +34,10 @@ class Login extends MX_Controller {
             // check to see if the user is logging in
             // check for "remember me"
             $remember = (bool) $this->input->post('remember');
-
-            if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
+            $identity = $this->input->post('identity');
+            if ($this->ion_auth->login($identity, $this->input->post('password'), $remember))
             {
+                $this->ion_auth->increase_login_attempts($identity);
                 json_response(array('code' => 1, 'msg' => $this->ion_auth->messages(),'redirect'=>base_url()));
             }
             else

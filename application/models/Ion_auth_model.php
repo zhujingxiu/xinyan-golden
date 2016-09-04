@@ -1437,9 +1437,10 @@ class Ion_auth_model extends CI_Model
 
 	public function get_users_by_group_code($code)
 	{
-		return $this->db->select()
-			->where(array($this->tables['groups'].'.code' => strtolower($code),'status'=>1))
+		return $this->db->select($this->tables['users'].".*,".$this->tables['groups'].".title,".$this->tables['groups'].".code",false)
+			->where(array($this->tables['groups'].'.code' => strtolower($code),$this->tables['users'].'.status'=>1))
 			->join($this->tables['users'], $this->tables['users_groups'].'.'.$this->join['users'].'='.$this->tables['users'].'.id')
+			->join($this->tables['groups'], $this->tables['users_groups'].'.'.$this->join['groups'].'='.$this->tables['groups'].'.id')
 			->get($this->tables['users_groups']);
 	}
 

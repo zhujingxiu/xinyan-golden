@@ -167,7 +167,15 @@
 				<li>
 					<i class="fa fa-edit bg-blue"></i>
 					<div class="timeline-item">
-						<h3 class="timeline-header">项目备注</h3>
+						<h3 class="timeline-header">
+							转交给
+							<select class="" name="transferrer">
+								<?php foreach($transferrers as $item):?>
+									<option value="<?php echo $item['id']?>"><?php echo $item['realname']?></option>
+								<?php endforeach?>
+							</select>
+							核实登记信息
+						</h3>
 						<div class="timeline-body">
 							<textarea class="form-control" name="editorValue" placeholder="填写存金备注"></textarea>
 						</div>

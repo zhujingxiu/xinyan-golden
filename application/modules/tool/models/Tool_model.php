@@ -99,6 +99,12 @@ class Tool_model extends XY_Model
         if($query->num_rows()){
             $result = $query->row_array();
             return (float)$result['price'];
+        }else{
+            $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_today")->order_by('updatetime desc')->get();
+            if($query->num_rows()){
+                $result = $query->row_array();
+                return (float)$result['price'];
+            }
         }
         return FALSE;
     }

@@ -195,7 +195,17 @@
                 </li>
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
+
                     <div class="timeline-item">
+                        <h3 class="timeline-header">
+                            转交给
+                            <select class="" name="transferrer">
+                                <?php foreach($transferrers as $item):?>
+                                    <option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
+                                <?php endforeach?>
+                            </select>
+                            入库标记
+                        </h3>
                         <div class="input-group">
                             <span class="input-group-addon">客户手机</span>
                             <input type="text" class="form-control" name="phone" placeholder="确认客户手机">

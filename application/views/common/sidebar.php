@@ -33,7 +33,6 @@
             <?php if(isset($item['children']) && is_array($item['children'])) : ?>
                 <ul class="treeview-menu">
                 <?php foreach($item['children'] as $child ): ?>
-
                     <li <?php echo empty($child['style']) ? '' : 'class="'.$child['style'].'"'?>>
                         <a href="<?php echo site_url($child['link'])?>">
                             <i class="fa fa-circle-o"></i> 

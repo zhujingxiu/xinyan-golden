@@ -26,7 +26,6 @@
                             <li class="active"><a href="#api-gold" data-toggle="tab">黄金价格查询接口</a></li>
                             <li class="disabled"><a href="#api-sms" data-toggle="tab">短信接口</a></li>
                             <li class="hidden"><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
-
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="api-gold">

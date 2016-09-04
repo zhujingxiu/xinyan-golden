@@ -20,13 +20,12 @@ class Profile extends XY_Controller {
         if (!$this->ion_auth->logged_in())
         {
             // redirect them to the login page
-            redirect('login', 'refresh');
+            redirect('auth/login', 'refresh');
         }
-
         else
         {
-            // set the flash data error message if there is one
-            $data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+            $data['success'] = $this->session->flashdata('message');
+            $data['warning'] = validation_errors();
 
             //list the users
             $data['users'] = $this->ion_auth->users()->result();
@@ -34,7 +33,7 @@ class Profile extends XY_Controller {
             {
                 $data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
             }
-
+            $data['activity'] = $this->message->worker_activities(10);
             $this->layout->view('worker/profile', $data);
         }
     }
@@ -61,7 +60,7 @@ class Profile extends XY_Controller {
 
         if (!$this->ion_auth->logged_in())
         {
-            redirect('login', 'refresh');
+            redirect('auth/login', 'refresh');
         }
 
         $user = $this->ion_auth->user()->row();
@@ -75,6 +74,7 @@ class Profile extends XY_Controller {
 
             if ($change)
             {
+                $this->message->add_activity($user->realname.' 于 '.date('Y-m-d H:i:s').' 更新了密码',$this->ion_auth->get_user_id());
                 //if the password was successfully changed
                 $this->session->set_flashdata('success', $this->ion_auth->messages());
                 $this->logout();
@@ -88,18 +88,15 @@ class Profile extends XY_Controller {
     }
 
     // edit a user
-    public function save($id)
+    public function save()
     {
-        $this->data['title'] = $this->lang->line('edit_user_heading');
-
+        $id = $this->ion_auth->get_user_id();
         if (!$this->ion_auth->logged_in() || ( !($this->ion_auth->user()->row()->id == $id)))
         {
-            redirect('auth/profile', 'refresh');
+            redirect('auth/login', 'refresh');
         }
 
         $user = $this->ion_auth->user($id)->row();
-        $groups=$this->ion_auth->groups()->result_array();
-        $currentGroups = $this->ion_auth->get_users_groups($id)->result();
 
         // validate form input
         $this->form_validation->set_rules('realname', $this->lang->line('edit_user_validation_fname_label'), 'required');
@@ -109,10 +106,11 @@ class Profile extends XY_Controller {
         if($this->input->server('REQUEST_METHOD') == 'POST')
         {
             // do we have a valid request?
-            if ($this->_valid_csrf_nonce() === FALSE || $id != $this->input->post('id'))
+            if ($this->_valid_csrf_nonce() === FALSE )
             {
-                json_error(array('msg'=>$this->lang->line('error_csrf')));
+                //json_error(array('msg'=>$this->lang->line('error_csrf')));
             }
+            //$this->ion_auth->set_hook('post_update_user', 'update_profile', 'Message', 'add_activity', array($user->realname.' 于 '.date('Y-m-d H:i:s').' 更新了个人资料'));
 
             if ($this->form_validation->run() === TRUE)
             {
@@ -120,22 +118,23 @@ class Profile extends XY_Controller {
                     'realname' => $this->input->post('realname'),
                     'email'  => $this->input->post('email'),
                     'phone'      => $this->input->post('phone'),
-                    'phone'      => $this->input->post('phone'),
-                    'phone'      => $this->input->post('phone'),
+                    'wechat'      => $this->input->post('wechat'),
+                    'qq'      => $this->input->post('qq'),
                 );
 
-
-
                 // check to see if we are updating the user
-                if($this->ion_auth->update($user->id, $data))
+                if($this->ion_auth->update($id, $data))
                 {
+                    $this->message->add_activity($user->realname.' 于 '.date('Y-m-d H:i:s').' 更新了个人资料',$this->ion_auth->get_user_id());
+
                     $this->session->set_flashdata('success', $this->ion_auth->messages() );
+                    json_success();
                 }
                 else
                 {
                     $this->session->set_flashdata('warning', $this->ion_auth->errors() );
+                    json_error();
                 }
-                redirect('/', 'refresh');
             }
         }
     }
@@ -143,10 +142,17 @@ class Profile extends XY_Controller {
     public function avatar()//I think this makes more sense
     {
         if($this->input->server('REQUEST_METHOD') == 'POST') {
+
+
             $this->form_validation->set_rules('avatar', '头像', 'required');
 
             if ($this->form_validation->run() === TRUE) {
+                $user = $this->ion_auth->user($this->ion_auth->get_user_id())->row();
+                if(!$user){
+                    json_error();
+                }
                 if($this->ion_auth->update_avatar( $this->input->post('avatar'))){
+                    $this->message->add_activity($user->realname.' 于 '.date('Y-m-d H:i:s').' 更新了个人资料',$this->ion_auth->get_user_id());
                     $this->session->set_flashdata('success', '头像修改成功' );
                     json_success();
                 }

@@ -41,7 +41,7 @@
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">信研黄金</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg">信研黄金</span>
+                <span class="logo-lg"><?php echo $this->config->item('site_name')?></span>
             </a>
         <!-- Header Navbar: style can be found in header.less -->
             <?php echo $navbar ?>

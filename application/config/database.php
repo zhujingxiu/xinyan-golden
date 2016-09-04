@@ -77,7 +77,7 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => '127.0.0.1',
 	'username' => 'root',
-	'password' => '',
+	'password' => 'root',
 	'database' => 'golden',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'gd_',
@@ -93,5 +93,4 @@ $db['default'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE,
-	'date_default_timezone_set' => 'Asia/Shanghai'
 );
