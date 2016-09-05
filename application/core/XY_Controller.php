@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class XY_Controller extends MX_Controller {
     protected $tpl_data = array();
     protected $worker;
+    protected $worker_id = FALSE;
     protected $ajax_permission = FALSE;
     protected $current_url = FALSE;
     protected $module = FALSE;
@@ -19,7 +20,7 @@ class XY_Controller extends MX_Controller {
         if($this->ion_auth->get_user_id()){
             // 登录用户信息
             $this->worker = $this->ion_auth->get_info();
-
+            $this->worker_id = $this->worker['id'];
             $this->module = $this->uri->segment(1);
 
             $url = strtolower($this->uri->uri_string());
@@ -51,6 +52,7 @@ class XY_Controller extends MX_Controller {
             $this->layout->add_tpl('controlbar','common/controlbar',$this->controlbar());
         }else{
             // 跳转到登录页面
+            $this->worker_id = FALSE;
             redirect('auth/login','refresh');
         }
     }

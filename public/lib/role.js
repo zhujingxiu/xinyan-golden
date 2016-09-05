@@ -7,6 +7,18 @@ define(function (require,exports,modules) {
     require('jqueryvalidate');
     require('customValidate');
     require('ajaxSubmit');
+
+    exports.render_list = function() {
+        require('datatables');
+        require('datatables.bs');
+        $(function () {
+            $('#list').DataTable({
+                "language": {
+                    "url": "/public/lib/datatables/Chinese.json"
+                }
+            })
+        });
+    }
     // Highlight selected row
     $(function () {
         $.validator.setDefaults({

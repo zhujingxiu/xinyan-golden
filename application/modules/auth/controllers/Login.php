@@ -23,7 +23,7 @@ class Login extends MX_Controller {
     }
 
     function index(){
-        $tpl_data['title'] = $this->lang->line('login_heading');
+        $tpl_data['title'] = $this->config->item('site_name');
 
         //validate form input
         $this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');

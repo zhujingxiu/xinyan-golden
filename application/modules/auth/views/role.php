@@ -37,7 +37,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <table id="example2" class="table table-bordered table-hover">
+                        <table id="list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>角色</th>
@@ -128,6 +128,6 @@
     <!-- /.content -->
     <script >
         seajs.use('role', function (w) {
-
+            w.render_list();
         });
     </script>

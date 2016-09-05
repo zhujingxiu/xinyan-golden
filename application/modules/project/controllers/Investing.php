@@ -113,6 +113,7 @@ class Investing extends Project {
 					'idnumber' => $this->input->post('idnumber'),
 					'wechat' => $this->input->post('wechat'),
 					'referrer' => $this->input->post('referrer'),
+					'transferrer' => $this->input->post('transferrer'),
 					'note' => htmlspecialchars($this->input->post('editorValue')),
 					'price' => $price,
 					'weight'=> $this->input->post('weight'),
@@ -158,6 +159,7 @@ class Investing extends Project {
 					$info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
 				}
 			}
+			$info['transferrers'] = $this->group_users('manager');
 			json_response(array('code'=>1,'title'=>'添加项目','msg'=>$this->load->view('investing/booking',$info,TRUE)));
 		}
 	}
@@ -186,6 +188,7 @@ class Investing extends Project {
 				$tmp = array(
 					'referrer' => $this->input->post('referrer'),
 					'note' => htmlspecialchars($this->input->post('editorValue')),
+					'transferrer'=>  $this->input->post('transferrer'),
 					'weight'=>  $this->input->post('weight'),
 					'privacy'=> empty($this->input->post('privacy')) ? FALSE : (array)$this->input->post('privacy'),
 				);
@@ -218,6 +221,7 @@ class Investing extends Project {
 						$info['privacies'] = json_decode($item['file'],TRUE);
 					}
 				}
+				$info['transferrers'] = $this->group_users('manager');
 				json_success(array('title'=>'编辑项目 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('investing/update',$info,TRUE)));
 			}else{
 				json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -292,6 +296,7 @@ class Investing extends Project {
 						$info['privacies'] = json_decode($item['file'],TRUE);
 					}
 				}
+				$info['transferrers'] = $this->group_users('warehouser');
 				json_success(array('title'=>'项目核实 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('investing/checking',$info,TRUE)));
 			}else{
 				json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));

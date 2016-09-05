@@ -31,7 +31,6 @@ define(function(require,exports,modules){
                 },
                 "columns": [
                     {
-                        "data-class": 'details-control',
                         "data": "status",
                         "name": "status"
                     },

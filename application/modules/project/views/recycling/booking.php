@@ -139,7 +139,7 @@
 							<div class="col-sm-4">
 								<div class="form-group clearfix">
 									<div class="input-group col-sm-11">
-										<span class="input-group-addon">推荐人</span>
+										<span class="input-group-addon"> 推 荐 人 </span>
 										<input type="text" id="referrer" class="form-control" />
 										<input type="hidden" name="referrer"  />
 									</div>
@@ -167,16 +167,20 @@
 				<li>
 					<i class="fa fa-edit bg-blue"></i>
 					<div class="timeline-item">
-						<h3 class="timeline-header">
-							转交给
-							<select class="" name="transferrer">
-								<?php foreach($transferrers as $item):?>
-									<option value="<?php echo $item['id']?>"><?php echo $item['realname']?></option>
-								<?php endforeach?>
-							</select>
-							核实登记信息
-						</h3>
+
 						<div class="timeline-body">
+
+
+							<div class="input-group col-sm-12">
+								<span class="input-group-addon">转交给</span>
+								<select name="transferrer" class="form-control select2">
+								<?php foreach($transferrers as $item):?>
+									<option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
+								<?php endforeach?>
+								</select>
+								<span class="input-group-addon">核实登记信息</span>
+							</div>
+
 							<textarea class="form-control" name="editorValue" placeholder="填写存金备注"></textarea>
 						</div>
 					</div>

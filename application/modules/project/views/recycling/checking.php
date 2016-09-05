@@ -197,15 +197,7 @@
                     <i class="fa fa-edit bg-blue"></i>
 
                     <div class="timeline-item">
-                        <h3 class="timeline-header">
-                            转交给
-                            <select class="" name="transferrer">
-                                <?php foreach($transferrers as $item):?>
-                                    <option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
-                                <?php endforeach?>
-                            </select>
-                            入库标记
-                        </h3>
+
                         <div class="input-group">
                             <span class="input-group-addon">客户手机</span>
                             <input type="text" class="form-control" name="phone" placeholder="确认客户手机">
@@ -213,7 +205,15 @@
                             <input type="text" name="weight" class="form-control" placeholder="确认鉴定克重">
                             <span class="input-group-addon">克</span>
                         </div>
-
+                        <div class="input-group col-sm-12">
+                            <span class="input-group-addon">转交给</span>
+                            <select name="transferrer" class="form-control select2">
+                                <?php foreach($transferrers as $item):?>
+                                    <option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
+                                <?php endforeach?>
+                            </select>
+                            <span class="input-group-addon">确认入库标记</span>
+                        </div>
                         <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
                     </div>
                 </li>

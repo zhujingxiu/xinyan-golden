@@ -19,14 +19,15 @@ class Recycling_model extends XY_Model{
         if($simple){
             return $this->db->get_where($this->table,array('project_sn'=>$sn),1);
         }
-        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,c.idnumber,c.wechat,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
+        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,c.idnumber,c.wechat,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser,w3.realname locker', false);
         $this->db->from($this->table.' AS p')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
-        $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
+        $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
 
         $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
-        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
+        $this->db->join($this->worker_table.' AS w3', 'w3.id = p.locker_id','left');
         return $this->db->get();
     }
 
@@ -39,9 +40,10 @@ class Recycling_model extends XY_Model{
         $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
         $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
-        $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
+
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
@@ -463,7 +465,7 @@ class Recycling_model extends XY_Model{
         $project = $this->project($data['project_sn']);
         if($project->num_rows()){
             $info = $project->row_array();
-            $this->db->delete($this->stock_table, array('project_sn'=>$data['project_sn']));
+            $this->db->update($this->stock_table,array('status'=>0), array('project_sn'=>$data['project_sn']));
             $this->db->insert($this->customer_stock_table,array(
                 'customer_id' => $info['customer_id'],
                 'mode' => 'in',
@@ -539,5 +541,23 @@ class Recycling_model extends XY_Model{
     {
         $query = $this->db->where(array('code'=>strtolower($code)))->from($this->status_table)->get()->limit(1);
         return $query->num_rows() ? $query->row_array() : FALSE;
+    }
+
+    public function reset_locker($project_sn=false,$locker=false){
+        $where= array();
+        if($project_sn){
+            $where['project_sn'] = $project_sn;
+        }
+        if($locker){
+            $where['locker_id'] = (int)$locker;
+        }else{
+            $where['locker_id'] = (int)$this->ion_auth->get_user_id();
+        }
+        $this->db->update($this->table,$where,array('locker' => 0));
+    }
+
+    public function set_locker($project_sn,$user_id=false){
+        $value = $user_id ? (int)$user_id : (int)$this->ion_auth->get_user_id();
+        $this->db->update($this->table,array('project_sn' =>$project_sn),array('locker_id' =>$value));
     }
 }

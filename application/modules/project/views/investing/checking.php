@@ -122,6 +122,7 @@
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
                     <div class="timeline-item">
+
                         <div class="input-group">
                             <span class="input-group-addon">客户手机</span>
                             <input type="text" class="form-control" name="phone" placeholder="确认客户手机">
@@ -129,7 +130,15 @@
                             <input type="text" name="amount" class="form-control" placeholder="确认实收金额">
                             <span class="input-group-addon">元</span>
                         </div>
-                        <?php if(false): ?><script type="text/plain" id="editor" style="height:80px;"></script><?php endif ?>
+                        <div class="input-group col-sm-12">
+                            <span class="input-group-addon">转交给</span>
+                            <select name="transferrer" class="form-control select2">
+                                <?php foreach($transferrers as $item):?>
+                                    <option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
+                                <?php endforeach?>
+                            </select>
+                            <span class="input-group-addon">确认入库标记</span>
+                        </div>
                         <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
                     </div>
                 </li>

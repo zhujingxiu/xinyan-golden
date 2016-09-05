@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
 
-    <title>信研黄金-登录</title>
+    <title><?php echo $title?>-登录</title>
 
     <link rel="stylesheet" href="<?php echo asset_url('login/css/reset.css')?>">
     <link rel="stylesheet" href="<?php echo asset_url('login/css/login.css')?>">

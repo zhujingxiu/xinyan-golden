@@ -227,6 +227,21 @@ class Recycling extends Project {
                     }
                 }
                 $info['transferrers'] = $this->group_users('manager');
+                //lock
+                $info['locked'] = $info['relax'] = false;
+                $info['editabled'] = true;
+                //set the locker is the current user_id
+                if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
+                    $this->recycling_model->set_locker((int)$info['project_sn']);
+                }else{
+                    $info['locked'] = true;
+                    $info['editabled'] = false;
+                    $info['text_lock'] = sprintf(lang('text_lock'), $info['locker']);
+                    if($this->inRole('manager')) {
+                        $info['relax'] = true;
+                        $info['text_confirm_relax'] = sprintf(lang('text_relax'),$info['locker']);
+                    }
+                }
                 json_success(array('title'=>'编辑项目 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/update',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -322,6 +337,21 @@ class Recycling extends Project {
                     }
                 }
                 $info['transferrers'] = $this->group_users('warehouser');
+                //lock
+                $info['locked'] = $info['relax'] = false;
+
+                //set the locker is the current user_id
+                if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
+                    $this->recycling_model->set_locker((int)$info['project_sn']);
+                }else{
+                    $info['locked'] = true;
+                    $info['approve'] = false;
+                    $info['text_lock'] = sprintf(lang('text_lock'), $info['locker']);
+                    if($this->inRole('manager')) {
+                        $info['relax'] = true;
+                        $info['text_confirm_relax'] = sprintf(lang('text_relax'),$info['locker']);
+                    }
+                }
                 json_success(array('title'=>'项目核实 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('recycling/checking',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));

@@ -308,7 +308,28 @@ function format_time($time,$simple=false){
 	}
 	return $result;
 }
+function format_weight($weight){
+	$_weight = number_format($weight,2);
+	$_tmp = explode(",",$_weight);
+	$result = $_weight.'<small>克</small>';
+	if(is_array($_tmp)){
 
+		$length = count($_tmp);
+		switch($length){
+			case 3:
+				$result = $_tmp[0].'<small>吨</small>'.(int)$_tmp[1].'<small>公斤</small>'.$_tmp[2].'<small>克</small>';
+				break;
+			case 2:
+				$result = (int)$_tmp[0].'<small>公斤</small>'.$_tmp[1].'<small>克</small>';
+				break;
+			case 1:
+				$result = $_tmp[0].'<small>克</small>';
+				break;
+		}
+
+	}
+	return $result;
+}
 function curl_post($url,$data)
 {
 	$ch = curl_init();

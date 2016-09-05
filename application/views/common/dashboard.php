@@ -60,7 +60,7 @@
                 <div class="small-box bg-red">
                     <div class="inner">
                         <h3><?php echo $today?></h3>
-                        <p>今日存入黄金</p>
+                        <p>今日入库黄金</p>
                     </div>
                     <div class="icon">
                         <i class="ion ion-pie-graph"></i>
@@ -162,8 +162,9 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info btn-flat pull-left">Place New Order</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-default btn-flat pull-right">View All Orders</a>
+                        <a href="<?php echo site_url('/project/recycling')?>" class="btn btn-sm btn-primary btn-flat pull-left">金生金</a>
+                        <a href="<?php echo site_url('/project/investing')?>" class="btn btn-sm btn-info btn-flat pull-left">钱生金</a>
+                        <a href="<?php echo site_url('/project/stock')?>" class="btn btn-sm btn-default btn-flat pull-right">金库</a>
                     </div>
                     <!-- /.box-footer -->
                 </div>

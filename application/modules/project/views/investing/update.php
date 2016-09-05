@@ -110,7 +110,15 @@
             <legend>项目备注</legend>
             <div class="col-sm-12">
                 <div class="form-group clearfix">
-
+                    <div class="input-group col-sm-12">
+                        <span class="input-group-addon">转交给</span>
+                        <select name="transferrer" class="form-control select2">
+                            <?php foreach($transferrers as $item):?>
+                                <option value="<?php echo $item['id']?>" <?php echo $item['id']==$transferrer ? 'selected':''?>><?php echo $item['realname']?></option>
+                            <?php endforeach?>
+                        </select>
+                        <span class="input-group-addon">核实登记信息</span>
+                    </div>
                     <textarea class="form-control" name="editorValue" placeholder="填写项目备注"><?php echo trim(strip_tags(htmlspecialchars_decode($note)));?></textarea>
                 </div>
             </div>

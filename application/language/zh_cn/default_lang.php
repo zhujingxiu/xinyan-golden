@@ -61,3 +61,7 @@ $lang['button_refusing'] = '<a class="btn btn-warning btn-refused">驳回</a>';
 $lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
 $lang['button_confirming'] = '<a class="btn btn-primary btn-confirming">确认</a>';
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
+
+
+
+$lang['text_lock']                 = '<strong class="lock">负责人[%s] 已锁住该稿件, 现在以只读模式打开!</strong>';
