@@ -226,7 +226,7 @@
         $('#timeline-box').slimScroll({
             height: '560px'
         });
-
+        <?php if($editable):?>
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
@@ -304,8 +304,11 @@
                 });
             }
         });
-    });
 
+
+        <?php endif ?>
+    });
+    <?php if($editable):?>
     new AjaxUpload('#button-photo', {
         action: '/tool/filemanager/upload',
         name: 'uploads',
@@ -488,5 +491,6 @@
             return false;
         }
     });
+    <?php endif ?>
 </script>
 

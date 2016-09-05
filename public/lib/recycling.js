@@ -92,20 +92,30 @@ define(function(require,exports,modules){
             require('jqueryvalidate');
             require('customValidate');
             require('ajaxUpload');
-            $.get('/project/recycling/update', {project: $(this).parent().parent().attr('id')}, function (json) {
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/recycling/update', {project: sn}, function (json) {
                 if (json.code == 1) {
-                    layer.open({
+                    var options = {
                         type: 1,
                         title: json.title,
                         area: '880px',
                         offset: '100px',
                         zIndex: 99,
-                        btn: ['保存', '取消'],
                         content: json.msg,
-                        yes: function (index, layero) {
-                            $('#form-update').submit();
+                        end: function () {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn})
                         }
-                    });
+                    };
+                    if(json.editable){
+                        options.btn = ['保存', '取消'];
+                        options.yes = function (index, layero) {
+                            $('#form-update').submit();
+                        };
+
+                    }else{
+                        options.btn = ['取消'];
+                    }
+                    layer.open(options);
                 } else {
                     var l = require('layout');
                     l.render_message(json.msg, json.title);
@@ -128,23 +138,30 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/checked', {project:sn}, function(json){
                 if(json.code==1){
-                    layer.open({
+                    var options = {
                         type: 1,
                         title:json.title,
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['核实', '驳回'],
                         content: json.msg ,
-                        yes: function(index, layero){
+                        end: function () {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn})
+                        }
+                    }
+                    if(json.editable){
+                        options.btn = ['核实', '驳回'];
+                        options.yes = function(index, layero){
                             $('#form-checking').submit();
-                        },
-                        btn2 : function(index, layero){
+                        };
+                        options.btn2 = function(index, layero){
                             exports.do_cancle(sn,'/project/recycling/refused','请填写驳回原因 项目: '+sn);
-
                             return false
                         }
-                    });
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
                 }else{
                     var l = require('layout');
                     l.render_message(json.msg,json.title);
@@ -165,18 +182,26 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/confirmed', {project:sn}, function(json){
                 if(json.code==1){
-                    layer.open({
+                    var options = {
                         type: 1,
                         title:json.title,
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['确认标记', '取消'],
                         content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-confirming').submit();
+                        end: function () {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn})
                         }
-                    });
+                    }
+                    if(json.editable){
+                        options.btn = ['确认标记', '驳回'];
+                        options.yes = function(index, layero){
+                            $('#form-confirming').submit();
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
                 }else{
                     var l = require('layout');
                     l.render_message(json.msg,json.title);

@@ -64,4 +64,4 @@ $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</
 
 
 
-$lang['text_lock']                 = '<strong class="lock">负责人[%s] 已锁住该稿件, 现在以只读模式打开!</strong>';
+$lang['text_lock']                 = '<strong class="lock">操作人[%s] 已锁住该表单, 现在以只读模式打开</strong>';

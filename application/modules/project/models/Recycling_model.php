@@ -553,11 +553,13 @@ class Recycling_model extends XY_Model{
         }else{
             $where['locker_id'] = (int)$this->ion_auth->get_user_id();
         }
-        $this->db->update($this->table,$where,array('locker' => 0));
+        $this->db->update($this->table,array('locker_id' => 0),$where);
+        return $this->db->affected_rows();
     }
 
     public function set_locker($project_sn,$user_id=false){
         $value = $user_id ? (int)$user_id : (int)$this->ion_auth->get_user_id();
-        $this->db->update($this->table,array('project_sn' =>$project_sn),array('locker_id' =>$value));
+        $this->db->update($this->table,array('locker_id' =>$value),array('project_sn' =>$project_sn));
+        return $this->db->last_query();
     }
 }
