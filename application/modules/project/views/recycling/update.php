@@ -91,8 +91,11 @@
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">鉴定人</span>
-                                        <input type="text" id="appraiser" class="form-control" value="<?php echo $appraiser?>">
-                                        <input type="hidden" name="appraiser" value="<?php echo $appraiser_id?>">
+                                        <select id="appraiser" name="appraiser" class="form-control select2" >
+                                            <?php foreach($appraisers as $item):?>
+                                            <option value="<?php echo $item['id']?>" <?php echo $item['id']==$appraiser_id ? 'selected' : ''?> ><?php echo $item['realname']?></option>
+                                            <?php endforeach?>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -294,18 +297,20 @@
                 $(form).ajaxSubmit({
                     dataType:'json',
                     beforeSubmit:function(){
-                        //layer.load();
+                        layer.load();
                     },
                     success: function (json) {
                         if(json.code==1){
                             location.reload()
+                        }else{
+                            layer.alert(json.msg,{icon: 2,title:json.title}, function () {
+                                location.reload()
+                            });
                         }
                     }
                 });
             }
         });
-
-
         <?php endif ?>
     });
     <?php if($editable):?>
@@ -410,7 +415,7 @@
             $('.loading').remove();
         }
     });
-
+    <?php if(false) :?>
     $('#appraiser').autocomplete({
         delay: 300,
         source: function(request, response) {
@@ -435,6 +440,7 @@
             return false;
         }
     });
+    <?php endif?>
     $('#referrer').autocomplete({
         delay: 300,
         source: function(request, response) {

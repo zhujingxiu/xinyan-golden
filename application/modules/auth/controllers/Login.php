@@ -15,7 +15,7 @@ class Login extends MX_Controller {
         $this->load->database();
         $this->load->library(array('ion_auth','form_validation','setting'));
         $this->load->helper(array('url','language','server'));
-
+        $this->load->model(array('project/recycling_model','project/investing_model'));
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
         $this->lang->load('auth');
@@ -38,6 +38,8 @@ class Login extends MX_Controller {
             if ($this->ion_auth->login($identity, $this->input->post('password'), $remember))
             {
                 $this->ion_auth->increase_login_attempts($identity);
+                $this->recycling_model->reset_locker();
+                $this->investing_model->reset_locker();
                 json_response(array('code' => 1, 'msg' => $this->ion_auth->messages(),'redirect'=>base_url()));
             }
             else

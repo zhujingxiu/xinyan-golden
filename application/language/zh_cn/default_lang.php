@@ -20,6 +20,9 @@ $lang['error_no_project'] = '项目不存在';
 $lang['error_no_customer'] = '客户不存在';
 $lang['error_no_applied'] = '没有找到该项目的提金申请数据';
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
+$lang['error_project_status'] = '项目状态已改变，请刷新重试';
+$lang['error_project_operator'] = '无权限操作当前项目，请刷新重试';
+
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
 $lang['text_ornaments'] = "金饰";
@@ -49,19 +52,21 @@ $lang['label_disabled'] = '<label class="label label-danger">已禁用</label>';
 $lang['label_enabled'] = '<label class="label label-success">已启用</label>';
 $lang['label_applied'] = '<label class="label label-warning">申请提金 %s 克</label>';
 
-$lang['button_detail'] = '<a class="btn btn-default btn-detail">查看</a>';
-$lang['button_edit'] = '<a class="btn btn-default btn-edit">修改</a>';
-$lang['button_update'] = '<a class="btn btn-default btn-update">编辑</a>';
-$lang['button_checking'] = '<a class="btn btn-primary btn-checking">核实</a>';
-$lang['button_appling'] = '<a class="btn btn-success btn-appling">提金</a>';
+$lang['button_detail'] = "<a class=\"btn btn-default btn-detail\">%s 查看</a>";
+$lang['button_edit'] = "<a class=\"btn btn-default btn-edit\">%s 修改</a>";
+$lang['button_update'] = "<a class=\"btn btn-default btn-update\">%s 编辑</a>";
+$lang['button_checking'] = "<a class=\"btn btn-primary btn-checking\">%s 核实</a>";
+$lang['button_refusing'] = "<a class=\"btn btn-warning btn-refused\">%s 驳回</a>";
+$lang['button_appling'] = "<a class=\"btn btn-success btn-appling\">%s 提金</a>";
+$lang['button_confirming'] = "<a class=\"btn btn-primary btn-confirming\">%s 确认</a>";
 $lang['button_order'] = '<a class="btn btn-success btn-order">消费</a>';
 $lang['button_taking'] = '<a class="btn btn-success btn-taking">出库</a>';
 $lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
-$lang['button_refusing'] = '<a class="btn btn-warning btn-refused">驳回</a>';
+
 $lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
-$lang['button_confirming'] = '<a class="btn btn-primary btn-confirming">确认</a>';
+
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
 
 
 
-$lang['text_lock']                 = '<strong class="lock">操作人[%s] 已锁住该表单, 现在以只读模式打开</strong>';
+$lang['text_lock']   = '<strong class="lock"><i class="fa fa-lock"></i> 操作人 [ %s ] 正在编辑该表单, 当前为只读模式</strong>';

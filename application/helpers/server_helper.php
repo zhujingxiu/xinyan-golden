@@ -358,4 +358,15 @@ function curl_get($url,$data){
 	return $output;
 }
 
-
+function expload_2_array($string,$flag=","){
+	$result = array();
+	$_tmp = explode($flag,$string);
+	if(is_array($_tmp)){
+		foreach($_tmp as $item){
+			if($item){
+				$result[] = $item;
+			}
+		}
+	}
+	return $result;
+}

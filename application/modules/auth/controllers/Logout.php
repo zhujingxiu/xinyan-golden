@@ -8,11 +8,14 @@ class Logout extends MX_Controller {
         $this->load->database();
         $this->load->library(array('ion_auth'));
         $this->load->helper(array('url','language'));
+        $this->load->model(array('project/recycling_model','project/investing_model'));
 
     }
 
     public function index()
     {
+        $this->recycling_model->reset_locker();
+        $this->investing_model->reset_locker();
         $logout = $this->ion_auth->logout();
 
         // redirect them to the login page

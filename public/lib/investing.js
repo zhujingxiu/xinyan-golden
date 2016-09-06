@@ -25,12 +25,11 @@ define(function(require,exports,modules){
                 },
                 "columns": [
                     {
-                        "data-class": 'details-control',
                         "data": "status",
                         "name": "status"
                     },
                     {"data": "sn", "name": "p.project_sn"},
-                    {"data": "realname", "name": "p.realname"},
+                    {"data": "realname", "name": "c.realname"},
                     {"data": "price", "name": "p.price"},
                     {"data": "weight", "name": "p.weight"},
                     {"data": "amount", "name": "p.amount"},
@@ -84,20 +83,38 @@ define(function(require,exports,modules){
             //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            $.get('/project/investing/update', {project: $(this).parent().parent().attr('id')}, function (json) {
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/update', {project: sn}, function (json) {
                 if (json.code == 1) {
-                    layer.open({
+                    var options = {
                         type: 1,
                         title: json.title,
                         area: '880px',
                         offset: '100px',
                         zIndex: 99,
-                        btn: ['保存', '取消'],
                         content: json.msg,
-                        yes: function (index, layero) {
-                            $('#form-update').submit();
+                        end: function () {
+                            $.get('/project/investing/reset_locker',{project_sn:sn})
                         }
-                    });
+                    };
+                    if(json.editable) {
+                        options.btn = ['保存', '取消'];
+                        options.yes = function (index, layero) {
+                            $('#form-update').submit();
+                        };
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/investing/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
+                    }else{
+                        options.btn = ['关闭'];
+                    }
+                    layer.open(options);
                 } else {
                     var l = require('layout');
                     l.render_message(json.msg, json.title);
@@ -120,23 +137,39 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/checked', {project:sn}, function(json){
                 if(json.code==1){
-                    layer.open({
+                    var options = {
                         type: 1,
                         title:json.title,
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['核实', '驳回'],
                         content: json.msg ,
-                        yes: function(index, layero){
+                        end: function () {
+                            $.get('/project/investing/reset_locker',{project_sn:sn})
+                        }
+                    }
+                    if(json.editable){
+                        options.btn = ['核实', '驳回'];
+                        options.yes = function(index, layero){
                             $('#form-checking').submit();
-                        },
-                        btn2 : function(index, layero){
+                        };
+                        options.btn2 = function(index, layero){
                             exports.do_cancle(sn,'/project/investing/refused','请填写驳回原因 项目: '+sn);
-
                             return false
                         }
-                    });
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/investing/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
                 }else{
                     var l = require('layout');
                     l.render_message(json.msg,json.title);
@@ -157,18 +190,35 @@ define(function(require,exports,modules){
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/confirmed', {project:sn}, function(json){
                 if(json.code==1){
-                    layer.open({
+                    var options = {
                         type: 1,
                         title:json.title,
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['确认标记', '取消'],
                         content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-confirming').submit();
+                        end: function () {
+                            $.get('/project/investing/reset_locker',{project_sn:sn})
                         }
-                    });
+                    }
+                    if(json.editable){
+                        options.btn = ['确认标记', '驳回'];
+                        options.yes = function(index, layero){
+                            $('#form-confirming').submit();
+                        };
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/investing/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
                 }else{
                     var l = require('layout');
                     l.render_message(json.msg,json.title);
@@ -177,7 +227,45 @@ define(function(require,exports,modules){
         });
     };
 
-
+    exports.render_detail = function (){
+        $('#project-list').delegate('.btn-detail','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/investing/detail', {project:sn}, function(json){
+                if(json.code==1){
+                    var options = {
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        content: json.msg ,
+                        end: function () {
+                            $.get('/project/investing/reset_locker',{project_sn:sn})
+                        }
+                    }
+                    if(json.terminable){
+                        options.btn = ['终止项目', '取消'];
+                        options.yes = function (index, layero) {
+                            exports.do_cancle(sn,'/project/investing/terminated','填写终止原因 '+sn);
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    };
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');

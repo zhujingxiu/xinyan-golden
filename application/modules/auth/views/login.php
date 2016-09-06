@@ -24,7 +24,7 @@
 
 <body>
 <div class="loginWrapper clearfix">
-    <div class="banWrapper" style="background: #21db8a">
+    <div class="banWrapper" style="background: #faf4eb">
         <div id="left-container" class="banContent">
             <div id="gold-price-charts" style="margin: 0;padding: 0;width:700px;height:380px;">
             </div>
@@ -32,7 +32,7 @@
     </div>
     <div class="loginMain">
         <div class="loginWidth">
-            <div class="loginLogoDiv">
+            <div class="loginLogoDiv" style="display: none;">
                 <a class="loginLogo" href="<?php echo base_url();?>"></a>
             </div>
             <?php echo form_open("auth/login", ['class' => 'formLogin', 'id' => "login_form"]); ?>

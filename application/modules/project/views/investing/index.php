@@ -44,7 +44,6 @@
                                     <th>状态</th>
                                     <th>编号</th>
                                     <th>客户</th>
-
                                     <th>金价</th>
                                     <th>重量 （克）</th>
                                     <th>金额 （元）</th>
@@ -85,6 +84,7 @@
         seajs.use('investing',function(project){
             project.render_list();
             project.render_update();
+            project.render_detail();
             project.render_checking();
             project.render_confirming();
             project.render_booking();

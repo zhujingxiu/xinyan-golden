@@ -65,7 +65,7 @@ class Investing extends Project {
 					'referrer'	=> $row['referrer'],
 					'operator'	=> $row['operator'],
 					'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
-					'operation'	=> $this->investing_operation($row['status_id'])
+					'operation'	=> $this->investing_operation($row['status_id'],$row['locker_id'])
 				);
 			}
 		}
@@ -168,7 +168,7 @@ class Investing extends Project {
 	public function update()
 	{
 		if($msg = $this->session->flashdata('ajax_permission')){
-			json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
+			json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
 		}
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
 			if($this->_valid_csrf_nonce() === FALSE){
@@ -184,7 +184,17 @@ class Investing extends Project {
 				if(!$result->num_rows()){
 					json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 				}
-				$info = $result->row_array();
+				$project = $result->row_array();
+				$operators = array($project['worker_id']);
+
+				//验证项目可编辑状态
+				if(!in_array($project['status_id'],array($this->config->item('investing_initial'),$this->config->item('investing_refused'))) ){
+					json_error(array('msg'=>lang('error_project_status')));
+				}
+				//验证项目操作人
+				if(!in_array($this->worker_id,$operators)){
+					json_error(array('msg'=>lang('error_project_operator')));
+				}
 				$tmp = array(
 					'referrer' => $this->input->post('referrer'),
 					'note' => htmlspecialchars($this->input->post('editorValue')),
@@ -193,7 +203,7 @@ class Investing extends Project {
 					'privacy'=> empty($this->input->post('privacy')) ? FALSE : (array)$this->input->post('privacy'),
 				);
 				if($this->investing_model->update($this->input->post('project_sn'),$tmp)){
-					$this->session->set_flashdata('success', sprintf("项目编辑成功！ 编号: %s",$info['project_sn']));
+					$this->session->set_flashdata('success', sprintf("项目编辑成功！ 编号: %s",$project['project_sn']));
 					json_success();
 				}
 			}else {
@@ -222,14 +232,56 @@ class Investing extends Project {
 					}
 				}
 				$info['transferrers'] = $this->group_users('manager');
-				json_success(array('title'=>'编辑项目 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('investing/update',$info,TRUE)));
+				$title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
+				//lock
+				$info['unlock'] = false;
+				$info['editable'] = true;
+				//set the locker is the current user_id
+				if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
+					$this->investing_model->set_locker($info['project_sn']);
+				}else{
+					$info['editable'] = false;
+					$title = sprintf(lang('text_lock'), $info['locker']);var_dump($title);
+					if($this->inRole('manager')) {
+						$info['unlock'] = true;
+						$info['text_confirm_relax'] = sprintf(lang('text_relax'),$info['locker']);
+					}
+				}
+				json_success(array(
+					'title'=>$title,
+					'msg'=>$this->load->view('investing/update',$info,TRUE),
+					'editable'=>$info['editable'],
+                    'unlock'=>$info['unlock']
+				));
 			}else{
 				json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 			}
 		}
 
 	}
+	public function detail(){
+		$result = $this->investing_model->project($this->input->get('project'));
+		if($result->num_rows()){
+			$info = $result->row_array();
+			$info['privacies'] = FALSE;
 
+			$_privacy = $this->investing_model->files($info['project_sn'],'privacy');
+			if($_privacy->num_rows()){
+				$_info = $_privacy->result_array();
+				foreach($_info as $item){
+					$info['privacies'] = json_decode($item['file'],TRUE);
+				}
+			}
+			$info['histories'] = $this->investing_model->histories($info['project_sn']);
+			json_success(array(
+				'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
+				'msg'=>$this->load->view('investing/detail',$info,TRUE),
+				'terminable'=>$this->inRole('manager')
+			));
+		}else{
+			json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
+		}
+	}
 	public function checked()
 	{
 		if($msg = $this->session->flashdata('ajax_permission')){
@@ -253,6 +305,15 @@ class Investing extends Project {
 					json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 				}
 				$project = $result->row_array();
+				$operators = expload_2_array($project['transferrer']);
+				//验证项目可编辑状态
+				if(!in_array($project['status_id'],array($this->config->item('investing_initial'))) ){
+					json_error(array('msg'=>lang('error_project_status')));
+				}
+				//验证项目操作人
+				if(!in_array($this->worker_id,$operators)){
+					json_error(array('msg'=>lang('error_project_operator')));
+				}
 				if(($project['amount']*100 == $amount*100) && $project['phone'] == $phone){
 					$this->investing_model->push_state($project_sn,array(
 						'request'	=> var_export(array(
@@ -263,6 +324,7 @@ class Investing extends Project {
 							),TRUE),
 						'status'	=> $this->config->item('investing_checked'),
 						'start'		=> $this->calculate_start($project['addtime']),
+						'transferrer' =>$this->input->post('transferrer'),
 						'note' 		=> $note,
 						'call_func' => 'active_start',
 						'call_param'=> $project_sn
@@ -297,7 +359,27 @@ class Investing extends Project {
 					}
 				}
 				$info['transferrers'] = $this->group_users('warehouser');
-				json_success(array('title'=>'项目核实 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('investing/checking',$info,TRUE)));
+				$title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
+				//lock
+				$info['unlock'] = false;
+				$info['editable'] = true;
+				//set the locker is the current user_id
+				if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
+					$this->investing_model->set_locker($info['project_sn']);
+				}else{
+					$info['editable'] = false;
+					$title = sprintf(lang('text_lock'), $info['locker']);
+					if($this->inRole('manager')) {
+						$info['unlock'] = true;
+						$info['text_confirm_relax'] = sprintf(lang('text_relax'),$info['locker']);
+					}
+				}
+				json_success(array(
+					'title'=>$title,
+					'msg'=>$this->load->view('investing/checking',$info,TRUE),
+					'editable'=>$info['editable'],
+					'unlock'=>$info['unlock']
+				));
 			}else{
 				json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 			}
@@ -327,12 +409,25 @@ class Investing extends Project {
 					json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 				}
 				$project = $result->row_array();
+				$operators = expload_2_array($project['transferrer']);
+				//验证项目可编辑状态
+				if(!in_array($project['status_id'],array($this->config->item('investing_checked'))) ){
+					json_error(array('msg'=>lang('error_project_status')));
+				}
+				//验证项目操作人
+				if(!in_array($this->worker_id,$operators)){
+					json_error(array('msg'=>lang('error_project_operator')));
+				}
 				if(($project['weight']*100 == $weight*100) && $project['phone'] == $phone){
 					$callback = array(
 						'project_instock'=> array(
 							'project_sn' => $project_sn,
 							'note' => $note
 						),
+						'return_transfer'=>array(
+							'project_sn' => $project_sn,
+							'status_id'  => $this->config->item('investing_checked')
+						)
 					);
 					if($this->config->item('growing_mode') == 't0'){
 						//T+0
@@ -467,5 +562,16 @@ class Investing extends Project {
 		json_error();
 	}
 
-
+	public function reset_locker()
+	{
+		$project_sn = $this->input->get('project_sn');
+		$locker = $this->input->get('locker');
+		if($locker){
+			if( $this->investing_model->set_locker($project_sn,$this->worker_id)){
+				json_success(array('reset'=>1));
+			}
+		}else if( $this->investing_model->reset_locker($project_sn)){
+			//json_success(array('reset'=>1));
+		}
+	}
 }

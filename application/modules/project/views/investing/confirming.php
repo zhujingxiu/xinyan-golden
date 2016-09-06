@@ -219,6 +219,10 @@
                     success: function (json) {
                         if(json.code==1){
                             location.reload()
+                        }else{
+                            layer.alert(json.msg,{icon: 2,title:json.title}, function () {
+                                location.reload()
+                            });
                         }
                     }
                 });

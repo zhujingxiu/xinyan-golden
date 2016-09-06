@@ -17,7 +17,11 @@ class Filemanager extends XY_Controller
     }
     public function download()
     {
-        var_dump($this->input->get('file'));
+        if($this->input->get('file') && file_exists($this->input->get('file'))){
+
+            $this->load->helper('download');
+            force_download($this->input->get('file'),NULL);
+        }
     }
 
     public function upload()

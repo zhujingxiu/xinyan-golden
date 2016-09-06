@@ -35,7 +35,7 @@ define(function(require,exports,modules){
                         "name": "status"
                     },
                     {"data": "sn", "name": "p.project_sn"},
-                    {"data": "customer", "name": "p.realname"},
+                    {"data": "customer", "name": "c.realname"},
                     {"data": "gold", "name": "p.type"},
                     {"data": "number", "name": "p.number"},
                     {"data": "origin", "name": "p.origin_weight"},
@@ -106,14 +106,22 @@ define(function(require,exports,modules){
                             $.get('/project/recycling/reset_locker',{project_sn:sn})
                         }
                     };
-                    if(json.editable){
+                    if(json.editable) {
                         options.btn = ['保存', '取消'];
                         options.yes = function (index, layero) {
                             $('#form-update').submit();
                         };
-
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
                     }else{
-                        options.btn = ['取消'];
+                        options.btn = ['关闭'];
                     }
                     layer.open(options);
                 } else {
@@ -158,6 +166,15 @@ define(function(require,exports,modules){
                             exports.do_cancle(sn,'/project/recycling/refused','请填写驳回原因 项目: '+sn);
                             return false
                         }
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
                     }else{
                         options.btn = [ '关闭'];
                     }
@@ -198,6 +215,15 @@ define(function(require,exports,modules){
                         options.yes = function(index, layero){
                             $('#form-confirming').submit();
                         };
+                    }else if(json.unlock){
+                        options.btn = ['解锁', '取消'];
+                        options.yes = function (index, layero) {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn,locker:1},function(json){
+                                if(json.reset==1){
+                                    location.reload();
+                                }
+                            },'json')
+                        };
                     }else{
                         options.btn = [ '关闭'];
                     }
@@ -210,17 +236,50 @@ define(function(require,exports,modules){
         });
     };
 
-
+    exports.render_detail = function (){
+        $('#project-list').delegate('.btn-detail','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/recycling/detail', {project:sn}, function(json){
+                if(json.code==1){
+                    var options = {
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        content: json.msg ,
+                        end: function () {
+                            $.get('/project/recycling/reset_locker',{project_sn:sn})
+                        }
+                    }
+                    if(json.terminable){
+                        options.btn = ['终止项目', '取消'];
+                        options.yes = function (index, layero) {
+                            exports.do_cancle(sn,'/project/recycling/terminated','填写终止原因 '+sn);
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    };
     exports.render_cancle = function(){
         $('#project-list').delegate('.btn-refused','click',function(){
             var sn = $(this).parent().parent().attr('id');
             exports.do_cancle(sn,'/project/recycling/refused','填写驳回原因 '+sn);
         });
-        $('#project-list').delegate('.btn-terminated','click',function(){
-            var sn = $(this).parent().parent().attr('id');
-            exports.do_cancle(sn,'/project/recycling/terminated','填写终止原因 '+sn);
-        });
-
 
     }
 
@@ -237,7 +296,7 @@ define(function(require,exports,modules){
                     data: {project_sn: sn, value: value},
                     dataType: 'json',
                     beforeSubmit: function () {
-                        layer.load(1);
+                        layer.load();
                     },
                     success: function (json) {
                         if (json.code == 1) {

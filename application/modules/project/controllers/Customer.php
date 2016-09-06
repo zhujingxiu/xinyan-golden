@@ -95,14 +95,15 @@ class Customer extends XY_Controller {
     private function _operation($operation)
     {
         $buttons = array();
+        $text_lock = '';
         if($this->inRole('manager')) {
-            $buttons['first'] = lang('button_update');
+            $buttons['first'] = sprintf(lang('button_update'),$text_lock);
         }else{
             //$buttons['first'] = lang('button_detail');
         }
         if($operation == 'appling'){
             if($this->inRole('manager')) {
-                $buttons['second'] = lang('button_appling');
+                $buttons['second'] = sprintf(lang('button_appling'),$text_lock);
                 //$buttons['dropdown'] = lang('button_order');
             }
         }
@@ -111,7 +112,7 @@ class Customer extends XY_Controller {
                 $buttons['dropdown'] = lang('button_cancle');
             }
             if($this->inRole('warehouser')){
-                $buttons['second'] = lang('button_taking');
+                $buttons['second'] = sprintf(lang('button_taking'),$text_lock);
             }
         }
 

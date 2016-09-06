@@ -14,7 +14,7 @@
     <?php echo form_hidden($csrf)?>
     <div class="col-sm-12">
         <div class="form-group">
-            <ul class="timeline" id="timeline-box">
+            <ul class="timeline timeline-inverse" id="timeline-box">
                 <li class="time-label">
                     <span class="bg-light-blue-active"> 登记信息 </span>
                 </li>
@@ -243,6 +243,7 @@
         $('#timeline-box').slimScroll({
             height: '560px'
         });
+        <?php if($editable):?>
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
@@ -284,18 +285,22 @@
             //提交
             submitHandler : function(form){
                 $(form).ajaxSubmit({
-                        dataType:'json',
-                        beforeSubmit: function () {
-                            layer.load()
-                        },
-                        success: function (json) {
-                            if(json.code==1){
+                    dataType:'json',
+                    beforeSubmit: function () {
+                        layer.load()
+                    },
+                    success: function (json) {
+                        if(json.code==1){
+                            location.reload()
+                        }else{
+                            layer.alert(json.msg,{icon: 2,title:json.title}, function () {
                                 location.reload()
-                            }
+                            });
                         }
                     }
-                );
+                });
             }
         });
+        <?php endif ?>
     });
 </script>

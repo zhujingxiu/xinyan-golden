@@ -33,7 +33,7 @@
 
     <link rel="icon" href="/favicon.ico">
 </head>
-<body class="hold-transition skin-blue-light fixed sidebar-mini">
+<body class="hold-transition skin-yellow fixed sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->

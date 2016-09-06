@@ -18,41 +18,43 @@ class Project extends XY_Controller
 
     }
 
-    protected function investing_operation($status)
+    protected function investing_operation($status,$locker_id)
     {
 
         $buttons = array();
+        $text_lock = $locker_id && $locker_id!=$this->worker_id ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-edit"></i>';
         switch((int)$status)
         {
             case $this->config->item('investing_initial'):
                 //$buttons[] = lang('label_booked');
                 if($this->inRole('manager')) {
-                    $buttons[] = lang('button_checking');
+                    $buttons[] = sprintf(lang('button_checking'),$text_lock);
                 }
                 if($this->inRole('booker')){
-                    $buttons[] = lang('button_update');
+                    $buttons[] = sprintf(lang('button_update'),$text_lock);
                 }
                 break;
             case $this->config->item('investing_checked'):
                 //$buttons[] = lang('label_checked');
                 if($this->inRole('warehouser')) {
-                    $buttons[] = lang('button_confirming');
+                    $buttons[] = sprintf(lang('button_confirming'),$text_lock);
                 }
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_refusing');
+                    $buttons[] = sprintf(lang('button_refusing'),$text_lock);
                 }
                 break;
             case $this->config->item('investing_confirmed'):
                 //$buttons[] = lang('label_confirmed');
-                if($this->inRole('manager')){
-                    $buttons[] = lang('button_refusing');
+                if($this->inRole('warehouser')){
+                    $buttons[] = sprintf(lang('button_edit'),$text_lock);
                 }
                 break;
 
             case $this->config->item('investing_growing'):
                 //$buttons[] = lang('label_finished');
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_terminating');
+                    $text_lock = '<i class="fa fa-eye"></i>';
+                    $buttons[] = sprintf(lang('button_detail'),$text_lock);
                 }
                 break;
             case $this->config->item('investing_refused'):
@@ -75,44 +77,47 @@ class Project extends XY_Controller
         return implode(" ",$buttons);
     }
 
-    protected function recycling_operation($status)
+    protected function recycling_operation($status,$locker_id=FALSE)
     {
         $buttons = array();
+        $text_lock = $locker_id && $locker_id!=$this->worker_id ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-edit"></i>';
         switch((int)$status)
         {
             case $this->config->item('recycling_initial'):
                 //$buttons[] = lang('label_booked');
                 if($this->inRole('manager')) {
-                    $buttons[] = lang('button_checking');
+                    $buttons[] = sprintf(lang('button_checking'),$text_lock);
                 }
                 if($this->inRole('booker')){
-                    $buttons[] = lang('button_update');
+                    $buttons[] = sprintf(lang('button_update'),$text_lock);
                 }
                 break;
             case $this->config->item('recycling_checked'):
                 //$buttons[] = lang('label_checked');
                 if($this->inRole('warehouser')) {
-                    $buttons[] = lang('button_confirming');
+                    $buttons[] = sprintf(lang('button_confirming'),$text_lock);
                 }
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_refusing');
+                    $buttons[] = sprintf(lang('button_refusing'),$text_lock);
                 }
                 break;
             case $this->config->item('recycling_confirmed'):
                 //$buttons[] = lang('label_confirmed');
                 if($this->inRole('warehouser')){
-                    $buttons[] = lang('button_edit');
+                    $buttons[] = sprintf(lang('button_edit'),$text_lock);
                 }
                 break;
 
             case $this->config->item('recycling_growing'):
                 if($this->inRole('manager')){
-                    $buttons[] = lang('button_terminating');
+                    $text_lock = '<i class="fa fa-eye"></i>';
+                    $buttons[] = sprintf(lang('button_detail'),$text_lock);
                 }
                 break;
             case $this->config->item('recycling_refused'):
                 //$buttons[] = lang('label_refused');
                 if($this->inRole('booker')){
+
                     $buttons[] = lang('button_update');
                 }
                 if($this->inRole('manager')){

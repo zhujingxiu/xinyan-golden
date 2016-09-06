@@ -35,7 +35,7 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
+                    <div class="input-group col-sm-12">
                         <span class="input-group-addon">实时金价</span>
                         <span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price ?> 元/克</span>
                     </div>
@@ -81,7 +81,7 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group clearfix">
-                    <div class="input-group col-sm-11">
+                    <div class="input-group col-sm-12">
                         <span class="input-group-addon">微信账号</span>
                         <span class="form-control"><?php echo $wechat;?></span>
                     </div>
@@ -111,7 +111,7 @@
             <div class="col-sm-12">
                 <div class="form-group clearfix">
                     <div class="input-group col-sm-12">
-                        <span class="input-group-addon">转交给</span>
+                        <span class="input-group-addon"> 转 交 给 </span>
                         <select name="transferrer" class="form-control select2">
                             <?php foreach($transferrers as $item):?>
                                 <option value="<?php echo $item['id']?>" <?php echo $item['id']==$transferrer ? 'selected':''?>><?php echo $item['realname']?></option>
@@ -133,6 +133,7 @@
         $('#timeline-box').slimScroll({
             height: '560px'
         });
+        <?php if($editable):?>
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
@@ -196,8 +197,9 @@
                 do_amount(_w,price);
             }
         });
+        <?php endif?>
     });
-
+    <?php if($editable):?>
 
     function do_amount(weight,price)
     {
@@ -242,5 +244,5 @@
             return false;
         }
     });
-
+    <?php endif?>
 </script>

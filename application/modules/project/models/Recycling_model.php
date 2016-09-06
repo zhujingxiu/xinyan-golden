@@ -24,7 +24,6 @@ class Recycling_model extends XY_Model{
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
-
         $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         $this->db->join($this->worker_table.' AS w3', 'w3.id = p.locker_id','left');
@@ -36,14 +35,18 @@ class Recycling_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-        $this->db->where(array('is_del'=>0));
+        $this->db->where(array('p.is_del'=>0));
+        $this->db->group_start();
+        $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
+        $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
+        $this->db->group_end();
+
         $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
         $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
-
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
@@ -306,6 +309,9 @@ class Recycling_model extends XY_Model{
             if(isset($data['note'])){
                 $fileds['note'] = $data['note'];
             }
+            if(isset($data['transferrer'])){
+                $fileds['transferrer'] = $data['transferrer'];
+            }
             $fileds['worker_id'] = $this->ion_auth->get_user_id();
             $fileds['lasttime'] = time();
             $this->db->update($this->table,$fileds,array('project_sn'=>$project_sn));
@@ -340,6 +346,26 @@ class Recycling_model extends XY_Model{
             $this->trigger_events(array('post_pushstate_project', 'post_pushstate_project_successful'));
             $this->set_message('pushstate_successful');
             return $affected;
+        }
+        return FALSE;
+    }
+    public function return_transfer($data){
+        if(empty($data['project_sn']) || empty($data['status_id'])) return FALSE;
+        $project = $this->project($data['project_sn']);
+        if($project->num_rows()) {
+            $info = $project->row_array();
+            $query = $this->db->select()->from($this->history_table)
+                ->where(array('project_id'=>$info['project_id'],'status_id'=>$data['status_id']))
+                ->order_by('addtime desc')
+                ->limit(1)
+                ->get();
+            if($query->num_rows()){
+                $log = $query->row_array();
+                if($log['worker_id']){
+                    $this->db->update($this->table,array('transferrer'=>$log['worker_id']),array('project_sn'=>$data['project_sn']));
+                    return $this->db->affected_rows();
+                }
+            }
         }
         return FALSE;
     }
@@ -554,7 +580,7 @@ class Recycling_model extends XY_Model{
             $where['locker_id'] = (int)$this->ion_auth->get_user_id();
         }
         $this->db->update($this->table,array('locker_id' => 0),$where);
-        return $this->db->affected_rows();
+        return TRUE;
     }
 
     public function set_locker($project_sn,$user_id=false){

@@ -73,8 +73,11 @@
 								<div class="form-group clearfix">
 									<div class="input-group col-sm-11">
 										<span class="input-group-addon">鉴定人</span>
-										<input type="text" id="appraiser" class="form-control">
-										<input type="hidden" name="appraiser" >
+										<select id="appraiser" name="appraiser" class="form-control select2" >
+											<?php foreach($appraisers as $item):?>
+												<option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
+											<?php endforeach?>
+										</select>
 									</div>
 								</div>
 
@@ -167,12 +170,9 @@
 				<li>
 					<i class="fa fa-edit bg-blue"></i>
 					<div class="timeline-item">
-
 						<div class="timeline-body">
-
-
 							<div class="input-group col-sm-12">
-								<span class="input-group-addon">转交给</span>
+								<span class="input-group-addon"> 转 交 给 </span>
 								<select name="transferrer" class="form-control select2">
 								<?php foreach($transferrers as $item):?>
 									<option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>
@@ -400,7 +400,7 @@
 			$('.loading').remove();
 		}
 	});
-
+	<?php if(false) :?>
 	$('#appraiser').autocomplete({
 		delay: 300,
 		source: function(request, response) {
@@ -424,6 +424,7 @@
 			return false;
 		}
 	});
+	<?php endif?>
 	$('#referrer').autocomplete({
 		delay: 300,
 		source: function(request, response) {
