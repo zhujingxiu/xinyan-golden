@@ -27,7 +27,7 @@
             <?php if(!empty($error_permission)) : ?>
             l.render_message('<?php echo $error_permission;?>','<?php echo lang("error_permission");?>');
             <?php endif?>
-
+            l.menu();
         });
     </script>
 

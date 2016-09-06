@@ -93,29 +93,6 @@
             </section>
             <!-- Left col -->
             <section class="col-lg-7 connectedSortable">
-                <div class="box box-info">
-                    <div class="box-header">
-                        <i class="fa fa-line-chart"></i>
-
-                        <h3 class="box-title">黄金价格走势</h3>
-                        <!-- tools box -->
-                        <div class="pull-right box-tools">
-                            <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
-                                <i class="fa fa-times"></i></button>
-                        </div>
-                        <!-- /. tools -->
-                    </div>
-                    <div class="box-body">
-                        <div id="gold-price-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
-                        </div>
-                        <ul class="tu clear" id="toggle-charts">
-                            <li><input type="radio" name="price_charts" value="day" checked="checked"  />今天</li>
-                            <li><input type="radio" name="price_charts" value="week"  />周</li>
-                            <li><input type="radio" name="price_charts" value="month"  />月</li>
-                        </ul>
-                    </div>
-                </div>
-
 
                 <!-- TABLE: LATEST ORDERS -->
                 <div class="box box-info">
@@ -169,6 +146,28 @@
                     <!-- /.box-footer -->
                 </div>
                 <!-- /.box -->
+                <div class="box box-info">
+                    <div class="box-header">
+                        <i class="fa fa-line-chart"></i>
+
+                        <h3 class="box-title">黄金价格走势</h3>
+                        <!-- tools box -->
+                        <div class="pull-right box-tools">
+                            <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                <i class="fa fa-times"></i></button>
+                        </div>
+                        <!-- /. tools -->
+                    </div>
+                    <div class="box-body">
+                        <div id="gold-price-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
+                        </div>
+                        <ul class="tu clear" id="toggle-charts">
+                            <li><input type="radio" name="price_charts" value="day" checked="checked"  />今天</li>
+                            <li><input type="radio" name="price_charts" value="week"  />周</li>
+                            <li><input type="radio" name="price_charts" value="month"  />月</li>
+                        </ul>
+                    </div>
+                </div>
 
             </section>
             <!-- /.Left col -->
@@ -180,15 +179,10 @@
                         <i class="ion ion-clipboard"></i>
 
                         <h3 class="box-title">任务列表</h3>
-
                         <div class="box-tools pull-right">
-                            <ul class="pagination pagination-sm inline">
-                                <li><a href="#">&laquo;</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">&raquo;</a></li>
-                            </ul>
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                     <!-- /.box-header -->
@@ -196,10 +190,10 @@
                         <ul class="todo-list">
                             <li>
                                 <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
+                                <span class="handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
                                 <!-- checkbox -->
                                 <input type="checkbox" value="">
                                 <!-- todo text -->
@@ -213,10 +207,10 @@
                                 </div>
                             </li>
                             <li>
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
+                                <span class="handle">
+                                    <i class="fa fa-ellipsis-v"></i>
+                                    <i class="fa fa-ellipsis-v"></i>
+                                </span>
                                 <input type="checkbox" value="">
                                 <span class="text">Make the theme responsive</span>
                                 <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
@@ -292,12 +286,10 @@
 
                         <h3 class="box-title">Chat</h3>
 
-                        <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                            <div class="btn-group" data-toggle="btn-toggle">
-                                <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i>
-                                </button>
-                                <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                            </div>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                     <div class="box-body chat" id="chat-box">

@@ -140,4 +140,13 @@ class Tool_model extends XY_Model
         return $tmp ? array('time'=>array_keys($tmp),'price'=>array_values($tmp),'date'=>date('Y-m-d')) : FALSE;
     }
 
+    function push_growing()
+    {
+
+    }
+
+    function growing()
+    {
+
+    }
 }

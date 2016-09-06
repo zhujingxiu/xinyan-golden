@@ -1083,5 +1083,27 @@ define(function(require, exports, module) {
             },'json');
         },20*60*1000);
     }
-
+    exports.menu = function () {
+        $(function(){
+            $.each($('.sidebar-menu li'),function(index) {
+                if($.trim($(this).text()).length == 0){
+                    $(this).remove();
+                }
+            });
+            $.each($('.sidebar-menu ul'),function(index) {
+                $.each($(this).children('li'),function(){
+                    if($.trim($(this).text()).length == 0){
+                        $(this).remove();
+                    }
+                });
+            });
+            for (var i = 3; i >= 0; i--) {
+                $.each($('.sidebar-menu ul'),function(){
+                    if($(this).children('li').size()==0){
+                        $(this).parent().remove();
+                    }
+                })
+            };
+        });
+    }
 });

@@ -84,7 +84,7 @@ class Customer extends XY_Controller {
             }
         }
         return array(
-            'draw' 				=> 1,
+            'draw' 				=> $this->input->get('draw'),
             'recordsTotal' 		=> $total,
             'recordsFiltered' 	=> $total,
             'data' => $rows

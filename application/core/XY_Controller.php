@@ -177,26 +177,31 @@ class XY_Controller extends MX_Controller {
                     'customer' => array(
                         'text' => '客户管理',
                         'link' => 'project/customer',
+                        'auth' => $this->isAllowed('project/customer/index'),
                         'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':''
                     ),
                     'recycling' => array(
                         'text' => '金生金',
                         'link' => 'project/recycling',
+                        'auth' => $this->isAllowed('project/recycling/index'),
                         'style' => in_array($current,array('project/recycling','project/recycling/index')) ? ' active':''
                     ),
                     'investing' => array(
                         'text' => '钱生金',
                         'link' => 'project/investing',
+                        'auth' => $this->isAllowed('project/investing/index'),
                         'style' => in_array($current,array('project/investing','project/investing/index')) ? ' active':''
                     ),
                     'stock' => array(
                         'text' => '金库',
                         'link' => 'project/stock',
+                        'auth' => $this->isAllowed('project/stock/index'),
                         'style' => in_array($current,array('project/stock','project/stock/index')) ? ' active':''
                     ),
                     'trash' => array(
                         'text' => '回收站',
                         'link' => 'project/trash',
+                        'auth' => $this->isAllowed('project/trash/index'),
                         'style' => in_array($current,array('project/trash','project/trash/index')) ? ' active':''
                     ),
 
@@ -211,12 +216,14 @@ class XY_Controller extends MX_Controller {
                     'article' => array(
                         'text' => '文章列表',
                         'link' => 'article/article',
+                        'auth' => $this->isAllowed('article/article/index'),
                         'style' => in_array($current,array('article/article','article/article/index')) ? ' active':''
                     ),
 
                     'category' => array(
                         'text' => '文章分类',
                         'link' => 'article/category',
+                        'auth' => $this->isAllowed('article/category/index'),
                         'style' => in_array($current,array('article/category','article/category/index')) ? ' active':''
                     ),
                 )
@@ -230,16 +237,19 @@ class XY_Controller extends MX_Controller {
                     'system' => array(
                         'text' => '系统参数',
                         'link' => 'setting/system',
+                        'auth' => $this->isAllowed('setting/system/index'),
                         'style' => in_array($current,array('setting/system','setting/system/index')) ? ' active':''
                     ),
                     'project' => array(
                         'text' => '业务参数',
                         'link' => 'setting/project',
+                        'auth' => $this->isAllowed('setting/project/index'),
                         'style' => in_array($current,array('setting/project','setting/project/index')) ? ' active':''
                     ),
                     'api' => array(
                         'text' => 'API',
                         'link' => 'setting/api',
+                        'auth' => $this->isAllowed('setting/api/index'),
                         'style' => in_array($current,array('setting/api','setting/api/index')) ? ' active':''
                     ),
                 )
@@ -253,16 +263,19 @@ class XY_Controller extends MX_Controller {
                     'worker' => array(
                         'text' => '员工列表',
                         'link' => 'auth/worker',
+                        'auth' => $this->isAllowed('auth/worker/index'),
                         'style' => in_array($current,array('auth/worker','auth/worker/index')) ? ' active':''
                     ),
                     'role' => array(
                         'text' => '角色管理',
                         'link' => 'auth/role',
+                        'auth' => $this->isAllowed('auth/role/index'),
                         'style' => in_array($current,array('auth/role','auth/role/index')) ? ' active':''
                     ),
                     'permission' => array(
                         'text' => '权限节点',
                         'link' => 'auth/permission',
+                        'auth' => $this->isAllowed('auth/permission/index'),
                         'style' => in_array($current,array('auth/permission','auth/permission/index')) ? ' active':''
                     ),
                 )
@@ -276,6 +289,7 @@ class XY_Controller extends MX_Controller {
                     'multiupload' => array(
                         'text' => 'Multi-Upload',
                         'link' => 'tool/document/multi_upload',
+                        'auth' => $this->isAllowed('tool/document/multi_upload'),
                         'style' => in_array($current,array('tool/document/multi_upload','help/index')) ? ' active':''
                     )
                 )

@@ -69,6 +69,7 @@
                                     <?php foreach($photos as $item):?>
                                         <div class="uploads-thumb">
                                             <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
                                 <?php endif?>
@@ -76,6 +77,7 @@
                                     <?php foreach($invoices as $item):?>
                                         <div class="uploads-thumb">
                                             <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
                                 <?php endif?>
@@ -124,6 +126,7 @@
                                     <?php foreach($reports as $item):?>
                                         <div class="uploads-thumb">
                                             <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
                                 <?php endif?>
@@ -188,6 +191,7 @@
                                     <?php foreach($privacies as $item):?>
                                         <div class="uploads-thumb">
                                             <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
                                 <?php endif?>

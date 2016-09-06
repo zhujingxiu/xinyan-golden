@@ -21,7 +21,7 @@ class Crontab extends MX_Controller
         $this->cron_schedule->dispatch();
     }
 
-    public function current_price(){
+    private function current_price(){
         if(date('w') !=0 && date('w') !=6){
 
             $data = $this->setting->get_setting('golden_price');
@@ -37,8 +37,16 @@ class Crontab extends MX_Controller
             $current = $this->cron_model->gold_price($jsonarr['result']);
         }
     }
-    public function project()
+    public function abort_run()
     {
-
+        set_time_limit(0);
+        ignore_user_abort(true);
+        $interval = 5*60;
+        do {
+            $this->current_price();
+            $this->cron_model->push_growing();
+            $this->cron_model->growing();
+            sleep ( $interval );
+        }while(TRUE);
     }
 }

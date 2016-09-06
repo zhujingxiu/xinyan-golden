@@ -33,12 +33,14 @@
             <?php if(isset($item['children']) && is_array($item['children'])) : ?>
                 <ul class="treeview-menu">
                 <?php foreach($item['children'] as $child ): ?>
+                    <?php if(!empty($child['auth'])) :?>
                     <li <?php echo empty($child['style']) ? '' : 'class="'.$child['style'].'"'?>>
                         <a href="<?php echo site_url($child['link'])?>">
                             <i class="fa fa-circle-o"></i> 
                             <?php echo $child['text'] ?>
                         </a>
                     </li>
+                    <?php endif ?>
                 <?php endforeach ?>
                 </ul>
             <?php endif ?>
