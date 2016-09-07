@@ -429,7 +429,7 @@ class Investing extends Project {
 							'status_id'  => $this->config->item('investing_checked')
 						)
 					);
-					if($this->config->item('growing_mode') == 't0'){
+					if($this->config->item('growing_mode') && strtolower($this->config->item('growing_mode')) == 't0'){
 						//T+0
 						$callback['project_growing'] = $project_sn;
 					}

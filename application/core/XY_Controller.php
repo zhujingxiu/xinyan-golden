@@ -27,11 +27,17 @@ class XY_Controller extends MX_Controller {
             if($this->uri->rsegment(3)){
                 $url = strtolower(substr($url,0,stripos($url,'/'.$this->uri->rsegment(3))));
             }else if($this->uri->rsegment(2)){
-                $url = implode('/',array_unique(array_merge($this->uri->segment_array(),$this->uri->rsegment_array()) ));
+                $_segment = $this->uri->segment_array();
+                $_rsegment = $this->uri->rsegment_array();
+                if(array_diff($_rsegment,$_segment)){
+                    $url = $this->module.'/'.implode('/',$_rsegment);
+                }else{
+                    $url = implode('/',array_unique(array_merge($_segment,$_rsegment) ));
+                }
             }else{
                 $url = strtolower($this->uri->ruri_string());
             }
-            $this->current_url = $url;//var_dump($url);
+            $this->current_url = $url;
             if(!$this->isAllowed($url)){
                 //var_dump($url);
                 if($this->input->server('HTTP_X_REQUESTED_WITH') && strtolower($this->input->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest'){
@@ -64,21 +70,7 @@ class XY_Controller extends MX_Controller {
 
     public function current_price()
     {
-        if(date('w') ==0 || date('w') ==6){
-            $current = $this->tool_model->lastprice();
-        }else{
-            $tmp = FALSE;
-            $data = $this->setting->get_setting('golden_price');
-            if(!empty($data['apikey']) && !empty($data['apiurl'])){
-                $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
-                $jsonarr = json_decode($result, true);
-                if($jsonarr['status'] == 0)
-                {
-                    $tmp =$jsonarr['result'];
-                }
-            }
-            $current = $this->tool_model->gold_price($tmp);
-        }
+        $current = $this->tool_model->gold_price();
         if($current)
             return number_format($current,2);
         return FALSE;
@@ -116,7 +108,7 @@ class XY_Controller extends MX_Controller {
         if($this->ion_auth->is_admin()) return TRUE;
         if(empty($path)) $path = 'home/index';
         $this->load->model('auth/permission_model');
-        $node = $this->permission_model->get_node_by_path($path);
+        $node = $this->permission_model->get_node_by_path(trim($path,'/'));
         if(empty($node['node_id']) || empty($node['status'])){
             return False;
         }

@@ -29,7 +29,8 @@ class Stock_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-        $this->db->select('c.realname,c.phone,c.idnumber,p.stock_id,p.project_sn,p.mode,p.weight,p.start,p.info,p.addtime,w.realname operator, w.username,w2.realname referrer,', false);
+        $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `project_sn` = `p`.`project_sn` AND `mode`='profit'";
+        $this->db->select('c.realname,c.phone,c.idnumber,p.stock_id,p.project_sn,p.mode,p.weight,p.start,p.info,p.addtime,w.realname operator, w.username,w2.realname referrer,('.$profit_weight.') profit', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');

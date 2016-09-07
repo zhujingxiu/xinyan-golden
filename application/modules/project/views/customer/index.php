@@ -49,6 +49,7 @@
                     <table id="list" class="table table-bordered table-striped">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>可提克重</th>
                             <th>冻结克重</th>
                             <th>客户</th>
@@ -69,6 +70,7 @@
                         </tbody>
                         <tfoot>
                         <tr>
+                            <th></th>
                             <th>可提克重</th>
                             <th>冻结克重</th>
                             <th>客户</th>

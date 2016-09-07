@@ -41,7 +41,7 @@
                         <table id="list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th>项目</th>
+
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>
@@ -54,7 +54,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th>项目</th>
+
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>

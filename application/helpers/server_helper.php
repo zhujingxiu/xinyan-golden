@@ -370,3 +370,23 @@ function expload_2_array($string,$flag=","){
 	}
 	return $result;
 }
+
+function is_date( $str )
+{
+	$stamp = strtotime( $str );
+
+	if (!is_numeric($stamp))
+	{
+		return FALSE;
+	}
+	$month = date( 'm', $stamp );
+	$day   = date( 'd', $stamp );
+	$year  = date( 'Y', $stamp );
+
+	if (checkdate($month, $day, $year))
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}

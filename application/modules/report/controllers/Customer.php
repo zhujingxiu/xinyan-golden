@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Recycling extends XY_Controller {
+class Customer extends XY_Controller {
 
 
     public function index()
     {
-        $this->layout->view('recycling/list');
+        $this->layout->view('report/customer');
     }
 }

@@ -13,7 +13,7 @@ class Crontab extends MX_Controller
     {
         parent::__construct();
         $this->load->library(array('Ion_auth','Setting'));
-        $this->load->model('cron_model');
+        $this->load->model('tool_model');
     }
     public function index()
     {
@@ -21,31 +21,22 @@ class Crontab extends MX_Controller
         $this->cron_schedule->dispatch();
     }
 
-    private function current_price(){
-        if(date('w') !=0 && date('w') !=6){
-
-            $data = $this->setting->get_setting('golden_price');
-            if(empty($data['apikey']) || empty($data['apiurl'])){
-                return FALSE;
-            }
-            $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
-            $jsonarr = json_decode($result, true);
-            if($jsonarr['status'] != 0)
-            {
-                return FALSE;
-            }
-            $current = $this->cron_model->gold_price($jsonarr['result']);
-        }
-    }
     public function abort_run()
     {
         set_time_limit(0);
         ignore_user_abort(true);
         $interval = 5*60;
         do {
-            $this->current_price();
-            $this->cron_model->push_growing();
-            $this->cron_model->growing();
+            $data = $this->setting->get_setting('golden_price');
+            if(!empty($data['apikey']) && !empty($data['apiurl'])){
+                $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
+                $jsonarr = json_decode($result, true);
+                if($jsonarr['status'] == 0){
+                    $this->tool_model->today_price($jsonarr['result']);
+                }
+            }
+            $this->tool_model->push_growing();
+            $this->tool_model->growing();
             sleep ( $interval );
         }while(TRUE);
     }

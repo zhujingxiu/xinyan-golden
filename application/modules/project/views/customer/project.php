@@ -17,7 +17,7 @@
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-            <table id="projects" class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped project-tables">
                 <thead>
                 <tr>
                     <th>登记时间</th>
@@ -63,13 +63,4 @@
         <!-- /.box-body -->
     </div>
 </div>
-<script type="text/javascript">
-    $(function () {
-        $('#projects').DataTable({
-            "language": {
-                "url": "/public/lib/datatables/Chinese.json"
-            },
 
-        })
-    });
-</script>

@@ -62,14 +62,13 @@ class Stock extends Project
                 }
                 $rows[] = array(
                     'DT_RowId' => $row['stock_id'],
-                    'sn' => $row['project_sn'],
+                    'sn' => $row['project_sn'].'<br>'.($row['mode'] == 'investing' ? lang('text_investing') : lang('text_recycling')),
                     'customer' => $row['realname'].'<br>'.$row['phone'],
                     'referrer' => $row['referrer'],
                     'weight' => number_format($row['weight'],2) .lang('text_weight_unit'),
                     'start' => $row['start'],
-                    'mode' => $row['mode'] == 'investing' ? '钱生金' : '金生金',
                     'operator' => $row['operator'],
-                    'profit' => number_format($row['weight'],2) .lang('text_weight_unit'),
+                    'profit' => number_format($row['profit'],2) .lang('text_weight_unit'),
                     'addtime' => $row['addtime'] ? date('Y-m-d', $row['addtime']) . '<br>' . date('H:i:s', $row['addtime']) : lang("text_unknown"),
                     'operation' => ''
                 );

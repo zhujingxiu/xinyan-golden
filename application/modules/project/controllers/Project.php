@@ -158,25 +158,6 @@ class Project extends XY_Controller
         return $start;
     }
 
-    protected function calculate_expired($starttime,$period)
-    {
-        return date('Y-m-d',mktime(0,0,0,date('m',$starttime)+(int)$period,date('d',$starttime)-1,date('Y',$starttime)));
-    }
-
-    protected function calculate_current_total($start,$weight)
-    {
-        $days = days_sub($start);
-        $month = floor($days/30);
-        if($month){
-            if($this->config->item('month_taking')){
-                return $this->calculate_total($month,$weight);
-            }else if($this->config->item('season_taking')){
-                return $this->calculate_total(($month - ($month%3)),$weight);
-            }
-        }
-
-        return $weight;
-    }
 
     protected function status($code)
     {

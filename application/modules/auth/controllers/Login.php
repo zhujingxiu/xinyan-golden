@@ -87,15 +87,7 @@ class Login extends MX_Controller {
             $data = $this->tool_model->range_price('day');
             $data['title'] = $this->lang->line('text_price_today','default');
             $data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice().$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
-
-            $setting = $this->setting->get_setting('golden_price');
-            if(!empty($setting['apikey']) && !empty($setting['apiurl'])){
-                $result = curl_get($setting['apiurl'],array('appkey'=>$setting['apikey']));
-                $jsonarr = json_decode($result, true);
-                if($jsonarr['status'] == 0){
-                    $data['current'] = $this->tool_model->gold_price($jsonarr['result']);
-                }
-            }
+            $data['current'] = $this->tool_model->gold_price();
         }
         if($data){
             json_success($data);

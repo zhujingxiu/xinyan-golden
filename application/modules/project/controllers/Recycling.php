@@ -21,6 +21,8 @@ class Recycling extends Project {
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
+
+        $this->tool_model->push_growing();
         $this->recycling_model->reset_locker(false,$this->worker_id);
         $this->layout->view('recycling/index',$data);
     }
@@ -474,18 +476,18 @@ class Recycling extends Project {
                 }
                 if(($project['weight']*100 == $weight*100) && $project['phone'] == $phone){
                     $callback = array(
-                        'project_instock'=> array(
-                            'project_sn' => $project_sn,
-                            'note' => $note
-                        ),
                         'return_transfer'=>array(
                             'project_sn' => $project_sn,
                             'status_id'  => $this->config->item('recycling_checked')
                         )
                     );
-                    if($this->config->item('growing_mode') == 't0'){
+                    if($this->config->item('growing_mode') && strtolower($this->config->item('growing_mode')) == 't0'){
                         //T+0
                         $callback['project_growing'] = $project_sn;
+                        $callback['project_instock'] = array(
+                            'project_sn' => $project_sn,
+                            'note' => $note
+                        );
                     }
                     $this->recycling_model->push_state($project_sn,array(
                         'status'	=> $this->config->item('recycling_confirmed'),

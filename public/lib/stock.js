@@ -29,7 +29,7 @@ define(function(require,exports,modules){
                     type: 'get'
                 },
                 "columns": [
-                    {"data": "mode", "name": "p.mode"},
+
                     {"data": "sn", "name": "p.project_sn"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "weight", "name": "p.weight"},
@@ -45,7 +45,7 @@ define(function(require,exports,modules){
 
 
     exports.render_storage = function(){
-        $('#list').bind('click',function(){
+        $('#btn-new').bind('click',function(){
             require('layer');
             require('ajaxSubmit');
             //require('ueditor/ueditor.config');
@@ -62,10 +62,10 @@ define(function(require,exports,modules){
                         area:'880px',
                         offset: '100px',
                         zIndex:99,
-                        btn: ['确认标记', '取消'],
+                        btn: ['补仓', '取消'],
                         content: json.msg ,
                         yes: function(index, layero){
-                            $('#form-confirming').submit();
+                            $('#form-storage').submit();
                         }
                     });
                 }else{

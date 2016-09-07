@@ -27,3 +27,11 @@
 .lock{
     color:#FF9933;
 }
+
+td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.details td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}
