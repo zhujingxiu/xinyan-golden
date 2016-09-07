@@ -390,3 +390,17 @@ function is_date( $str )
 
 	return FALSE;
 }
+
+function calculate_rate($profit,$month)
+{
+	return number_format((float)(($profit/(12*100))*$month),4);
+}
+
+function calculate_profit($rate,$month){
+	return number_format(($month*$rate/12)*100,2);
+}
+
+function calculate_end($starttime,$month)
+{
+	return date('Y-m-d',mktime(0,0,0,date('m',$starttime)+(int)$month,date('d',$starttime)-1,date('Y',$starttime)));;
+}

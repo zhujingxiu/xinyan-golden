@@ -4,6 +4,7 @@
 define(function(require,exports,module){
 
     require('jqueryvalidate');
+    require('customValidate');
     require('ajaxSubmit');
     require('layer');
     $(function () {
@@ -124,6 +125,51 @@ define(function(require,exports,module){
                 });
             }
         });
+
+        $("#project-period").validate({
+            rules: {
+                profit: {
+                    required: true,
+                    isNumber: true,
+                },
+                month: {
+                    required: true,
+                    isNumber: true,
+                },
+                title: {
+                    required: true,
+                    minlength: 2
+                },
+
+            },
+            messages: {
+                profit: {
+                    required: '请输入金息',
+                    isNumber: '输入数字',
+                },
+                month: {
+                    required: '请输入月数',
+                    isNumber: '输入数字',
+                },
+                title: {
+                    required: '请输入金息名称',
+                    minlength: '名称不得少于2个字符。'
+                },
+            },
+
+            //提交
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    dataType: 'json',
+                    success: function (json) {
+                        if (json.code == 1) {
+                            $(form).find('.do-result').html('<div class="alert alert-success">设置参数已保存！</div>').fadeOut(3000);
+                            exports.render_periods();
+                        }
+                    }
+                });
+            }
+        });
     });
 
     $('.btn-status').bind('click',function(){
@@ -138,6 +184,18 @@ define(function(require,exports,module){
     $('.btn-new').bind('click', function () {
         exports.render_detail(false,$(this).data('mode'));
     });
+
+    $('.btn-period').bind('click',function(){
+        $('.do-result').empty();
+        $('#'+$(this).attr('form')).submit();
+    });
+    $('.table-period tbody').delegate('.period-row','dblclick',function(){
+        exports.render_period($(this).data('entry'));
+    });
+    $('.btn-period').bind('click', function () {
+        exports.render_period(false);
+    });
+
     exports.render_detail = function (id,mode) {
         if(id > 0) {
             $.get('/setting/project/get_status', {status_id: id,mode:mode}, function (json) {
@@ -159,7 +217,7 @@ define(function(require,exports,module){
             $('#project-'+mode+' input[name="status"][value="1"]').prop('checked', true);
             //$('#project-'+mode+' .box-title').text('添加角色');
         }
-    }
+    };
     exports.render_statuses = function (mode) {
         $.get('/setting/project/status_list',{mode:mode},function(json){
             var list = json.info,_html = '';
@@ -174,7 +232,25 @@ define(function(require,exports,module){
             }
             $('tbody#'+mode+'-list').html(_html)
         },'json')
-    }
+    };
+
+    exports.render_periods = function () {
+        $.get('/setting/project/period_list',{r:Math.random()},function(json){
+            var list = json.info,_html = '';
+            for(var i=0;i<list.length;i++){
+                _html += '<tr class="period-row" data-entry="'+list[i].period_id+'">';
+                _html += '<td>'+list[i].period_id+'</td>';
+                _html += '<td>'+list[i].title+'</td>';
+                _html += '<td>'+list[i].month+'</td>';
+                _html += '<td>'+list[i].profit+'%</td>';
+                _html += '<td>'+(list[i].status >0 ? '是' :'否')+'</td>';
+                _html += '<td>'+(list[i].default >0 ? '是' :'否')+'</td>';
+                _html += '<td>'+list[i].note+'</td>';
+                _html += '</tr>';
+            }
+            $('tbody#period-list').html(_html)
+        },'json')
+    };
     $('.setting-project-form .form-control').bind('change', function () {
         exports.setting_save($(this).attr('name'),$(this).val(),$(this));
     });
@@ -187,7 +263,7 @@ define(function(require,exports,module){
             }
         });
         exports.setting_save(_name,_value.join(),$(this).parent());
-    })
+    });
     exports.setting_save = function (code,value,el) {
 
         $.post('/setting/project/save',{code:code,value:value}, function (json) {
@@ -195,5 +271,29 @@ define(function(require,exports,module){
                 layer.tips('参数已保存', el,{tips: [1, '#00CC99']});
             }
         },'json')
-    }
+    };
+
+
+
+
+    exports.render_period = function (id) {
+        if(id > 0) {
+            $.get('/setting/project/get_period', {period_id: id}, function (json) {
+                if (json.code == 1) {
+                    var info = json.info;
+                    $('#project-period input[name="period_id"]').val(info.period_id);
+                    $('#project-period input[name="month"]').val(info.month);
+                    $('#project-period input[name="profit"]').val(info.profit);
+                    $('#project-period input[name="title"]').val(info.title);
+                    $('#project-period input[name="note"]').val(info.note);
+                    $('#project-period input[name="status"][value="' + info.status + '"]').prop('checked', true);
+                    $('#project-period input[name="default"][value="' + info.default + '"]').prop('checked', true);
+                }
+            }, 'json');
+        }else{
+            $('#project-period input[type="text"],#project-period input[name="status_id"]').val('');
+            $('#project-period input[name="status"][value="1"]').prop('checked', true);
+            $('#project-period input[name="default"][value="0"]').prop('checked', true);
+        }
+    };
 });

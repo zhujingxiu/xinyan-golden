@@ -88,3 +88,8 @@ function math_div(a, b) {
     } catch (g) {}
     return c = Number(a.toString().replace(".", "")), d = Number(b.toString().replace(".", "")), math_mul(c / d, Math.pow(10, f - e));
 }
+
+function calculate_total(weight,profit)
+{
+    return math_mul(weight,profit);
+}

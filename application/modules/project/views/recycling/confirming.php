@@ -37,10 +37,43 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">黄金克重</span>
+                                        <span class="input-group-addon">预存周期</span>
+                                        <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">交付方式</span>
+                                        <span class="form-control" name="payment"><?php echo $payment == 'cash' ? lang('text_cash') : lang('text_gold')?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金称重</span>
                                         <span class="form-control"><?php echo (float)$origin_weight;?>克</span>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定实重</span>
+                                        <span class="form-control"><?php echo $weight;?>克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon"> 鉴 定 人 </span>
+                                        <span class="form-control" ><?php echo $appraiser?></span>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
@@ -50,7 +83,22 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">预期收益</span>
+                                        <span class="form-control" id="update-totals"><?php echo $profit_weight?>克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">损耗比例</span>
+                                        <span class="form-control"><?php echo $loss ?>%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="timeline-footer">
                             <a class="btn btn-primary btn-xs" id="button-photo">
@@ -58,6 +106,9 @@
                             </a>
                             <a class="btn btn-primary btn-xs" id="button-invoice">
                                 发票照片
+                            </a>
+                            <a class="btn btn-primary btn-xs" id="button-report">
+                                鉴定报告
                             </a>
                             <div class="upload-file" id="gold-uploads">
                                 <?php if($photos): ?>
@@ -76,47 +127,6 @@
                                         </div>
                                     <?php endforeach?>
                                 <?php endif?>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-
-                <li>
-                    <i class="fa fa-gavel bg-navy-active"></i>
-                    <div class="timeline-item">
-                        <h3 class="timeline-header">鉴定结果</h3>
-                        <div class="timeline-body">
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">鉴定人</span>
-                                        <span class="form-control" ><?php echo $appraiser?></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">鉴定实重</span>
-                                        <span class="form-control"><?php echo $weight;?>克</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">损耗比例</span>
-                                        <span class="form-control"><?php echo $loss ?>%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-footer">
-                            <a class="btn btn-primary btn-xs" id="button-report">
-                                鉴定报告
-                            </a>
-                            <div class="upload-file" id="report-uploads">
                                 <?php if($reports): ?>
                                     <?php foreach($reports as $item):?>
                                         <div class="uploads-thumb">
@@ -129,6 +139,7 @@
                         </div>
                     </div>
                 </li>
+
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
@@ -163,7 +174,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">推荐人</span>
+                                        <span class="input-group-addon"> 推 荐 人 </span>
                                         <span class="form-control"><?php echo $referrer?></span>
                                     </div>
                                 </div>
@@ -206,6 +217,13 @@
                             <span class="input-group-addon">实际克重</span>
                             <input type="text" name="weight" class="form-control" placeholder="确认鉴定克重">
                             <span class="input-group-addon">克</span>
+                        </div>
+                        <div class="input-group col-sm-12">
+
+                            <span class="input-group-addon">周期</span>
+                            <span class="form-control" id="start"><?php echo $start?></span>
+                            <span class="input-group-addon"> - </span>
+                            <span class="form-control" id="end"><?php echo $end;?></span>
                         </div>
                         <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
                     </div>

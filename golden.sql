@@ -1,23 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version phpStudy 2014
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: 2016-09-07 12:10:46
--- 服务器版本： 10.1.9-MariaDB
--- PHP Version: 5.6.15
+-- 主机: localhost
+-- 生成日期: 2016 �?09 �?08 �?01:30
+-- 服务器版本: 5.5.47
+-- PHP 版本: 5.5.30
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
--- Database: `golden`
+-- 数据库: `golden`
 --
 
 -- --------------------------------------------------------
@@ -26,16 +26,17 @@ SET time_zone = "+00:00";
 -- 表的结构 `gd_article`
 --
 
-CREATE TABLE `gd_article` (
-  `article_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_article` (
+  `article_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci,
   `is_top` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `author_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL,
+  PRIMARY KEY (`article_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_article`
@@ -52,15 +53,16 @@ INSERT INTO `gd_article` (`article_id`, `category_id`, `title`, `text`, `is_top`
 -- 表的结构 `gd_article_category`
 --
 
-CREATE TABLE `gd_article_category` (
-  `category_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_article_category` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_article_category`
@@ -77,7 +79,7 @@ INSERT INTO `gd_article_category` (`category_id`, `code`, `title`, `is_admin`, `
 -- 表的结构 `gd_cron_log`
 --
 
-CREATE TABLE `gd_cron_log` (
+CREATE TABLE IF NOT EXISTS `gd_cron_log` (
   `log_time` int(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
@@ -85,173 +87,25 @@ CREATE TABLE `gd_cron_log` (
   `text` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 转存表中的数据 `gd_cron_log`
---
-
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473227303, '2016-09-07', '13:48:23', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 13:48:23'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473227366, '2016-09-07', '13:49:26', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 13:49:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473227786, '2016-09-07', '13:56:26', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 13:56:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473227786, '2016-09-07', '13:56:26', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 13:56:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473228086, '2016-09-07', '14:01:26', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:01:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473228086, '2016-09-07', '14:01:26', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:01:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473228386, '2016-09-07', '14:06:26', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:06:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473228386, '2016-09-07', '14:06:26', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:06:26'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473228687, '2016-09-07', '14:11:27', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:11:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473228687, '2016-09-07', '14:11:27', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:11:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473228987, '2016-09-07', '14:16:27', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:16:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473228987, '2016-09-07', '14:16:27', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:16:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473229287, '2016-09-07', '14:21:27', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:21:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473229287, '2016-09-07', '14:21:27', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:21:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473229587, '2016-09-07', '14:26:27', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:26:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473229587, '2016-09-07', '14:26:27', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:26:27'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473230081, '2016-09-07', '14:34:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:34:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230081, '2016-09-07', '14:34:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:34:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473230096, '2016-09-07', '14:34:56', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:34:56'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230140, '2016-09-07', '14:35:40', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:35:40'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230268, '2016-09-07', '14:37:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:37:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230382, '2016-09-07', '14:39:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:39:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230382, '2016-09-07', '14:39:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:39:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473230682, '2016-09-07', '14:44:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:44:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230682, '2016-09-07', '14:44:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:44:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473230982, '2016-09-07', '14:49:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:49:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473230982, '2016-09-07', '14:49:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:49:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473231282, '2016-09-07', '14:54:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:54:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231282, '2016-09-07', '14:54:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:54:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473231306, '2016-09-07', '14:55:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:55:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231583, '2016-09-07', '14:59:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 14:59:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231583, '2016-09-07', '14:59:43', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 14:59:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473231622, '2016-09-07', '15:00:22', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:00:22'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231677, '2016-09-07', '15:01:17', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:01:17'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231883, '2016-09-07', '15:04:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:04:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473231883, '2016-09-07', '15:04:43', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:04:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473232183, '2016-09-07', '15:09:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:09:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473232183, '2016-09-07', '15:09:43', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:09:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473232484, '2016-09-07', '15:14:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:14:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473232484, '2016-09-07', '15:14:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:14:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473232784, '2016-09-07', '15:19:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:19:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473232784, '2016-09-07', '15:19:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:19:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473233085, '2016-09-07', '15:24:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:24:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473233085, '2016-09-07', '15:24:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:24:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473233385, '2016-09-07', '15:29:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:29:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473233385, '2016-09-07', '15:29:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:29:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473233403, '2016-09-07', '15:30:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:30:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473233455, '2016-09-07', '15:30:55', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:30:55'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473233685, '2016-09-07', '15:34:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:34:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473233685, '2016-09-07', '15:34:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:34:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473233925, '2016-09-07', '15:38:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:38:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473234641, '2016-09-07', '15:50:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 15:50:41'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473234641, '2016-09-07', '15:50:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:50:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473234641, '2016-09-07', '15:50:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:50:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473234941, '2016-09-07', '15:55:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 15:55:41'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473234941, '2016-09-07', '15:55:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 15:55:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473234941, '2016-09-07', '15:55:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 15:55:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473235241, '2016-09-07', '16:00:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:00:41'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473235241, '2016-09-07', '16:00:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:00:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473235241, '2016-09-07', '16:00:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:00:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473235542, '2016-09-07', '16:05:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:05:42'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473235542, '2016-09-07', '16:05:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:05:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473235542, '2016-09-07', '16:05:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:05:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473235842, '2016-09-07', '16:10:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:10:42'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473235842, '2016-09-07', '16:10:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:10:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473235842, '2016-09-07', '16:10:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:10:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473235879, '2016-09-07', '16:11:19', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:11:19'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473235996, '2016-09-07', '16:13:16', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:13:16'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473236142, '2016-09-07', '16:15:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:15:42'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473236142, '2016-09-07', '16:15:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:15:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473236142, '2016-09-07', '16:15:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:15:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473236444, '2016-09-07', '16:20:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:20:44'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473236444, '2016-09-07', '16:20:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:20:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473236444, '2016-09-07', '16:20:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:20:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)');
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473236745, '2016-09-07', '16:25:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:25:45'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473236745, '2016-09-07', '16:25:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:25:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473236745, '2016-09-07', '16:25:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:25:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473237045, '2016-09-07', '16:30:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:30:45'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473237045, '2016-09-07', '16:30:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:30:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473237045, '2016-09-07', '16:30:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:30:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473237345, '2016-09-07', '16:35:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:35:45'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473237345, '2016-09-07', '16:35:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:35:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473237345, '2016-09-07', '16:35:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:35:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473237646, '2016-09-07', '16:40:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:40:46'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473237646, '2016-09-07', '16:40:46', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:40:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473237646, '2016-09-07', '16:40:46', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:40:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473237946, '2016-09-07', '16:45:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:45:46'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473237946, '2016-09-07', '16:45:46', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:45:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473237946, '2016-09-07', '16:45:46', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:45:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473238248, '2016-09-07', '16:50:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:50:48'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473238248, '2016-09-07', '16:50:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:50:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473238248, '2016-09-07', '16:50:48', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:50:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473238549, '2016-09-07', '16:55:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 16:55:49'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473238549, '2016-09-07', '16:55:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 16:55:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473238549, '2016-09-07', '16:55:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 16:55:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473238849, '2016-09-07', '17:00:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:00:49'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473238849, '2016-09-07', '17:00:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:00:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473238849, '2016-09-07', '17:00:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:00:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473239149, '2016-09-07', '17:05:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:05:49'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473239149, '2016-09-07', '17:05:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:05:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473239149, '2016-09-07', '17:05:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:05:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)');
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473239449, '2016-09-07', '17:10:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:10:49'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473239449, '2016-09-07', '17:10:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:10:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473239450, '2016-09-07', '17:10:50', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:10:50'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473239750, '2016-09-07', '17:15:50', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:15:50'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473239750, '2016-09-07', '17:15:50', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:15:50'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473239750, '2016-09-07', '17:15:50', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:15:50'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473240050, '2016-09-07', '17:20:50', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:20:50'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473240050, '2016-09-07', '17:20:50', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:20:50'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473240050, '2016-09-07', '17:20:50', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:20:50'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473240351, '2016-09-07', '17:25:51', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:25:51'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473240351, '2016-09-07', '17:25:51', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:25:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473240351, '2016-09-07', '17:25:51', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:25:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473240651, '2016-09-07', '17:30:51', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:30:51'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473240651, '2016-09-07', '17:30:51', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:30:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473240651, '2016-09-07', '17:30:51', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:30:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473240948, '2016-09-07', '17:35:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:35:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473240951, '2016-09-07', '17:35:51', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:35:51'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473240951, '2016-09-07', '17:35:51', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:35:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473240951, '2016-09-07', '17:35:51', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:35:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473240963, '2016-09-07', '17:36:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:36:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241018, '2016-09-07', '17:36:58', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:36:58'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241037, '2016-09-07', '17:37:17', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:37:17'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241251, '2016-09-07', '17:40:51', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:40:51'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473241251, '2016-09-07', '17:40:51', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:40:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241251, '2016-09-07', '17:40:51', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:40:51'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473241389, '2016-09-07', '17:43:09', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:43:09'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241552, '2016-09-07', '17:45:52', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:45:52'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473241552, '2016-09-07', '17:45:52', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:45:52'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241552, '2016-09-07', '17:45:52', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:45:52'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473241853, '2016-09-07', '17:50:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:50:53'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473241853, '2016-09-07', '17:50:53', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:50:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473241853, '2016-09-07', '17:50:53', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:50:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)');
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473242153, '2016-09-07', '17:55:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 17:55:53'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473242153, '2016-09-07', '17:55:53', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 17:55:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473242153, '2016-09-07', '17:55:53', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 17:55:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473242453, '2016-09-07', '18:00:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 18:00:53'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473242453, '2016-09-07', '18:00:53', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 18:00:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473242453, '2016-09-07', '18:00:53', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 18:00:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)'),
-(1473242753, '2016-09-07', '18:05:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-07 18:05:53'',\n  ''insert'' => \n  array (\n    0 => \n    array (\n      ''type'' => ''Au(T+D)'',\n      ''typename'' => ''黄金延期'',\n      ''price'' => ''289.28'',\n      ''openingprice'' => ''286.66'',\n      ''maxprice'' => ''290.30'',\n      ''minprice'' => ''286.21'',\n      ''changepercent'' => ''1.20%'',\n      ''lastclosingprice'' => ''285.85'',\n      ''tradeamount'' => ''92030.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    1 => \n    array (\n      ''type'' => ''Au(T+N2)'',\n      ''typename'' => ''延期双金'',\n      ''price'' => ''292.00'',\n      ''openingprice'' => ''287.50'',\n      ''maxprice'' => ''292.00'',\n      ''minprice'' => ''275.00'',\n      ''changepercent'' => ''1.81%'',\n      ''lastclosingprice'' => ''286.80'',\n      ''tradeamount'' => ''20318.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:17'',\n    ),\n    2 => \n    array (\n      ''type'' => ''Au99.99'',\n      ''typename'' => ''沪金99'',\n      ''price'' => ''289.40'',\n      ''openingprice'' => ''286.30'',\n      ''maxprice'' => ''290.45'',\n      ''minprice'' => ''286.00'',\n      ''changepercent'' => ''1.08%'',\n      ''lastclosingprice'' => ''286.30'',\n      ''tradeamount'' => ''14878.5200'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    3 => \n    array (\n      ''type'' => ''mAu(T+D)'',\n      ''typename'' => ''迷你黄金延期'',\n      ''price'' => ''289.52'',\n      ''openingprice'' => ''286.58'',\n      ''maxprice'' => ''290.33'',\n      ''minprice'' => ''286.46'',\n      ''changepercent'' => ''1.21%'',\n      ''lastclosingprice'' => ''286.07'',\n      ''tradeamount'' => ''8584.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:26'',\n    ),\n    4 => \n    array (\n      ''type'' => ''Au99.95'',\n      ''typename'' => ''沪金95'',\n      ''price'' => ''289.21'',\n      ''openingprice'' => ''287.00'',\n      ''maxprice'' => ''290.20'',\n      ''minprice'' => ''286.90'',\n      ''changepercent'' => ''1.14%'',\n      ''lastclosingprice'' => ''285.96'',\n      ''tradeamount'' => ''1394.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    5 => \n    array (\n      ''type'' => ''Au(T+N1)'',\n      ''typename'' => ''延期单金'',\n      ''price'' => ''291.55'',\n      ''openingprice'' => ''289.00'',\n      ''maxprice'' => ''293.00'',\n      ''minprice'' => ''289.00'',\n      ''changepercent'' => ''0.99%'',\n      ''lastclosingprice'' => ''288.70'',\n      ''tradeamount'' => ''214.2000'',\n      ''updatetime'' => ''2016-09-07 15:29:24'',\n    ),\n    6 => \n    array (\n      ''type'' => ''Pt99.95'',\n      ''typename'' => ''沪铂95'',\n      ''price'' => ''251.00'',\n      ''openingprice'' => ''250.50'',\n      ''maxprice'' => ''251.00'',\n      ''minprice'' => ''250.50'',\n      ''changepercent'' => ''2.00%'',\n      ''lastclosingprice'' => ''246.07'',\n      ''tradeamount'' => ''190.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    7 => \n    array (\n      ''type'' => ''Au100g'',\n      ''typename'' => ''沪金100G'',\n      ''price'' => ''289.25'',\n      ''openingprice'' => ''287.49'',\n      ''maxprice'' => ''290.49'',\n      ''minprice'' => ''287.00'',\n      ''changepercent'' => ''1.13%'',\n      ''lastclosingprice'' => ''286.02'',\n      ''tradeamount'' => ''99.6000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    8 => \n    array (\n      ''type'' => ''iAu99.99'',\n      ''typename'' => ''IAU99.99'',\n      ''price'' => ''288.50'',\n      ''openingprice'' => ''286.95'',\n      ''maxprice'' => ''288.50'',\n      ''minprice'' => ''286.95'',\n      ''changepercent'' => ''0.95%'',\n      ''lastclosingprice'' => ''285.79'',\n      ''tradeamount'' => ''0.2600'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    9 => \n    array (\n      ''type'' => ''iAu100g'',\n      ''typename'' => ''IAU100G'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''261.18'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n    10 => \n    array (\n      ''type'' => ''iAu99.5'',\n      ''typename'' => ''IAU99.5'',\n      ''price'' => ''0.00'',\n      ''openingprice'' => ''0.00'',\n      ''maxprice'' => ''0.00'',\n      ''minprice'' => ''0.00'',\n      ''changepercent'' => ''0.00%'',\n      ''lastclosingprice'' => ''237.80'',\n      ''tradeamount'' => ''0.0000'',\n      ''updatetime'' => ''2016-09-07 15:29:27'',\n    ),\n  ),\n)'),
-(1473242753, '2016-09-07', '18:05:53', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-07 18:05:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473242753, '2016-09-07', '18:05:53', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-07 18:05:53'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n)');
-
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `gd_cron_schedule`
 --
 
-CREATE TABLE `gd_cron_schedule` (
-  `schedule_id` int(10) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_cron_schedule` (
+  `schedule_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `job_code` varchar(255) NOT NULL DEFAULT '0',
   `status` enum('pending','running','success','missed','error') NOT NULL DEFAULT 'pending',
   `messages` text,
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `scheduled_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `executed_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `finished_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+  `finished_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`schedule_id`),
+  KEY `task_name` (`job_code`),
+  KEY `scheduled_at` (`scheduled_at`,`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -259,8 +113,8 @@ CREATE TABLE `gd_cron_schedule` (
 -- 表的结构 `gd_customer`
 --
 
-CREATE TABLE `gd_customer` (
-  `customer_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `realname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `avatar` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
@@ -273,8 +127,9 @@ CREATE TABLE `gd_customer` (
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `lasttime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
 
 --
 -- 转存表中的数据 `gd_customer`
@@ -297,8 +152,8 @@ INSERT INTO `gd_customer` (`customer_id`, `realname`, `avatar`, `phone`, `idnumb
 -- 表的结构 `gd_customer_apply`
 --
 
-CREATE TABLE `gd_customer_apply` (
-  `apply_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer_apply` (
+  `apply_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `phone` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
@@ -307,8 +162,9 @@ CREATE TABLE `gd_customer_apply` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `locker_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `locker_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`apply_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -316,8 +172,8 @@ CREATE TABLE `gd_customer_apply` (
 -- 表的结构 `gd_customer_group`
 --
 
-CREATE TABLE `gd_customer_group` (
-  `group_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer_group` (
+  `group_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `code` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `icon` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -326,8 +182,9 @@ CREATE TABLE `gd_customer_group` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `lasttime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `gd_customer_group`
@@ -345,25 +202,14 @@ INSERT INTO `gd_customer_group` (`group_id`, `title`, `code`, `icon`, `rule`, `n
 -- 表的结构 `gd_customer_history`
 --
 
-CREATE TABLE `gd_customer_history` (
-  `history_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_customer_history`
---
-
-INSERT INTO `gd_customer_history` (`history_id`, `customer_id`, `note`, `worker_id`, `addtime`) VALUES
-(1, 7, '申请提金：15.00克', 3, 1472655342),
-(2, 7, '取消提金：15.00克<br>sadsadasdsad', 3, 1472655831),
-(3, 8, '申请提金：12.00克', 3, 1472655913),
-(4, 7, '申请提金：11.00克', 3, 1472658219),
-(5, 8, '申请提金：10.00克', 3, 1472658396),
-(6, 8, '申请提金：5.00克', 3, 1472799106);
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -371,8 +217,8 @@ INSERT INTO `gd_customer_history` (`history_id`, `customer_id`, `note`, `worker_
 -- 表的结构 `gd_customer_stock`
 --
 
-CREATE TABLE `gd_customer_stock` (
-  `stock_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_customer_stock` (
+  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_id` int(11) NOT NULL,
   `mode` enum('in','out','profit','free') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'profit',
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
@@ -381,26 +227,9 @@ CREATE TABLE `gd_customer_stock` (
   `notify` tinyint(1) NOT NULL DEFAULT '1',
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_customer_stock`
---
-
-INSERT INTO `gd_customer_stock` (`stock_id`, `customer_id`, `mode`, `project_sn`, `weight`, `file`, `notify`, `note`, `worker_id`, `addtime`) VALUES
-(4, 7, 'in', 'GR1608319242154447', '31.00', NULL, 1, '', 3, 1472653349),
-(5, 8, 'in', 'GR1608315162053241', '20.00', NULL, 1, '', 3, 1472653784),
-(7, 8, 'out', '', '-10.00', NULL, 1, '阿萨德撒的撒', 7, 1472658506),
-(8, 3, 'in', 'GM1609011461040439', '15.00', NULL, 1, '下自成蹊政策性支持下自成蹊', 3, 1472706778),
-(9, 6, 'in', 'GM1609016370915225', '10.00', NULL, 1, '删除项目', 3, 1472707008),
-(10, 8, 'out', '', '-5.00', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/0215531356de7a.txt"},{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/09\\/02155332f92559.txt"}]', 1, 'asdsadsadsadsa', 7, 1472802999),
-(11, 6, 'profit', 'GM1609016370915225', '1.15', NULL, 1, '删除项目', 3, 1472707008),
-(12, 9, 'profit', 'GR1609011121322704', '0.78', NULL, 1, NULL, 0, 1473225890),
-(13, 6, 'profit', 'GR1609049592224441', '0.17', NULL, 1, NULL, 0, 1473225890),
-(14, 10, 'profit', 'GM1609055931733042', '0.30', NULL, 1, NULL, 0, 1473225890),
-(15, 6, 'profit', 'GR1609069731685843', '1.47', NULL, 1, NULL, 0, 1473225890),
-(16, 4, 'profit', 'GR1609062941713226', '0.83', NULL, 1, NULL, 0, 1473225890);
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stock_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -408,14 +237,15 @@ INSERT INTO `gd_customer_stock` (`stock_id`, `customer_id`, `mode`, `project_sn`
 -- 表的结构 `gd_golden_price`
 --
 
-CREATE TABLE `gd_golden_price` (
-  `id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_golden_price` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` date NOT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `price` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=34 ;
 
 --
 -- 转存表中的数据 `gd_golden_price`
@@ -461,7 +291,7 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 -- 表的结构 `gd_golden_today`
 --
 
-CREATE TABLE `gd_golden_today` (
+CREATE TABLE IF NOT EXISTS `gd_golden_today` (
   `date` date DEFAULT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -473,7 +303,9 @@ CREATE TABLE `gd_golden_today` (
   `lastclosing` decimal(8,2) NOT NULL DEFAULT '0.00',
   `tradeamount` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `updatetime` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL
+  `addtime` int(11) NOT NULL,
+  KEY `date` (`date`),
+  KEY `updatetime` (`updatetime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -714,8 +546,8 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 -- 表的结构 `gd_node`
 --
 
-CREATE TABLE `gd_node` (
-  `node_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_node` (
+  `node_id` int(11) NOT NULL AUTO_INCREMENT,
   `mode` enum('auth','menu') NOT NULL DEFAULT 'auth',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `level` tinyint(4) NOT NULL DEFAULT '1',
@@ -725,8 +557,9 @@ CREATE TABLE `gd_node` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `sort` smallint(6) NOT NULL DEFAULT '0',
-  `note` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `note` text,
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=120 ;
 
 --
 -- 转存表中的数据 `gd_node`
@@ -842,46 +675,35 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 -- 表的结构 `gd_project_file`
 --
 
-CREATE TABLE `gd_project_file` (
-  `file_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
   `dir` enum('photo','invoice','report','privacy') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'photo',
   `file` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
 
 --
 -- 转存表中的数据 `gd_project_file`
 --
 
 INSERT INTO `gd_project_file` (`file_id`, `project_sn`, `mode`, `dir`, `file`, `status`, `worker_id`, `addtime`) VALUES
-(1, '1', 'recycling', 'photo', '[{"name":"avatar4.png","path":"public\\/uploads\\/2016\\/08\\/31203115d185f7.png"}]', 1, 5, 1472646761),
-(2, '1', 'recycling', 'invoice', '[{"name":"user6-128x128.jpg","path":"public\\/uploads\\/2016\\/08\\/31203118c7fc97.jpg"}]', 1, 5, 1472646761),
-(3, '1', 'recycling', 'report', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/08\\/31203123ae62a7.txt"}]', 1, 5, 1472646761),
-(4, '1', 'recycling', 'privacy', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/08\\/312031262cc9db.txt"}]', 1, 5, 1472646761),
-(5, '2', 'recycling', 'photo', '[{"name":"avatar3.png","path":"public\\/uploads\\/2016\\/08\\/31214317c8c0dc.png"}]', 1, 5, 1472651087),
-(6, '2', 'recycling', 'invoice', '[{"name":"avatar.png","path":"public\\/uploads\\/2016\\/08\\/312143200a466f.png"}]', 1, 5, 1472651087),
-(7, '2', 'recycling', 'report', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/08\\/31214323195807.txt"}]', 1, 5, 1472651087),
-(8, '2', 'recycling', 'privacy', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/08\\/312143279a52de.txt"}]', 1, 5, 1472651087),
-(9, '3', 'recycling', 'photo', '[{"name":"user4-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/01001016417a7f.jpg"}]', 1, 5, 1472659852),
-(10, '3', 'recycling', 'invoice', '[{"name":"user6-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/01001020a27ded.jpg"}]', 1, 5, 1472659852),
-(11, '3', 'recycling', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/01001045283236.txt"}]', 1, 5, 1472659852),
-(12, 'GM1609011461040439', 'investing', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/01100435f5640a.txt"}]', 1, 5, 1472695479),
-(13, 'GM1609013171352349', 'investing', 'privacy', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/09\\/0113232940fc8a.txt"}]', 1, 5, 1472707429),
-(14, 'GR1609011121322704', 'recycling', 'photo', '[{"name":"avatar.png","path":"public\\/uploads\\/2016\\/09\\/01132612e8d8d3.png"}]', 1, 5, 1472707624),
-(15, 'GR1609011121322704', 'recycling', 'invoice', '[{"name":"user6-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/01132614c2eeca.jpg"}]', 1, 5, 1472707624),
-(16, 'GR1609011121322704', 'recycling', 'report', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/09\\/011326467224f4.txt"}]', 1, 5, 1472707624),
-(17, 'GR1609011121322704', 'recycling', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/0113264493c326.txt"}]', 1, 5, 1472707624),
-(18, 'GR1609049592224441', 'recycling', 'privacy', '[{"name":"user2-160x160.jpg","path":"public\\/uploads\\/2016\\/09\\/04224429f8a769.jpg"}]', 1, 5, 1473000281),
-(19, 'GM1609055931733042', 'investing', 'privacy', '[{"name":"avatar.png","path":"public\\/uploads\\/2016\\/09\\/0517303749c9ee.png"}]', 1, 5, 1473067842),
-(20, 'GM1609056201833953', 'investing', 'privacy', '[{"name":"user6-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/0518394375db4a.jpg"}]', 1, 5, 1473071993),
-(21, 'GR1609069731685843', 'recycling', 'photo', '[{"name":"user7-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/06165734c21572.jpg"}]', 1, 5, 1473152323),
-(22, 'GR1609069731685843', 'recycling', 'invoice', '[{"name":"user8-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/06165813d5dfca.jpg"}]', 1, 5, 1473152323),
-(25, 'GR1609062941713226', 'recycling', 'photo', '[{"name":"user7-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/06173248297d0f.jpg"}]', 1, 5, 1473154423),
-(26, 'GR1609062941713226', 'recycling', 'report', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/06173252cba3c7.txt"}]', 1, 5, 1473154423);
+(1, 'GR1609072292323723', 'recycling', 'photo', '[{"name":"user2-160x160.jpg","path":"public\\/uploads\\/2016\\/09\\/07233430c4779f.jpg"}]', 1, 5, 1473262643),
+(2, 'GR1609072292323723', 'recycling', 'invoice', '[{"name":"avatar.png","path":"public\\/uploads\\/2016\\/09\\/0723343230d1e5.png"}]', 1, 5, 1473262643),
+(3, 'GR1609072292323723', 'recycling', 'report', '[{"name":"121034209220f1.jpg","path":"public\\/uploads\\/2016\\/09\\/07233656415412.jpg"}]', 1, 5, 1473262643),
+(4, 'GR1609072292323723', 'recycling', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/0723371138ba1a.txt"}]', 1, 5, 1473262643),
+(9, 'GR1609082350070713', 'recycling', 'photo', '[{"name":"user5-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/0800064159997c.jpg"}]', 1, 5, 1473266405),
+(10, 'GR1609082350070713', 'recycling', 'invoice', '[{"name":"avatar2.png","path":"public\\/uploads\\/2016\\/09\\/08000645a58955.png"}]', 1, 5, 1473266405),
+(11, 'GR1609082350070713', 'recycling', 'report', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/09\\/080006488d5330.txt"}]', 1, 5, 1473266405),
+(12, 'GR1609082350070713', 'recycling', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/08000657981570.txt"}]', 1, 5, 1473266405),
+(13, 'GR1609084360044048', 'recycling', 'photo', '[{"name":"user1-128x128.jpg","path":"public\\/uploads\\/2016\\/09\\/08004148b6eafa.jpg"}]', 1, 5, 1473266526),
+(14, 'GR1609084360044048', 'recycling', 'invoice', '[{"name":"avatar3.png","path":"public\\/uploads\\/2016\\/09\\/08004152bde3de.png"}]', 1, 5, 1473266526),
+(15, 'GR1609084360044048', 'recycling', 'report', '[{"name":"29155000ed424f.txt","path":"public\\/uploads\\/2016\\/09\\/080041540b5664.txt"}]', 1, 5, 1473266526),
+(16, 'GR1609084360044048', 'recycling', 'privacy', '[{"name":"29155021142d12.txt","path":"public\\/uploads\\/2016\\/09\\/0800420280969f.txt"}]', 1, 5, 1473266526);
 
 -- --------------------------------------------------------
 
@@ -889,8 +711,8 @@ INSERT INTO `gd_project_file` (`file_id`, `project_sn`, `mode`, `dir`, `file`, `
 -- 表的结构 `gd_project_investing`
 --
 
-CREATE TABLE `gd_project_investing` (
-  `project_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
@@ -898,26 +720,20 @@ CREATE TABLE `gd_project_investing` (
   `price` decimal(6,2) NOT NULL DEFAULT '0.00',
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
   `amount` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `month` tinyint(4) NOT NULL DEFAULT '1',
+  `profit` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `payment` enum('cash','gold') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'gold',
   `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
   `is_del` tinyint(1) NOT NULL DEFAULT '0',
   `transferrer` int(11) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_project_investing`
---
-
-INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `price`, `weight`, `amount`, `start`, `note`, `is_del`, `transferrer`, `worker_id`, `addtime`, `lasttime`, `locker_id`) VALUES
-(1, 'GM1609016370915225', 6, 6, 12, '266.16', '10.00', '2661.60', '2016-09-01', '第三打算的撒的撒啊实打实', 1, 0, 3, 1472694745, 1472707008, 0),
-(3, 'GM1609011461040439', 6, 3, 0, '282.49', '15.00', '4237.35', '2016-09-01', '下自成蹊政策性支持下自成蹊', 1, 0, 3, 1472695479, 1472706778, 0),
-(4, 'GM1609013171352349', 4, 9, 12, '282.25', '1000.00', '282250.00', '2016-09-01', '库存已确认标记，自动推进到正在增值', 0, 0, 7, 1472707429, 1472707533, 0),
-(5, 'GM1609055931733042', 4, 10, 0, '285.39', '20.00', '5707.80', '2016-09-05', '库存已确认标记，自动推进到正在增值', 0, 11, 7, 1473067842, 1473068754, 0),
-(6, 'GM1609056201833953', 1, 7, 12, '285.39', '50.00', '14269.50', NULL, '13212312', 0, 3, 5, 1473071993, 1473071993, 0);
+  `locker_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -925,46 +741,17 @@ INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `status_id`, `cu
 -- 表的结构 `gd_project_investing_history`
 --
 
-CREATE TABLE `gd_project_investing_history` (
-  `history_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_project_investing_history`
---
-
-INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_id`, `note`, `request`, `worker_id`, `addtime`, `ip`) VALUES
-(1, 1, 1, '撒的撒打算', '', 5, 1472694745, '127.0.0.1'),
-(2, 3, 1, '阿斯顿撒旦撒大', '', 5, 1472695479, '127.0.0.1'),
-(3, 3, 1, '阿斯顿撒旦撒大sadasdas', '', 5, 1472697695, '127.0.0.1'),
-(4, 3, 2, '啥的撒打算的撒', 'array (\n  ''amount'' =&gt; ''4237.35'',\n  ''_amount'' =&gt; ''4237.35'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 3, 1472701465, '127.0.0.1'),
-(5, 1, 2, '撒旦撒旦撒的撒', 'array (\n  ''amount'' =&gt; ''2661.60'',\n  ''_amount'' =&gt; ''2661.60'',\n  ''phone'' =&gt; ''18959596767'',\n  ''_phone'' =&gt; ''18959596767'',\n)', 3, 1472701716, '127.0.0.1'),
-(6, 1, 6, '第三打算的撒的撒啊实打实', '', 3, 1472701800, '127.0.0.1'),
-(7, 3, 5, '啥的撒打算的撒大叔撒的撒的', '', 3, 1472701945, '127.0.0.1'),
-(8, 3, 1, '啥的撒打算的撒大叔撒的撒的', '', 5, 1472702003, '127.0.0.1'),
-(9, 3, 2, '胜多负少多福多寿427', 'array (\n  ''amount'' =&gt; ''4237.35'',\n  ''_amount'' =&gt; ''4237.35'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 3, 1472702111, '127.0.0.1'),
-(10, 3, 3, 'sadsadsadsadsa ', 'array (\n  ''weight'' =&gt; ''15.00'',\n  ''_weight'' =&gt; ''15.00'',\n  ''phone'' =&gt; ''18959506595'',\n  ''_phone'' =&gt; ''18959506595'',\n)', 7, 1472704915, '127.0.0.1'),
-(11, 3, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472704915, '127.0.0.1'),
-(13, 3, 6, '下自成蹊政策性支持下自成蹊', '', 3, 1472706778, '127.0.0.1'),
-(14, 4, 1, '大土豪', '', 5, 1472707429, '127.0.0.1'),
-(15, 4, 2, '就好的', 'array (\n  ''amount'' =&gt; ''282250.00'',\n  ''_amount'' =&gt; ''282250.00'',\n  ''phone'' =&gt; ''13813800138'',\n  ''_phone'' =&gt; ''13813800138'',\n)', 3, 1472707480, '127.0.0.1'),
-(16, 4, 3, '我也OK啊', 'array (\n  ''weight'' =&gt; ''1000.00'',\n  ''_weight'' =&gt; ''1000.00'',\n  ''phone'' =&gt; ''13813800138'',\n  ''_phone'' =&gt; ''13813800138'',\n)', 7, 1472707533, '127.0.0.1'),
-(17, 4, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472707533, '127.0.0.1'),
-(18, 5, 1, 'asdsadsadsa', '', 5, 1473067842, '127.0.0.1'),
-(19, 5, 1, 'asdsadsadsa', '', 5, 1473068270, '127.0.0.1'),
-(20, 5, 1, 'asdsadsadsa', '', 5, 1473068312, '127.0.0.1'),
-(21, 5, 1, 'asdsadsadsa', '', 5, 1473068344, '127.0.0.1'),
-(22, 5, 2, 'sdsadsadsa', 'array (\n  ''amount'' =&gt; ''5707.80'',\n  ''_amount'' =&gt; ''5707.80'',\n  ''phone'' =&gt; ''13606660888'',\n  ''_phone'' =&gt; ''13606660888'',\n)', 3, 1473068692, '127.0.0.1'),
-(23, 5, 3, 'tertretret', 'array (\n  ''weight'' =&gt; ''20.00'',\n  ''_weight'' =&gt; ''20.00'',\n  ''phone'' =&gt; ''13606660888'',\n  ''_phone'' =&gt; ''13606660888'',\n)', 7, 1473068754, '127.0.0.1'),
-(24, 5, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473068754, '127.0.0.1'),
-(25, 6, 1, '13212312', '', 5, 1473071993, '127.0.0.1');
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -972,14 +759,15 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_investing_status`
 --
 
-CREATE TABLE `gd_project_investing_status` (
-  `status_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_investing_status` (
+  `status_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `gd_project_investing_status`
@@ -996,11 +784,37 @@ INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `list_l
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `gd_project_period`
+--
+
+CREATE TABLE IF NOT EXISTS `gd_project_period` (
+  `period_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `month` tinyint(4) NOT NULL DEFAULT '1',
+  `profit` decimal(5,2) NOT NULL DEFAULT '0.00',
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `default` tinyint(4) NOT NULL DEFAULT '0',
+  `note` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`period_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- 转存表中的数据 `gd_project_period`
+--
+
+INSERT INTO `gd_project_period` (`period_id`, `title`, `month`, `profit`, `status`, `default`, `note`) VALUES
+(1, '3个月 年化6%', 3, '6.00', 1, 0, ''),
+(2, '6个月 年化7%', 6, '7.00', 1, 0, ''),
+(3, '1年 年化8%', 12, '8.00', 1, 1, '');
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `gd_project_recycling`
 --
 
-CREATE TABLE `gd_project_recycling` (
-  `project_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
+  `project_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
@@ -1010,31 +824,31 @@ CREATE TABLE `gd_project_recycling` (
   `weight` decimal(9,2) NOT NULL DEFAULT '0.00',
   `number` tinyint(4) NOT NULL DEFAULT '0',
   `type` enum('ornaments','goldbar','other') COLLATE utf8_unicode_ci DEFAULT 'ornaments',
+  `month` tinyint(4) NOT NULL DEFAULT '1',
+  `profit` decimal(7,4) NOT NULL DEFAULT '0.0000',
+  `payment` enum('cash','gold') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'gold',
   `appraiser_id` int(11) NOT NULL DEFAULT '0',
   `loss` decimal(5,2) NOT NULL DEFAULT '0.00',
   `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
   `is_del` tinyint(1) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `transferrer` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `locker_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`project_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling`
 --
 
-INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `price`, `origin_weight`, `weight`, `number`, `type`, `appraiser_id`, `loss`, `start`, `note`, `is_del`, `worker_id`, `transferrer`, `addtime`, `lasttime`, `locker_id`) VALUES
-(1, 'GR1608315162053241', 6, 8, 12, '283.16', '22.00', '20.00', 2, 'ornaments', 9, '6.00', NULL, '231243242432', 1, 3, NULL, 1472646761, 1472653784, 0),
-(2, 'GR1608319242154447', 6, 7, 0, '283.16', '33.00', '31.00', 3, 'ornaments', 9, '7.00', NULL, 'sawewqrewtretetre', 1, 3, NULL, 1472651087, 1472653349, 0),
-(3, 'GR1609018170081051', 4, 8, 12, '282.30', '12.00', '11.00', 1, 'ornaments', 9, '8.00', NULL, '库存已确认标记，自动推进到正在增值', 0, 7, NULL, 1472659851, 1472660062, 0),
-(4, 'GR1609011121322704', 4, 9, 12, '282.25', '55.00', '52.00', 1, 'goldbar', 10, '6.00', '2016-09-01', '库存已确认标记，自动推进到正在增值', 0, 7, NULL, 1472707624, 1472707775, 0),
-(5, 'GR1609049592224441', 4, 6, 12, '284.31', '12.00', '11.00', 1, 'ornaments', 9, '9.00', '2016-09-04', '库存已确认标记，自动推进到正在增值', 0, 7, '11', 1473000281, 1473064798, 0),
-(6, 'GR1609053831781829', 2, 10, 12, '285.39', '50.00', '49.99', 1, 'ornaments', 9, '2.00', '2016-09-05', '', 0, 3, '3', 1473067109, 1473134384, 0),
-(7, 'GR1609069731685843', 4, 6, 12, '286.30', '100.00', '98.00', 2, 'goldbar', 9, '2.00', '2016-09-06', '库存已确认标记，自动推进到正在增值', 0, 8, '8', 1473152323, 1473153442, 0),
-(8, 'GR1609062941713226', 4, 4, 2, '286.30', '56.00', '55.00', 2, 'ornaments', 11, '0.90', '2016-09-06', '库存已确认标记，自动推进到正在增值', 0, 7, '3', 1473154346, 1473155250, 0);
+INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `price`, `origin_weight`, `weight`, `number`, `type`, `month`, `profit`, `payment`, `appraiser_id`, `loss`, `start`, `end`, `note`, `is_del`, `worker_id`, `transferrer`, `addtime`, `lasttime`, `locker_id`) VALUES
+(1, 'GR1609072292323723', 1, 8, 12, '289.40', '12.00', '9.00', 2, 'ornaments', 12, '0.0800', 'gold', 9, '0.75', NULL, NULL, 'ZXzxzXZxzxz', 0, 5, '3', 1473262643, 1473262643, 0),
+(2, 'GR1609082350070713', 1, 6, 12, '289.40', '100.00', '99.00', 2, 'goldbar', 12, '0.0800', 'cash', 9, '0.99', NULL, NULL, 'asdsadsadsa', 0, 5, '3', 1473264433, 1473266405, 0),
+(3, 'GR1609084360044048', 4, 5, 12, '289.40', '100.00', '98.00', 2, 'ornaments', 12, '0.0800', 'gold', 9, '0.98', '2016-09-08', '2017-09-07', '库存已确认标记，自动推进到正在增值', 0, 7, '3', 1473266448, 1473269361, 0);
 
 -- --------------------------------------------------------
 
@@ -1042,65 +856,31 @@ INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `cu
 -- 表的结构 `gd_project_recycling_history`
 --
 
-CREATE TABLE `gd_project_recycling_history` (
-  `history_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling_history`
 --
 
 INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_id`, `note`, `request`, `worker_id`, `addtime`, `ip`) VALUES
-(1, 1, 1, 'asdsadasdasdadsa', '', 5, 1472646761, '127.0.0.1'),
-(2, 1, 2, '', 'array (\n  ''weight'' =&gt; ''20.00'',\n  ''_weight'' =&gt; ''20.00'',\n  ''phone'' =&gt; ''18808800990'',\n  ''_phone'' =&gt; ''18808800990'',\n)', 3, 1472646926, '127.0.0.1'),
-(3, 1, 3, '进库存了妥妥的', 'array (\n  ''weight'' =&gt; ''20.00'',\n  ''_weight'' =&gt; ''20.00'',\n  ''phone'' =&gt; ''18808800990'',\n  ''_phone'' =&gt; ''18808800990'',\n)', 7, 1472648191, '127.0.0.1'),
-(4, 1, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472648192, '127.0.0.1'),
-(5, 2, 1, '我去额为企鹅我去', '', 5, 1472651087, '127.0.0.1'),
-(6, 2, 2, '', 'array (\n  ''weight'' =&gt; ''31.00'',\n  ''_weight'' =&gt; ''31.00'',\n  ''phone'' =&gt; ''13113213313'',\n  ''_phone'' =&gt; ''13113213313'',\n)', 3, 1472651230, '127.0.0.1'),
-(7, 2, 3, '按时打算', 'array (\n  ''weight'' =&gt; ''31.00'',\n  ''_weight'' =&gt; ''31.00'',\n  ''phone'' =&gt; ''13113213313'',\n  ''_phone'' =&gt; ''13113213313'',\n)', 7, 1472651289, '127.0.0.1'),
-(8, 2, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472651289, '127.0.0.1'),
-(9, 2, 6, 'sawewqrewtretetre', '', 3, 1472653349, '127.0.0.1'),
-(10, 1, 6, '231243242432', '', 3, 1472653784, '127.0.0.1'),
-(11, 3, 1, '的撒的撒的撒', '', 5, 1472659852, '127.0.0.1'),
-(12, 3, 2, '', 'array (\n  ''weight'' =&gt; ''11.00'',\n  ''_weight'' =&gt; ''11.00'',\n  ''phone'' =&gt; ''18808800990'',\n  ''_phone'' =&gt; ''18808800990'',\n)', 3, 1472659928, '127.0.0.1'),
-(14, 3, 3, '撒的撒', 'array (\n  ''weight'' =&gt; ''11.00'',\n  ''_weight'' =&gt; ''11.00'',\n  ''phone'' =&gt; ''18808800990'',\n  ''_phone'' =&gt; ''18808800990'',\n)', 7, 1472660062, '127.0.0.1'),
-(15, 3, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472660062, '127.0.0.1'),
-(16, 4, 1, '有钱的大佬', '', 5, 1472707624, '127.0.0.1'),
-(17, 4, 2, '有聚宝盆哎', 'array (\n  ''weight'' =&gt; ''52.00'',\n  ''_weight'' =&gt; ''52.00'',\n  ''phone'' =&gt; ''13813800138'',\n  ''_phone'' =&gt; ''13813800138'',\n)', 3, 1472707662, '127.0.0.1'),
-(18, 4, 3, '偷了他的聚宝盆', 'array (\n  ''weight'' =&gt; ''52.00'',\n  ''_weight'' =&gt; ''52.00'',\n  ''phone'' =&gt; ''13813800138'',\n  ''_phone'' =&gt; ''13813800138'',\n)', 7, 1472707775, '127.0.0.1'),
-(19, 4, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1472707775, '127.0.0.1'),
-(20, 5, 1, 'qweqweqwewq', '', 5, 1473000281, '127.0.0.1'),
-(21, 5, 2, 'sadsads', 'array (\n  ''weight'' =&gt; ''11.00'',\n  ''_weight'' =&gt; ''11.00'',\n  ''phone'' =&gt; ''18959596767'',\n  ''_phone'' =&gt; ''18959596767'',\n)', 3, 1473064734, '127.0.0.1'),
-(22, 5, 3, 'asdsadsad', 'array (\n  ''weight'' =&gt; ''11.00'',\n  ''_weight'' =&gt; ''11.00'',\n  ''phone'' =&gt; ''18959596767'',\n  ''_phone'' =&gt; ''18959596767'',\n)', 7, 1473064798, '127.0.0.1'),
-(23, 5, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473064798, '127.0.0.1'),
-(24, 6, 1, '324324423432', '', 5, 1473067109, '127.0.0.1'),
-(25, 6, 1, '324324423432', '', 5, 1473083447, '127.0.0.1'),
-(26, 6, 2, '', 'array (\n  ''weight'' =&gt; ''49.99'',\n  ''_weight'' =&gt; ''49.99'',\n  ''phone'' =&gt; ''13606660888'',\n  ''_phone'' =&gt; ''13606660888'',\n)', 3, 1473134384, '127.0.0.1'),
-(27, 7, 1, 'qweqweqw', '', 5, 1473152323, '127.0.0.1'),
-(28, 7, 2, '', 'array (\n  ''weight'' =&gt; ''98.00'',\n  ''_weight'' =&gt; ''98.00'',\n  ''phone'' =&gt; ''18959596767'',\n  ''_phone'' =&gt; ''18959596767'',\n)', 3, 1473152492, '127.0.0.1'),
-(29, 7, 3, 'sasdasdsad', 'array (\n  ''weight'' =&gt; ''98.00'',\n  ''_weight'' =&gt; ''98.00'',\n  ''phone'' =&gt; ''18959596767'',\n  ''_phone'' =&gt; ''18959596767'',\n)', 8, 1473153442, '127.0.0.1'),
-(30, 7, 4, '库存已确认标记，自动推进到正在增值', '', 8, 1473153442, '127.0.0.1'),
-(31, 8, 1, '', '', 5, 1473154346, '127.0.0.1'),
-(32, 8, 1, '', '', 5, 1473154375, '127.0.0.1'),
-(33, 8, 1, '', '', 5, 1473154423, '127.0.0.1'),
-(34, 8, 2, 'dsadsa', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 3, 1473154517, '127.0.0.1'),
-(35, 8, 3, 'sadasdasdasdsa', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 7, 1473154570, '127.0.0.1'),
-(36, 8, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473154570, '127.0.0.1'),
-(37, 8, 3, 'dsadsa', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 7, 1473154774, '127.0.0.1'),
-(38, 8, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473154774, '127.0.0.1'),
-(39, 8, 3, 'asdsadsa', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 7, 1473155001, '127.0.0.1'),
-(40, 8, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473155001, '127.0.0.1'),
-(41, 8, 3, '', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 7, 1473155087, '127.0.0.1'),
-(42, 8, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473155087, '127.0.0.1'),
-(45, 8, 3, 'sdsadsa', 'array (\n  ''weight'' =&gt; ''55.00'',\n  ''_weight'' =&gt; ''55.00'',\n  ''phone'' =&gt; ''18850219878'',\n  ''_phone'' =&gt; ''18850219878'',\n)', 7, 1473155250, '127.0.0.1'),
-(46, 8, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473155250, '127.0.0.1');
+(1, 1, 1, 'ZXzxzXZxzxz', '', 5, 1473262643, '127.0.0.1'),
+(2, 2, 1, 'asdsadsadsa', '', 5, 1473264433, '127.0.0.1'),
+(3, 2, 1, 'asdsadsadsa', '', 5, 1473266405, '127.0.0.1'),
+(4, 3, 1, 'qweqweq', '', 5, 1473266448, '127.0.0.1'),
+(5, 3, 1, 'qweqweq', '', 5, 1473266526, '127.0.0.1'),
+(6, 3, 2, 'asdasdsadsa', 'array (\n  ''weight'' =&gt; ''98.00'',\n  ''_weight'' =&gt; ''98.00'',\n  ''phone'' =&gt; ''18959596565'',\n  ''_phone'' =&gt; ''18959596565'',\n)', 3, 1473268511, '127.0.0.1'),
+(7, 3, 3, '332432432', 'array (\n  ''weight'' =&gt; ''98.00'',\n  ''_weight'' =&gt; ''98.00'',\n  ''phone'' =&gt; ''18959596565'',\n  ''_phone'' =&gt; ''18959596565'',\n)', 7, 1473269361, '127.0.0.1'),
+(8, 3, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473269361, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -1108,14 +888,15 @@ INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_recycling_status`
 --
 
-CREATE TABLE `gd_project_recycling_status` (
-  `status_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_recycling_status` (
+  `status_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `gd_project_recycling_status`
@@ -1135,8 +916,8 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `list_l
 -- 表的结构 `gd_project_stock`
 --
 
-CREATE TABLE `gd_project_stock` (
-  `stock_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_stock` (
+  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_sn` char(18) COLLATE utf8_unicode_ci DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
   `referrer_id` int(11) NOT NULL DEFAULT '0',
@@ -1144,26 +925,24 @@ CREATE TABLE `gd_project_stock` (
   `mode` enum('investing','recycling','stock') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'investing',
   `info` text COLLATE utf8_unicode_ci,
   `weight` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `profit` decimal(7,4) NOT NULL DEFAULT '0.0000',
   `start` date DEFAULT NULL,
+  `end` date DEFAULT NULL,
   `last_profit` date DEFAULT NULL,
   `note` text COLLATE utf8_unicode_ci,
   `status` tinyint(4) NOT NULL,
   `worker_id` int(11) NOT NULL,
   `addtime` int(11) NOT NULL,
-  `lasttime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `lasttime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`stock_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- 转存表中的数据 `gd_project_stock`
 --
 
-INSERT INTO `gd_project_stock` (`stock_id`, `project_sn`, `customer_id`, `referrer_id`, `title`, `mode`, `info`, `weight`, `start`, `last_profit`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
-(5, 'GM1609013171352349', 9, 12, '项目GM1609013171352349存金1,000.00克', 'investing', 'a:7:{s:10:"project_id";s:1:"4";s:8:"realname";s:9:"沈万三";s:5:"phone";s:11:"13813800138";s:8:"idnumber";s:18:"138139199810039997";s:5:"price";s:6:"282.25";s:6:"amount";s:9:"282250.00";s:6:"weight";s:7:"1000.00";}', '1000.00', '2016-09-01', '2016-09-07', '我也OK啊', 1, 7, 1472707533, 1472707533),
-(6, 'GR1609011121322704', 9, 12, '项目GR1609011121322704存金52.00克', 'recycling', 'a:10:{s:10:"project_id";s:1:"4";s:8:"realname";s:9:"沈万三";s:5:"phone";s:11:"13813800138";s:8:"idnumber";s:18:"138139199810039997";s:5:"price";s:6:"282.25";s:4:"type";s:6:"金条";s:6:"number";s:1:"1";s:13:"origin_weight";s:5:"55.00";s:6:"weight";s:5:"52.00";s:12:"appraiser_id";s:2:"10";}', '52.00', '2016-09-01', '2016-09-07', '偷了他的聚宝盆', 1, 7, 1472707775, 1473225890),
-(7, 'GR1609049592224441', 6, 12, '项目GR1609049592224441存金11.00克', 'recycling', 'a:10:{s:10:"project_id";s:1:"5";s:8:"realname";s:9:"余华为";s:5:"phone";s:11:"18959596767";s:8:"idnumber";s:18:"321254198908050604";s:5:"price";s:6:"284.31";s:4:"type";s:6:"金饰";s:6:"number";s:1:"1";s:13:"origin_weight";s:5:"12.00";s:6:"weight";s:5:"11.00";s:12:"appraiser_id";s:1:"9";}', '11.00', '2016-09-04', '2016-09-07', 'asdsadsad', 1, 7, 1473064798, 1473225890),
-(8, 'GM1609055931733042', 10, 0, '项目GM1609055931733042存金20.00克', 'investing', 'a:7:{s:10:"project_id";s:1:"5";s:8:"realname";s:9:"赵公明";s:5:"phone";s:11:"13606660888";s:8:"idnumber";s:18:"123321196606066666";s:5:"price";s:6:"285.39";s:6:"amount";s:7:"5707.80";s:6:"weight";s:5:"20.00";}', '20.00', '2016-09-05', '2016-09-07', 'tertretret', 1, 7, 1473068754, 1473225890),
-(9, 'GR1609069731685843', 6, 12, '项目GR1609069731685843存金98.00克', 'recycling', 'a:10:{s:10:"project_id";s:1:"7";s:8:"realname";s:9:"余华为";s:5:"phone";s:11:"18959596767";s:8:"idnumber";s:18:"321254198908050604";s:5:"price";s:6:"286.30";s:4:"type";s:6:"金条";s:6:"number";s:1:"2";s:13:"origin_weight";s:6:"100.00";s:6:"weight";s:5:"98.00";s:12:"appraiser_id";s:1:"9";}', '98.00', '2016-09-06', '2016-09-07', 'sasdasdsad', 1, 8, 1473153442, 1473225890),
-(10, 'GR1609062941713226', 4, 2, '项目GR1609062941713226存金55.00克', 'recycling', 'a:10:{s:10:"project_id";s:1:"8";s:8:"realname";s:9:"马晓云";s:5:"phone";s:11:"18850219878";s:8:"idnumber";s:18:"321324195406050508";s:5:"price";s:6:"286.30";s:4:"type";s:6:"金饰";s:6:"number";s:1:"2";s:13:"origin_weight";s:5:"56.00";s:6:"weight";s:5:"55.00";s:12:"appraiser_id";s:2:"11";}', '55.00', '2016-09-06', '2016-09-07', 'sadasdasdasdsa', 1, 7, 1473154570, 1473225890);
+INSERT INTO `gd_project_stock` (`stock_id`, `project_sn`, `customer_id`, `referrer_id`, `title`, `mode`, `info`, `weight`, `profit`, `start`, `end`, `last_profit`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
+(1, 'GR1609084360044048', 5, 12, '项目GR1609084360044048存金98.00克', 'recycling', 'a:12:{s:10:"project_id";s:1:"3";s:8:"realname";s:9:"马腾讯";s:5:"phone";s:11:"18959596565";s:8:"idnumber";s:18:"321254198808050604";s:5:"price";s:6:"289.40";s:5:"month";s:2:"12";s:4:"type";s:6:"金饰";s:6:"number";s:1:"2";s:13:"origin_weight";s:6:"100.00";s:6:"weight";s:5:"98.00";s:12:"appraiser_id";s:1:"9";s:7:"payment";s:4:"gold";}', '98.00', '0.0800', '2016-09-08', '2017-09-07', NULL, '332432432', 1, 7, 1473269361, 1473269361);
 
 -- --------------------------------------------------------
 
@@ -1171,8 +950,8 @@ INSERT INTO `gd_project_stock` (`stock_id`, `project_sn`, `customer_id`, `referr
 -- 表的结构 `gd_project_trash`
 --
 
-CREATE TABLE `gd_project_trash` (
-  `trash_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_project_trash` (
+  `trash_id` int(11) NOT NULL AUTO_INCREMENT,
   `project_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
@@ -1181,18 +960,9 @@ CREATE TABLE `gd_project_trash` (
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_project_trash`
---
-
-INSERT INTO `gd_project_trash` (`trash_id`, `project_id`, `project_sn`, `mode`, `customer`, `gold`, `note`, `worker_id`, `addtime`, `ip`) VALUES
-(1, 2, 'GR1608319242154447', 'recycling', 'a:3:{s:8:"realname";s:9:"雷小米";s:5:"phone";s:11:"13113213313";s:8:"referrer";N;}', 'a:7:{s:5:"price";s:6:"283.16";s:6:"weight";s:5:"31.00";s:6:"amount";N;s:6:"period";N;s:5:"start";N;s:3:"end";N;s:7:"addtime";s:10:"1472651087";}', '', 3, 1472653349, NULL),
-(2, 1, 'GR1608315162053241', 'recycling', 'a:4:{s:8:"realname";s:9:"乔苹果";s:5:"phone";s:11:"18808800990";s:8:"idnumber";s:18:"325225197008078888";s:8:"referrer";s:10:"朱景修2";}', 'a:7:{s:5:"price";s:6:"283.16";s:4:"type";s:6:"金饰";s:6:"number";s:1:"2";s:13:"origin_weight";s:5:"22.00";s:6:"weight";s:5:"20.00";s:9:"appraiser";s:10:"鉴定人A";s:5:"start";N;}', '', 3, 1472653784, NULL),
-(4, 3, 'GM1609011461040439', 'investing', 'a:4:{s:8:"realname";s:9:"刘京东";s:5:"phone";s:11:"18959506595";s:8:"idnumber";s:18:"321324199008080808";s:8:"referrer";N;}', 'a:4:{s:5:"price";s:6:"282.49";s:6:"weight";s:5:"15.00";s:6:"amount";s:7:"4237.35";s:5:"start";s:10:"2016-09-01";}', '下自成蹊政策性支持下自成蹊', 3, 1472706778, NULL),
-(5, 1, 'GM1609016370915225', 'investing', 'a:4:{s:8:"realname";s:9:"余华为";s:5:"phone";s:11:"18959596767";s:8:"idnumber";s:18:"321254198908050604";s:8:"referrer";s:10:"朱景修2";}', 'a:4:{s:5:"price";s:6:"266.16";s:6:"weight";s:5:"10.00";s:6:"amount";s:7:"2661.60";s:5:"start";s:10:"2016-09-01";}', '删除项目', 3, 1472707008, NULL);
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`trash_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1200,11 +970,12 @@ INSERT INTO `gd_project_trash` (`trash_id`, `project_id`, `project_sn`, `mode`, 
 -- 表的结构 `gd_sessions`
 --
 
-CREATE TABLE `gd_sessions` (
+CREATE TABLE IF NOT EXISTS `gd_sessions` (
   `sess_id` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
-  `data` text COLLATE utf8_unicode_ci NOT NULL
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  `data` text COLLATE utf8_unicode_ci NOT NULL,
+  KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1297,7 +1068,38 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('d9b20978c6f7bfb331d4276d56e1df16ec47c5c5', '127.0.0.1', 1473238852, '__ci_last_regenerate|i:1473238785;code|s:4:"5qmG";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473173109";csrfkey|s:8:"keFQJtIp";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"OQ5xTI7Xo4NRta1uSAvz";'),
 ('040919cddfbf1ec997df7b71a3ce69248eb1e04d', '127.0.0.1', 1473240887, '__ci_last_regenerate|i:1473239436;code|s:4:"5qmG";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473173109";csrfkey|s:8:"4SnRq7IM";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"ovDGslrbZPgK1pRWI78L";'),
 ('1f0897676e38026a4d31600f6bf7be6c4bfcfad7', '127.0.0.1', 1473241038, '__ci_last_regenerate|i:1473240954;code|s:4:"5bDp";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473134149";csrfkey|s:8:"MI5RB0Qj";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"aCQeYgibVt6ENTyFvIJu";'),
-('bbff738c77fc9cc15e6a1d9c888ff1720bf81415', '127.0.0.1', 1473242590, '__ci_last_regenerate|i:1473241384;code|s:4:"jNtz";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473208514";');
+('bbff738c77fc9cc15e6a1d9c888ff1720bf81415', '127.0.0.1', 1473242590, '__ci_last_regenerate|i:1473241384;code|s:4:"jNtz";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473208514";'),
+('b13da3643adf9d9c9044e916308e1485c43a89eb', '127.0.0.1', 1473249732, '__ci_last_regenerate|i:1473249169;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('e5ca4d80d1c5910508119bebf744a1d7d830fee5', '127.0.0.1', 1473250174, '__ci_last_regenerate|i:1473250017;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('50ebfb7a72141fbaf233026f1cab9cd3a0f146fd', '127.0.0.1', 1473251991, '__ci_last_regenerate|i:1473250722;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('c1c86b6ca7e3178389bf534c3d21c3651e5fef86', '127.0.0.1', 1473252168, '__ci_last_regenerate|i:1473252067;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('199a080de6e55fa36b221aade4ec5815401d287d', '127.0.0.1', 1473252515, '__ci_last_regenerate|i:1473252444;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('a56a96df3b2f8d9fb602ee959e8da6c726912246', '127.0.0.1', 1473252933, '__ci_last_regenerate|i:1473252758;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('d2bce371aa8da62913308d64844e18e9cad3b095', '127.0.0.1', 1473253396, '__ci_last_regenerate|i:1473253083;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";success|s:12:"保存成功";__ci_vars|a:1:{s:7:"success";s:3:"old";}'),
+('54d277ccd053630d9b0625910813c870dcabf3b3', '127.0.0.1', 1473256006, '__ci_last_regenerate|i:1473253495;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('27885e9fd543ac1b49fd660e0ad84ce0bc66ffb6', '127.0.0.1', 1473254646, '__ci_last_regenerate|i:1473253724;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"7fzor9Vk";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"rht6OAMWsDeUuqGV8i7C";'),
+('c941c0716428add10d6ecffb067b1077bc948ccc', '127.0.0.1', 1473257216, '__ci_last_regenerate|i:1473254784;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('04e262359165bcd08fcdf39a0669f9f64889530d', '127.0.0.1', 1473256340, '__ci_last_regenerate|i:1473256148;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('01a05b821739ec8658d8528ba392cfe483c5e070', '127.0.0.1', 1473266416, '__ci_last_regenerate|i:1473256691;code|s:4:"M5cQ";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1473172336";'),
+('3f8bd7fa97ef91983b20aeef27a27773bcf7fef1', '127.0.0.1', 1473257244, '__ci_last_regenerate|i:1473257234;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('5c15fb06ea34b86aa05b5cae0bcae65586738b28', '127.0.0.1', 1473258536, '__ci_last_regenerate|i:1473257816;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"nyBmAspv";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"Co5VP1jElqQbyc9OhvB6";'),
+('334837d0de4d4c92638aef0667e96ba5cbadb02e', '127.0.0.1', 1473259019, '__ci_last_regenerate|i:1473258771;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('76e989c3f1f20e952f3d6860646f0acb23ebf436', '127.0.0.1', 1473260763, '__ci_last_regenerate|i:1473259144;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"Yqp07h4V";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"mj4sk6RYQSUeu15tZf3b";'),
+('c253935b41d74137947ee99237d452505ecfbb1b', '127.0.0.1', 1473261217, '__ci_last_regenerate|i:1473260980;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"g6iBAUX5";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"yaOosTCRXxL2bg1GpvPu";'),
+('0ac876fe713300d920b25b9b63630ed6a997393e', '127.0.0.1', 1473261720, '__ci_last_regenerate|i:1473261460;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"lM3TP297";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"8aVxr3yBWpRkXYMCFtAS";'),
+('13de300f7b4810e4b32528b493e2aa04f4c093bc', '127.0.0.1', 1473262465, '__ci_last_regenerate|i:1473262143;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"QxphC5bG";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"AoJdhbRz9HX6r54s3SqM";'),
+('8789c57b239b3608324f8020aa11b42899564215', '127.0.0.1', 1473263059, '__ci_last_regenerate|i:1473262470;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('6a5c7fc3658be5ca75fe306d6b2e1e3491f82b81', '127.0.0.1', 1473264063, '__ci_last_regenerate|i:1473263777;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('7efa8175d44d3994be8525d61181ac95750670cd', '127.0.0.1', 1473264393, '__ci_last_regenerate|i:1473264085;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"AUrknOwR";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"2afBuZYHg3UsPiAQ0Dtz";'),
+('a6478dde6cecbdeb383d21fd45e6ce9bd37dbc1e', '127.0.0.1', 1473264726, '__ci_last_regenerate|i:1473264401;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('d2e66362183ef4e3c7ded76fb24d92e525d390c7', '127.0.0.1', 1473266405, '__ci_last_regenerate|i:1473264770;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";success|s:21:"项目编辑成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('8749d73354e483cebf5962c4fed49506a6461604', '127.0.0.1', 1473267727, '__ci_last_regenerate|i:1473266405;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";csrfkey|s:8:"ReMsPQug";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"N7LiCWbaJFVjvO1UnYxE";'),
+('ce46c5b33f1e029d8915f5bd15232112f4be9725', '127.0.0.1', 1473267878, '__ci_last_regenerate|i:1473266549;code|s:4:"QxYH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473241385";csrfkey|s:8:"NHJbS0pQ";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"zCYLRfWBnlK7yMVtmNdv";'),
+('5a75ea57140e9d95df574164896308c3a5cf33de', '127.0.0.1', 1473269297, '__ci_last_regenerate|i:1473267869;code|s:4:"pFXU";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473240960";'),
+('3f9e894d988c5911e3a89fe362b214604f475a7a', '127.0.0.1', 1473268511, '__ci_last_regenerate|i:1473267879;code|s:4:"QxYH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473241385";csrfkey|s:8:"2jQTYmDR";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"04TaEQcuLlf9FPBWNi17";success|s:44:"项目已核实！编号: GR1609084360044048";'),
+('656dff57575b4693b35b8385e901a9a39e4e6e1f', '127.0.0.1', 1473268528, '__ci_last_regenerate|i:1473268513;code|s:4:"QxYH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473241385";'),
+('e665cc0801896bd5080357d10999dad8a93d5b15', '127.0.0.1', 1473269140, '__ci_last_regenerate|i:1473268822;code|s:4:"dT72";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473138246";csrfkey|s:8:"eN4SBn6Q";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"UuGn2M0bD6LKgcAfQIyZ";'),
+('5a23610ba11e23a63c4da91c1804b8f01f3bcfd1', '127.0.0.1', 1473269362, '__ci_last_regenerate|i:1473269148;code|s:4:"dT72";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473138246";');
 
 -- --------------------------------------------------------
 
@@ -1305,14 +1107,17 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 -- 表的结构 `gd_setting`
 --
 
-CREATE TABLE `gd_setting` (
-  `setting_id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_setting` (
+  `setting_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(64) NOT NULL DEFAULT '',
   `value` text,
   `serialized` tinyint(1) NOT NULL DEFAULT '0',
   `group` varchar(64) NOT NULL DEFAULT 'config',
-  `initial` tinyint(1) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `initial` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`setting_id`,`code`),
+  KEY `option_name` (`code`),
+  KEY `auto_load` (`initial`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=39 ;
 
 --
 -- 转存表中的数据 `gd_setting`
@@ -1351,8 +1156,8 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 -- 表的结构 `gd_worker`
 --
 
-CREATE TABLE `gd_worker` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(32) DEFAULT NULL,
   `realname` varchar(32) NOT NULL,
   `avatar` varchar(256) DEFAULT NULL,
@@ -1367,21 +1172,22 @@ CREATE TABLE `gd_worker` (
   `phone` varchar(20) DEFAULT NULL,
   `wechat` varchar(64) DEFAULT NULL,
   `qq` char(12) DEFAULT NULL,
-  `company_id` tinyint(4) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `company_id` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- 转存表中的数据 `gd_worker`
 --
 
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`, `wechat`, `qq`, `company_id`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1473172336, '127.0.0.1', 1, '', NULL, NULL, 0),
+(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1473249173, '127.0.0.1', 1, '', NULL, NULL, 0),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766', NULL, NULL, 0),
-(3, 'jingli-demo1', '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1473241385, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 0),
+(3, 'jingli-demo1', '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1473266567, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 0),
 (4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1472277405, '127.0.0.1', 1, '', NULL, NULL, 0),
-(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473240960, '127.0.0.1', 1, '', NULL, NULL, 0),
+(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473253736, '127.0.0.1', 1, '', NULL, NULL, 0),
 (6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1473133650, '127.0.0.1', 1, '', NULL, NULL, 0),
-(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1473138246, '127.0.0.1', 1, '', NULL, NULL, 0),
+(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1473268843, '127.0.0.1', 1, '', NULL, NULL, 0),
 (8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1473152537, '127.0.0.1', 1, '', NULL, NULL, 0),
 (9, 'jianding-demo1', '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, '', NULL, NULL, 0),
 (10, 'jianding-demo2', '鉴定人B', 'public/images/avatar/user7-128x128.jpg', '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, '', NULL, NULL, 0),
@@ -1394,20 +1200,13 @@ INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `sa
 -- 表的结构 `gd_worker_activity`
 --
 
-CREATE TABLE `gd_worker_activity` (
-  `activity_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_activity` (
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `content` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `addtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- 转存表中的数据 `gd_worker_activity`
---
-
-INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtime`) VALUES
-(1, 3, '经理测试 于 2016-09-04 20:30:16 更新了个人资料', 1472992216),
-(2, 7, '{"project_id":"GR1609062941713226","status_id":"2"}', 1473155087);
+  `addtime` int(11) NOT NULL,
+  PRIMARY KEY (`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1415,12 +1214,13 @@ INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtim
 -- 表的结构 `gd_worker_attempt`
 --
 
-CREATE TABLE `gd_worker_attempt` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip_address` varchar(15) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `time` int(11) UNSIGNED DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `time` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1428,12 +1228,13 @@ CREATE TABLE `gd_worker_attempt` (
 -- 表的结构 `gd_worker_company`
 --
 
-CREATE TABLE `gd_worker_company` (
-  `company_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_company` (
+  `company_id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
-  `addtime` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL,
+  PRIMARY KEY (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1441,14 +1242,15 @@ CREATE TABLE `gd_worker_company` (
 -- 表的结构 `gd_worker_group`
 --
 
-CREATE TABLE `gd_worker_group` (
-  `id` mediumint(8) UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_group` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `code` varchar(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `is_system` tinyint(4) NOT NULL DEFAULT '0',
   `permission` text,
-  `status` tinyint(4) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `status` tinyint(4) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- 转存表中的数据 `gd_worker_group`
@@ -1468,8 +1270,8 @@ INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`,
 -- 表的结构 `gd_worker_notify`
 --
 
-CREATE TABLE `gd_worker_notify` (
-  `notify_id` int(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
+  `notify_id` int(11) NOT NULL AUTO_INCREMENT,
   `sender_id` int(11) NOT NULL DEFAULT '0',
   `receiver_id` int(11) NOT NULL,
   `mode` enum('announcement','summary') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'announcement',
@@ -1477,8 +1279,9 @@ CREATE TABLE `gd_worker_notify` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `addtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`notify_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1486,11 +1289,15 @@ CREATE TABLE `gd_worker_notify` (
 -- 表的结构 `gd_worker_rel`
 --
 
-CREATE TABLE `gd_worker_rel` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `worker_id` int(11) UNSIGNED NOT NULL,
-  `group_id` mediumint(8) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `gd_worker_rel` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `worker_id` int(11) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
+  KEY `fk_users_groups_users1_idx` (`worker_id`),
+  KEY `fk_users_groups_groups1_idx` (`group_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- 转存表中的数据 `gd_worker_rel`
@@ -1511,331 +1318,6 @@ INSERT INTO `gd_worker_rel` (`id`, `worker_id`, `group_id`) VALUES
 (24, 11, 6),
 (21, 12, 2);
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `gd_article`
---
-ALTER TABLE `gd_article`
-  ADD PRIMARY KEY (`article_id`);
-
---
--- Indexes for table `gd_article_category`
---
-ALTER TABLE `gd_article_category`
-  ADD PRIMARY KEY (`category_id`);
-
---
--- Indexes for table `gd_cron_schedule`
---
-ALTER TABLE `gd_cron_schedule`
-  ADD PRIMARY KEY (`schedule_id`),
-  ADD KEY `task_name` (`job_code`),
-  ADD KEY `scheduled_at` (`scheduled_at`,`status`);
-
---
--- Indexes for table `gd_customer`
---
-ALTER TABLE `gd_customer`
-  ADD PRIMARY KEY (`customer_id`);
-
---
--- Indexes for table `gd_customer_apply`
---
-ALTER TABLE `gd_customer_apply`
-  ADD PRIMARY KEY (`apply_id`);
-
---
--- Indexes for table `gd_customer_group`
---
-ALTER TABLE `gd_customer_group`
-  ADD PRIMARY KEY (`group_id`);
-
---
--- Indexes for table `gd_customer_history`
---
-ALTER TABLE `gd_customer_history`
-  ADD PRIMARY KEY (`history_id`);
-
---
--- Indexes for table `gd_customer_stock`
---
-ALTER TABLE `gd_customer_stock`
-  ADD PRIMARY KEY (`stock_id`);
-
---
--- Indexes for table `gd_golden_price`
---
-ALTER TABLE `gd_golden_price`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_golden_today`
---
-ALTER TABLE `gd_golden_today`
-  ADD KEY `date` (`date`),
-  ADD KEY `updatetime` (`updatetime`);
-
---
--- Indexes for table `gd_node`
---
-ALTER TABLE `gd_node`
-  ADD PRIMARY KEY (`node_id`);
-
---
--- Indexes for table `gd_project_file`
---
-ALTER TABLE `gd_project_file`
-  ADD PRIMARY KEY (`file_id`);
-
---
--- Indexes for table `gd_project_investing`
---
-ALTER TABLE `gd_project_investing`
-  ADD PRIMARY KEY (`project_id`);
-
---
--- Indexes for table `gd_project_investing_history`
---
-ALTER TABLE `gd_project_investing_history`
-  ADD PRIMARY KEY (`history_id`);
-
---
--- Indexes for table `gd_project_investing_status`
---
-ALTER TABLE `gd_project_investing_status`
-  ADD PRIMARY KEY (`status_id`);
-
---
--- Indexes for table `gd_project_recycling`
---
-ALTER TABLE `gd_project_recycling`
-  ADD PRIMARY KEY (`project_id`);
-
---
--- Indexes for table `gd_project_recycling_history`
---
-ALTER TABLE `gd_project_recycling_history`
-  ADD PRIMARY KEY (`history_id`);
-
---
--- Indexes for table `gd_project_recycling_status`
---
-ALTER TABLE `gd_project_recycling_status`
-  ADD PRIMARY KEY (`status_id`);
-
---
--- Indexes for table `gd_project_stock`
---
-ALTER TABLE `gd_project_stock`
-  ADD PRIMARY KEY (`stock_id`);
-
---
--- Indexes for table `gd_project_trash`
---
-ALTER TABLE `gd_project_trash`
-  ADD PRIMARY KEY (`trash_id`);
-
---
--- Indexes for table `gd_sessions`
---
-ALTER TABLE `gd_sessions`
-  ADD KEY `ci_sessions_timestamp` (`timestamp`);
-
---
--- Indexes for table `gd_setting`
---
-ALTER TABLE `gd_setting`
-  ADD PRIMARY KEY (`setting_id`,`code`),
-  ADD KEY `option_name` (`code`),
-  ADD KEY `auto_load` (`initial`);
-
---
--- Indexes for table `gd_worker`
---
-ALTER TABLE `gd_worker`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_activity`
---
-ALTER TABLE `gd_worker_activity`
-  ADD PRIMARY KEY (`activity_id`);
-
---
--- Indexes for table `gd_worker_attempt`
---
-ALTER TABLE `gd_worker_attempt`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_company`
---
-ALTER TABLE `gd_worker_company`
-  ADD PRIMARY KEY (`company_id`);
-
---
--- Indexes for table `gd_worker_group`
---
-ALTER TABLE `gd_worker_group`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `gd_worker_notify`
---
-ALTER TABLE `gd_worker_notify`
-  ADD PRIMARY KEY (`notify_id`);
-
---
--- Indexes for table `gd_worker_rel`
---
-ALTER TABLE `gd_worker_rel`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
-  ADD KEY `fk_users_groups_users1_idx` (`worker_id`),
-  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
-
---
--- 在导出的表使用AUTO_INCREMENT
---
-
---
--- 使用表AUTO_INCREMENT `gd_article`
---
-ALTER TABLE `gd_article`
-  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- 使用表AUTO_INCREMENT `gd_article_category`
---
-ALTER TABLE `gd_article_category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
---
--- 使用表AUTO_INCREMENT `gd_cron_schedule`
---
-ALTER TABLE `gd_cron_schedule`
-  MODIFY `schedule_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_customer`
---
-ALTER TABLE `gd_customer`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
---
--- 使用表AUTO_INCREMENT `gd_customer_apply`
---
-ALTER TABLE `gd_customer_apply`
-  MODIFY `apply_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_customer_group`
---
-ALTER TABLE `gd_customer_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
---
--- 使用表AUTO_INCREMENT `gd_customer_history`
---
-ALTER TABLE `gd_customer_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_customer_stock`
---
-ALTER TABLE `gd_customer_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
---
--- 使用表AUTO_INCREMENT `gd_golden_price`
---
-ALTER TABLE `gd_golden_price`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
---
--- 使用表AUTO_INCREMENT `gd_node`
---
-ALTER TABLE `gd_node`
-  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
---
--- 使用表AUTO_INCREMENT `gd_project_file`
---
-ALTER TABLE `gd_project_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
---
--- 使用表AUTO_INCREMENT `gd_project_investing`
---
-ALTER TABLE `gd_project_investing`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_project_investing_history`
---
-ALTER TABLE `gd_project_investing_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
---
--- 使用表AUTO_INCREMENT `gd_project_investing_status`
---
-ALTER TABLE `gd_project_investing_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling`
---
-ALTER TABLE `gd_project_recycling`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling_history`
---
-ALTER TABLE `gd_project_recycling_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
---
--- 使用表AUTO_INCREMENT `gd_project_recycling_status`
---
-ALTER TABLE `gd_project_recycling_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_project_stock`
---
-ALTER TABLE `gd_project_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
---
--- 使用表AUTO_INCREMENT `gd_project_trash`
---
-ALTER TABLE `gd_project_trash`
-  MODIFY `trash_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
---
--- 使用表AUTO_INCREMENT `gd_setting`
---
-ALTER TABLE `gd_setting`
-  MODIFY `setting_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
---
--- 使用表AUTO_INCREMENT `gd_worker`
---
-ALTER TABLE `gd_worker`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
---
--- 使用表AUTO_INCREMENT `gd_worker_activity`
---
-ALTER TABLE `gd_worker_activity`
-  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
---
--- 使用表AUTO_INCREMENT `gd_worker_attempt`
---
-ALTER TABLE `gd_worker_attempt`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_worker_company`
---
-ALTER TABLE `gd_worker_company`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_worker_group`
---
-ALTER TABLE `gd_worker_group`
-  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
---
--- 使用表AUTO_INCREMENT `gd_worker_notify`
---
-ALTER TABLE `gd_worker_notify`
-  MODIFY `notify_id` int(11) NOT NULL AUTO_INCREMENT;
---
--- 使用表AUTO_INCREMENT `gd_worker_rel`
---
-ALTER TABLE `gd_worker_rel`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- 限制导出的表
 --

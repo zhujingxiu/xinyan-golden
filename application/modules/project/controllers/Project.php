@@ -15,7 +15,7 @@ class Project extends XY_Controller
         $this->load->library(array('form_validation'));
 
         $this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
-
+        $this->load->model(array('setting/project_model'));
     }
 
     protected function investing_operation($status,$locker_id)
@@ -142,6 +142,15 @@ class Project extends XY_Controller
     protected function calculate_amount($price,$weight)
     {
         return round((float)$price*$weight,2);
+    }
+
+    protected function calculate_rate($profit,$month)
+    {
+        return number_format((float)(($profit/(12*100))*$month),4);
+    }
+
+    protected function calculate_profit($rate,$month){
+        return number_format(($month*$rate/12)*100,2);
     }
 
     protected function calculate_start($addtime)

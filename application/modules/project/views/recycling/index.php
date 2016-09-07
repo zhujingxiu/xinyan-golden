@@ -44,11 +44,12 @@
                                     <th>状态</th>
                                     <th>编号</th>
                                     <th>客户</th>
-                                    <th>黄金类型</th>
-                                    <th>件数</th>
-                                    <th>重量</th>
-                                    <th>鉴定克重</th>
-                                    <th>鉴定人</th>
+                                    <th>类型</th>
+                                    <th>交付</th>
+                                    <th>存期</th>
+                                    <th>存重</th>
+                                    <th>实重</th>
+
                                     <th>推荐人</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
@@ -60,11 +61,11 @@
                                 <th>状态</th>
                                 <th>编号</th>
                                 <th>客户</th>
-                                <th>黄金类型</th>
-                                <th>件数</th>
-                                <th>重量</th>
-                                <th>鉴定克重</th>
-                                <th>鉴定人</th>
+                                <th>类型</th>
+                                <th>交付</th>
+                                <th>存期</th>
+                                <th>存重</th>
+                                <th>实重</th>
                                 <th>推荐人</th>
                                 <th>操作人</th>
                                 <th>操作时间</th>

@@ -72,11 +72,11 @@ class Recycling extends Project {
                     'sn'		=> $row['project_sn'],
                     'customer' 	=> $row['realname'].'<br>'.$row['phone'],
                     'referrer' 	=> $row['referrer'],
-                    'gold'      => $row['type']=='goldbar' ? lang('text_goldbar'):lang('text_ornaments') .($cover ? '<br>'.$cover : ''),
-                    'number'	=> $row['number'].lang('text_number_unit') ,
+                    'gold'      => ($row['type']=='goldbar' ? lang('text_goldbar'):lang('text_ornaments')).' x '.$row['number'].lang('text_number_unit').($cover ? '<br>'.$cover : ''),
+                    'payment'	=> $row['payment'] =='cash' ? lang('text_cash') : lang('text_gold'),
                     'origin'	=> number_format($row['origin_weight'],2).lang('text_weight_unit') ,
-                    'appraiser'	=> $row['appraiser'],
-                    'weight'	=> number_format($row['weight'],2).lang('text_weight_unit'),
+                    'period'	=> $row['month'].lang('text_period_unit') ."<br>".lang('text_profit').calculate_profit($row['profit'],$row['month']).lang('text_profit_unit') ,
+                    'weight'	=> number_format($row['weight'],2).lang('text_weight_unit').'<br>'.$row['appraiser'],
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
                     'operation'	=> $this->recycling_operation($row['status_id'],$row['locker_id'])
@@ -94,7 +94,6 @@ class Recycling extends Project {
 
     public function booked()
     {
-
         if($msg = $this->session->flashdata('ajax_permission')){
             json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('permission')));
         }
@@ -102,9 +101,11 @@ class Recycling extends Project {
             if($this->_valid_csrf_nonce() === FALSE){
                 //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
             }
-            $this->form_validation->set_rules('origin_weight', '黄金重量', 'required');
+            $this->form_validation->set_rules('origin_weight', '黄金称重', 'required');
             $this->form_validation->set_rules('number', '黄金件数', 'required');
             $this->form_validation->set_rules('type', '黄金类型', 'required');
+            $this->form_validation->set_rules('period_id', '预存周期', 'required');
+            $this->form_validation->set_rules('payment', '交付方式', 'required');
             $this->form_validation->set_rules('appraiser', '鉴定人', 'required');
             $this->form_validation->set_rules('loss', '损耗比例', 'required');
             $this->form_validation->set_rules('weight', '鉴定实重', 'required');
@@ -114,7 +115,19 @@ class Recycling extends Project {
 
             if ($this->form_validation->run() == TRUE)
             {
-                if($this->recycling_model->insert( $this->input->post()+array('price'=>$this->current_price()))){
+                $tmp = array(
+                    'price'=>$this->current_price()
+                );
+                $period = $this->project_model->period($this->input->post('period_id'));
+                if($period->num_rows()){
+                    $_p = $period->row_array();
+                    $tmp['month']=$_p['month'];
+                    $tmp['profit']=calculate_rate($_p['profit'],$_p['month']);
+                }else{
+                    json_error(array('msg'=>lang('error_period')));
+                }
+
+                if($this->recycling_model->insert( $this->input->post()+$tmp)){
                     $this->session->set_flashdata('success', '项目添加成功！');
                     json_success();
                 }
@@ -123,6 +136,8 @@ class Recycling extends Project {
                     'origin_weight' => form_error('origin_weight'),
                     'number' => form_error('number'),
                     'type' => form_error('type'),
+                    'payment' => form_error('payment'),
+                    'period_id' => form_error('period_id'),
                     'appraiser' => form_error('appraiser'),
                     'weight' => form_error('weight'),
                     'loss' => form_error('loss'),
@@ -146,12 +161,12 @@ class Recycling extends Project {
             }
             $info['transferrers'] = $this->group_users('manager');
             $info['appraisers'] = $this->group_users('appraiser');
+            $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
             $info['csrf'] = $this->_get_csrf_nonce();
             //var_dump($this->session->flashdata('csrfkey'));
             json_success(array('title'=>'添加项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
         }
     }
-
 
     public function update()
     {
@@ -163,9 +178,11 @@ class Recycling extends Project {
                 //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
             }
 
-            $this->form_validation->set_rules('origin_weight', '黄金重量', 'required');
+            $this->form_validation->set_rules('origin_weight', '黄金称重', 'required');
             $this->form_validation->set_rules('number', '黄金件数', 'required');
             $this->form_validation->set_rules('type', '黄金类型', 'required');
+            $this->form_validation->set_rules('period_id', '预存周期', 'required');
+            $this->form_validation->set_rules('payment', '交付方式', 'required');
             $this->form_validation->set_rules('appraiser', '鉴定人', 'required');
             $this->form_validation->set_rules('loss', '损耗比例', 'required');
             $this->form_validation->set_rules('weight', '鉴定实重', 'required');
@@ -187,7 +204,15 @@ class Recycling extends Project {
                 if(!in_array($this->worker_id,$operators)){
                     json_error(array('msg'=>lang('error_project_operator')));
                 }
-                if($this->recycling_model->update($this->input->post('project_sn'),$this->input->post())){
+                $period = $this->project_model->period($this->input->post('period_id'));
+                if($period->num_rows()){
+                    $_p = $period->row_array();
+                    $tmp['month']=$_p['month'];
+                    $tmp['profit']=calculate_rate($_p['profit'],$_p['month']);
+                }else{
+                    json_error(array('msg'=>lang('error_period')));
+                }
+                if($this->recycling_model->update($this->input->post('project_sn'),$this->input->post()+$tmp)){
                     $this->session->set_flashdata('success', '项目编辑成功！');
                     json_success();
                 }
@@ -197,6 +222,8 @@ class Recycling extends Project {
                     'origin_weight' => form_error('origin_weight'),
                     'number' => form_error('number'),
                     'type' => form_error('type'),
+                    'payment' => form_error('payment'),
+                    'period_id' => form_error('period_id'),
                     'appraiser' => form_error('appraiser'),
                     'weight' => form_error('weight'),
                     'loss' => form_error('loss'),
@@ -243,6 +270,7 @@ class Recycling extends Project {
                 $title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
                 $info['transferrers'] = $this->group_users('manager');
                 $info['appraisers'] = $this->group_users('appraiser');
+                $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
                 //lock
                 $info['unlock'] = false;
                 $info['editable'] = true;
@@ -358,7 +386,7 @@ class Recycling extends Project {
                         'status'	=> $this->config->item('recycling_checked'),
                         'transferrer' =>$this->input->post('transferrer'),
                         'note' 		=> $note,
-                        'call_func' => 'active_start',
+                        'call_func' => 'active_period',
                         'call_param'=> $project_sn
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
@@ -411,8 +439,12 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
-
+                $info['start'] = $this->calculate_start($info['addtime']);
+                $starttime  = strtotime($info['start']);
+                $info['end'] = calculate_end($starttime,$info['month']);
+                $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
                 $info['transferrers'] = $this->group_users('warehouser');
+
                 $title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
                 //lock
                 $info['unlock'] = false;
@@ -551,6 +583,7 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
+                $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
                 $title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
                 //lock
                 $info['unlock'] = false;

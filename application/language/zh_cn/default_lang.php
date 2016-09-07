@@ -26,9 +26,14 @@ $lang['error_project_operator'] = '无权限操作当前项目，请刷新重试
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
 $lang['text_ornaments'] = "金饰";
+$lang['text_cash'] = "现金";
+$lang['text_gold'] = "黄金";
 $lang['text_number_unit'] = "件";
 $lang['text_weight_unit'] = "克";
 $lang['text_person_unit'] = "人";
+$lang['text_period_unit'] = "个月";
+$lang['text_profit_unit'] = "%";
+$lang['text_profit'] = "年化";
 
 $lang['text_unknown'] = "未知";
 $lang['text_not_open'] = "尚未开启";

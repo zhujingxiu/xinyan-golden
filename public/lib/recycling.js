@@ -37,10 +37,10 @@ define(function(require,exports,modules){
                     {"data": "sn", "name": "p.project_sn"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "gold", "name": "p.type"},
-                    {"data": "number", "name": "p.number"},
+                    {"data": "payment", "name": "p.payment"},
+                    {"data": "period", "name": "p.month"},
                     {"data": "origin", "name": "p.origin_weight"},
                     {"data": "weight", "name": "p.weight"},
-                    {"data": "appraiser", "name": "appraiser"},
                     {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "lasttime", "name": "p.lasttime"},
@@ -58,7 +58,6 @@ define(function(require,exports,modules){
             //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-
             require('ajaxUpload');
             $.get('/project/recycling/booked', {r:Math.random()}, function (json) {
                 if (json.code == 1) {
@@ -167,7 +166,7 @@ define(function(require,exports,modules){
                             return false
                         }
                     }else if(json.unlock){
-                        options.btn = ['解锁', '取消'];
+                        options.btn = ['解锁', '关闭'];
                         options.yes = function (index, layero) {
                             $.get('/project/recycling/reset_locker',{project_sn:sn,locker:1},function(json){
                                 if(json.reset==1){
@@ -211,12 +210,12 @@ define(function(require,exports,modules){
                         }
                     }
                     if(json.editable){
-                        options.btn = ['确认标记', '驳回'];
+                        options.btn = ['确认标记', '关闭'];
                         options.yes = function(index, layero){
                             $('#form-confirming').submit();
                         };
                     }else if(json.unlock){
-                        options.btn = ['解锁', '取消'];
+                        options.btn = ['解锁', '关闭'];
                         options.yes = function (index, layero) {
                             $.get('/project/recycling/reset_locker',{project_sn:sn,locker:1},function(json){
                                 if(json.reset==1){

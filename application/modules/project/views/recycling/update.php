@@ -36,9 +36,53 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">黄金克重</span>
+                                        <span class="input-group-addon">预存周期</span>
+                                        <select class="form-control select2" name="period_id">
+                                            <?php foreach($periods as $item):?>
+                                                <option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['month'] == $month ? 'selected':''?>><?php echo $item['title']?></option>
+                                            <?php endforeach?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">交付方式</span>
+                                        <select class="form-control select2" name="payment">
+                                            <option value="gold" <?php echo $payment =='gold' ? 'selected' :'' ?>>黄金</option>
+                                            <option value="cash" <?php echo $payment =='cash' ? 'selected' :'' ?>>现金</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">黄金称重</span>
                                         <input type="text" name="origin_weight" class="form-control" value="<?php echo (float)$origin_weight;?>">
                                         <span class="input-group-addon">克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定实重</span>
+                                        <input type="text" name="weight" class="form-control" value="<?php echo $weight;?>">
+                                        <span class="input-group-addon">克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">鉴定人</span>
+                                        <select id="appraiser" name="appraiser" class="form-control select2" >
+                                            <?php foreach($appraisers as $item):?>
+                                                <option value="<?php echo $item['id']?>" <?php echo $item['id']==$appraiser_id ? 'selected' : ''?> ><?php echo $item['realname']?></option>
+                                            <?php endforeach?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -51,7 +95,24 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">预期收益</span>
+                                        <span class="form-control" id="update-totals"></span>
+                                        <span class="input-group-addon">克</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">损耗比例</span>
+                                        <input id="update-loss" type="text" name="loss" class="form-control" value="<?php echo $loss ?>">
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="timeline-footer">
                             <a class="btn btn-primary btn-xs" id="button-photo">
@@ -59,6 +120,9 @@
                             </a>
                             <a class="btn btn-primary btn-xs" id="button-invoice">
                                 <i class="fa fa-upload"></i> 发票照片
+                            </a>
+                            <a class="btn btn-primary btn-xs" id="button-report">
+                                <i class="fa fa-upload"></i> 鉴定报告
                             </a>
                             <div class="upload-file" id="gold-uploads">
                             <?php if($photos): ?>
@@ -77,65 +141,19 @@
                                     </div>
                                 <?php endforeach?>
                             <?php endif?>
+                            <?php if($reports): ?>
+                                <?php foreach($reports as $item):?>
+                                    <div class="uploads-thumb">
+                                        <img title="<?php echo $item['name'];?>" data-entry="report" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
+                                    </div>
+                                <?php endforeach?>
+                            <?php endif?>
                             </div>
                         </div>
                     </div>
                 </li>
 
-                <li>
-                    <i class="fa fa-gavel bg-navy-active"></i>
-                    <div class="timeline-item">
-                        <h3 class="timeline-header">鉴定结果</h3>
-                        <div class="timeline-body">
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">鉴定人</span>
-                                        <select id="appraiser" name="appraiser" class="form-control select2" >
-                                            <?php foreach($appraisers as $item):?>
-                                            <option value="<?php echo $item['id']?>" <?php echo $item['id']==$appraiser_id ? 'selected' : ''?> ><?php echo $item['realname']?></option>
-                                            <?php endforeach?>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">鉴定实重</span>
-                                        <input type="text" name="weight" class="form-control" value="<?php echo $weight;?>">
-                                        <span class="input-group-addon">克</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">损耗比例</span>
-                                        <input type="text" name="loss" class="form-control" value="<?php echo $loss ?>">
-                                        <span class="input-group-addon">%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="timeline-footer">
-                            <a class="btn btn-primary btn-xs" id="button-report">
-                                <i class="fa fa-upload"></i> 鉴定报告
-                            </a>
-                            <div class="upload-file" id="report-uploads">
-                                <?php if($reports): ?>
-                                    <?php foreach($reports as $item):?>
-                                        <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" data-entry="report" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
-                                            <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
-                                        </div>
-                                    <?php endforeach?>
-                                <?php endif?>
-                            </div>
-                        </div>
-                    </div>
-                </li>
                 <li>
                     <i class="fa fa-user bg-green"></i>
                     <div class="timeline-item">
@@ -311,7 +329,37 @@
                 });
             }
         });
+
         <?php endif ?>
+        $('#form-update input[name="weight"]').bind('keyup blur', function () {
+            var _period = $('#form-update select[name="period_id"]');
+            var _profit = parseFloat(_period.find('option[value="'+_period.val()+'"]').data('profit'),4);
+            var _weight = $(this).val();
+            if(!$.isNumeric(_profit)){
+                layer.tips('数据异常',$('#form-update #update-totals'),{tips: [1, '#CC6666']});
+                return false;
+            }
+            if(!$.isNumeric(_weight)){
+                //layer.tips('数据异常',$('#form-update #update-amount'),{tips: [1, '#CC6666']});
+                return false;
+            }else{
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+                var _origin = $('#form-update input[name="origin_weight"]').val();
+                if($.isNumeric(_origin)){
+                    $('#form-update #update-loss').val(parseFloat(math_div(_weight,_origin),2));
+                }
+            }
+        });
+        $('#form-update select[name="period_id"]').bind('change', function () {
+            var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
+            var _weight = $('#form-update input[name="weight"]').val();
+            if(_weight!='' && $.isNumeric(_profit)){
+                console.log(_profit*_weight);
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+            }
+
+        });
+        $('#form-update select[name="period_id"]').trigger('change');
     });
     <?php if($editable):?>
     new AjaxUpload('#button-photo', {
@@ -382,13 +430,23 @@
         autoSubmit: false,
         responseType: 'json',
         onChange: function(file, extension) {this.submit();},
+        onSubmit : function(file , ext){
+            if (! (ext && /^(jpg|png|jpeg|gif|txt|doc|pdf|docx)$/.test(ext))){
+                alert('错误：此处仅支持以下格式文件jpg、png、jpeg、gif、txt、pdf、doc、docx');
+                return false;
+            }
+            if($('#gold-uploads img').length >3){
+                alert('错误：此处文件最多可上传4张');
+                return false;
+            }
+        },
         onComplete: function(file, json) {
             if(json.code=1) {
                 var _html = '<div class="uploads-thumb">';
                 _html += '<img title="'+json.upload['origin']+'" data-entry="report" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
                 _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
                 _html += '</div>';
-                $('#report-uploads').append(_html);
+                $('#gold-uploads').append(_html);
             }else{
                 alert(json.error);
             }

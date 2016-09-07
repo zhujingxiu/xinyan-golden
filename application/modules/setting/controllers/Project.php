@@ -63,7 +63,7 @@ class Project extends XY_Controller {
                     $this->project_model->update($this->input->post('status_id'),$data) : $this->project_model->insert($data));
                 if($res){
                     $this->session->set_flashdata('success', '保存成功');
-                    json_response(array('code' => 1, 'success' => '成功'));
+                    json_success();
                 }else {
                     $this->session->set_flashdata('warning', '参数异常');
                     json_response(array('code' => 0, 'warning' => '异常'));
@@ -98,5 +98,59 @@ class Project extends XY_Controller {
         $mode  = $this->input->get('mode');
         $info = $this->project_model->status($id,$mode)->row_array();
         json_response(array('code'=>1,'info'=>$info));
+    }
+
+    public function period_list()
+    {
+        $result = $this->project_model->periods(FALSE);
+        if($result){
+            json_response(array('code'=>1,'info'=>$result->result_array()));
+        }
+        json_response(array('code'=>0,'errors'=>1));
+    }
+
+    public function get_period()
+    {
+        $id  = $this->input->get('period_id');
+        $info = $this->project_model->period($id)->row_array();
+        json_response(array('code'=>1,'info'=>$info));
+    }
+
+    public function save_period()
+    {
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $this->form_validation->set_rules('title', '标题', 'trim|required|min_length[2]|max_length[64]');
+            $this->form_validation->set_rules('month', '月数', 'required');
+            $this->form_validation->set_rules('profit', '金息', 'required');
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $data = array(
+                    'title' => $this->input->post('title'),
+                    'month' => $this->input->post('month'),
+                    'profit' => $this->input->post('profit'),
+                    'status' => $this->input->post('status'),
+                    'default' => $this->input->post('default'),
+                    'note' => $this->input->post('note'),
+                );
+
+                $res = ($this->input->post('period_id') ?
+                    $this->project_model->update_period($this->input->post('period_id'),$data) : $this->project_model->insert_period($data));
+                if($res){
+                    $this->session->set_flashdata('success', '保存成功');
+                    json_success();
+                }else {
+                    $this->session->set_flashdata('warning', '参数异常');
+                    json_response(array('code' => 0, 'warning' => '异常'));
+                }
+            }else {
+                $errors = array(
+                    'title' => form_error('title'),
+                    'month' => form_error('month'),
+                    'profit' => form_error('profit'),
+                );
+                json_response(array('code' => 0, 'errors' => $errors));
+            }
+        }
     }
 }

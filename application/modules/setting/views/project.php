@@ -35,14 +35,12 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#investing" data-toggle="tab">钱生金</a></li>
                             <li><a href="#recycling" data-toggle="tab">金生金</a></li>
-
-                            <li><a href="#tab_3" data-toggle="tab">其他</a></li>
-
+                            <li><a href="#other" data-toggle="tab">其他</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="investing">
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-6">
                                         <filedset>
                                             <legend>项目状态</legend>
                                             <div class="row">
@@ -112,7 +110,7 @@
                                         <?php echo form_close()?>
 
                                     </div>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-6">
                                         <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
                                         <filedset>
                                             <legend>项目表单</legend>
@@ -228,7 +226,7 @@
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="recycling">
                                 <div class="row">
-                                    <div class="col-sm-5">
+                                    <div class="col-sm-6">
                                         <filedset>
                                             <legend>项目状态</legend>
                                             <div class="row">
@@ -298,7 +296,7 @@
                                         <?php echo form_close()?>
 
                                     </div>
-                                    <div class="col-sm-7">
+                                    <div class="col-sm-6">
                                         <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
                                         <filedset>
                                             <legend>项目表单</legend>
@@ -415,70 +413,157 @@
                                 </div>
                             </div>
                             <!-- /.tab-pane -->
-                            <div class="tab-pane" id="tab_3">
-                                <fieldset>
-                                    <legend>通用参数</legend>
-                                    <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
-                                    <div class="col-sm-4">
+                            <div class="tab-pane" id="other">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <fieldset>
+                                            <legend>通用参数</legend>
+                                            <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
+                                            <div class="form-group clearfix" style="display: none;">
+                                                <label for="" class="control-label col-sm-4 text-right">生金克数 (g)
+                                                    <span class="help-block">按100克每年</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="profit_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit_weight'])? '' :$setting['profit_weight']  ?>"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-4 text-right">生金模式
+                                                    <span class="help-block">计息模式</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select name="growing_mode" class="form-control">
+                                                        <option value="t0" <?php echo $setting['growing_mode'] == 't0' ? 'selected' :''  ?>>T+0 登记当日即为计息日</option>
+                                                        <option value="t1" <?php echo $setting['growing_mode'] == 't1' ? 'selected' :''  ?>>T+1 登记当日隔天即为计息日</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix" style="display: none;">
+                                                <label for="" class="control-label col-sm-4 text-right">生金周期
+                                                    <span class="help-block">支持生金的周期模式</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <select name="gold_growing" class="form-control">
+                                                        <option value="year" <?php echo $setting['gold_growing'] == 'year' ? 'selected' :''  ?>>按年生金</option>
+                                                        <option value="season" <?php echo $setting['gold_growing'] == 'season' ? 'selected' :''  ?>>按季生金</option>
+                                                        <option value="month" <?php echo $setting['gold_growing'] == 'month' ? 'selected' :''  ?>>按月生金</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix" style="display: none;">
+                                                <label for="inputOrderPercent" class="control-label col-sm-4 text-right">门店消费
+                                                    <span class="help-block">门店黄金消费比例</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <input type="text" name="order_percent" class="form-control" id="inputOrderPercent" value="<?php echo empty($setting['order_percent'])? '' :$setting['order_percent']  ?>"/>
+                                                        <span class="input-group-addon">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix hidden">
+                                                <label for="" class="control-label col-sm-4 text-right">自动回收
+                                                    <span class="help-block">自动回收终止的项目</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <label><input type="checkbox" name="terminated_trash" value="1" <?php echo !empty($setting['terminated_trash']) ? 'checked' : '' ?>/>是</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <?php echo form_close()?>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <filedset>
+                                            <legend>金息列表</legend>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table class="table table-border table-hover table-period">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>标题</th>
+                                                            <th>月数</th>
+                                                            <th>金息</th>
+                                                            <th>启用</th>
+                                                            <th>选中</th>
+                                                            <th>说明</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="period-list">
 
-                                        <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-4 text-right">生金克数 (g)
-                                                <span class="help-block">按100克每年</span>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <input type="text" name="profit_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit_weight'])? '' :$setting['profit_weight']  ?>"/>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-4 text-right">生金模式
-                                                <span class="help-block">计息模式</span>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <select name="growing_mode" class="form-control">
-                                                    <option value="t0" <?php echo $setting['growing_mode'] == 't0' ? 'selected' :''  ?>>T+0 登记当日即为计息日</option>
-                                                    <option value="t1" <?php echo $setting['growing_mode'] == 't1' ? 'selected' :''  ?>>T+1 登记当日隔天即为计息日</option>
-                                                </select>
+                                        </filedset>
+
+                                        <?php echo form_open('setting/project/save_period', array('id' =>'project-period','class'=>'form-horizontal period-form' ))?>
+                                        <?php echo form_hidden('period_id','')?>
+                                        <filedset>
+                                            <legend>金息设定
+                                                <div class="pull-right">
+                                                    <button type="button" class="btn btn-primary btn-sm btn-period" >
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </legend>
+                                            <div class="col-sm-12 do-result">
                                             </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="" class="control-label col-sm-4 text-right">生金周期
-                                                <span class="help-block">支持生金的周期模式</span>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <select name="gold_growing" class="form-control">
-                                                    <option value="year" <?php echo $setting['gold_growing'] == 'year' ? 'selected' :''  ?>>按年生金</option>
-                                                    <option value="season" <?php echo $setting['gold_growing'] == 'season' ? 'selected' :''  ?>>按季生金</option>
-                                                    <option value="month" <?php echo $setting['gold_growing'] == 'month' ? 'selected' :''  ?>>按月生金</option>
-                                                </select>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">标题</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="title" class="form-control">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group clearfix">
-                                            <label for="inputOrderPercent" class="control-label col-sm-4 text-right">门店消费
-                                                <span class="help-block">门店黄金消费比例</span>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <input type="text" name="order_percent" class="form-control" id="inputOrderPercent" value="<?php echo empty($setting['order_percent'])? '' :$setting['order_percent']  ?>"/>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">月数</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <input type="text" name="month" class="form-control">
+                                                        <span class="input-group-addon">个月</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">金息</label>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                    <input type="text" name="profit" class="form-control">
                                                     <span class="input-group-addon">%</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group clearfix hidden">
-                                            <label for="" class="control-label col-sm-4 text-right">自动回收
-                                                <span class="help-block">自动回收终止的项目</span>
-                                            </label>
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <label><input type="checkbox" name="terminated_trash" value="1" <?php echo !empty($setting['terminated_trash']) ? 'checked' : '' ?>/>是</label>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">说明</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="note" class="form-control">
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">是否启用</label>
+                                                <div class="col-sm-10">
+                                                    <label><input type="radio" name="status" value="1" checked>是</label>
+                                                    <label><input type="radio" name="status" value="0">否</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-2">默认选中</label>
+                                                <div class="col-sm-10">
+                                                    <label><input type="radio" name="default" value="1" >是</label>
+                                                    <label><input type="radio" name="default" value="0" checked>否</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <div class="col-sm-10 col-sm-offset-2">
+                                                    <button type="button" form="project-period" class="btn btn-primary btn-status">保存</button>
+                                                </div>
+                                            </div>
+                                        </filedset>
+                                        <?php echo form_close()?>
                                     </div>
-                                    <div class="col-sm-6">
-
-                                    </div>
-                                    <?php echo form_close()?>
-                                </fieldset>
+                                </div>
                             </div>
                             <!-- /.tab-pane -->
                         </div>
@@ -500,5 +585,6 @@
     seajs.use('setproject', function (sp) {
         sp.render_statuses('investing');
         sp.render_statuses('recycling');
+        sp.render_periods();
     });
 </script>

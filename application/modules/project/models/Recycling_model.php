@@ -91,6 +91,9 @@ class Recycling_model extends XY_Model{
             'appraiser_id' => $data['appraiser'],
             'transferrer' => $data['transferrer'],
             'weight' => (float)$data['weight'],
+            'month' => (int)$data['month'],
+            'profit' => (float)$data['profit'],
+            'payment' => $data['payment'],
             'loss' => (float)$data['loss'],
             'note' =>  htmlspecialchars($data['editorValue']),
             'status_id' => $this->config->item('recycling_initial'),
@@ -202,6 +205,9 @@ class Recycling_model extends XY_Model{
                 'appraiser_id' => $data['appraiser'],
                 'transferrer' => $data['transferrer'],
                 'weight' => (float)$data['weight'],
+                'month' => (int)$data['month'],
+                'profit' => (float)$data['profit'],
+                'payment' => $data['payment'],
                 'loss' => (float)$data['loss'],
                 'referrer_id' => $data['referrer'],
                 'note' =>  htmlspecialchars($data['editorValue']),
@@ -370,13 +376,17 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function active_start($project_sn){
+    public function active_period($project_sn){
         if(empty($project_sn) ) return FALSE;
         $project = $this->project($project_sn);
         if($project->num_rows()) {
             $info = $project->row_array();
             $start = $this->calculate_start($info['addtime']);
-            $this->db->update($this->table,array('start'=>$start,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id()),array('project_sn'=>$info['project_sn']));
+            $tmp = array('start'=>$start,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id());
+            if($info['month']){
+                $tmp['end'] = calculate_end(strtotime($start),$info['month']);
+            }
+            $this->db->update($this->table,$tmp,array('project_sn'=>$info['project_sn']));
             return $this->db->affected_rows();
         }
 
@@ -411,17 +421,21 @@ class Recycling_model extends XY_Model{
                 'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
                 'weight'=> (float)$project['weight'],
                 'start'=> $project['start'],
+                'end'=> $project['end'],
+                'profit'=> $project['profit'],
                 'info' => maybe_serialize(array(
                     'project_id' => $project['project_id'],
                     'realname' => $project['realname'],
                     'phone' => $project['phone'],
                     'idnumber' => $project['idnumber'],
                     'price' => $project['price'],
+                    'month' => $project['month'],
                     'type' => $project['type']=='goldbar' ?'金条':'金饰',
                     'number' => $project['number'],
                     'origin_weight' => $project['origin_weight'],
                     'weight' => $project['weight'],
                     'appraiser_id' => $project['appraiser_id'],
+                    'payment'=> $project['payment'],
                 )),
                 'note' => empty($data['note'])?'':$data['note'],
                 'mode' => $this->mode,
