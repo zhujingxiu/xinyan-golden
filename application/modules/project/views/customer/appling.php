@@ -112,10 +112,11 @@
                                 <span class="input-group-addon">客户手机</span>
                                 <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
                                 <span class="input-group-addon">提金克重</span>
-
-                                    <input class="form-control" name="weight" type="text" placeholder="最大值为<?php echo $max;?>">
-
+                                <input class="form-control" name="weight" type="text" placeholder="最大值为<?php echo $max;?>">
                                 <span class="input-group-addon">克</span>
+
+                                <input type="text" name="fee" class="form-control" placeholder="如有手续费，请输入">
+                                <span class="input-group-addon">元</span>
                             </div>
                         </div>
                         <div class="timeline-footer">

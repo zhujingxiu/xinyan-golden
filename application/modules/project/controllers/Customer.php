@@ -73,9 +73,7 @@ class Customer extends XY_Controller {
                     'idnumber'	=> $row['idnumber'] ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> '<label class="label label-success">'.number_format($row['available'],2).lang('text_weight_unit').'</label>',
-                    'frozen'	=> ($row['frozen']*100 > 0)
-                        ? '<a class="btn btn-warning btn-frozen">'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>'
-                        : '<label class="label label-default">'.number_format($row['frozen'],2).lang('text_weight_unit').'</label>',
+                    'frozen'	=> '<label class="label label-default">'.number_format($row['frozen'],2).lang('text_weight_unit').'</label>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
@@ -181,20 +179,23 @@ class Customer extends XY_Controller {
 
             $info['groups'] = $this->customer_model->get_groups()->result_array();
 
-            json_success(array('title'=>$title,'html'=>$this->load->view('customer/form',$info,TRUE)));
+            json_success(array('title'=>$title,'msg'=>$this->load->view('customer/form',$info,TRUE)));
         }
     }
 
     public function projects()
     {
-        $result = $this->customer_model->customer($this->input->get('customer'));
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
+        }
+        $result = $this->customer_model->customer($this->input->post('customer'));
         if($result){
             $info = $result->row_array();
 
-            $info['projects'] = $this->customer_model->projects($this->input->get('customer'));
+            $info['projects'] = $this->customer_model->projects($info['customer_id']);
 
             $info['csrf'] = $this->_get_csrf_nonce();
-            json_success(array('title'=>'项目列表 '.$info['realname'],'msg'=>$this->load->view('customer/project',$info,TRUE)));
+            $this->load->view('customer/project',$info);
         }else{
             json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
         }
@@ -219,6 +220,7 @@ class Customer extends XY_Controller {
                 $note = htmlspecialchars($this->input->post('editorValue'));
                 $weight = $this->input->post('weight');
                 $phone = $this->input->post('phone');
+                $fee = $this->input->post('fee');
                 $result = $this->customer_model->customer($customer_id);
                 if(!$result->num_rows()){
                     json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
@@ -233,6 +235,7 @@ class Customer extends XY_Controller {
                         'mode'=>'appling',
                         'phone'=>$phone,
                         'weight'=>$weight,
+                        'fee'=>$fee,
                         'note' 	=> $note,
                     ));
                     $this->session->set_flashdata('success', sprintf("已申请提金！客户: %s",$customer['realname']));

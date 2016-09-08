@@ -15,6 +15,13 @@ class Tool_model extends XY_Model
     protected $investing_history_table = "project_investing_history";
     protected $customer_stock_table = "customer_stock";
     protected $cron_job_table = 'cron_job';
+    protected $customer_table = 'customer';
+    protected $worker_table = 'worker';
+
+    public function __construct(){
+        parent::__construct();
+        $this->lang->load('default');
+    }
     public function gold_price(){
         $query = $this->db->where(array('type'=>'Au99.99'))->from("golden_today")->order_by("updatetime desc")->limit(1)->get();
         if($query->num_rows()){
@@ -211,20 +218,46 @@ class Tool_model extends XY_Model
     function growing()
     {
         $this->db->trans_begin();
-
-        $insert_batch = $update_batch = array();
-        $query = $this->db->where(array('status'=>1,'end >='=>date('Y-m-d')))->get($this->stock_table);
+        $stock = $history = array();
+        $query = $this->db->where(array('status'=>1,'end <='=>date('Y-m-d')))->get($this->stock_table);
         if($query->num_rows()) {
             foreach ($query->result_array() as $item) {
+                $stock[] = $item['project_sn'];
+                $this->db->update($this->stock_table,array('status'=>0,'lasttime'=>time()), array('project_sn'=>$item['project_sn']));
+                // insert mode = in and profit for customer stock table
+                $batch = array(
+                    array(
+                        'customer_id' => $item['customer_id'],
+                        'mode' => 'in',
+                        'project_sn' => $item['project_sn'],
+                        'weight' => $item['weight'],
+                        'notify' => 1,
+                        'note' => lang('text_finished_in_note'),
+                        'worker_id' => 0,
+                        'addtime' => time()
+                    ),
+                    array(
+                        'customer_id' => $item['customer_id'],
+                        'mode' => 'profit',
+                        'project_sn' => $item['project_sn'],
+                        'weight' => $item['weight']*$item['profit'],
+                        'notify' => 1,
+                        'note' => lang('text_finished_profit_note'),
+                        'worker_id' => 0,
+                        'addtime' => time()
+                    )
+                );
+                $this->db->insert_batch($this->customer_stock_table,$batch);
+
+                //update project table status and add log
                 $project = $this->_project($item['project_sn'],$item['mode']);
                 if(!$project){
                     continue;
                 }
                 $fileds = array(
-                    'is_del' => 1,
-                    'status_id' => $item['mode']=='investing' ? (int)$this->config->item('investing_terminated') : (int)$this->config->item('recycling_terminated'),
+                    'status_id' => $item['mode']=='investing' ? (int)$this->config->item('investing_finished') : (int)$this->config->item('recycling_finished'),
                     'note' => lang('text_finished_note'),
-                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'worker_id' => 0,
                     'lasttime' => time()
                 );
                 $this->db->update($this->_project_table($item['mode']),$fileds,array('project_sn'=>$item['project_sn']));
@@ -233,30 +266,18 @@ class Tool_model extends XY_Model
                     'status_id' => $fileds['status_id'],
                     'note' => lang('text_finished_note'),
                     'request' => '',
-                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'worker_id' => 0,
                     'addtime' => time(),
                     'ip' => $this->_prepare_ip($this->input->ip_address())
                 ));
-                $affected = $this->db->insert_id();
-                $this->db->update($this->stock_table,array('status'=>0), array('project_sn'=>$item['project_sn']));
-                // insert mode = in for customer stock table
-                $this->db->insert($this->customer_stock_table,array(
-                    'customer_id' => $item['customer_id'],
-                    'mode' => 'in',
-                    'project_sn' => $item['project_sn'],
-                    'weight' => $item['weight'],
-                    'notify' => 1,
-                    'note' => empty($data['reason']) ? '' : $data['reason'],
-                    'worker_id' => $this->ion_auth->get_user_id(),
-                    'addtime' => time()
-                ));
+                $history[] = $project['project_id'];
             }
         }
 
         $log_id = $this->log(var_export(array(
             'datetime' => date('Y-m-d H:i:s'),
-            'insert' => $insert_batch,
-            'update' => $update_batch,
+            'stock' => $stock,
+            'history' => $history,
         ),TRUE),__METHOD__);
         if ($this->db->trans_status() === FALSE)
         {
@@ -363,7 +384,7 @@ class Tool_model extends XY_Model
                         'status_id' => $this->config->item('recycling_growing'),
                         'note' => $growing_note,
                         'request' => '',
-                        'worker_id' => $this->ion_auth->get_user_id(),
+                        'worker_id' => 0,
                         'addtime' => time(),
                         'ip' => $this->_prepare_ip($this->input->ip_address())
                     );
@@ -393,7 +414,7 @@ class Tool_model extends XY_Model
                         'note' => $growing_note,
                         'mode' => 'recycling',
                         'status' => 1,
-                        'worker_id' => $this->ion_auth->get_user_id(),
+                        'worker_id' => 0,
                         'addtime' => time(),
                         'lasttime' => time(),
                     );
@@ -419,7 +440,7 @@ class Tool_model extends XY_Model
                         'status_id' => $this->config->item('investing_growing'),
                         'note' => $growing_note,
                         'request' => '',
-                        'worker_id' => $this->ion_auth->get_user_id(),
+                        'worker_id' => 0,
                         'addtime' => time(),
                         'ip' => $this->_prepare_ip($this->input->ip_address())
                     );
@@ -445,7 +466,7 @@ class Tool_model extends XY_Model
                         'note' => $growing_note,
                         'mode' => 'investing',
                         'status' => 1,
-                        'worker_id' => $this->ion_auth->get_user_id(),
+                        'worker_id' => 0,
                         'addtime' => time(),
                         'lasttime' => time(),
                     );

@@ -69,7 +69,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon"> 鉴 定 人 </span>
+                                        <span class="input-group-addon"><?php echo lang('text_appraiser')?></span>
                                         <span class="form-control" ><?php echo $appraiser?></span>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                                 <?php if($photos): ?>
                                     <?php foreach($photos as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="实物照片 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -122,7 +122,7 @@
                                 <?php if($invoices): ?>
                                     <?php foreach($invoices as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="发票照片 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -130,7 +130,7 @@
                                 <?php if($reports): ?>
                                     <?php foreach($reports as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="鉴定报告 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -174,7 +174,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon"> 推 荐 人 </span>
+                                        <span class="input-group-addon"><?php echo lang('text_referrer')?></span>
                                         <span class="form-control"><?php echo $referrer?></span>
                                     </div>
                                 </div>

@@ -52,6 +52,9 @@ $lang['text_price_yestoday'] = " 昨日收盘价";
 $lang['text_price_unit'] = " 元/克";
 $lang['text_auto_growing'] = "库存已确认标记，自动推进到正在增值";
 $lang['text_finished_note'] = "项目到期完结";
+$lang['text_finished_in_note'] = "项目到期完结解冻本金";
+$lang['text_finished_profit_note'] = "项目到期完结所得金息";
+$lang['text_unfinished_profit'] = "项目提前终止所得金息";
 
 $lang['label_booked'] = '<a class="btn btn-info disabled">待核实</a>';
 $lang['label_checked'] = '<a class="btn btn-primary disabled">待确认</a>';

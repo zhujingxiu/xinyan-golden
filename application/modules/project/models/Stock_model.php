@@ -130,7 +130,7 @@ class Stock_model extends XY_Model{
         }
         $project = $this->_project($project_sn,$mode,TRUE);
         if($project){
-            $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username,w.avatar', false);
+            $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.avatar', false);
             $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']))->order_by('h.addtime desc');
             $this->db->join($status_table.' AS pis','h.status_id = pis.status_id');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
@@ -150,7 +150,6 @@ class Stock_model extends XY_Model{
         if($project){
             //  update terminated status for project table and history table
             $fileds = array(
-                'is_del' => 1,
                 'status_id' => $mode=='investing' ? (int)$this->config->item('investing_terminated') : (int)$this->config->item('recycling_terminated'),
                 'note' => $reason,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -167,54 +166,35 @@ class Stock_model extends XY_Model{
                 'ip' => $this->_prepare_ip($this->input->ip_address())
             ));
             $affected = $this->db->insert_id();
-
-            // insert trash table
-            if(!empty($project['type']) && !empty($project['origin_weight'])){
-                $gold = maybe_serialize(array(
-                    'price' => $project['price'],
-                    'type' => $project['type']=='goldbar' ?lang('text_goldbar'):lang('text_ornaments'),
-                    'number' => $project['number'],
-                    'origin_weight' => $project['origin_weight'],
-                    'weight' => $project['weight'],
-                    'appraiser' => $project['appraiser'],
-                    'start' => $project['start'],
-                    'end' => $project['end'],
-                    'month' => $project['month'],
-                    'profit' => $project['profit'],
-                    'payment' => $project['payment'],
-                ));
-            }else{
-                $gold = maybe_serialize(array(
-                    'price' => $project['price'],
-                    'weight' => $project['weight'],
-                    'amount' => $project['amount'],
-                    'start' => $project['start'],
-                    'end' => $project['end'],
-                    'month' => $project['month'],
-                    'profit' => $project['profit'],
-                    'payment' => $project['payment'],
-                ));
-            }
-            $this->db->insert($this->trash_table,array(
-                'project_id' => $project['project_id'],
-                'project_sn' => $project['project_sn'],
-                'mode' => $mode,
-                'customer' => maybe_serialize(array(
-                    'realname' => $project['realname'],
-                    'phone' => $project['phone'],
-                    'idnumber' => $project['idnumber'],
-                    'wechat' => $project['wechat'],
-                    'referrer' => $project['referrer'],
-                )),
-                'gold' => $gold,
+            // update status =0 for stock table
+            $this->db->update($this->table,array('status'=>0), array('project_sn'=>$project_sn));
+            // insert mode = in for customer stock table
+            $this->db->insert($this->customer_stock_table,array(
+                'customer_id' => $project['customer_id'],
+                'mode' => 'in',
+                'project_sn' => $project_sn,
+                'weight' => $project['weight'],
+                'notify' => 1,
                 'note' => $reason,
                 'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time(),
-                'ip' => $this->_prepare_ip($this->input->ip_address())
+                'addtime' => time()
             ));
-
             //close stock table ,relax mode = in  project weight and calculate project unfinished profit insert into customer stock table
-            $this->erp_stock(array('project_sn'=>$project_sn,'mode'=>$mode,'note'=>$reason));
+            if(is_date($project['start']) && is_date($project['end']) ) {
+                if(time()<strtotime($project['end'])){
+                    $number = floor((time()-strtotime($project['start']))/(24*60*60*30));
+                    $this->db->insert($this->customer_stock_table, array(
+                        'customer_id' => $project['customer_id'],
+                        'mode' => 'profit',
+                        'project_sn' => $project_sn,
+                        'weight' => $this->calculate_unfinished_profit($project['month'],$project['profit'],$number,$project['weight']),
+                        'notify' => 1,
+                        'note' => lang('text_unfinished_profit'),
+                        'worker_id' => $this->ion_auth->get_user_id(),
+                        'addtime' => time()
+                    ));
+                }
+            }
 
             if ($this->db->trans_status() === FALSE)
             {
@@ -231,45 +211,64 @@ class Stock_model extends XY_Model{
         }
     }
 
-    public function erp_stock($data=array()){
-        if(empty($data['project_sn']) ) return FALSE;
-        if(empty($data['mode']) ) $data['mode'] = 'recycling';
-
-        $result = $this->project($data['project_sn']);
-        if($result->num_rows()){
-            $project = $result->row_array();
-            // update status =0 for stock table
-            $this->db->update($this->table,array('status'=>0), array('project_sn'=>$data['project_sn']));
-            // insert mode = in for customer stock table
-            $this->db->insert($this->customer_stock_table,array(
-                'customer_id' => $project['customer_id'],
-                'mode' => 'in',
-                'project_sn' => $data['project_sn'],
-                'weight' => $project['weight'],
-                'notify' => 1,
-                'note' => empty($data['reason']) ? '' : $data['reason'],
+    public function trash_bin($project_sn,$mode,$note=''){
+        // insert trash table
+        $project = $this->_project($project_sn,$mode);
+        if($project) {
+            $fileds = array(
+                'is_del' => 1,
+                'note' => $note,
                 'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
-            ));
-            if(is_date($project['start']) && is_date($project['end']) ) {
-                if(time()<strtotime($project['end'])){
-                    $number = floor((time()-strtotime($project['start']))/(24*60*60*30));
-                    $this->activity((time()-strtotime($project['start'])).'|'.$number.'|'.$project['start'].'|'.$project['month']."|".$project['profit']);
-                    $this->db->insert($this->customer_stock_table, array(
-                        'customer_id' => $project['customer_id'],
-                        'mode' => 'profit',
-                        'project_sn' => $data['project_sn'],
-                        'weight' => $this->calculate_unfinished_profit($project['month'],$project['profit'],$number,$project['weight']),
-                        'notify' => 1,
-                        'note' => $data['note'],
-                        'worker_id' => $this->ion_auth->get_user_id(),
-                        'addtime' => time()
-                    ));
-                }
+                'lasttime' => time()
+            );
+            $this->db->update($this->_project_table($mode),$fileds,array('project_sn'=>$project_sn));
+            $this->db->delete($this->table,array('project_sn'=>$project_sn));
+            if (!empty($project['type']) && !empty($project['origin_weight'])) {
+                $gold = maybe_serialize(array(
+                    'price' => $project['price'],
+                    'type' => $project['type'] == 'goldbar' ? lang('text_goldbar') : lang('text_ornaments'),
+                    'number' => $project['number'],
+                    'origin_weight' => $project['origin_weight'],
+                    'weight' => $project['weight'],
+                    'appraiser' => $project['appraiser'],
+                    'start' => $project['start'],
+                    'end' => $project['end'],
+                    'month' => $project['month'],
+                    'profit' => $project['profit'],
+                    'payment' => $project['payment'],
+                ));
+            } else {
+                $gold = maybe_serialize(array(
+                    'price' => $project['price'],
+                    'weight' => $project['weight'],
+                    'amount' => $project['amount'],
+                    'start' => $project['start'],
+                    'end' => $project['end'],
+                    'month' => $project['month'],
+                    'profit' => $project['profit'],
+                    'payment' => $project['payment'],
+                ));
             }
+            $this->db->insert($this->trash_table, array(
+                'project_id' => $project['project_id'],
+                'project_sn' => $project['project_sn'],
+                'mode' => $mode,
+                'customer' => maybe_serialize(array(
+                    'realname' => $project['realname'],
+                    'phone' => $project['phone'],
+                    'idnumber' => $project['idnumber'],
+                    'wechat' => $project['wechat'],
+                    'referrer' => $project['referrer'],
+                )),
+                'gold' => $gold,
+                'note' => $note,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'ip' => $this->_prepare_ip($this->input->ip_address())
+            ));
+
             return $this->db->insert_id();
         }
-        return FALSE;
     }
 
     protected function calculate_unfinished_profit($month,$profit,$number,$weight){

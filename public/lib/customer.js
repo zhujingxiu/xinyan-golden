@@ -8,7 +8,7 @@ define(function (require, exports, modules) {
     var load_index = '';
     exports.render_list = function() {
         $(function () {
-            var dt = $('#list').DataTable({
+            $('#list').DataTable({
                 "language": {
                     "url": "/public/lib/datatables/Chinese.json"
                 },
@@ -23,12 +23,6 @@ define(function (require, exports, modules) {
                     type: 'get'
                 },
                 "columns": [
-                    {
-                        "class":          "details-control",
-                        "orderable":      false,
-                        "data":           null,
-                        "defaultContent": ""
-                    },
                     {"data": "available", "name": "available"},
                     {"data": "frozen", "name": "frozen"},
                     {"data": "customer", "name": "c.realname"},
@@ -40,58 +34,9 @@ define(function (require, exports, modules) {
                     {"data": "lasttime", "name": "c.lasttime"},
                     {"data": "status_text", "name": "c.status"},
                     {"data": "operation"}
-                ],
+                ]
             });
-            dt.on( 'draw', function () {
-                $.each( detailRows, function ( i, id ) {
-                    $('#'+id+' td.details-control').trigger( 'click' );
-                } );
-            } );
 
-            // Array to track the ids of the details displayed rows
-            var detailRows = [];
-
-            $('#list tbody').on( 'click', 'tr td.details-control', function () {
-                var tr = $(this).closest('tr');
-                var row = dt.row( tr );
-                var idx = $.inArray( tr.attr('id'), detailRows );
-
-                if ( row.child.isShown() ) {
-                    tr.removeClass( 'details' );
-                    row.child.hide();
-
-                    // Remove from the 'open' array
-                    detailRows.splice( idx, 1 );
-                }
-                else {
-                    tr.addClass( 'details' );
-                    var _html = projects( tr.attr('id') );
-
-                    row.child( _html ).show();
-
-                    tr.find('.project-tables').DataTable()
-                    // Add to the 'open' array
-                    if ( idx === -1 ) {
-                        detailRows.push( tr.attr('id') );
-                    }
-                }
-            } );
-            function projects ( d ) {
-                var _html = '';
-                $.ajax({
-                    url: '/project/customer/projects',
-                    data: {customer: d},
-                    async:false,
-                    dataType: 'json',
-                    success: function (json) {
-                        _html = json.msg;
-                    }
-                });
-                return _html;
-                //return 'Full name: '+d.customer+' '+d.idnumber+'<br>'+
-                //    'Salary: '+d.phone+'<br>'+
-                //    'The child row can contain any data you wish, including links, images, inner tables etc.';
-            }
         });
     }
 
@@ -108,18 +53,17 @@ define(function (require, exports, modules) {
     exports.do_detail = function(cid){
         require('layer');
         require('ajaxSubmit');
-
         require('jqueryvalidate');
         require('customValidate');
         $.get('/project/customer/update', {customer_id:cid}, function(json){
             layer.open({
                 type: 1,
                 title:json.title,
-                area:'800px',
+                area:'880px',
                 offset: '100px',
                 zIndex:99,
                 btn: ['保存', '取消'],
-                content: json.html ,//注意，如果str是object，那么需要字符拼接。
+                content: json.msg ,//注意，如果str是object，那么需要字符拼接。
                 yes: function(index, layero){
                     $('#form-customer').submit();
                 }
@@ -130,8 +74,6 @@ define(function (require, exports, modules) {
         $('#list').delegate('.btn-appling','click', function (e) {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('slimscroll');
@@ -273,7 +215,7 @@ define(function (require, exports, modules) {
     }
 
     exports.render_project = function () {
-        $('#list').delegate('.btn-frozen','click', function () {
+        $('#list').delegate('.btn-project','click', function () {
             require('layer');
             require('slimscroll');
             var id = $(this).parent().parent().attr('id');
