@@ -29,20 +29,81 @@ define(function(require,exports,modules){
                     type: 'get'
                 },
                 "columns": [
-
+                    {"data": "status", "name": "p.status"},
                     {"data": "sn", "name": "p.project_sn"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "weight", "name": "p.weight"},
-                    {"data": "start", "name": "p.start"},
+                    {"data": "period", "name": "p.start"},
                     {"data": "profit", "name": "profit"},
                     {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "addtime", "name": "p.addtime"},
+                    {"data": "operation"}
                 ],
             })
         });
     }
-
+    exports.render_detail = function (){
+        $('#list').delegate('.btn-detail','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            //require('ueditor/ueditor.config');
+            //require('ueditor');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('slimscroll');
+            var sn = $(this).parent().parent().attr('id');
+            $.get('/project/stock/detail', {project:sn}, function(json){
+                if(json.code==1){
+                    var options = {
+                        type: 1,
+                        title:json.title,
+                        area:'880px',
+                        offset: '100px',
+                        zIndex:99,
+                        content: json.msg ,
+                    }
+                    if(json.terminable){
+                        options.btn = ['终止项目', '取消'];
+                        options.yes = function (index, layero) {
+                            layer.prompt({
+                                formType: 2,
+                                title: '填写终止原因'
+                            }, function(value, index, elem){
+                                if(value.length >= 10) {
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/project/stock/terminated',
+                                        data: {project_sn: sn, value: value,mode:json.mode},
+                                        dataType: 'json',
+                                        beforeSubmit: function () {
+                                            layer.load();
+                                        },
+                                        success: function (json) {
+                                            if (json.code == 1) {
+                                                location.reload();
+                                            } else {
+                                                var l = require('layout');
+                                                l.render_message(json.msg, json.title);
+                                            }
+                                        }
+                                    })
+                                }else{
+                                    layer.tips('内容长度不小于10个字符', elem,{tips: 1});
+                                }
+                            });
+                        };
+                    }else{
+                        options.btn = [ '关闭'];
+                    }
+                    layer.open(options);
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    };
 
     exports.render_storage = function(){
         $('#btn-new').bind('click',function(){
@@ -73,6 +134,28 @@ define(function(require,exports,modules){
                     l.render_message(json.msg,json.title);
                 }
             },'json');
+        });
+    };
+    exports.render_hidden = function(){
+        $('#project-list').delegate('.btn-trashed','click',function(){
+            var sn = $(this).parent().parent().attr('id')
+            require('layer');
+            layer.confirm('确定删除项目'+sn, {icon: 3, title:'删除'}, function(index){
+                $.ajax({
+                    type:'post',
+                    url:'/project/recycling/trashed',
+                    data:{project_sn:sn},
+                    dataType:'json',
+                    success:function(json){
+                        if(json.code==1){
+                            location.reload();
+                        }else{
+                            var l = require('layout');
+                            l.render_message(json.msg,json.title);
+                        }
+                    }
+                })
+            });
         });
     }
 

@@ -22,7 +22,6 @@ class Recycling extends Project {
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
 
-        $this->tool_model->push_growing();
         $this->recycling_model->reset_locker(false,$this->worker_id);
         $this->layout->view('recycling/index',$data);
     }
@@ -273,7 +272,7 @@ class Recycling extends Project {
                 $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
                 //lock
                 $info['unlock'] = false;
-                $info['editable'] = true;
+                $info['editable'] = $info['status_id'] == $this->config->item('recycling_initial');
                 //set the locker is the current user_id
                 if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
                     $this->recycling_model->set_locker($info['project_sn']);
@@ -331,11 +330,12 @@ class Recycling extends Project {
                     $info['privacies'] = json_decode($item['file'],TRUE);
                 }
             }
+            $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
             $info['histories'] = $this->recycling_model->histories($info['project_sn']);
             json_success(array(
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
                 'msg'=>$this->load->view('recycling/detail',$info,TRUE),
-                'terminable'=>$this->inRole('manager')
+                'terminable'=>false//$this->inRole('manager')
             ));
         }else{
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -448,7 +448,7 @@ class Recycling extends Project {
                 $title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
                 //lock
                 $info['unlock'] = false;
-                $info['editable'] = true;
+                $info['editable'] = $info['status_id'] == $this->config->item('recycling_initial');
                 //set the locker is the current user_id
                 if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
                     $this->recycling_model->set_locker($info['project_sn']);
@@ -587,7 +587,7 @@ class Recycling extends Project {
                 $title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
                 //lock
                 $info['unlock'] = false;
-                $info['editable'] = true;
+                $info['editable'] = $info['status_id'] == $this->config->item('recycling_checked');
                 //set the locker is the current user_id
                 if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
                     $this->recycling_model->set_locker($info['project_sn']);
@@ -649,56 +649,6 @@ class Recycling extends Project {
         json_error();
     }
 
-    public function terminated()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        $project_sn = $this->input->post('project_sn');
-        $reason = $this->input->post('value');
-        if(!$project_sn || !$reason ){
-            json_error();
-        }
-        if(strlen($reason) < 10){
-            json_error(array('msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
-        }
-        $result = $this->recycling_model->project($project_sn);
-        if(!$result->num_rows()){
-            json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
-        }
-        $tmp =array(
-            'status'=> $this->config->item('recycling_terminated'),
-            'note' 	=> $reason,
-        );
-        if($this->config->item('terminated_trash')){
-            $tmp['call_func'] = array(
-                'trash_bin'=> array('project_sn' => $project_sn,'reason' => $reason),
-                'erp_stock'=> array('project_sn' => $project_sn,'reason' => $reason)
-            );
-        }
-        if($this->recycling_model->push_state($project_sn,$tmp)){
-            $this->session->set_flashdata('success', sprintf("项目已终止！编号: %s",$project_sn));
-            json_success();
-        }
-        json_error();
-    }
-
-    public function trashed()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        $project_sn = $this->input->post('project_sn');
-        if(!$project_sn  ){
-            json_error();
-        }
-
-        if($this->recycling_model->hidden($project_sn)){
-            $this->session->set_flashdata('success', sprintf("项目已回收！编号: %s",$project_sn));
-            json_success();
-        }
-        json_error();
-    }
 
     public function reset_locker()
     {

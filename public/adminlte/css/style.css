@@ -35,3 +35,5 @@ td.details-control {
 tr.details td.details-control {
     background: url('../img/details_close.png') no-repeat center center;
 }
+
+._highlight{color:#CC9900;font-weight: bold;}

@@ -33,7 +33,8 @@ define(function(require,exports,modules){
                     {"data": "price", "name": "p.price"},
                     {"data": "weight", "name": "p.weight"},
                     {"data": "amount", "name": "p.amount"},
-                    {"data": "start", "name": "p.start"},
+                    {"data": "period", "name": "p.month"},
+                    {"data": "payment", "name": "p.payment"},
                     {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "lasttime", "name": "p.lasttime"},
@@ -202,12 +203,12 @@ define(function(require,exports,modules){
                         }
                     }
                     if(json.editable){
-                        options.btn = ['确认标记', '驳回'];
+                        options.btn = ['确认标记', '关闭'];
                         options.yes = function(index, layero){
                             $('#form-confirming').submit();
                         };
                     }else if(json.unlock){
-                        options.btn = ['解锁', '取消'];
+                        options.btn = ['解锁', '关闭'];
                         options.yes = function (index, layero) {
                             $.get('/project/investing/reset_locker',{project_sn:sn,locker:1},function(json){
                                 if(json.reset==1){

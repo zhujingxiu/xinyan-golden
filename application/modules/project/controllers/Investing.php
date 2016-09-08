@@ -10,6 +10,9 @@ class Investing extends Project {
 	}
 	public function index()
 	{
+		if($this->input->get('list')){
+			json_response($this->_list($this->input->get()));
+		}
 		$this->layout->add_includes(array(
 			array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
 			//array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
@@ -18,9 +21,8 @@ class Investing extends Project {
 		$data['success'] = $this->session->flashdata('success');
 		$data['warning'] = $this->session->flashdata('warning');
 
-		if($this->input->get('list')){
-			json_response($this->_list($this->input->get()));
-		}
+
+		$this->investing_model->reset_locker(false,$this->worker_id);
 		$this->layout->view('investing/index',$data);
 	}
 
@@ -60,7 +62,8 @@ class Investing extends Project {
 					'realname' 	=> $row['realname'].'<br>'.$row['phone'],
 					'price'		=> $row['price'],
 					'weight'	=> $row['weight'],
-					'start'		=> empty($row['start']) ?  lang('text_not_open') : $row['start'],
+					'payment'	=> $row['payment'] =='cash' ? lang('text_cash') : lang('text_gold'),
+					'period'	=> $row['month'].lang('text_period_unit') ."<br>".lang('text_profit').calculate_profit($row['profit'],$row['month']).lang('text_profit_unit') ,
 					'amount'	=> $row['amount'],
 					'referrer'	=> $row['referrer'],
 					'operator'	=> $row['operator'],
@@ -98,13 +101,20 @@ class Investing extends Project {
 				json_error(array('msg' =>lang('error_current_price')));
 			}
             $this->form_validation->set_rules('weight', '购买克重', 'required');
+			$this->form_validation->set_rules('period_id', '预存周期', 'required');
+			$this->form_validation->set_rules('payment', '交付方式', 'required');
             $this->form_validation->set_rules('realname', '真实姓名', 'required');
             $this->form_validation->set_rules('phone', '联系电话', 'required');
             $this->form_validation->set_rules('idnumber', '身份证号', 'required');
 			if($this->config->item('investing_privacy')){
 				//$this->form_validation->set_rules('agree', '同意协议', 'required',array('required'=>'必须同意该条款协议'));
 			}
-
+			$period = $this->project_model->period($this->input->post('period_id'));
+			if($period->num_rows()){
+				$_p = $period->row_array();
+			}else{
+				json_error(array('msg'=>lang('error_period')));
+			}
             if ($this->form_validation->run() == TRUE)
             {
 				$tmp = array(
@@ -114,8 +124,11 @@ class Investing extends Project {
 					'wechat' => $this->input->post('wechat'),
 					'referrer' => $this->input->post('referrer'),
 					'transferrer' => $this->input->post('transferrer'),
+					'payment'=>  $this->input->post('payment'),
 					'note' => htmlspecialchars($this->input->post('editorValue')),
 					'price' => $price,
+					'month' => $_p['month'],
+					'profit' => calculate_rate($_p['profit'],$_p['month']),
 					'weight'=> $this->input->post('weight'),
 					'privacy'=> empty($this->input->post('privacy')) ? FALSE : (array)$this->input->post('privacy'),
 				);
@@ -124,14 +137,14 @@ class Investing extends Project {
                     json_success();
                 }
             }else {
-
                 $errors = array(
                     'weight' => form_error('weight'),
+					'payment' => form_error('payment'),
+					'period_id' => form_error('period_id'),
                     'realname' => form_error('realname'),
                     'phone' => form_error('phone'),
                     'idnumber' => form_error('idnumber'),
                 );
-
                 json_response(array('code' => 0, 'errors' => $errors));
             }
         }else{
@@ -140,7 +153,7 @@ class Investing extends Project {
 			if($price){
 				$price = number_format($price,2);
 			}else{
-				json_response(array('code'=>0,'msg'=>lang("error_params"),'title'=>lang("error_title")));
+				json_error();
 			}
 			$this->session->set_tempdata('current_price',XEncrypt($price),1200);
 			$info = array(
@@ -159,6 +172,7 @@ class Investing extends Project {
 					$info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
 				}
 			}
+			$info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
 			$info['transferrers'] = $this->group_users('manager');
 			json_response(array('code'=>1,'title'=>'添加项目','msg'=>$this->load->view('investing/booking',$info,TRUE)));
 		}
@@ -177,6 +191,8 @@ class Investing extends Project {
 
 			$this->form_validation->set_rules('project_sn', '项目编号', 'required');
 			$this->form_validation->set_rules('weight', '购买克重', 'required');
+			$this->form_validation->set_rules('period_id', '预存周期', 'required');
+			$this->form_validation->set_rules('payment', '交付方式', 'required');
 			if ($this->form_validation->run() == TRUE)
 			{
 				$result = $this->investing_model->project($this->input->post('project_sn'));
@@ -195,10 +211,19 @@ class Investing extends Project {
 				if(!in_array($this->worker_id,$operators)){
 					json_error(array('msg'=>lang('error_project_operator')));
 				}
+				$period = $this->project_model->period($this->input->post('period_id'));
+				if($period->num_rows()){
+					$_p = $period->row_array();
+				}else{
+					json_error(array('msg'=>lang('error_period')));
+				}
 				$tmp = array(
 					'referrer' => $this->input->post('referrer'),
 					'note' => htmlspecialchars($this->input->post('editorValue')),
 					'transferrer'=>  $this->input->post('transferrer'),
+					'payment'=>  $this->input->post('payment'),
+					'month' => $_p['month'],
+					'profit' => calculate_rate($_p['profit'],$_p['month']),
 					'weight'=>  $this->input->post('weight'),
 					'privacy'=> empty($this->input->post('privacy')) ? FALSE : (array)$this->input->post('privacy'),
 				);
@@ -207,10 +232,11 @@ class Investing extends Project {
 					json_success();
 				}
 			}else {
-
 				$errors = array(
 					'project_sn' => form_error('project_sn'),
 					'weight' => form_error('weight'),
+					'payment' => form_error('payment'),
+					'period_id' => form_error('period_id'),
 				);
 				if($this->config->item('investing_privacy')){
 					//$errors['agree'] = form_error('agree');
@@ -231,11 +257,12 @@ class Investing extends Project {
 						$info['privacies'] = json_decode($item['file'],TRUE);
 					}
 				}
+				$info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
 				$info['transferrers'] = $this->group_users('manager');
 				$title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
 				//lock
 				$info['unlock'] = false;
-				$info['editable'] = true;
+				$info['editable'] = $info['status_id'] == $this->config->item('investing_initial');
 				//set the locker is the current user_id
 				if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
 					$this->investing_model->set_locker($info['project_sn']);
@@ -272,11 +299,12 @@ class Investing extends Project {
 					$info['privacies'] = json_decode($item['file'],TRUE);
 				}
 			}
+			$info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
 			$info['histories'] = $this->investing_model->histories($info['project_sn']);
 			json_success(array(
 				'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
 				'msg'=>$this->load->view('investing/detail',$info,TRUE),
-				'terminable'=>$this->inRole('manager')
+				'terminable'=>false//$this->inRole('manager')
 			));
 		}else{
 			json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -326,7 +354,7 @@ class Investing extends Project {
 						'start'		=> $this->calculate_start($project['addtime']),
 						'transferrer' =>$this->input->post('transferrer'),
 						'note' 		=> $note,
-						'call_func' => 'active_start',
+						'call_func' => 'active_period',
 						'call_param'=> $project_sn
 					));
 					$this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
@@ -358,11 +386,15 @@ class Investing extends Project {
 						$info['privacies'] = json_decode($item['file'],TRUE);
 					}
 				}
+				$info['start'] = $this->calculate_start($info['addtime']);
+				$starttime  = strtotime($info['start']);
+				$info['end'] = calculate_end($starttime,$info['month']);
+				$info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
 				$info['transferrers'] = $this->group_users('warehouser');
 				$title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
 				//lock
 				$info['unlock'] = false;
-				$info['editable'] = true;
+				$info['editable'] = $info['status_id'] == $this->config->item('investing_initial');
 				//set the locker is the current user_id
 				if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
 					$this->investing_model->set_locker($info['project_sn']);
@@ -420,10 +452,6 @@ class Investing extends Project {
 				}
 				if(($project['weight']*100 == $weight*100) && $project['phone'] == $phone){
 					$callback = array(
-						'project_instock'=> array(
-							'project_sn' => $project_sn,
-							'note' => $note
-						),
 						'return_transfer'=>array(
 							'project_sn' => $project_sn,
 							'status_id'  => $this->config->item('investing_checked')
@@ -432,6 +460,10 @@ class Investing extends Project {
 					if($this->config->item('growing_mode') && strtolower($this->config->item('growing_mode')) == 't0'){
 						//T+0
 						$callback['project_growing'] = $project_sn;
+						$callback['project_instock'] = array(
+							'project_sn' => $project_sn,
+							'note' => $note
+						);
 					}
 					$this->investing_model->push_state($project_sn,array(
 						'status'	=> $this->config->item('investing_confirmed'),
@@ -475,7 +507,27 @@ class Investing extends Project {
 						$info['privacies'] = json_decode($item['file'],TRUE);
 					}
 				}
-				json_success(array('title'=>'项目入库 '.$info['realname'].':'.$info['project_sn'],'msg'=>$this->load->view('investing/confirming',$info,TRUE)));
+				$info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
+				$title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
+				//lock
+				$info['unlock'] = false;
+				$info['editable'] = $info['status_id'] == $this->config->item('investing_checked');
+				//set the locker is the current user_id
+				if(empty($info['locker']) || $info['locker_id'] == $this->worker_id){
+					$this->investing_model->set_locker($info['project_sn']);
+				}else{
+					$info['editable'] = false;
+					$title = sprintf(lang('text_lock'), $info['locker']);
+					if($this->inRole('manager')) {
+						$info['unlock'] = true;
+					}
+				}
+				json_success(array(
+					'title'=>$title,
+					'msg'=>$this->load->view('investing/confirming',$info,TRUE),
+					'editable'=>$info['editable'],
+					'unlock' => $info['unlock']
+				));
 			}else{
 				json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
 			}

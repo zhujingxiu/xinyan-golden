@@ -414,12 +414,15 @@ class Recycling_model extends XY_Model{
         $info = $this->project($project_sn);
         if($info->num_rows()) {
             $project = $info->row_array();
+            $appraiser = $this->ion_auth->get_worker($project['appraiser_id']);
+            $referrer = $this->ion_auth->get_worker($project['referrer_id']);
             $tmp = array(
                 'project_sn' => $project_sn,
                 'customer_id' => $project['customer_id'],
                 'referrer_id' => $project['referrer_id'],
                 'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
                 'weight'=> (float)$project['weight'],
+                'month'=> $project['month'],
                 'start'=> $project['start'],
                 'end'=> $project['end'],
                 'profit'=> $project['profit'],
@@ -428,13 +431,15 @@ class Recycling_model extends XY_Model{
                     'realname' => $project['realname'],
                     'phone' => $project['phone'],
                     'idnumber' => $project['idnumber'],
+                    'wechat' => $project['wechat'],
                     'price' => $project['price'],
-                    'month' => $project['month'],
-                    'type' => $project['type']=='goldbar' ?'金条':'金饰',
+                    'type' => $project['type']=='goldbar' ?lang('text_gold'):lang('text_ornaments'),
                     'number' => $project['number'],
                     'origin_weight' => $project['origin_weight'],
                     'weight' => $project['weight'],
-                    'appraiser_id' => $project['appraiser_id'],
+                    'loss' => $project['loss'].lang('text_percent_unit'),
+                    'appraiser' => empty($appraiser['realname']) ? '' :$appraiser['realname'],
+                    'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
                     'payment'=> $project['payment'],
                 )),
                 'note' => empty($data['note'])?'':$data['note'],
@@ -449,6 +454,8 @@ class Recycling_model extends XY_Model{
         return $this->db->insert_id();
     }
 
+
+
     public function project_growing($project_sn){
         if(empty($project_sn)) return FALSE;
 
@@ -456,7 +463,7 @@ class Recycling_model extends XY_Model{
         if($info->num_rows()) {
             return $this->push_state($project_sn,array(
                 'status'	=> $this->config->item('recycling_growing'),
-                'note' 		=> '库存已确认标记，自动推进到正在增值',
+                'note' 		=> lang('text_auto_growing'),
             ));
         }
 
@@ -494,86 +501,6 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function hidden($project_sn){
-
-        $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'删除项目'));
-        return $this->trash_bin(array('project_sn'=>$project_sn,'reason'=>'回收项目'));
-    }
-
-    public function erp_stock($data=array()){
-        if(empty($data['project_sn']) ) return FALSE;
-        $project = $this->project($data['project_sn']);
-        if($project->num_rows()){
-            $info = $project->row_array();
-            $this->db->update($this->stock_table,array('status'=>0), array('project_sn'=>$data['project_sn']));
-            $this->db->insert($this->customer_stock_table,array(
-                'customer_id' => $info['customer_id'],
-                'mode' => 'in',
-                'project_sn' => $info['project_sn'],
-                'weight' => $info['weight'],
-                'notify' => 1,
-                'note' => empty($data['reason']) ? '' : $data['reason'],
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
-            ));
-            return $this->db->insert_id();
-        }
-        return FALSE;
-    }
-
-    public function trash_bin($data=array())
-    {
-        if(empty($data['project_sn']) ) return FALSE;
-        $project = $this->project($data['project_sn']);
-        if($project->num_rows()){
-            $info = $project->row_array();
-            $this->db->update($this->table,array(
-                'is_del'=>1,
-                'lasttime'=>time(),
-                'worker_id'=>$this->ion_auth->get_user_id()
-            ),array('project_id'=>$info['project_id']));
-
-            $this->db->insert($this->trash_table,array(
-                'project_id' => $info['project_id'],
-                'project_sn' => $info['project_sn'],
-                'mode' => 'recycling',
-                'customer' => maybe_serialize(array(
-                    'realname' => $info['realname'],
-                    'phone' => $info['phone'],
-                    'idnumber' => $info['idnumber'],
-                    'referrer' => $info['referrer'],
-                )),
-                'gold' => maybe_serialize(array(
-                    'price' => $info['price'],
-                    'type' => $info['type']=='goldbar' ?'金条':'金饰',
-                    'number' => $info['number'],
-                    'origin_weight' => $info['origin_weight'],
-                    'weight' => $info['weight'],
-                    'appraiser' => $info['appraiser'],
-                    'start' => date('Y-m-d',$info['addtime']),
-                )),
-                'note' => empty($data['reason']) ? '' : $data['reason'],
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time(),
-                'ip'=>$this->_prepare_ip($this->input->ip_address())
-            ));
-
-            return $this->db->insert_id();
-        }
-        return FALSE;
-    }
-
-    public function recylied($trash_id)
-    {
-        $info = $this->db->get_where(array('trash_id'=>$trash_id))->from($this->trash_table);
-        if($info->num_rows()){
-            $trash = $info->row_array();
-            $this->db->update($this->table,array('is_del'=>0,'worker_id'=>$this->ion_auth->get_user_id(),'addtime' => time()),array('project_sn'=>$trash['project_sn']));
-            $this->db->delete($this->trash_table,array('trash_id'=>$trash_id));
-            return $this->db->affected_rows();
-        }
-        return FALSE;
-    }
 
 
 

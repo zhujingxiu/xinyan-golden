@@ -333,10 +333,8 @@
 			var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
 			var _weight = $('#form-booking input[name="weight"]').val();
 			if(_weight!='' && $.isNumeric(_profit)){
-				console.log(_profit*_weight);
 				$('#form-booking #booking-totals').text(parseFloat(math_mul(_weight,_profit),3));
 			}
-
 		});
 
 	});

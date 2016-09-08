@@ -8,6 +8,16 @@
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
+							<span class="input-group-addon">预存周期</span>
+							<select class="form-control select2" name="period_id">
+								<?php foreach($periods as $item):?>
+									<option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['default'] ? 'selected':''?>><?php echo $item['title']?></option>
+								<?php endforeach?>
+							</select>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<div class="input-group col-sm-11">
 							<span class="input-group-addon">预购重量</span>
 							<input type="text" name="weight" class="form-control" placeholder="最小为1克">
 							<span class="input-group-addon">克</span>
@@ -15,6 +25,16 @@
 					</div>
 				</div>
 				<div class="col-sm-4">
+					<div class="form-group clearfix">
+						<div class="input-group col-sm-11">
+							<span class="input-group-addon">交付方式</span>
+							<select class="form-control select2" name="payment">
+								<option value="gold">黄金</option>
+								<option value="cash">现金</option>
+							</select>
+						</div>
+					</div>
+
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">应付金额</span>
@@ -27,7 +47,14 @@
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-12">
 							<span class="input-group-addon">实时金价</span>
-							<span class="form-control" style="color:#CC9900;font-weight: bold;"><?php echo $price ?> 元/克</span>
+							<span class="form-control _highlight" style=""><?php echo $price ?> 元/克</span>
+						</div>
+					</div>
+					<div class="form-group clearfix">
+						<div class="input-group col-sm-12">
+							<span class="input-group-addon">预期收益</span>
+							<span class="form-control _highlight" id="booking-totals"></span>
+							<span class="input-group-addon">克</span>
 						</div>
 					</div>
 				</div>
@@ -196,25 +223,34 @@
 		});
 
 		$('#form-booking input[name="weight"]').bind('keyup blur', function () {
-			var _w = $(this).val();
-			if(parseFloat(price,2)*100 <100){
+			var _period = $('#form-booking select[name="period_id"]');
+			var _profit = parseFloat(_period.find('option[value="'+_period.val()+'"]').data('profit'),4);
+			var _weight = $(this).val();
+			if(!$.isNumeric(price)){
 				layer.tips('数据异常',$('#form-booking #booking-amount'),{tips: [1, '#CC6666']});
 				return false;
 			}
-			if(parseFloat(_w,2)*100 < 100){
+			if(!$.isNumeric(_profit)){
+				layer.tips('数据异常',$('#form-update #update-totals'),{tips: [1, '#CC6666']});
+				return false;
+			}
+			if(!$.isNumeric(_weight)){
 				//layer.tips('数据异常',$('#form-booking #booking-amount'),{tips: [1, '#CC6666']});
 				return false;
 			}else{
-				do_amount(_w,price);
+				$('#form-booking #booking-amount').text(parseFloat(math_mul(_weight,price),2));
+				$('#form-booking #booking-totals').text(parseFloat(math_mul(_weight,_profit),3));
 			}
 		});
-
+		$('#form-booking select[name="period_id"]').bind('change', function () {
+			var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
+			var _weight = $('#form-booking input[name="weight"]').val();
+			if(_weight!='' && $.isNumeric(_profit)){
+				$('#form-booking #booking-totals').text(parseFloat(math_mul(_weight,_profit),3));
+			}
+		});
 	});
 
-	function do_amount(weight,price)
-	{
-		$('#form-booking #booking-amount').text(parseFloat(math_mul(weight,price),2));
-	}
 	new AjaxUpload('#button-upload', {
 		action: '/tool/filemanager/upload',
 		name: 'uploads',

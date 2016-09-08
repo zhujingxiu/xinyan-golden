@@ -28,7 +28,7 @@
             </div>
         <?php endif ?>
         <div class="row">
-            <div class="col-xs-8">
+            <div class="col-xs-9">
                 <div class="box">
                     <div class="box-header">
                         <div class="buttons">
@@ -41,28 +41,30 @@
                         <table id="list" class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-
+                                    <th></th>
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>
-                                    <th>计息日</th>
-                                    <th>已收益</th>
+                                    <th>存期</th>
+                                    <th>收益</th>
                                     <th>推荐人</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-
+                                    <th></th>
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>
-                                    <th>计息日</th>
-                                    <th>已收益</th>
+                                    <th>存期</th>
+                                    <th>收益</th>
                                     <th>推荐人</th>
                                     <th>操作人</th>
                                     <th>操作时间</th>
+                                    <th></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -71,7 +73,7 @@
                 </div>
             </div>
             <!-- /.col -->
-            <div class="col-xs-4">
+            <div class="col-xs-3">
                 <div class="box box-info">
                     <div class="box-header">
                         <i class="fa fa-line-chart"></i>
@@ -100,5 +102,6 @@
             project.render_list();
             project.render_storage();
             project.render_stocks();
+            project.render_detail();
         })
     </script>

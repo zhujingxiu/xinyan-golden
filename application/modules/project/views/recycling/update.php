@@ -224,7 +224,7 @@
 
                         <div class="timeline-body">
                             <div class="input-group col-sm-12">
-                                <span class="input-group-addon">转交给</span>
+                                <span class="input-group-addon"> 转 交 给 </span>
                                 <select name="transferrer" class="form-control select2">
                                     <?php foreach($transferrers as $item):?>
                                         <option value="<?php echo $item['id']?>" <?php echo $item['id']==$transferrer ? 'selected':''?>><?php echo $item['realname']?></option>
@@ -354,7 +354,6 @@
             var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
             var _weight = $('#form-update input[name="weight"]').val();
             if(_weight!='' && $.isNumeric(_profit)){
-                console.log(_profit*_weight);
                 $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
             }
 

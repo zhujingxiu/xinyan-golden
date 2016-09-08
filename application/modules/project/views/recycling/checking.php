@@ -173,7 +173,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon"> 推 荐 人 </span>
+                                        <span class="input-group-addon"><?php echo lang('text_referrer')?></span>
                                         <span class="form-control"><?php echo $referrer?></span>
                                     </div>
                                 </div>

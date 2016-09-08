@@ -92,6 +92,5 @@
             project.render_confirming();
             project.render_booking();
             project.render_cancle();
-            project.render_hidden();
         })
     </script>

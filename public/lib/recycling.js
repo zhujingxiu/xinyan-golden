@@ -312,28 +312,7 @@ define(function(require,exports,modules){
 
         });
     }
-    exports.render_hidden = function(){
-        $('#project-list').delegate('.btn-trashed','click',function(){
-            var sn = $(this).parent().parent().attr('id')
-            require('layer');
-            layer.confirm('确定删除项目'+sn, {icon: 3, title:'删除'}, function(index){
-                $.ajax({
-                    type:'post',
-                    url:'/project/recycling/trashed',
-                    data:{project_sn:sn},
-                    dataType:'json',
-                    success:function(json){
-                        if(json.code==1){
-                            location.reload();
-                        }else{
-                            var l = require('layout');
-                            l.render_message(json.msg,json.title);
-                        }
-                    }
-                })
-            });
-        });
-    }
+
 
 
 })

@@ -14,7 +14,7 @@ class Tool_model extends XY_Model
     protected $investing_table = "project_investing";
     protected $investing_history_table = "project_investing_history";
     protected $customer_stock_table = "customer_stock";
-
+    protected $cron_job_table = 'cron_job';
     public function gold_price(){
         $query = $this->db->where(array('type'=>'Au99.99'))->from("golden_today")->order_by("updatetime desc")->limit(1)->get();
         if($query->num_rows()){
@@ -72,12 +72,31 @@ class Tool_model extends XY_Model
         return $tmp ? array('time'=>array_keys($tmp),'price'=>array_values($tmp),'date'=>date('Y-m-d')) : FALSE;
     }
 
-    function today_price($data){
-        if(!is_array($data) || !count($data))
+    function today_price(){
+        if(date('w') ==0 || date('w') ==6){
             return FALSE;
+        }
+        $data = $this->config->item('golden_price');
+        if(empty($data['apikey']) || empty($data['apiurl'])){
+            $this->log(var_export(array(
+                'datetime' => date('Y-m-d H:i:s'),
+                'reason' => 'API参数异常',
+            ),TRUE),__METHOD__);
+            return FALSE;
+        }
+        $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
+        $jsonarr = json_decode($result, true);
+        if($jsonarr['status'] != 0){
+            $this->log(var_export(array(
+                'datetime' => date('Y-m-d H:i:s'),
+                'reason' => 'API返回值异常',
+            ),TRUE),__METHOD__);
+            return FALSE;
+        }
         $this->db->trans_begin();
         $last_day = $delete_day = FALSE;
-        foreach($data as $item)
+
+        foreach($jsonarr['result'] as $item)
         {
             if(empty($item['type']) || empty($item['price']) || empty($item['updatetime']))
             {
@@ -147,10 +166,110 @@ class Tool_model extends XY_Model
         }
         return FALSE;
     }
+    private function _project_table($mode){
+        if($mode=='investing'){
+            $table = $this->investing_table;
+        }else{
+            $table = $this->recycling_table;
+        }
+        return $table;
+    }
+
+    private function _project_history_table($mode){
+        if($mode=='investing'){
+            $table = $this->investing_history_table;
+        }else{
+            $table = $this->recycling_history_table;
+        }
+        return $table;
+    }
+
+    private function _project($project_sn,$mode,$simple =FALSE){
+        if($simple){
+            $project = $this->db ->where(array('project_sn'=>$project_sn))->get($this->_project_table($mode));
+        }else {
+            if ($mode == 'recycling') {
+                $fileds = 'p.*,c.realname,c.phone,c.idnumber,c.wechat,w.realname referrer,w1.realname appraiser';
+            } else {
+                $fileds = 'p.*,c.realname,c.phone,c.idnumber,c.wechat,w.realname referrer';
+            }
+            $this->db->select($fileds, false)->from($this->_project_table($mode) . " AS p");
+            $this->db->join($this->customer_table . " AS c", "c.customer_id = p.customer_id", 'left');
+            $this->db->join($this->worker_table . " AS w", "w.id = p.referrer_id", 'left');
+            if ($mode == 'recycling') {
+                $this->db->join($this->worker_table . " AS w1", "w1.id = p.appraiser_id", 'left');
+            }
+            $this->db->where(array('p.project_sn' => $project_sn));
+            $project = $this->db->get();
+        }
+        if($project->num_rows()){
+            return $project->row_array();
+        }
+        return FALSE;
+    }
 
     function growing()
     {
         $this->db->trans_begin();
+
+        $insert_batch = $update_batch = array();
+        $query = $this->db->where(array('status'=>1,'end >='=>date('Y-m-d')))->get($this->stock_table);
+        if($query->num_rows()) {
+            foreach ($query->result_array() as $item) {
+                $project = $this->_project($item['project_sn'],$item['mode']);
+                if(!$project){
+                    continue;
+                }
+                $fileds = array(
+                    'is_del' => 1,
+                    'status_id' => $item['mode']=='investing' ? (int)$this->config->item('investing_terminated') : (int)$this->config->item('recycling_terminated'),
+                    'note' => lang('text_finished_note'),
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'lasttime' => time()
+                );
+                $this->db->update($this->_project_table($item['mode']),$fileds,array('project_sn'=>$item['project_sn']));
+                $this->db->insert($this->_project_history_table($item['mode']),array(
+                    'project_id' => $project['project_id'],
+                    'status_id' => $fileds['status_id'],
+                    'note' => lang('text_finished_note'),
+                    'request' => '',
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time(),
+                    'ip' => $this->_prepare_ip($this->input->ip_address())
+                ));
+                $affected = $this->db->insert_id();
+                $this->db->update($this->stock_table,array('status'=>0), array('project_sn'=>$item['project_sn']));
+                // insert mode = in for customer stock table
+                $this->db->insert($this->customer_stock_table,array(
+                    'customer_id' => $item['customer_id'],
+                    'mode' => 'in',
+                    'project_sn' => $item['project_sn'],
+                    'weight' => $item['weight'],
+                    'notify' => 1,
+                    'note' => empty($data['reason']) ? '' : $data['reason'],
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time()
+                ));
+            }
+        }
+
+        $log_id = $this->log(var_export(array(
+            'datetime' => date('Y-m-d H:i:s'),
+            'insert' => $insert_batch,
+            'update' => $update_batch,
+        ),TRUE),__METHOD__);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }else{
+            $this->db->trans_commit();
+            return $log_id;
+        }
+        return FALSE;
+    }
+
+    protected function growing_no_period(){
         switch(strtolower($this->config->item('gold_growing') )){
             case 'season':
                 $interval = "INTERVAL 3 MONTH ";
@@ -173,12 +292,15 @@ class Tool_model extends XY_Model
             ->where('last_profit',NULL)
             ->or_where('DATE_SUB(CURDATE(),'.$interval.') >= `last_profit`',NULL, FALSE)
             ->group_end()
+            ->group_start()
+            ->where('end',NULL)
+            ->or_where(array('month'=>1))
+            ->group_end()
             ->get($this->stock_table);
         $insert_batch = $update_batch = array();
         if($query->num_rows()){
             foreach($query->result_array() as $item){
                 $insert = FALSE;
-
                 $_q = $this->db->where(array('mode' => 'profit', 'project_sn' => $item['project_sn']))->order_by('addtime desc')->limit(1)->get($this->customer_stock_table);
                 if ($_q->num_rows()) {
                     $info = $_q->row_array();
@@ -186,14 +308,14 @@ class Tool_model extends XY_Model
                     if (time() >= mktime(0, 0, 0, date('m', $addtime) + $month, date('d', $addtime), date('Y', $addtime))) {
                         $insert = TRUE;
                     }
-                }else{
+                } else {
                     $starttime = strtotime($item['start']);
                     if (time() >= mktime(0, 0, 0, date('m', $starttime) + $month, date('d', $starttime), date('Y', $starttime))) {
                         $insert = TRUE;
                     }
                 }
-                if($insert){
-                    $weight = (float)($this->config->item('profit_weight')/(12*100))*$month*($item['weight']);
+                if ($insert) {
+                    $weight = (float)($this->config->item('profit_weight') / (12 * 100)) * $month * ($item['weight']);
                     $insert_batch[] = array(
                         'mode' => 'profit',
                         'customer_id' => $item['customer_id'],
@@ -215,32 +337,21 @@ class Tool_model extends XY_Model
                 $this->db->insert_batch($this->customer_stock_table, $insert_batch);
             }
         }
-        $log_id = $this->log(var_export(array(
-            'datetime' => date('Y-m-d H:i:s'),
-            'insert' => $insert_batch,
-            'update' => $update_batch,
-        ),TRUE),__METHOD__);
-        if ($this->db->trans_status() === FALSE)
-        {
-            $this->db->trans_rollback();
-            return FALSE;
-        }else{
-            $this->db->trans_commit();
-            return $log_id;
-        }
-        return FALSE;
     }
 
     function push_growing()
     {
         $this->db->trans_begin();
-        $growing_note = '库存已确认标记，自动推进到正在增值';
+        $growing_note = lang('text_auto_growing');
         //confirmed in project_recycling
         $query = $this->db->where(array('status_id'=>$this->config->item('recycling_confirmed')))->get($this->recycling_table);
         $update_batch = $insert_batch = $stock_batch = $sn_batch = array();
         if($query->num_rows()){
             foreach($query->result_array() as $item){
                 if(!empty($item['start']) && strtotime($item['start'])<=strtotime(date('Y-m-d'))){
+                    $customer = $this->get_customer($item['customer_id']);
+                    $appraiser = $this->ion_auth->get_worker($item['appraiser_id']);
+                    $referrer = $this->ion_auth->get_worker($item['referrer_id']);
                     $update_batch['recycling'][] = array(
                         'project_id' => $item['project_id'],
                         'status_id' => $this->config->item('recycling_growing'),
@@ -265,15 +376,19 @@ class Tool_model extends XY_Model
                         'start'=> $item['start'],
                         'info' => maybe_serialize(array(
                             'project_id' => $item['project_id'],
-                            'realname' => $item['realname'],
-                            'phone' => $item['phone'],
-                            'idnumber' => $item['idnumber'],
+                            'realname' => $customer['realname'],
+                            'phone' => $customer['phone'],
+                            'wechat' => $customer['wechat'],
+                            'idnumber' => $customer['idnumber'],
                             'price' => $item['price'],
-                            'type' => $item['type']=='goldbar' ?'金条':'金饰',
+                            'type' => $item['type']=='goldbar' ?lang('text_gold'):lang('text_ornaments'),
                             'number' => $item['number'],
                             'origin_weight' => $item['origin_weight'],
                             'weight' => $item['weight'],
-                            'appraiser_id' => $item['appraiser_id'],
+                            'loss' => $item['loss'].lang('text_percent_unit'),
+                            'appraiser' => empty($appraiser['realname']) ? '' :$appraiser['realname'],
+                            'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
+                            'payment'=> $item['payment'],
                         )),
                         'note' => $growing_note,
                         'mode' => 'recycling',
@@ -291,6 +406,8 @@ class Tool_model extends XY_Model
         if($query->num_rows()){
             foreach($query->result_array() as $item){
                 if(!empty($item['start']) && strtotime($item['start'])==strtotime(date('Y-m-d'))){
+                    $customer = $this->get_customer($item['customer_id']);
+                    $referrer = $this->ion_auth->get_worker($item['referrer_id']);
                     $update_batch['investing'][] = array(
                         'project_id' => $item['project_id'],
                         'status_id' => $this->config->item('investing_growing'),
@@ -315,12 +432,15 @@ class Tool_model extends XY_Model
                         'start'=> $item['start'],
                         'info' => maybe_serialize(array(
                             'project_id' => $item['project_id'],
-                            'realname' => $item['realname'],
-                            'phone' => $item['phone'],
-                            'idnumber' => $item['idnumber'],
+                            'realname' => $customer['realname'],
+                            'phone' => $customer['phone'],
+                            'wechat' => $customer['wechat'],
+                            'idnumber' => $customer['idnumber'],
                             'price' => $item['price'],
                             'amount' => $item['amount'],
                             'weight' => $item['weight'],
+                            'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
+                            'payment'=> $item['payment'],
                         )),
                         'note' => $growing_note,
                         'mode' => 'investing',
@@ -331,9 +451,7 @@ class Tool_model extends XY_Model
                     );
                     $sn_batch[] = $item['project_sn'];
                 }
-
             }
-
         }
 
         if(isset($update_batch['recycling'])){
@@ -365,6 +483,10 @@ class Tool_model extends XY_Model
         }
         return FALSE;
     }
+    protected function get_customer($id){
+        $query = $this->db->get_where($this->customer_table,array('customer_id'=>$id),1);
+        return $query->num_rows() ? $query->row_array() : FALSE;
+    }
 
     protected function log($text='',$action=FALSE)
     {
@@ -377,5 +499,16 @@ class Tool_model extends XY_Model
             'text' => $text,
         ));
         return $this->db->insert_id();
+    }
+
+    public function run_crontab(){
+        $query = $this->db->select()->where(array('status'=>1))->order_by('addtime asc')->get($this->cron_job_table);
+        if($query->num_rows()){
+            foreach($query->result_array() as $item){
+                if($item['method'] && method_exists($this,$item['method'])){
+                    $this->{$item['method']}($item['args']);
+                }
+            }
+        }
     }
 }

@@ -21,23 +21,21 @@ class Crontab extends MX_Controller
         $this->cron_schedule->dispatch();
     }
 
-    public function abort_run()
+    public function abort_run($token)
     {
-        set_time_limit(0);
-        ignore_user_abort(true);
-        $interval = 5*60;
-        do {
-            $data = $this->setting->get_setting('golden_price');
-            if(!empty($data['apikey']) && !empty($data['apiurl'])){
-                $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
-                $jsonarr = json_decode($result, true);
-                if($jsonarr['status'] == 0){
-                    $this->tool_model->today_price($jsonarr['result']);
-                }
-            }
-            $this->tool_model->push_growing();
-            $this->tool_model->growing();
-            sleep ( $interval );
-        }while(TRUE);
+        //$ php index.php tool crontab abort_run q3f5UbyrvkACAZBHW7iOlyLuqSTA4L8KCkM
+        if(XEncrypt($token,'D')==$this->config->item('cron_encrypt')) {
+            set_time_limit(0);
+            ignore_user_abort(true);
+            $interval = $this->config->item('cron_interval') ? (int)$this->config->item('cron_interval') : 5 * 60;
+            do {
+
+                $this->tool_model->run_crontab();
+
+                sleep($interval);
+            } while (TRUE);
+        }else{
+            die('Deny');
+        }
     }
 }
