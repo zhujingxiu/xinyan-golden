@@ -95,7 +95,7 @@ class XY_Controller extends MX_Controller {
 
     private function sidebar()
     {
-        return array('menu'=>$this->main_menu(),'price'=>$this->current_price());
+        return array('menu'=>$this->main_menu(),'price'=>$this->current_price(),'fast_project'=>$this->inRole('booker'));
     }
 
     private function controlbar()

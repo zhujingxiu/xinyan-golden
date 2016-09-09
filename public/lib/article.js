@@ -1,4 +1,4 @@
-window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
+
 define(function(require,exports,modules){
     require('datatables');
     require('datatables.bs');

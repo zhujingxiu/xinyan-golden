@@ -16,7 +16,7 @@
     </div>
 
     <!-- sidebar menu: : style can be found in sidebar.less -->
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu" style="margin-bottom: 20px;">
         <li class="header">主菜单</li>
         <?php foreach($menu as $item ): ?>
         <li <?php echo empty($item['style']) ? '' : 'class="'.$item['style'].'"'?>>
@@ -46,6 +46,7 @@
             <?php endif ?>
         </li>
         <?php endforeach ?>
+
         <li class="treeview" style="display:none;">
             <a href="#">
                 <i class="fa fa-files-o"></i>
@@ -63,7 +64,13 @@
             </ul>
         </li>
     </ul>
-    <div class=" user-panel text-center">
 
+    <?php if($fast_project):?>
+    <div class="col-sm-6">
+        <span id="fast-investing" class="info-box-icon bg-aqua" data-toggle="tooltip" title="添加钱生金项目"><i class="fa fa-plus"></i> </span>
     </div>
+    <div class="col-sm-6">
+        <span id="fast-recycling" class="info-box-icon bg-green" data-toggle="tooltip" title="添加金生金项目"><i class="fa fa-plus"></i> </span>
+    </div>
+    <?php endif?>
 </section>

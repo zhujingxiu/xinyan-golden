@@ -29,6 +29,7 @@ $lang['text_goldbar'] = "金条";
 $lang['text_ornaments'] = "金饰";
 $lang['text_cash'] = "现金";
 $lang['text_gold'] = "黄金";
+$lang['text_currency_unit'] = "元";
 $lang['text_number_unit'] = "件";
 $lang['text_weight_unit'] = "克";
 $lang['text_person_unit'] = "人";
@@ -37,6 +38,9 @@ $lang['text_profit_unit'] = "%";
 $lang['text_percent_unit'] = "%";
 $lang['text_profit'] = "年化";
 $lang['text_startdate'] = "起";
+$lang['text_fee'] = "手续费";
+$lang['text_appling'] = "申请提金 %s 克";
+$lang['text_applied_date'] = "申请日期";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";
@@ -65,7 +69,7 @@ $lang['label_terminated'] = '<a class="btn btn-danger disabled">已终止</a>';
 
 $lang['label_disabled'] = '<label class="label label-danger">已禁用</label>';
 $lang['label_enabled'] = '<label class="label label-success">已启用</label>';
-$lang['label_applied'] = '<label class="label label-warning">申请提金 %s 克</label>';
+$lang['label_applied'] = '<label class="label label-warning" >申请提金 %s 克</label>';
 
 $lang['button_detail'] = "<a class=\"btn btn-default btn-detail\">%s 查看</a>";
 $lang['button_edit'] = "<a class=\"btn btn-default btn-edit\">%s 修改</a>";

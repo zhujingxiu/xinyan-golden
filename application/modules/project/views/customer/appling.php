@@ -174,9 +174,7 @@
 <script type="text/javascript">
 
     $(function () {
-        $('#timeline-box').slimScroll({
-            height: '560px'
-        });
+
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',

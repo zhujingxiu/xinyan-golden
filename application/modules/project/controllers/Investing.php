@@ -174,7 +174,7 @@ class Investing extends Project {
 			}
 			$info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
 			$info['transferrers'] = $this->group_users('manager');
-			json_response(array('code'=>1,'title'=>'添加项目','msg'=>$this->load->view('investing/booking',$info,TRUE)));
+			json_response(array('code'=>1,'title'=>'添加钱生金项目','msg'=>$this->load->view('investing/booking',$info,TRUE)));
 		}
 	}
 

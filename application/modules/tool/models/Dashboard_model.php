@@ -12,6 +12,7 @@ class Dashboard_model extends XY_Model
     private $customer_table = "customer";
     private $customer_stock_table = "customer_stock";
     private $worker_table = "worker";
+    private $notify_table = "worker_notify";
     private $investing_table = "project_investing";
     private $recycling_table = "project_recycling";
 
@@ -77,8 +78,13 @@ class Dashboard_model extends XY_Model
 
     }
 
-    public function messages()
+    public function notifications($limit)
     {
-
+        return $this->db->select("wn.*,w.realname sender ")->from($this->notify_table.' AS wn')
+            ->where(array('wn.receiver_id'=>$this->ion_auth->get_user_id()))
+            ->join($this->worker_table.' as w','w.id = wn.sender_id','left')
+            ->order_by('wn.addtime desc')
+            ->limit($limit)
+            ->get();
     }
 }

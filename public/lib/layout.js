@@ -1,3 +1,4 @@
+window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require, exports, module) {
     require('bootstrap');
     require('slimscroll');
@@ -1061,6 +1062,83 @@ define(function(require, exports, module) {
         }
     })(jQuery, $.AdminLTE);
 
+    $('#post-notify').bind('click', function () {
+        require('layer');
+        require('ajaxSubmit');
+        require('ueditor/ueditor.config');
+        require('ueditor');
+        require('jqueryvalidate');
+
+        $.get('/home/notification', {r:Math.random()}, function(json){
+            layer.open({
+                type: 1,
+                title:json.title,
+                area:'800px',
+                offset: '100px',
+                zIndex:99,
+                btn: ['保存', '取消'],
+                content: json.msg ,//注意，如果str是object，那么需要字符拼接。
+                yes: function(index, layero){
+                    $('#form-article').submit();
+                }
+            });
+        },'json');
+    })
+
+    $('#fast-investing').bind('click', function () {
+        require('layer');
+        require('ajaxSubmit');
+        require('jqueryvalidate');
+        require('customValidate');
+        require('ajaxUpload');
+        $.get('/project/investing/booked', {project: false}, function (json) {
+            if (json.code == 1) {
+                layer.open({
+                    type: 1,
+                    title: json.title,
+                    area: '880px',
+                    offset: '100px',
+                    zIndex: 99,
+                    btn: ['保存', '取消'],
+                    content: json.msg,
+                    yes: function (index, layero) {
+                        $('#form-booking').submit();
+                    }
+                });
+            } else {
+                var l = require('layout');
+                l.render_message(json.msg, json.title);
+            }
+
+        }, 'json');
+    });
+    $('#fast-recycling').bind('click', function () {
+        require('layer');
+        require('ajaxSubmit');
+        require('jqueryvalidate');
+        require('customValidate');
+        require('ajaxUpload');
+        $.get('/project/recycling/booked', {project: false}, function (json) {
+            if (json.code == 1) {
+                layer.open({
+                    type: 1,
+                    title: json.title,
+                    area: '880px',
+                    offset: '100px',
+                    zIndex: 99,
+                    btn: ['保存', '取消'],
+                    content: json.msg,
+                    yes: function (index, layero) {
+                        $('#form-booking').submit();
+                    }
+                });
+            } else {
+                var l = require('layout');
+                l.render_message(json.msg, json.title);
+            }
+
+        }, 'json');
+    });
     exports.render_message = function ($msg,$title) {
         require('layer');
 

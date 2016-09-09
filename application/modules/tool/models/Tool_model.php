@@ -93,7 +93,7 @@ class Tool_model extends XY_Model
         }
         $result = curl_get($data['apiurl'],array('appkey'=>$data['apikey']));
         $jsonarr = json_decode($result, true);
-        if($jsonarr['status'] != 0){
+        if($jsonarr['status'] != 0 || !is_array($jsonarr['result'])){
             $this->log(var_export(array(
                 'datetime' => date('Y-m-d H:i:s'),
                 'reason' => 'API返回值异常',

@@ -57,26 +57,32 @@ class Customer extends XY_Controller {
                 $applied = $this->customer_model->applied($row['customer_id']);
                 $status_text = $row['status'] ? lang('label_enabled') : lang('label_disabled');
                 $operation = 'detail';
-                if($row['available']*100>0){
-                    $operation = 'appling';
-                }
+
                 if($applied){
-                    $status_text = sprintf(lang("label_applied"),number_format($applied['weight']));
+                    $status_text = '<label class="label label-warning" data-toggle="tooltip" title="'
+                        .lang('text_applied_date').' '.date('Y-m-d',$applied['addtime'])."\r\n".lang('text_fee').' '.number_format($applied['fee'],2).lang('text_currency_unit').'">'
+                        .sprintf(lang("text_appling"),number_format($applied['weight'])).'</label>';
                     $operation = 'applied';
                 }
                 $cover = ($row['avatar'] && file_exists($row['avatar'])) ? $cover = '<img class="list-img" src="'.site_url($row['avatar']).'" alt="'.$row['realname'].'" />':false;
+                $available = '<a class="btn btn-sm btn-flat btn-success disabled" >'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+                if($row['available']*100>0 && $this->inRole('manager')){
+                    $available = '<a class="btn btn-sm btn-flat btn-success btn-appling" data-toggle="tooltip" title="可申请提金">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+                }
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
                     'customer' 	=> $cover ? $cover : $row['realname'],
+                    'group' 	=> $row['group_name'],
                     'referrer' 	=> $row['referrer'],
                     'phone'	    => $row['phone'],
                     'idnumber'	=> $row['idnumber'] ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
-                    'available'	=> '<label class="label label-success">'.number_format($row['available'],2).lang('text_weight_unit').'</label>',
-                    'frozen'	=> '<label class="label label-default">'.number_format($row['frozen'],2).lang('text_weight_unit').'</label>',
+                    'available'	=> $available,
+                    'frozen'	=> '<a class="btn btn-sm btn-flat btn-default" disabled>'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>',
+                    'totals'	=> '<a class="btn btn-sm btn-flat btn-info" disabled>'.number_format($row['available']+$row['frozen'],2).lang('text_weight_unit').'</a>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
-                    'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
+                    'addtime'	=> $row['addtime'] ? date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']) :lang("text_unknown"),
                     'operation'	=> $this->_operation($operation)
                 );
             }
@@ -95,16 +101,11 @@ class Customer extends XY_Controller {
         $buttons = array();
         $text_lock = '';
         if($this->inRole('manager')) {
-            $buttons['first'] = sprintf(lang('button_update'),$text_lock);
+            $buttons['first'] = sprintf(lang('button_detail'),$text_lock);
         }else{
             //$buttons['first'] = lang('button_detail');
         }
-        if($operation == 'appling'){
-            if($this->inRole('manager')) {
-                $buttons['second'] = sprintf(lang('button_appling'),$text_lock);
-                //$buttons['dropdown'] = lang('button_order');
-            }
-        }
+
         if($operation == 'applied'){
             if($this->inRole('manager')) {
                 $buttons['dropdown'] = lang('button_cancle');
@@ -447,6 +448,7 @@ class Customer extends XY_Controller {
                 }
                 $info['applied_weight'] = number_format($applied['weight'],2);
                 $info['applied_phone'] = $applied['phone'];
+                $info['applied_fee'] = number_format($applied['fee'],2).lang('text_currency_unit');
                 $info['apply_id'] = $applied['apply_id'];
                 $info['total'] = (float)($info['available']+$info['frozen']);
                 $info['csrf'] = $this->_get_csrf_nonce();

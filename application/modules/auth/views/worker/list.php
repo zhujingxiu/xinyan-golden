@@ -115,7 +115,7 @@
                             <div class="col-sm-9">
                                 <?php foreach($groups as $item) : ?>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>"><?php echo $item['title']?></label>
+                                    <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>" <?php echo ($item['code']=='admint') ? 'disabled':'';?>><?php echo $item['title']?></label>
                                 </div>
                                 <?php endforeach ?>
                             </div>

@@ -163,7 +163,7 @@ class Recycling extends Project {
             $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
             $info['csrf'] = $this->_get_csrf_nonce();
             //var_dump($this->session->flashdata('csrfkey'));
-            json_success(array('title'=>'添加项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
+            json_success(array('title'=>'添加金生金项目','msg'=>$this->load->view('recycling/booking',$info,TRUE)));
         }
     }
 

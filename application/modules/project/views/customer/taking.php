@@ -108,7 +108,10 @@
                 <li>
                     <i class="fa fa-edit bg-red"></i>
                     <div class="timeline-item">
-                        <h3 class="timeline-header">提金确认</h3>
+                        <h3 class="timeline-header">
+                            提金确认
+                            <div class="pull-right"><small><?php echo lang('text_fee') .' '.$applied_fee;?></small></div>
+                        </h3>
                         <div class="timeline-body" style="clear: both">
                             <div class="input-group ">
                                 <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 客 户 手 机 </span>

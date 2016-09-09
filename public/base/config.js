@@ -12,6 +12,7 @@ seajs.config({
         , "jqueryui"        : "jquery-ui/jquery-ui.min"
         , "jqueryvalidate"  : "jquery-validation/dist/jquery.validate.min"
         , "echarts"         : "echarts/echarts.common.min"
+        , "sparkline"         : "sparkline/jquery.sparkline.min"
         , "slimscroll"      : "slimScroll/jquery.slimscroll.min"
         , "fastclick"       : "fastclick/fastclick"
         , "iCheck"          : "iCheck/icheck.min"
