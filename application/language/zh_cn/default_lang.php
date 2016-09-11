@@ -23,6 +23,8 @@ $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['error_project_status'] = '项目状态已改变，请刷新重试';
 $lang['error_project_operator'] = '无权限操作当前项目，请刷新重试';
 $lang['error_period'] = '预存周期参数错误，请刷新重试';
+$lang['error_notify_member'] = '没有选定通知成员';
+$lang['error_notify_title'] = '请输入通知标题';
 
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
@@ -41,6 +43,7 @@ $lang['text_startdate'] = "起";
 $lang['text_fee'] = "手续费";
 $lang['text_appling'] = "申请提金 %s 克";
 $lang['text_applied_date'] = "申请日期";
+$lang['text_success_posted'] = "通知已发布";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";

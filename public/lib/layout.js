@@ -1079,7 +1079,7 @@ define(function(require, exports, module) {
                 btn: ['保存', '取消'],
                 content: json.msg ,//注意，如果str是object，那么需要字符拼接。
                 yes: function(index, layero){
-                    $('#form-article').submit();
+                    $('#form-notify').submit();
                 }
             });
         },'json');

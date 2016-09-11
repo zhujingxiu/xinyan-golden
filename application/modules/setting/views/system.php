@@ -7,16 +7,15 @@
  */
 ?>
 <?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <h1>
-        系统参数设置
-        <small></small>
+        API参数设置
+        <small>advanced tables</small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="<?php echo site_url()?>"><i class="fa fa-dashboard"></i> 控制面板</a></li>
-        <li class="active">系统参数设置</li>
+        <li class="active">API参数设置</li>
     </ol>
 </section>
 
@@ -26,17 +25,17 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">项目初始参数</h3>
+                    <h3 class="box-title">系统设置</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#site" data-toggle="tab">站点参数</a></li>
-                            <li ><a href="#cron" data-toggle="tab">定时任务</a></li>
+                            <li><a href="#cron" data-toggle="tab">定时任务</a></li>
                         </ul>
+                        <?php echo form_open('', array('class'=>'form-horizontal setting-system-form' ))?>
                         <div class="tab-content">
-                            <?php echo form_open('', array('class'=>'form-horizontal setting-system-form' ))?>
                             <div class="tab-pane active" id="site">
                                 <div class="row">
                                     <div class="col-sm-5">
@@ -66,10 +65,17 @@
                                         </div>
                                         <div class="form-group clearfix">
                                             <label for="inputEmail" class="control-label col-sm-4 text-right">站点Email
-
                                             </label>
                                             <div class="col-sm-8">
                                                 <input type="text" name="site_email" class="form-control" id="inputEmail" value="<?php echo empty($setting['site_email'])? '' :$setting['site_email']  ?>"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clearfix">
+                                            <label for="inputEmail" class="control-label col-sm-4 text-right">默认头像
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" name="default_avatar" class="form-control" id="inputEmail" value="<?php echo empty($setting['default_avatar'])? '' :$setting['default_avatar']  ?>"/>
                                             </div>
                                         </div>
                                     </div>
@@ -101,11 +107,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.tab-pane -->
 
-                            <?php echo form_close()?>
+                            <!-- /.tab-pane -->
                         </div>
                         <!-- /.tab-content -->
+                        <?php echo form_close()?>
                     </div>
                 </div>
                 <!-- /.box-body -->

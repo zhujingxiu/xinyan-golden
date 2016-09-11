@@ -7,7 +7,8 @@ class Home extends XY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('tool/dashboard_model');
-
+		$this->load->library('form_validation');
+		$this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
 	}
 	public function index()
 	{
@@ -27,13 +28,13 @@ class Home extends XY_Controller {
 		if($notifications->num_rows()){
 			foreach($notifications->result_array() as $item){
 
-				$data['projects'][] = array(
-					'mode' => $item['mode'] == 'investing' ? lang('text_investing') : lang('text_recycling'),
-					'project_sn' => $item['project_sn'],
-					'customer' => $item['realname'].'<br>'.$item['phone'],
-					'referrer' => $item['referrer'],
-					'weight' => $item['weight'],
-					'start' => $item['start'],
+				$data['notifications'][] = array(
+					'avatar' => $item['avatar'] && file_exists($item['avatar'])? site_url($item['avatar']) : site_url($this->config->item('default_avatar')),
+					'title' => $item['title'],
+					'content' => str_truncate($item['content'],30),
+					'is_read' => $item['is_read'],
+					'sender' => $item['sender'],
+					'addtime' => $item['addtime'],
 				);
 			}
 		}
@@ -54,6 +55,19 @@ class Home extends XY_Controller {
 			}
 		}
 
+		$data['referrers']= array();
+		$referrers = $this->dashboard_model->top_referrers(8);
+		if($referrers->num_rows()){
+			foreach($referrers->result_array() as $item) {
+				$data['referrers'][] = array(
+					'avatar' => ($item['avatar'] && file_exists($item['avatar'])) ? site_url($item['avatar']) : site_url($this->config->item('default_avatar')),
+					'referrer' => $item['referrer'],
+					'totals' => number_format($item['totals'], 2).lang('text_weight_unit'),
+				);
+			}
+		}
+
+
 		$this->layout->view('common/dashboard',$data);
 	}
 
@@ -66,11 +80,34 @@ class Home extends XY_Controller {
 			if ($this->_valid_csrf_nonce() === FALSE) {
 				//json_error(array( 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
 			}
+			$this->form_validation->set_rules('title', '标题', 'required');
+			$this->form_validation->set_rules('member[]', '成员', 'required');
+
+			if ($this->form_validation->run() == TRUE) {
+				$this->dashboard_model->notify($this->input->post());
+
+				json_success(array('msg'=>lang('text_success_posted')));
+			}else{
+				$errors = array(
+					'title' => form_error('title'),
+					'member' => form_error('member[]'),
+				);
+				json_error(array('errors' =>$errors));
+			}
 		}else {
-
-			$info['groups'] = $this->ion_auth_model->groups()->result_array();
-
-			json_response(array('code' => 1, 'title' => '发布通知', 'msg' => $this->load->view('common/notify', $info, TRUE)));
+			$info['worker_id'] = $this->worker_id;
+			$info['groups'] = array();
+			$groups = $this->ion_auth_model->groups()->result_array();
+			foreach($groups as $item){
+				if($item['code'] == 'member') continue;
+				$info['groups'][] = array(
+					'group_id' => $item['id'],
+					'title' => $item['title'],
+					'code' => $item['code'],
+					'member' => $this->ion_auth->get_group_users($item['id'])
+				);
+			}
+			json_success(array('title' => '发布通知', 'msg' => $this->load->view('common/notify', $info, TRUE)));
 		}
 	}
 

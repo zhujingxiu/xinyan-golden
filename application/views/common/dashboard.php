@@ -173,6 +173,45 @@
             <!-- /.Left col -->
             <!-- right col (We are only adding the ID to make the widgets sortable)-->
             <section class="col-lg-5 connectedSortable">
+                <!-- PRODUCT LIST -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">站内通告</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <ul class="products-list product-list-in-box">
+                            <?php if($notifications):?>
+
+                                <?php foreach($notifications as $item):?>
+                            <li class="item">
+                                <div class="product-img">
+                                    <img src="<?php echo $item['avatar']?>" alt="Product Image" title="<?php echo $item['sender']?>">
+                                </div>
+                                <div class="product-info">
+                                    <a href="javascript:void(0)" class="product-title"><?php echo $item['title']?>
+                                        <span class="label <?php echo $item['is_read'] ? 'label-success':'label-warning'?> pull-right"><?php echo $item['is_read'] ? '已阅':'未读'?></span>
+                                    </a>
+                                    <span class="product-description"><?php echo $item['content']?></span>
+                                </div>
+                            </li>
+                            <?php endforeach?>
+                            <?php endif?>
+                        </ul>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer text-center">
+                        <a href="javascript:void(0)" class="uppercase hidden">View All Products</a>
+                    </div>
+                    <!-- /.box-footer -->
+                </div>
+                <!-- /.box -->
                 <!-- TO DO List -->
                 <div class="box box-primary">
                     <div class="box-header">
@@ -279,89 +318,43 @@
                     </div>
                 </div>
                 <!-- /.box -->
-                <!-- Chat box -->
-                <div class="box box-success">
-                    <div class="box-header">
-                        <i class="fa fa-comments-o"></i>
-
-                        <h3 class="box-title">Chat</h3>
+                <!-- USERS LIST -->
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">优秀推荐人</h3>
 
                         <div class="box-tools pull-right">
+                            <span class="label label-danger">前八名</span>
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="box-body chat" id="chat-box">
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="<?php echo asset_url('images/avatar/user4-128x128.jpg')?>" alt="user image" class="online">
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <ul class="users-list clearfix">
+                            <?php if($referrers):?>
+                                <?php foreach($referrers as $item):?>
+                                    <li>
+                                        <img src="<?php echo $item['avatar']?>" alt="User Image">
+                                        <a class="users-list-name" href="#"><?php echo $item['referrer']?></a>
+                                        <span class="users-list-date"><?php echo $item['totals']?></span>
+                                    </li>
+                                <?php endforeach?>
+                            <?php endif?>
 
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                    Mike Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                            <div class="attachment">
-                                <h4>Attachments:</h4>
-
-                                <p class="filename">
-                                    Theme-thumbnail-image.jpg
-                                </p>
-
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-primary btn-sm btn-flat">Open</button>
-                                </div>
-                            </div>
-                            <!-- /.attachment -->
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="<?php echo asset_url('images/avatar/user3-128x128.jpg')?>" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                    Alexander Pierce
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
-                        <!-- chat item -->
-                        <div class="item">
-                            <img src="<?php echo asset_url('images/avatar/user2-160x160.jpg')?>" alt="user image" class="offline">
-
-                            <p class="message">
-                                <a href="#" class="name">
-                                    <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                    Susan Doe
-                                </a>
-                                I would like to meet you to discuss the latest news about
-                                the arrival of the new theme. They say it is going to be one the
-                                best themes on the market
-                            </p>
-                        </div>
-                        <!-- /.item -->
+                        </ul>
+                        <!-- /.users-list -->
                     </div>
-                    <!-- /.chat -->
-                    <div class="box-footer">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Type message...">
-
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-success"><i class="fa fa-plus"></i></button>
-                            </div>
-                        </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer text-center">
+                        <a href="javascript:void(0)" class="uppercase hidden">View All Users</a>
                     </div>
+                    <!-- /.box-footer -->
                 </div>
+                <!--/.box -->
+
             </section>
             <!-- right col -->
         </div>

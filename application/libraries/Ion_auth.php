@@ -380,7 +380,7 @@ class Ion_auth
 		if($result->num_rows()){
 			return $result->result_array();
 		}
-
+		return FALSE;
 	}
 
 	function filter_users($data){

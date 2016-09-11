@@ -73,6 +73,16 @@ class Dashboard_model extends XY_Model
             ->get();
     }
 
+    public function top_referrers($limit=12){
+        return $this->db->select("SUM(ps.weight) totals,w.realname referrer,w.avatar")->from($this->stock_table.' AS ps')
+            ->join($this->worker_table.' as w','w.id = ps.referrer_id','left')
+            ->group_by('ps.referrer_id')
+            ->having('SUM(ps.weight) > 0')
+            ->order_by('SUM(ps.weight) desc')
+            ->limit($limit)
+            ->get();
+    }
+
     public function tasks()
     {
 
@@ -80,11 +90,72 @@ class Dashboard_model extends XY_Model
 
     public function notifications($limit)
     {
-        return $this->db->select("wn.*,w.realname sender ")->from($this->notify_table.' AS wn')
-            ->where(array('wn.receiver_id'=>$this->ion_auth->get_user_id()))
+        return $this->db->select("wn.*,w.realname sender,w.avatar ")->from($this->notify_table.' AS wn')
+            ->where(array('wn.receiver_id'=>$this->ion_auth->get_user_id(),'mode'=>'announcement'))
             ->join($this->worker_table.' as w','w.id = wn.sender_id','left')
-            ->order_by('wn.addtime desc')
+            ->order_by("wn.is_read = '0',wn.addtime desc")
             ->limit($limit)
             ->get();
+    }
+
+    public function notify($data=array()){
+        if(empty($data['title']))
+            return FALSE;
+        $this->db->trans_begin();
+        $tmp = array(
+            'sender_id' => $this->ion_auth->get_user_id(),
+            'title' => $data['title'],
+            'content' => htmlspecialchars($data['editorValue']),
+            'mode' => 'announcement',
+            'is_read' => 0,
+            'status' => 1,
+            'addtime' => time()
+        );
+        $all = FALSE;$log=array();
+        $insert_batch = array();
+        if(isset($data['member']) && is_array($data['member'])){
+            foreach(array_unique($data['member']) as $id){
+                if(!$id){
+                    $all = TRUE;
+                    break;
+                }else{
+                    if($id == $this->ion_auth->get_user_id()) continue;
+                    $insert_batch[] = array(
+                        'receiver_id' => $id
+                    )+$tmp;
+                    $log[] = $id;
+                }
+
+            }
+        }
+        if($all){
+            $workers = $this->ion_auth_model->users()->result_array();
+            foreach($workers as $item){
+
+                if($item['id'] == $this->ion_auth->get_user_id()) continue;
+                $insert_batch[] = array(
+                    'receiver_id' => $item['id']
+                )+$tmp;
+                $log[] = $item['id'];
+            }
+        }
+
+        if($insert_batch){
+            $this->db->insert_batch($this->notify_table,$insert_batch);
+        }
+        $log_id = $this->activity(var_export(array(
+            'datetime' => date('Y-m-d H:i:s'),
+            'receivers' => implode(',',$log),
+        ),TRUE));
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            return FALSE;
+        }else{
+
+            $this->db->trans_commit();
+            return $log_id;
+        }
+        return FALSE;
     }
 }
