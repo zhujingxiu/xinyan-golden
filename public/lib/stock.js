@@ -160,6 +160,15 @@ define(function(require,exports,modules){
     }
 
     exports.render_stocks = function () {
+        $.ajax({
+            url:'/project/stock/latest',
+            type:'get',
+            data:{r:Math.random()},
+            dataType:'json',
+            success: function (json) {
+
+            }
+        })
         require('echarts');
         var myChart = echarts.init(document.getElementById('stock-charts')),
             //app.title = '堆叠柱状图';
@@ -172,7 +181,7 @@ define(function(require,exports,modules){
                 }
             },
             legend: {
-                data:['直接访问','邮件营销','搜索引擎','百度','谷歌','其他']
+                data:['总克重','金生金','钱生金','服务客户']
             },
             grid: {
                 left: '3%',
@@ -193,52 +202,27 @@ define(function(require,exports,modules){
             ],
             series : [
                 {
-                    name:'直接访问',
+                    name:'总克重',
                     type:'bar',
                     data:[320, 332, 301, 334, 390, 330, 320]
                 },
                 {
-                    name:'邮件营销',
+                    name:'金生金',
                     type:'bar',
-                    stack: '广告',
                     data:[120, 132, 101, 134, 90, 230, 210]
                 },
 
                 {
-                    name:'搜索引擎',
+                    name:'钱生金',
                     type:'bar',
                     data:[862, 1018, 964, 1026, 1679, 1600, 1570],
-                    markLine : {
-                        lineStyle: {
-                            normal: {
-                                type: 'dashed'
-                            }
-                        },
-                        data : [
-                            [{type : 'min'}, {type : 'max'}]
-                        ]
-                    }
+
                 },
                 {
-                    name:'百度',
+                    name:'服务客户',
                     type:'bar',
-                    barWidth : 5,
-                    stack: '搜索引擎',
                     data:[620, 732, 701, 734, 1090, 1130, 1120]
                 },
-                {
-                    name:'谷歌',
-                    type:'bar',
-                    stack: '搜索引擎',
-                    data:[120, 132, 101, 134, 290, 230, 220]
-                },
-
-                {
-                    name:'其他',
-                    type:'bar',
-                    stack: '搜索引擎',
-                    data:[62, 82, 91, 84, 109, 110, 120]
-                }
             ]
         };
 
