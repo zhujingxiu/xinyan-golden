@@ -128,7 +128,7 @@
                             <?php if($photos): ?>
                                 <?php foreach($photos as $item):?>
                                 <div class="uploads-thumb">
-                                    <img title="<?php echo $item['name'];?>" data-entry="photo" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                    <img title="实物照片 <?php echo $item['name'];?>" data-entry="photo" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
                                     <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
                                 </div>
                                 <?php endforeach?>
@@ -136,7 +136,7 @@
                             <?php if($invoices): ?>
                                 <?php foreach($invoices as $item):?>
                                     <div class="uploads-thumb">
-                                        <img title="<?php echo $item['name'];?>" data-entry="invoice" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        <img title="发票照片 <?php echo $item['name'];?>" data-entry="invoice" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
                                         <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
                                     </div>
                                 <?php endforeach?>
@@ -144,7 +144,7 @@
                             <?php if($reports): ?>
                                 <?php foreach($reports as $item):?>
                                     <div class="uploads-thumb">
-                                        <img title="<?php echo $item['name'];?>" data-entry="report" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                        <img title="鉴定报告 <?php echo $item['name'];?>" data-entry="report" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
                                         <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
                                     </div>
                                 <?php endforeach?>
@@ -186,7 +186,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">推荐人</span>
+                                        <span class="input-group-addon"><?php echo lang('text_referrer')?></span>
                                         <input type="text" id="referrer" class="form-control" <?php echo $referrer?>/>
                                         <input type="hidden" name="referrer" value="<?php echo $referrer_id?>"  />
                                     </div>
@@ -209,7 +209,7 @@
                                 <?php if($privacies): ?>
                                     <?php foreach($privacies as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" data-entry="privacy" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="客户同意书 <?php echo $item['name'];?>" data-entry="privacy" data-name="<?php echo $item['name'];?>" data-path="<?php echo $item['path'];?>"  src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <a href="javascript:;" onclick="$(this).parent().remove();">删除</a>
                                         </div>
                                     <?php endforeach?>
@@ -224,7 +224,7 @@
 
                         <div class="timeline-body">
                             <div class="input-group col-sm-12">
-                                <span class="input-group-addon"> 转 交 给 </span>
+                                <span class="input-group-addon"><?php echo lang('text_transferrer')?></span>
                                 <select name="transferrer" class="form-control select2">
                                     <?php foreach($transferrers as $item):?>
                                         <option value="<?php echo $item['id']?>" <?php echo $item['id']==$transferrer ? 'selected':''?>><?php echo $item['realname']?></option>
@@ -346,7 +346,7 @@
                 $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
                 var _origin = $('#form-update input[name="origin_weight"]').val();
                 if($.isNumeric(_origin)){
-                    $('#form-update #update-loss').val(parseFloat(math_div(_weight,_origin),2));
+                    $('#form-booking #booking-loss').val(parseFloat(100.00-parseFloat(math_div(_weight,_origin),2)*100.00),2);
                 }
             }
         });

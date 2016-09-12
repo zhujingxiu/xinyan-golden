@@ -1091,6 +1091,7 @@ define(function(require, exports, module) {
         require('jqueryvalidate');
         require('customValidate');
         require('ajaxUpload');
+        require('jqueryui');
         $.get('/project/investing/booked', {project: false}, function (json) {
             if (json.code == 1) {
                 layer.open({
@@ -1118,6 +1119,7 @@ define(function(require, exports, module) {
         require('jqueryvalidate');
         require('customValidate');
         require('ajaxUpload');
+        require('jqueryui');
         $.get('/project/recycling/booked', {project: false}, function (json) {
             if (json.code == 1) {
                 layer.open({

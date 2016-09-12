@@ -7,7 +7,6 @@
 /**
  * Created by Administrator on 2016/8/8 0008.
  */
-window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs');

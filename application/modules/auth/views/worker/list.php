@@ -44,7 +44,7 @@
                                 <th>用户名</th>
                                 <th>姓名</th>
                                 <th>角色</th>
-                                <th>邮箱</th>
+                                <th>公司</th>
                                 <th>电话</th>
                                 <th>上次登录</th>
                                 <th>登录IP</th>
@@ -52,6 +52,7 @@
                             </thead>
                             <tbody>
                             <?php foreach ($users as $user):?>
+                                <?php if ($user->id==1) continue;?>
                                 <tr data-entry="<?php echo $user->id;?>" class="user-row">
                                     <td><?php echo $user->username;?></td>
                                     <td><?php echo $user->realname;?></td>
@@ -61,7 +62,7 @@
                                             <?php echo htmlspecialchars($group->title,ENT_QUOTES,'UTF-8') ;?><br />
                                         <?php endforeach?>
                                     </td>
-                                    <td><?php echo htmlspecialchars($user->email,ENT_QUOTES,'UTF-8');?></td>
+                                    <td><?php echo htmlspecialchars($user->company,ENT_QUOTES,'UTF-8');?></td>
                                     <td><?php echo htmlspecialchars($user->phone,ENT_QUOTES,'UTF-8');?></td>
                                     <td><?php echo $user->last_login ? date('Y-m-d H:i',$user->last_login) : '';?></td>
                                     <td><?php echo htmlspecialchars($user->last_ip,ENT_QUOTES,'UTF-8');?></td>
@@ -111,11 +112,22 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="" class="control-label col-sm-3">公司</label>
+                            <div class="col-sm-9">
+                                <select name="company_id" id="form-company" class="form-control">
+                                    <?php foreach($companies as $item):?>
+                                    <option value="<?php echo $item['company_id']?>"><?php echo $item['title']?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="" class="control-label col-sm-3">角色设置</label>
                             <div class="col-sm-9">
                                 <?php foreach($groups as $item) : ?>
+                                    <?php if ($item['code']=='admin') continue;?>
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>" <?php echo ($item['code']=='admint') ? 'disabled':'';?>><?php echo $item['title']?></label>
+                                    <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>" ><?php echo $item['title']?></label>
                                 </div>
                                 <?php endforeach ?>
                             </div>
@@ -155,6 +167,7 @@
                 </div>
                 <?php form_close() ?>
             </div>
+
         </div>
     </section>
     <!-- /.content -->

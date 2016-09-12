@@ -92,7 +92,7 @@
 				<div class="col-sm-4">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
-							<span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
+							<span class="input-group-addon"><?php echo lang('text_referrer')?></span>
 							<input type="text" id="referrer" class="form-control" />
 							<input type="hidden" name="referrer"  />
 						</div>
@@ -124,7 +124,7 @@
 				<div class="col-sm-12">
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-12">
-							<span class="input-group-addon">转交给</span>
+							<span class="input-group-addon"><?php echo lang('text_transferrer')?></span>
 							<select name="transferrer" class="form-control select2">
 								<?php foreach($transferrers as $item):?>
 									<option value="<?php echo $item['id']?>" ><?php echo $item['realname']?></option>

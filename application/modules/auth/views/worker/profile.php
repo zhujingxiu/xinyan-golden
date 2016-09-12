@@ -43,6 +43,9 @@
                             <b>角色组</b> <a class="pull-right"><?php echo str_truncate(implode(' ',$worker['roles']));?></a>
                         </li>
                         <li class="list-group-item">
+                            <b>公司</b> <a class="pull-right"><?php echo str_truncate($worker['company']);?></a>
+                        </li>
+                        <li class="list-group-item">
                             <b>注册时间</b> <a class="pull-right"><?php echo date('Y-m-d H:i',$worker['addtime']);?></a>
                         </li>
                         <li class="list-group-item">
@@ -203,7 +206,12 @@
                     </li>
                     <?php endforeach?>
                     <?php else: ?>
-                    <li> 近期暂无活动记录 </li>
+                    <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                            <div class="timeline-body">近期暂无活动记录</div>
+                        </div>
+                    </li>
                     <?php endif?>
                     <!-- END timeline item -->
                     <li>

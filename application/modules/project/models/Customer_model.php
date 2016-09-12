@@ -29,6 +29,9 @@ class Customer_model extends XY_Model{
 
     public function customers($data=array())
     {
+        if(!$this->ion_auth->is_admin() && $this->ion_auth->get_company_id()){
+            $where['c.company_id'] = $this->ion_auth->get_company_id();
+        }
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
@@ -176,6 +179,7 @@ class Customer_model extends XY_Model{
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
             'referrer_id'=>(int)$data['referrer_id'],
+            'company_id' => $this->ion_auth->get_company_id(),
             'note'=>empty($data['note']) ? '' : $data['note'],
             'status'=>(int)$data['status'],
             'worker_id'=> $this->ion_auth->get_user_id(),

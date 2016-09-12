@@ -7,6 +7,7 @@ class Worker extends XY_Controller {
         parent::__construct();
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
+        $this->load->model('company_model');
     }
     public function index()
     {
@@ -15,11 +16,12 @@ class Worker extends XY_Controller {
         {
             $data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
         }
+        $data['companies'] = $this->company_model->companies()->result_array();
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
         $data['groups']=$this->ion_auth->groups()->result_array();
 
-        $this->isAllowed('setting/advertise/index');
+
         $this->layout->view('worker/list',$data);
     }
 
@@ -34,6 +36,19 @@ class Worker extends XY_Controller {
             die('false');
         }else{
             die('true');
+        }
+    }
+    public function company(){
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+
+        }else{
+            $id  = $this->input->get('company_id');
+            $info = $this->company_model->company($id);
+            if($info->num_rows()){
+                json_success(array('info'=>$info->row_array()));
+            }else{
+                json_error(array('msg'=>lang('error_no_company')));
+            }
         }
     }
 
@@ -62,6 +77,7 @@ class Worker extends XY_Controller {
                 $additional_data = array(
                     'realname' => $this->input->post('realname'),
                     'phone'      => $this->input->post('phone'),
+                    'company_id' => $this->input->post('company_id')
                 );
                 if (!$this->ion_auth->logged_in()){
                     redirect("auth/login", 'refresh');

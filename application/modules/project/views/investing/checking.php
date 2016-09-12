@@ -132,7 +132,7 @@
                                 <?php if($privacies): ?>
                                     <?php foreach($privacies as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="客户同意认购书 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>

@@ -1289,11 +1289,12 @@ class Ion_auth_model extends CI_Model
 			//default selects
 			$this->db->select(array(
 			    $this->tables['users'].'.*',
+			    'wc.title company',
 			    $this->tables['users'].'.id as id',
 			    $this->tables['users'].'.id as user_id'
 			));
 		}
-
+		$this->db->join('worker_company AS wc',' wc.company_id = ' . $this->tables['users'] . '.company_id', 'left');
 		// filter by group id(s) if passed
 		if (isset($groups))
 		{
@@ -1398,7 +1399,6 @@ class Ion_auth_model extends CI_Model
 
 		// if no id was passed use the current users id
 		$id = isset($id) ? $id : $this->session->userdata('user_id');
-
 		$this->limit(1);
 		$this->order_by($this->tables['users'].'.id', 'desc');
 		$this->where($this->tables['users'].'.id', $id);

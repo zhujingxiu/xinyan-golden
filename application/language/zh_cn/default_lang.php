@@ -8,6 +8,7 @@
 
 $lang['error_csrf'] = '该表单提交未通过我们的安全性检查.';
 $lang['error_no_permission'] = "没有授权访问 ";
+$lang['error_no_company'] = "没有找到该公司 ";
 $lang['error_permission'] = '没权限';
 $lang['error_title'] = '出错了';
 $lang['error_no_result'] = '没找到结果';
@@ -44,6 +45,7 @@ $lang['text_fee'] = "手续费";
 $lang['text_appling'] = "申请提金 %s 克";
 $lang['text_applied_date'] = "申请日期";
 $lang['text_success_posted'] = "通知已发布";
+$lang['text_success_company'] = "公司信息已更改";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";

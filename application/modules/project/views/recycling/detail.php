@@ -117,7 +117,7 @@
                                 <?php if($photos): ?>
                                     <?php foreach($photos as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="实物照片 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -125,7 +125,7 @@
                                 <?php if($invoices): ?>
                                     <?php foreach($invoices as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="发票照片 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -133,7 +133,7 @@
                                 <?php if($reports): ?>
                                     <?php foreach($reports as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="鉴定报告 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>
@@ -196,7 +196,7 @@
                                 <?php if($privacies): ?>
                                     <?php foreach($privacies as $item):?>
                                         <div class="uploads-thumb">
-                                            <img title="<?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
+                                            <img title="客户同意书 <?php echo $item['name'];?>" src="<?php echo base_url(get_image_url($item['path']));?>">
                                             <?php echo download_link($item['path'],'下载')?>
                                         </div>
                                     <?php endforeach?>

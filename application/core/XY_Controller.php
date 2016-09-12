@@ -82,9 +82,11 @@ class XY_Controller extends MX_Controller {
             array('type'=>'css','src'=>_ASSET_.'lib/font-awesome/css/font-awesome.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ionicons/css/ionicons.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/bootstrap/css/bootstrap.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/bootstrap/css/bootstrap.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/layer/skin/layer.css'),
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/AdminLTE.min.css'),
             array('type'=>'css','src'=>_ASSET_.'adminlte/css/skins/_all-skins.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
         );
     }
 

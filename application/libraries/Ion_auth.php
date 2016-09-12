@@ -270,6 +270,11 @@ class Ion_auth
 	{
 		return $this->get_info($id);
 	}
+
+	public function get_company_id($id = FALSE){
+		$info = $this->get_info($id);
+		return empty($info['company_id']) ? 0 : $info['company_id'];
+	}
 	/**
 	 * is_admin
 	 *

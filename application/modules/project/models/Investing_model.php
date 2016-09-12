@@ -6,11 +6,9 @@ class Investing_model extends XY_Model{
     private $table = 'project_investing';
     private $status_table = 'project_investing_status';
     private $history_table = 'project_investing_history';
-    private $customer_stock_table = 'customer_stock';
     private $worker_table = 'worker';
     private $customer_table = 'customer';
     private $stock_table = 'project_stock';
-    private $trash_table = 'project_trash';
     private $file_table = 'project_file';
     private $mode = 'investing';
     public function project($sn)
@@ -28,20 +26,29 @@ class Investing_model extends XY_Model{
 
     public function projects($data=array())
     {
-        if(is_array($data) && isset($data['where'])){
-            $this->db->where($data['where']);
+
+        $where = array();
+        $where['p.is_del'] = 0;
+        if(!$this->ion_auth->is_admin() && $this->ion_auth->get_company_id()){
+            $where['p.company_id'] = $this->ion_auth->get_company_id();
         }
-        $this->db->where(array('p.is_del'=>0));
-        $this->db->group_start();
-        $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
-        $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
-        $this->db->group_end();
+        if(isset($data['where']) && is_array($data['where'])){
+            $where += $data['where'];
+        }
+
         $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
+
+        $this->db->where($where);
+        $this->db->group_start();
+        $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
+        $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
+        $this->db->group_end();
+
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
@@ -65,6 +72,7 @@ class Investing_model extends XY_Model{
                 'idnumber' => $data['idnumber'],
                 'wechat' => $data['wechat'],
                 'referrer_id' => $data['referrer'],
+                'company_id' => $this->ion_auth->get_company_id(),
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time(),
@@ -77,6 +85,7 @@ class Investing_model extends XY_Model{
             'project_sn' => $project_sn,
             'customer_id' => $customer_id,
             'referrer_id' => $data['referrer'],
+            'company_id' => $this->ion_auth->get_company_id(),
             'price' => $data['price'],
             'weight' => $data['weight'],
             'transferrer' => $data['transferrer'],

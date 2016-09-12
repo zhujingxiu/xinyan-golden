@@ -32,15 +32,15 @@ class Recycling_model extends XY_Model{
 
     public function projects($data=array())
     {
-        if(is_array($data) && isset($data['where'])){
-            $this->db->where($data['where']);
-        }
-        $this->db->where(array('p.is_del'=>0));
-        $this->db->group_start();
-        $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
-        $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
-        $this->db->group_end();
 
+        $where = array();
+        $where['p.is_del'] = 0;
+        if(!$this->ion_auth->is_admin() && $this->ion_auth->get_company_id()){
+            $where['p.company_id'] = $this->ion_auth->get_company_id();
+        }
+        if(isset($data['where']) && is_array($data['where'])){
+            $where += $data['where'];
+        }
         $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
@@ -48,6 +48,13 @@ class Recycling_model extends XY_Model{
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
         $this->db->join($this->worker_table.' AS w1', 'w1.id = p.appraiser_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
+
+        $this->db->where($where);
+        $this->db->group_start();
+        $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
+        $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
+        $this->db->group_end();
+
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
@@ -84,6 +91,7 @@ class Recycling_model extends XY_Model{
             'project_sn' => $project_sn ,
             'customer_id' => $customer_id,
             'referrer_id' => $data['referrer'],
+            'company_id' => $this->ion_auth->get_company_id(),
             'type' => $data['type'],
             'price' => (float)$data['price'],
             'origin_weight' => (float)$data['origin_weight'],
@@ -420,6 +428,7 @@ class Recycling_model extends XY_Model{
                 'project_sn' => $project_sn,
                 'customer_id' => $project['customer_id'],
                 'referrer_id' => $project['referrer_id'],
+                'company_id' => $project['company_id'],
                 'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
                 'weight'=> (float)$project['weight'],
                 'month'=> $project['month'],
@@ -454,8 +463,6 @@ class Recycling_model extends XY_Model{
         return $this->db->insert_id();
     }
 
-
-
     public function project_growing($project_sn){
         if(empty($project_sn)) return FALSE;
 
@@ -469,7 +476,6 @@ class Recycling_model extends XY_Model{
 
         return FALSE;
     }
-
 
     public function history($project_id,$status_id,$note='',$request=''){
         $this->db->insert($this->history_table,array(
@@ -500,9 +506,6 @@ class Recycling_model extends XY_Model{
         }
         return FALSE;
     }
-
-
-
 
     public function get_status_by_code($code)
     {

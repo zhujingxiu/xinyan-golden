@@ -129,6 +129,7 @@ define(function (require,exports,modules) {
                     $('#form-worker input[name="username"]').val(info.username);
                     $('#form-worker input[name="email"]').val(info.email);
                     $('#form-worker input[name="phone"]').val(info.phone);
+                    $('#form-worker select[name="company_id"]').val(info.company_id);
                     $('#form-worker input[name="status"][value="' + info.status + '"]').prop('checked', true);
                     if(info.roles){
                         for(var i=0;i<info.roles.length;i++){
@@ -136,7 +137,6 @@ define(function (require,exports,modules) {
                         }
                     }
                     $('#form-worker .box-title').text('编辑用户 ' + info.username);
-
                     if (info.id > 0) {
                         $('#form-worker input[name="password"]').rules('remove', 'required');
                         $('#form-worker input[name="confirm"]').rules('remove', 'required');

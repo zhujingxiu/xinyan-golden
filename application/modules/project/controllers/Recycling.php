@@ -17,7 +17,7 @@ class Recycling extends Project {
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
             //array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
-            array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
+
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');

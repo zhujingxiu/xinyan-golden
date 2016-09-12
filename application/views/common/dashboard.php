@@ -213,7 +213,7 @@
                 </div>
                 <!-- /.box -->
                 <!-- TO DO List -->
-                <div class="box box-primary">
+                <div class="box box-primary hidden">
                     <div class="box-header">
                         <i class="ion ion-clipboard"></i>
 

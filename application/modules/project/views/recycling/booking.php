@@ -325,7 +325,7 @@
 				$('#form-booking #booking-totals').text(parseFloat(math_mul(_weight,_profit),3));
 				var _origin = $('#form-booking input[name="origin_weight"]').val();
 				if($.isNumeric(_origin)){
-					$('#form-booking #booking-loss').val(parseFloat(math_div(_weight,_origin),2));
+					$('#form-booking #booking-loss').val(parseFloat(100.00-parseFloat(math_div(_weight,_origin),2)*100.00),2);
 				}
 			}
 		});
@@ -440,7 +440,7 @@
 		onComplete: function(file, json) {
 			if(json.code=1) {
 				var _html = '<div class="uploads-thumb">';
-				_html += '<img title="'+json.upload['origin']+'" data-entry="privacy" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+				_html += '<img title="客户同意书 '+json.upload['origin']+'" data-entry="privacy" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
 				_html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
 				_html += '</div>';
 				$('#privacy-uploads').append(_html);
