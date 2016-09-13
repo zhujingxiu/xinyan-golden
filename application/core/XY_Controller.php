@@ -150,6 +150,7 @@ class XY_Controller extends MX_Controller {
 
     private function main_menu()
     {
+        $this->load->model('tool/dashboard_model');
         $module = strtolower($this->module);
         $current = strtolower($this->current_url);
         return array(
@@ -164,7 +165,10 @@ class XY_Controller extends MX_Controller {
                 'icon' => '<i class="fa fa-cubes"></i>',
                 'style'=> 'treeview'.($module=='project'?' active':''),
                 'widget'=>array(
-                    'callback_topsale',array('args1','args2')
+                    call_user_func_array(array($this->dashboard_model,'callback_recycling'),array('a1','a2')),
+                    call_user_func_array(array($this->dashboard_model,'callback_investing'),array('a1','a2')),
+                    call_user_func_array(array($this->dashboard_model,'callback_warning'),array('a1','a2')),
+                    call_user_func_array(array($this->dashboard_model,'callback_customer'),array('a1','a2')),
                 ),
                 'path' =>'',
                 'children' => array(

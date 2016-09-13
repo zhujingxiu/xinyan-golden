@@ -24,56 +24,42 @@ class Login extends MX_Controller {
 
     function index(){
         $tpl_data['title'] = $this->config->item('site_name');
+        if($this->input->server('REQUEST_METHOD') == 'POST') {
+            //validate form input
+            $this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
+            $this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
 
-        //validate form input
-        $this->form_validation->set_rules('identity', str_replace(':', '', $this->lang->line('login_identity_label')), 'required');
-        $this->form_validation->set_rules('password', str_replace(':', '', $this->lang->line('login_password_label')), 'required');
+            if ($this->form_validation->run() == true) {
 
-        if ($this->form_validation->run() == true)
-        {
-            // check to see if the user is logging in
-            // check for "remember me"
-            $remember = (bool) $this->input->post('remember');
-            $identity = $this->input->post('identity');
-            if ($this->ion_auth->login($identity, $this->input->post('password'), $remember))
-            {
-                $this->ion_auth->increase_login_attempts($identity);
-                $this->recycling_model->reset_locker();
-                $this->investing_model->reset_locker();
-                json_response(array('code' => 1, 'msg' => $this->ion_auth->messages(),'redirect'=>base_url()));
+                $identity = $this->input->post('identity');
+                $captcha = $this->input->post('captcha');
+                if ($this->ion_auth->is_max_login_attempts_exceeded($identity)) {
+                    if (!$captcha ||$captcha != strtolower($this->session->userdata('captcha'))) {
+                        json_error(array('code' => -1, 'msg' => lang('error_login_captcha', 'default'), 'errcount' => $this->ion_auth->get_attempts_num($identity)));
+                    }
+                }
+                $remember = (bool)$this->input->post('remember');
+
+                if ($this->ion_auth->login($identity, $this->input->post('password'), $remember)) {
+                    $this->recycling_model->reset_locker();
+                    $this->investing_model->reset_locker();
+                    json_success(array('msg' => $this->ion_auth->messages(), 'redirect' => base_url()));
+                } else {
+                    json_error(array('code' => 0, 'msg' => $this->ion_auth->errors(), 'errcount' => $this->ion_auth->get_attempts_num($identity)));
+                }
+            } else {
+                json_error(array('errors'=>array('identity'=>form_error('identity'),'password'=>form_error('password'))))      ;
+
             }
-            else
-            {
-                json_response(array('code' => -1, 'msg' => $this->ion_auth->errors(),'redirect'=>base_url('login')));
-            }
-        }
-        else
-        {
-            // the user is not logging in so display the login page
-            // set the flash data error message if there is one
-            $tpl_data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-            $tpl_data['identity'] = array(
-                'name' 	=> 'identity',
-                'id'    => 'identity',
-                'type'  => 'text',
-                'value' => $this->form_validation->set_value('username'),
-            );
-            $tpl_data['password'] = array(
-                'name' => 'password',
-                'id'   => 'password',
-                'type' => 'password',
-            );
-
-            $this->load->view('login', $tpl_data);
-
+        }else{
+            $this->load->view('login',$tpl_data);
         }
     }
 
     public function captcha(){
         $this->load->library('captcha');
         $code = $this->captcha->getCaptcha(100,50);
-        $this->session->set_userdata('code', $code);
+        $this->session->set_userdata('captcha', $code);
         $this->captcha->showImg();
     }
     public function price()

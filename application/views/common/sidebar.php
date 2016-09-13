@@ -29,6 +29,13 @@
                     <i class="fa fa-angle-left pull-right"></i>
                 </span>
                 <?php endif?>
+                <?php if(isset($item['widget']) && is_array($item['widget'])) : ?>
+                    <span class="pull-right-container">
+                    <?php foreach($item['widget'] as  $widget):?>
+                        <?php echo $widget;?>
+                    <?php endforeach?>
+                    </span>
+                <?php endif?>
             </a>
             <?php if(isset($item['children']) && is_array($item['children'])) : ?>
                 <ul class="treeview-menu">

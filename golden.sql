@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 2016-09-12 12:03:11
+-- Generation Time: 2016-09-13 10:39:00
 -- 服务器版本： 10.1.9-MariaDB
 -- PHP Version: 5.6.15
 
@@ -582,6 +582,7 @@ CREATE TABLE `gd_customer` (
   `idnumber` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `wechat` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `qq` char(12) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_id` tinyint(4) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `referrer_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -596,16 +597,16 @@ CREATE TABLE `gd_customer` (
 -- 转存表中的数据 `gd_customer`
 --
 
-INSERT INTO `gd_customer` (`customer_id`, `realname`, `avatar`, `phone`, `idnumber`, `wechat`, `qq`, `group_id`, `status`, `referrer_id`, `company_id`, `note`, `worker_id`, `addtime`, `lasttime`) VALUES
-(2, '李百度', NULL, '18850911766', '321245198905080904', '', NULL, 1, 1, '2', 0, NULL, 5, 1472552472, 1472552472),
-(3, '刘京东', NULL, '18959506595', '321324199008080808', '', NULL, 1, 1, '2', 0, NULL, 5, 1472559583, 1472559583),
-(4, '马晓云', NULL, '18850219878', '321324195406050508', '', NULL, 1, 1, '2', 0, NULL, 5, 1472604934, 1472604934),
-(5, '马腾讯', NULL, '18959596565', '321254198808050604', '', NULL, 1, 1, '12', 0, NULL, 5, 1472605860, 1472605860),
-(6, '余华为', NULL, '18959596767', '321254198908050604', '', NULL, 1, 1, '12', 0, NULL, 5, 1472605860, 1472605860),
-(7, '雷小米', NULL, '13113213313', '321254197708053454', 'leixiaomi', '324456532', 1, 1, '', 0, '', 3, 1472645815, 1472645866),
-(8, '乔苹果', NULL, '18808800990', '325225197008078888', 'qiaopingguo', '32323454435', 2, 1, '12', 0, '乔帮主', 3, 1472646256, 1472646256),
-(9, '沈万三', NULL, '13813800138', '138139199810039997', 'shenwansan', '', 2, 1, '12', 0, 'asdsadasds', 3, 1472707274, 1472707274),
-(10, '赵公明', NULL, '13606660888', '123321196606066666', 'zhaogongming', '', 3, 1, '12', 0, 'asdsad', 1, 1473059868, 1473059868);
+INSERT INTO `gd_customer` (`customer_id`, `realname`, `avatar`, `phone`, `idnumber`, `wechat`, `qq`, `address`, `group_id`, `status`, `referrer_id`, `company_id`, `note`, `worker_id`, `addtime`, `lasttime`) VALUES
+(2, '李百度', NULL, '18850911766', '321245198905080904', '', NULL, NULL, 1, 1, '2', 0, NULL, 5, 1472552472, 1472552472),
+(3, '刘京东', NULL, '18959506595', '321324199008080808', '', NULL, NULL, 1, 1, '2', 0, NULL, 5, 1472559583, 1472559583),
+(4, '马晓云', NULL, '18850219878', '321324195406050508', '', NULL, NULL, 1, 1, '2', 0, NULL, 5, 1472604934, 1472604934),
+(5, '马腾讯', NULL, '18959596565', '321254198808050604', '', NULL, NULL, 1, 1, '12', 0, NULL, 5, 1472605860, 1472605860),
+(6, '余华为', NULL, '18959596767', '321254198908050604', '', NULL, NULL, 1, 1, '12', 0, NULL, 5, 1472605860, 1472605860),
+(7, '雷小米', NULL, '13113213313', '321254197708053454', 'leixiaomi', '324456532', NULL, 1, 1, '', 0, '', 3, 1472645815, 1472645866),
+(8, '乔苹果', NULL, '18808800990', '325225197008078888', 'qiaopingguo', '32323454435', NULL, 2, 1, '12', 0, '乔帮主', 3, 1472646256, 1472646256),
+(9, '沈万三', NULL, '13813800138', '138139199810039997', 'shenwansan', '', NULL, 2, 1, '12', 0, 'asdsadasds', 3, 1472707274, 1472707274),
+(10, '赵公明', NULL, '13606660888', '123321196606066666', 'zhaogongming', '', NULL, 3, 1, '12', 0, 'asdsad', 1, 1473059868, 1473059868);
 
 -- --------------------------------------------------------
 
@@ -1671,7 +1672,21 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('cc474a47253dd9433c7698ff010ee9277ba8e522', '127.0.0.1', 1473672417, '__ci_last_regenerate|i:1473672416;code|s:4:"4enC";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473647462";'),
 ('b523541ca2595e6098e0cc149729042835cdc214', '127.0.0.1', 1473672679, '__ci_last_regenerate|i:1473672420;code|s:4:"YnhS";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473647217";'),
 ('afd2131a29ff745c1ecd7c349b4d5b4ca0c0e852', '127.0.0.1', 1473674338, '__ci_last_regenerate|i:1473672827;code|s:4:"YnhS";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473647217";'),
-('452a2b711a9c0495ba3cc27683eabf3ae864093f', '127.0.0.1', 1473674096, '__ci_last_regenerate|i:1473672895;code|s:4:"4enC";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473647462";');
+('452a2b711a9c0495ba3cc27683eabf3ae864093f', '127.0.0.1', 1473674096, '__ci_last_regenerate|i:1473672895;code|s:4:"4enC";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473647462";'),
+('ef2b0286fe90f9727ecc1fa1096b2d20e65c4864', '127.0.0.1', 1473731505, '__ci_last_regenerate|i:1473731256;code|s:4:"NC4M";'),
+('e34e562d3dd50fb09d725a769ff45b1ac50743b6', '127.0.0.1', 1473731807, '__ci_last_regenerate|i:1473731569;code|s:4:"9cGq";'),
+('4cb82f64da0567533560a9a33b54857a99bde758', '127.0.0.1', 1473731889, '__ci_last_regenerate|i:1473731881;code|s:4:"BWQg";'),
+('c2be34a70198bafa5b11121f4a1f7abd980cbee9', '127.0.0.1', 1473733998, '__ci_last_regenerate|i:1473733966;code|s:4:"veXw";'),
+('2628749b5355c3554610716a2a9ab4188fff2a07', '127.0.0.1', 1473735302, '__ci_last_regenerate|i:1473734933;code|s:4:"ZFex";'),
+('94b460d680c852df99f08d1fd130e1f2fa37f152', '127.0.0.1', 1473735627, '__ci_last_regenerate|i:1473735302;code|s:4:"Rddm";'),
+('664f085695da8e1f9be44af58bbd8be665f9bb17', '127.0.0.1', 1473736002, '__ci_last_regenerate|i:1473735627;code|s:4:"eK3F";'),
+('128a661a04a4618cf1e23bb7474889ed77ace150', '127.0.0.1', 1473736321, '__ci_last_regenerate|i:1473736073;captcha|s:4:"mcyD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736067";'),
+('897fae97fa00c84dfcf691f6cf962efabf079ad6', '127.0.0.1', 1473736389, '__ci_last_regenerate|i:1473736388;captcha|s:4:"mcyD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736067";'),
+('c93ade85b7616414aa56d62ee18eacd484743ad2', '127.0.0.1', 1473737044, '__ci_last_regenerate|i:1473736893;captcha|s:4:"mcyD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736067";'),
+('34c21fdbba1fb6ce46c59cb6b139d3616c1c8436', '127.0.0.1', 1473737612, '__ci_last_regenerate|i:1473737432;captcha|s:4:"mcyD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736067";'),
+('358dc6d7c13204d47c9d0c758bf4d851b38d7d27', '127.0.0.1', 1473737812, '__ci_last_regenerate|i:1473737768;captcha|s:4:"mcyD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736067";'),
+('88f50abc9c61dc817afa1065e8f3212815ff7d68', '127.0.0.1', 1473755098, '__ci_last_regenerate|i:1473738285;captcha|s:4:"nDmH";identity|s:12:"dengji-demo1";username|s:12:"dengji-demo1";email|s:6:"b@a.cc";user_id|s:1:"5";old_last_login|s:10:"1473668041";'),
+('7c4fa74b9857379b388e73c7a49a6a286f8b282a', '127.0.0.1', 1473755878, '__ci_last_regenerate|i:1473755874;captcha|s:4:"UbWD";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473736081";');
 
 -- --------------------------------------------------------
 
@@ -1718,7 +1733,7 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 (36, 'investing_growing', '4', 0, 'project', 1),
 (37, 'terminated_trash', '1', 0, 'project', 1),
 (38, 'site_title', '黄金码头 黄金线下交易平台', 0, 'site', 1),
-(39, 'cron_interval', '300', 0, 'site', 1),
+(39, 'cron_interval', '1500', 0, 'site', 1),
 (40, 'cron_encrypt', 'xy-zhujingxiu-4610', 0, 'site', 1),
 (41, 'default_avatar', 'public/images/avatar/avatar.png', 0, 'site', 1);
 
@@ -1754,9 +1769,9 @@ CREATE TABLE `gd_worker` (
 INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`, `wechat`, `qq`, `company_id`) VALUES
 (1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1473647726, '127.0.0.1', 1, '', NULL, NULL, 1),
 (2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766', NULL, NULL, 1),
-(3, 'jingli-demo1', '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1473671976, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 1),
+(3, 'jingli-demo1', '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1473755878, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 1),
 (4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1473435360, '127.0.0.1', 1, '', NULL, NULL, 2),
-(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473668041, '127.0.0.1', 1, '', NULL, NULL, 1),
+(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473738292, '127.0.0.1', 1, '', NULL, NULL, 1),
 (6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1473299074, '127.0.0.1', 1, '', NULL, NULL, 2),
 (7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1473393589, '127.0.0.1', 1, '', NULL, NULL, 1),
 (8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1473152537, '127.0.0.1', 1, '', NULL, NULL, 2),
@@ -2248,7 +2263,7 @@ ALTER TABLE `gd_worker_activity`
 -- 使用表AUTO_INCREMENT `gd_worker_attempt`
 --
 ALTER TABLE `gd_worker_attempt`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- 使用表AUTO_INCREMENT `gd_worker_company`
 --

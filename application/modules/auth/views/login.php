@@ -47,13 +47,11 @@
                 <input type="password" class="loginText" name="password" id="password" value="" placeholder="密码"/>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
-            <div class="loginList loginListCode" style="display: none;">
+            <div class="loginList loginListCode" style="display:none;">
                 <label></label>
-                <input type="text" class="loginText" name="captcha" id="captcha" value="" placeholder="计算结果"/>
-                <img src="<?php echo base_url('auth/login/captcha'); ?>" id="captcha_img"
-                     onclick="this.src='<?php echo base_url('auth/login/captcha'); ?>?_t=' + Math.random();"
-                     style="width:100%;height:35px;">
-
+                <input type="text" class="loginText" name="captcha" id="captcha" value="" placeholder="验证码"/>
+                <img src="<?php echo base_url('auth/login/captcha'); ?>" id="captcha_img" >
+                <a href="javascript:;" class="getImg" id="captchaimg" onclick="document.getElementById('captcha_img').src='<?php echo base_url('auth/login/captcha'); ?>?_t=' + Math.random();">&nbsp;</a>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
             <div class="sysError" style="display:none">

@@ -26,6 +26,7 @@ $lang['error_project_operator'] = '无权限操作当前项目，请刷新重试
 $lang['error_period'] = '预存周期参数错误，请刷新重试';
 $lang['error_notify_member'] = '没有选定通知成员';
 $lang['error_notify_title'] = '请输入通知标题';
+$lang['error_login_captcha'] = '登录失败次数过多，请输入正确的验证码';
 
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";

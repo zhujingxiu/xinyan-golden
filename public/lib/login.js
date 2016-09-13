@@ -28,25 +28,23 @@ define(function(require, exports, module) {
 
             $("#login_form").ajaxSubmit({
                 dataType:'json',
-                success: function (obj) {
-                    var code = obj.code;
+                success: function (json) {
+                    var code = json.code;
                     //当用户登录错误且次数超过3次,显示验证码
-                    if (code != '1' && $(".loginListCode").css('display') == 'none' && obj.errcount > 2) {
+                    if (code != '1' && $(".loginListCode").css('display') == 'none' && json.errcount > 2) {
                         $(".loginListCode").css('display', 'block');
                     }
                     if (code == '1') {
-                        window.location.href = obj.redirect;
+                        window.location.href = json.redirect;
                     }
                     else {
-                        if (code == '-1') {//登录数据库验证,登录失败显示
-                            $('.sysError').show().find('em').html(obj.msg);
+                        if (code == '0') {//登录数据库验证,登录失败显示
+                            $('.sysError').show().find('em').html(json.msg);
 
-                        } else {
-                            var errcount = obj.errcount;
-                            if (errcount > 2) {
-                                $(".loginListCode").css('display', 'block');
-                            }
-                            $('.sysError').show().find('em').html(obj.info);
+                        }
+                        if(code == '-1'){//验证码错误显示
+                            $(".loginListCode").css('display','block');
+                            exports.error(json.msg,$("#captcha"));
                         }
 
                         if ($(".loginListCode").css('display') == 'block') {

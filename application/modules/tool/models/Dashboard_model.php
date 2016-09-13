@@ -158,4 +158,18 @@ class Dashboard_model extends XY_Model
         }
         return FALSE;
     }
+
+    public function callback_investing(){
+
+        return '<span class="label label-primary pull-right">4</span>';
+    }
+    public function callback_recycling(){
+        return '<span class="label label-primary pull-right">4</span>';
+    }
+    public function callback_warning(){
+        return '<span class="label label-warning pull-right">4</span>';
+    }
+    public function callback_customer(){
+        return '<span class="label label-info pull-right">4</span>';
+    }
 }
