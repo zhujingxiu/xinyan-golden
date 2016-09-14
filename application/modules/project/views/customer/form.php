@@ -25,13 +25,13 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group clearfix">
-                        <div class="input-group col-sm-11">
+                        <div class="input-group col-sm-12">
                             <span class="input-group-addon">手机号码</span>
                             <input type="text" name="phone" class="form-control" placeholder="客户的手机号码" value="<?php echo $phone;?>">
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <div class="input-group col-sm-11">
+                        <div class="input-group col-sm-12">
                             <span class="input-group-addon">微信账号</span>
                             <input type="text" name="wechat" class="form-control" value="<?php echo $wechat;?>">
                         </div>
@@ -40,7 +40,7 @@
                 <div class="col-sm-6">
                     <div class="form-group clearfix">
                         <div class="input-group col-sm-11">
-                            <span class="input-group-addon">&nbsp;推&nbsp;荐&nbsp;人</span>
+                            <span class="input-group-addon"><?php echo lang('text_referrer')?></span>
                             <input id="referrer" class="form-control" value="<?php echo $referrer;?>">
                             <input type="hidden" name="referrer" value="<?php echo $referrer_id;?>">
                         </div>
@@ -55,7 +55,7 @@
 
                 <div class="col-sm-6">
                     <div class="form-group clearfix">
-                        <div class="input-group col-sm-11">
+                        <div class="input-group col-sm-12">
                             <span class="input-group-addon">客户分组</span>
                             <select name="group_id" class="form-control" >
                                 <option value="0" class="text-center"> -- 请选择一个客户组 -- </option>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="form-group clearfix">
-                        <div class="input-group col-sm-11">
+                        <div class="input-group col-sm-12">
                             <span class="input-group-addon">可用状态</span>
                             <select name="status" class="form-control" >
                                 <option value="1" <?php echo $status==1 ? 'selected' :'' ?>>启用</option>
@@ -80,7 +80,12 @@
                 <div class="col-sm-12">
                     <div class="form-group clearfix">
                         <div class="input-group col-sm-12">
-
+                            <span class="input-group-addon">联系地址</span>
+                            <input name="address" class="form-control" value="<?php echo $address;?>">
+                        </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="input-group col-sm-12">
                             <textarea name="editorValue" class="form-control" placeholder="输入客户备注信息"><?php echo $note;?></textarea>
                         </div>
                     </div>

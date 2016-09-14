@@ -50,6 +50,10 @@ $lang['text_success_company'] = "公司信息已更改";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";
+$lang['text_period'] = "生息周期";
+$lang['text_pending_widget'] = "待处理";
+$lang['text_expiring_widget'] = "即将到期";
+$lang['text_today_widget'] = "今日登记";
 $lang['text_unknown'] = "未知";
 $lang['text_not_open'] = "尚未开启";
 $lang['text_investing'] = '<label class="label label-info">钱生金</label>';

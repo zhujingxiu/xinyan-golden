@@ -419,12 +419,12 @@
                                         <fieldset>
                                             <legend>通用参数</legend>
                                             <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
-                                            <div class="form-group clearfix" style="display: none;">
-                                                <label for="" class="control-label col-sm-4 text-right">生金克数 (g)
-                                                    <span class="help-block">按100克每年</span>
+                                            <div class="form-group clearfix" >
+                                                <label for="" class="control-label col-sm-4 text-right">到期提醒天数
+                                                    <span class="help-block">项目到期的预警天数</span>
                                                 </label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" name="profit_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['profit_weight'])? '' :$setting['profit_weight']  ?>"/>
+                                                    <input type="text" name="warning_end" class="form-control" id="inputProfit" value="<?php echo empty($setting['warning_end'])? '' :$setting['warning_end']  ?>"/>
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix">
@@ -439,14 +439,14 @@
                                                 </div>
                                             </div>
                                             <div class="form-group clearfix" style="display: none;">
-                                                <label for="" class="control-label col-sm-4 text-right">生金周期
-                                                    <span class="help-block">支持生金的周期模式</span>
+                                                <label for="" class="control-label col-sm-4 text-right">提前终止的金息模式
+                                                    <span class="help-block">提前终止项目的金息模式</span>
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <select name="gold_growing" class="form-control">
-                                                        <option value="year" <?php echo $setting['gold_growing'] == 'year' ? 'selected' :''  ?>>按年生金</option>
-                                                        <option value="season" <?php echo $setting['gold_growing'] == 'season' ? 'selected' :''  ?>>按季生金</option>
-                                                        <option value="month" <?php echo $setting['gold_growing'] == 'month' ? 'selected' :''  ?>>按月生金</option>
+                                                        <option value="year" <?php echo $setting['gold_growing'] == 'year' ? 'selected' :''  ?>>按年金息</option>
+                                                        <option value="season" <?php echo $setting['gold_growing'] == 'season' ? 'selected' :''  ?>>按季金息</option>
+                                                        <option value="month" <?php echo $setting['gold_growing'] == 'month' ? 'selected' :''  ?>>按月金息</option>
                                                     </select>
                                                 </div>
                                             </div>

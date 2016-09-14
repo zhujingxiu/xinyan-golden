@@ -336,7 +336,7 @@ class Tool_model extends XY_Model
                     }
                 }
                 if ($insert) {
-                    $weight = (float)($this->config->item('profit_weight') / (12 * 100)) * $month * ($item['weight']);
+                    $weight = (float)($item['profit'] * $month * ($item['weight']));
                     $insert_batch[] = array(
                         'mode' => 'profit',
                         'customer_id' => $item['customer_id'],

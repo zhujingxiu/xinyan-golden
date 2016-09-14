@@ -163,7 +163,7 @@
                                 <?php endforeach?>
                             </select>
                             <span class="input-group-addon">确认入库标记</span>
-                            <span class="input-group-addon">周期</span>
+                            <span class="input-group-addon"><?php echo lang('text_period')?></span>
                             <span class="form-control" id="start"><?php echo $start?></span>
                             <span class="input-group-addon"> - </span>
                             <span class="form-control" id="end"><?php echo $end;?></span>

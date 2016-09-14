@@ -17,8 +17,8 @@ class Customer_model extends XY_Model{
         if($simple){
             return $this->get_where($this->table,array('customer_id'=>$customer_id));
         }
-        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
-        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_project_stock` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
+        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->tableprefix('customer_stock')."` WHERE `customer_id` = `c`.`customer_id` ";
+        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->tableprefix('project_stock')."` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
         $this->db->select('c.*,g.title group_name,g.code,w.realname operator, w.username,w2.realname referrer,('.$available_weight.') available,('.$frozen_weight.') frozen', false);
         $this->db->from($this->table.' AS c')->order_by('c.addtime')->where("c.customer_id = ".$customer_id)->limit(1);
         $this->db->join($this->group_table.' AS g','g.group_id = c.group_id','left');
@@ -35,8 +35,8 @@ class Customer_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `customer_id` = `c`.`customer_id` ";
-        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_project_stock` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
+        $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->tableprefix('customer_stock')."` WHERE `customer_id` = `c`.`customer_id` ";
+        $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->tableprefix('project_stock')."` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
 
         $this->db->select('c.*,g.title group_name,g.code,w2.realname referrer,w.realname operator, w.username,('.$available_weight.') available,('.$frozen_weight.') frozen', false);
         $this->db->from($this->table.' AS c');
@@ -57,8 +57,8 @@ class Customer_model extends XY_Model{
     public function group($group_id)
     {
 
-        $this->db->select('atc.*,w.realname, w.username', false);
-        $this->db->from($this->group_table.' AS atc')->where("atc.group_id = ".$group_id);
+        $this->db->select('g.*,w.realname, w.username', false);
+        $this->db->from($this->group_table.' AS g')->where("g.group_id = ".$group_id);
         $this->db->join($this->worker_table.' AS w', 'w.id = atc.worker_id')->limit(1);
         
         return $this->db->get();
@@ -304,7 +304,7 @@ class Customer_model extends XY_Model{
                 $this->db->where($data);
             }
             $this->db->where(array('ps.customer_id'=>$customer_id));
-            $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
+            $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->tableprefix('customer_stock')."` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
             $query = $this->db->select("p.addtime,ps.*,w2.realname referrer,( ".$profit_weight." ) stock_profit ",FALSE)
                 ->from($this->project_stock_table." AS ps")
                 ->join($this->worker_table.' AS w2', 'w2.id = ps.referrer_id','left')

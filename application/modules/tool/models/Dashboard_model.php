@@ -159,17 +159,74 @@ class Dashboard_model extends XY_Model
         return FALSE;
     }
 
-    public function callback_investing(){
 
-        return '<span class="label label-primary pull-right">4</span>';
+    public function widget_pending($mode='all'){
+        $mode = strtolower($mode);
+        $total = 0;
+        if(in_array($mode,array('investing','all'))){
+            $where = array('status_id <' => $this->config->item('investing_growing') );
+            if(!$this->ion_auth->is_admin()){
+                $where['company_id'] = $this->ion_auth->get_company_id();
+            }
+            $this->db->where(sprintf("find_in_set('%d', transferrer) !=",$this->ion_auth->get_user_id()),0);
+            $total += $this->db->where($where)->count_all_results($this->investing_table);
+
+        }
+        if(in_array($mode,array('recycling','all'))){
+            $where = array('status_id <' => $this->config->item('investing_growing') );
+            if(!$this->ion_auth->is_admin()){
+                $where['company_id'] = $this->ion_auth->get_company_id();
+            }
+            $this->db->where(sprintf("find_in_set('%d', transferrer) !=",$this->ion_auth->get_user_id()),0);
+            $total += $this->db->where($where)->count_all_results($this->recycling_table);
+        }
+        return $total
+            ? '<span class="label label-primary pull-right" data-toggle="tooltip" title="'.lang('text_pending_widget').'">'.$total.'</span>'
+            : '';//.$this->db->last_query();
     }
-    public function callback_recycling(){
-        return '<span class="label label-primary pull-right">4</span>';
+    public function widget_expiring($mode='all'){
+        $mode = strtolower($mode);
+
+        $interval_string = "DATE_ADD( CURDATE(),INTERVAL ".(int)$this->config->item('warning_end')." DAY ) >= `end`";
+        $where = array('status'=>1);
+        if(!$this->ion_auth->is_admin()){
+            $where['company_id'] = $this->ion_auth->get_company_id();
+        }
+        switch($mode){
+            case 'investing':
+                $where['mode'] = 'investing';
+                break;
+            case 'recycling':
+                $where['mode'] = 'recycling';
+                break;
+        }
+        $this->db->where($where);
+        $this->db->where($interval_string,NULL, FALSE);
+        $total = $this->db->count_all_results($this->stock_table);
+        return $total
+            ? '<span class="label label-warning pull-right" data-toggle="tooltip" title="'.lang('text_expiring_widget').'">'.$total.'</span>'
+            : '';//'|'.$this->db->last_query();
     }
-    public function callback_warning(){
-        return '<span class="label label-warning pull-right">4</span>';
-    }
-    public function callback_customer(){
-        return '<span class="label label-info pull-right">4</span>';
+    public function widget_today($mode='all'){
+        $mode = strtolower($mode);
+        $total = 0;
+        if(in_array($mode,array('investing','all'))){
+            $where['addtime >'] = strtotime(date('Y-m-d'));
+            if(!$this->ion_auth->is_admin()){
+                $where['company_id'] = $this->ion_auth->get_company_id();
+            }
+            $total += $this->db->where($where)->count_all_results($this->investing_table);
+        }
+
+        if(in_array($mode,array('recycling','all'))){
+            $where['addtime >'] = strtotime(date('Y-m-d'));
+            if(!$this->ion_auth->is_admin()){
+                $where['company_id'] = $this->ion_auth->get_company_id();
+            }
+            $total += $this->db->where($where)->count_all_results($this->recycling_table);
+        }
+        return $total
+            ? '<span class="label label-info pull-right" data-toggle="tooltip" title="'.lang('text_today_widget').'">'.$total.'</span>'
+            : '';
     }
 }

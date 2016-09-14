@@ -165,19 +165,13 @@ class XY_Controller extends MX_Controller {
                 'icon' => '<i class="fa fa-cubes"></i>',
                 'style'=> 'treeview'.($module=='project'?' active':''),
                 'widget'=>array(
-                    call_user_func_array(array($this->dashboard_model,'callback_recycling'),array('a1','a2')),
-                    call_user_func_array(array($this->dashboard_model,'callback_investing'),array('a1','a2')),
-                    call_user_func_array(array($this->dashboard_model,'callback_warning'),array('a1','a2')),
-                    call_user_func_array(array($this->dashboard_model,'callback_customer'),array('a1','a2')),
+                    call_user_func_array(array($this->dashboard_model,'widget_expiring'),array('all')),
+                    call_user_func_array(array($this->dashboard_model,'widget_today'),array('all')),
+                    call_user_func_array(array($this->dashboard_model,'widget_pending'),array('all')),
                 ),
                 'path' =>'',
                 'children' => array(
-                    'customer' => array(
-                        'text' => '客户管理',
-                        'link' => 'project/customer',
-                        'auth' => $this->isAllowed('project/customer/index'),
-                        'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':''
-                    ),
+
                     'recycling' => array(
                         'text' => '金生金',
                         'link' => 'project/recycling',
@@ -189,6 +183,12 @@ class XY_Controller extends MX_Controller {
                         'link' => 'project/investing',
                         'auth' => $this->isAllowed('project/investing/index'),
                         'style' => in_array($current,array('project/investing','project/investing/index')) ? ' active':''
+                    ),
+                    'customer' => array(
+                        'text' => '客户管理',
+                        'link' => 'project/customer',
+                        'auth' => $this->isAllowed('project/customer/index'),
+                        'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':''
                     ),
                     'stock' => array(
                         'text' => '金库',
