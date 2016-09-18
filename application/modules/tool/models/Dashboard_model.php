@@ -201,6 +201,7 @@ class Dashboard_model extends XY_Model
                 break;
         }
         $this->db->where($where);
+
         $this->db->where($interval_string,NULL, FALSE);
         $total = $this->db->count_all_results($this->stock_table);
         return $total

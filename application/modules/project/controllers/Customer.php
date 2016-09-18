@@ -19,7 +19,6 @@ class Customer extends XY_Controller {
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/datatables.bootstrap.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
         ));
-
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
 
