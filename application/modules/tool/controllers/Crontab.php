@@ -37,5 +37,7 @@ class Crontab extends MX_Controller
         }else{
             die('Deny');
         }
+
+        //http://data.gold.hexun.com/outData/AuSH.ashx
     }
 }
