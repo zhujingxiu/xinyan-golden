@@ -30,6 +30,7 @@ class Company_model extends CI_Model{
 
         $this->db->update($this->table,array(
             'title'=>$data['title'],
+            'alias'=>$data['alias'],
             'status'=>(int)$data['status'],
             'addtime' => time()
         ),array('company_id'=>$id));
@@ -43,6 +44,7 @@ class Company_model extends CI_Model{
 
         $this->db->insert($this->table,array(
             'title'=>$data['title'],
+            'alias'=>$data['alias'],
             'status'=>(int)$data['status'],
             'addtime' => time()
         ));

@@ -27,11 +27,18 @@ class Crontab extends MX_Controller
         if(XEncrypt($token,'D')==$this->config->item('cron_encrypt')) {
             set_time_limit(0);
             ignore_user_abort(true);
-            $interval = $this->config->item('cron_interval') ? (int)$this->config->item('cron_interval') : 5 * 60;
+
             do {
 
                 $this->tool_model->run_crontab();
 
+                if(date('w') ==0 || date('w') ==6){
+                    $interval = 3600*4;
+                }else if(date('H')>23 || date('H')<7){
+                    $interval = 3600;
+                }else{
+                    $interval = $this->setting->get_setting('cron_interval') ? (int)$this->setting->get_setting('cron_interval') : 5 * 60;
+                }
                 sleep($interval);
             } while (TRUE);
         }else{
@@ -47,11 +54,18 @@ class Crontab extends MX_Controller
         if(XEncrypt($token,'D')==$this->config->item('cron_encrypt')) {
             set_time_limit(0);
             ignore_user_abort(true);
-            $interval = $this->setting->get_setting('hexun_interval') ? (int)$this->config->item('hexun_interval') : 5 * 60;
+
             $url = $this->setting->get_setting('hexun_url');
             if($url) {
                 do {
                     $this->tool_model->hexun_price($url);
+                    if(date('w') ==0 || date('w') ==6){
+                        $interval = 3600*4;
+                    }else if(date('H')>=23 || date('H')<=7){
+                        $interval = 3600;//$this->setting->get_setting('hexun_interval') ? (int)$this->config->item('hexun_interval') : 5 * 60;
+                    }else{
+                        $interval = $this->setting->get_setting('hexun_interval') ? (int)$this->setting->get_setting('hexun_interval') : 5 * 60;
+                    }
                     sleep($interval);
                 } while (TRUE);
             }

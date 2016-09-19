@@ -11,6 +11,7 @@ class Stock_model extends XY_Model{
     private $investing_history_table = 'project_investing_history';
     private $investing_status_table = 'project_investing_status';
     private $worker_table = 'worker';
+    private $company_table = 'worker_company';
     private $customer_table = 'customer';
     private $customer_stock_table = 'customer_stock';
     private $file_table = 'project_file';
@@ -33,9 +34,10 @@ class Stock_model extends XY_Model{
             $this->db->where($data['where']);
         }
         $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `project_sn` = `p`.`project_sn` AND `mode`='profit'";
-        $this->db->select('c.realname,c.phone,c.idnumber,p.*,w.realname operator, w.username,w2.realname referrer,('.$profit_weight.') stock_profit', false);
+        $this->db->select('cp.title AS company ,cp.alias short_title,c.realname,c.phone,c.idnumber,p.*,w.realname operator, w.username,w2.realname referrer,('.$profit_weight.') stock_profit', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
+        $this->db->join($this->company_table.' AS cp', 'cp.company_id = p.company_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
         if(isset($data['order_by'])){

@@ -250,18 +250,20 @@ class Ion_auth
 		if($info){
 			$roles = $this->ion_auth->get_users_groups($id)->result_array();
 			if($roles){
+				$_permission = array();
 				foreach($roles as $item)
 				{
 					if($item['status']){
 
 						$info['roles'][strtolower($item['code'])] = $item['title'];
-						$info['permission'] = array();
+
 						$tmp = explode(',',$item['permission']);
 						if(is_array($tmp)){
-							$info['permission'] += $tmp;
+							$_permission = array_merge($tmp,$_permission);
 						}
 					}
 				}
+				$info['permission'] = array_unique($_permission);
 			}
 		}
 		return $info;

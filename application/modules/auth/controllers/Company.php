@@ -34,8 +34,8 @@ class Company extends XY_Controller {
             $this->form_validation->set_rules('title', '公司名称', 'trim|required');
             if ($this->form_validation->run() == TRUE)
             {
-                $this->input->post('pmpany_id')
-                ? $this->company_model->update($this->input->post('cpmpany_id'),$this->input->post())
+                $this->input->post('company_id')
+                ? $this->company_model->update($this->input->post('company_id'),$this->input->post())
                 : $this->company_model->insert($this->input->post());
 
                 $this->session->set_flashdata('success', lang('text_success_company'));

@@ -28,7 +28,7 @@
             </div>
         <?php endif ?>
         <div class="row">
-            <div class="col-xs-9">
+            <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
                         <div class="buttons">
@@ -42,6 +42,8 @@
                             <thead>
                                 <tr>
                                     <th></th>
+
+                                    <th>区域</th>
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>
@@ -56,6 +58,7 @@
                             <tfoot>
                                 <tr>
                                     <th></th>
+                                    <th>区域</th>
                                     <th>编号</th>
                                     <th>客户</th>
                                     <th>存金</th>
@@ -73,25 +76,6 @@
                 </div>
             </div>
             <!-- /.col -->
-            <div class="col-xs-3">
-                <div class="box box-info hidden">
-                    <div class="box-header">
-                        <i class="fa fa-line-chart"></i>
-
-                        <h3 class="box-title">库存统计</h3>
-                        <!-- tools box -->
-                        <div class="pull-right box-tools">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /. tools -->
-                    </div>
-                    <div class="box-body">
-                        <div id="stock-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- /.row -->
     </section>
@@ -101,7 +85,7 @@
         seajs.use('stock',function(project){
             project.render_list();
             project.render_storage();
-            project.render_stocks();
+            //project.render_stocks();
             project.render_detail();
         })
     </script>

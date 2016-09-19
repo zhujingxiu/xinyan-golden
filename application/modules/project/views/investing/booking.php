@@ -214,7 +214,7 @@
 						},
 						success: function (json) {
 							if(json.code==1){
-								location.reload()
+								location.href = '<?php echo site_url('project/investing')?>'
 							}
 						}
 					}

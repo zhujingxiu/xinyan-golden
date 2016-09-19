@@ -111,6 +111,7 @@
                             <table class="table no-margin">
                                 <thead>
                                 <tr>
+                                    <th>区域</th>
                                     <th>项目编号</th>
                                     <th>客户</th>
                                     <th>存入黄金</th>
@@ -122,6 +123,7 @@
                                 <?php if($projects):?>
                                     <?php foreach($projects as $item):?>
                                 <tr>
+                                    <td><?php echo $item['company']?></td>
                                     <td><?php echo $item['project_sn']?><br><?php echo $item['mode']?></td>
                                     <td><?php echo $item['customer']?></td>
                                     <td><?php echo $item['weight']?></td>

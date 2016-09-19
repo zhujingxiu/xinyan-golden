@@ -334,6 +334,7 @@ class Investing_model extends XY_Model{
                 'project_sn' => $project_sn,
                 'customer_id' => $project['customer_id'],
                 'referrer_id' => $project['referrer_id'],
+                'company_id' => $project['company_id'],
                 'title' => '项目'.$project_sn.'存金'.number_format($project['weight'],2).'克',
                 'weight'=> (float)$project['weight'],
                 'month'=> $project['month'],

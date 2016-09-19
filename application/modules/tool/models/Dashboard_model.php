@@ -12,6 +12,7 @@ class Dashboard_model extends XY_Model
     private $customer_table = "customer";
     private $customer_stock_table = "customer_stock";
     private $worker_table = "worker";
+    private $company_table = "worker_company";
     private $notify_table = "worker_notify";
     private $investing_table = "project_investing";
     private $recycling_table = "project_recycling";
@@ -64,9 +65,10 @@ class Dashboard_model extends XY_Model
 
     public function latest($limit=10)
     {
-        return $this->db->select("ps.*,c.realname , c.phone,w.realname referrer")->from($this->stock_table.' AS ps')
+        return $this->db->select("cp.title AS company ,cp.alias short_title,ps.*,c.realname , c.phone,w.realname referrer")->from($this->stock_table.' AS ps')
             ->where(array('ps.status'=>1))
             ->join($this->customer_table.' as c','c.customer_id = ps.customer_id','left')
+            ->join($this->company_table.' AS cp', 'cp.company_id = ps.company_id','left')
             ->join($this->worker_table.' as w','w.id = ps.referrer_id','left')
             ->order_by('ps.addtime desc')
             ->limit($limit)

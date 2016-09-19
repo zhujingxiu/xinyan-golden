@@ -68,6 +68,7 @@ class Stock extends Project
                 $rows[] = array(
                     'DT_RowId' => $row['project_sn'],
                     'sn' => $row['project_sn'].'<br>'.($row['mode'] == 'investing' ? lang('text_investing') : lang('text_recycling')),
+                    'company' => $row['company'],
                     'customer' => $row['realname'].'<br>'.$row['phone'],
                     'status' => $row['status'] ? lang('label_growing') : lang('label_terminated'),
                     'referrer' => $row['referrer'],

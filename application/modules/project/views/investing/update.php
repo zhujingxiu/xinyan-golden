@@ -99,8 +99,8 @@
                 <div class="form-group clearfix">
                     <div class="input-group col-sm-11">
                         <span class="input-group-addon"><?php echo lang('text_referrer')?></span>
-                        <input type="text" id="referrer" class="form-control" />
-                        <input type="hidden" name="referrer"  />
+                        <input type="text" id="referrer" class="form-control" value="<?php echo $referrer?>"/>
+                        <input type="hidden" name="referrer" value="<?php echo $referrer_id?>" />
                     </div>
                 </div>
             </div>

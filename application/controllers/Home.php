@@ -46,6 +46,7 @@ class Home extends XY_Controller {
 
 				$data['projects'][] = array(
 					'mode' => $item['mode'] == 'investing' ? lang('text_investing') : lang('text_recycling'),
+					'company' => $item['short_title'],
 					'project_sn' => $item['project_sn'],
 					'customer' => $item['realname'].'<br>'.$item['phone'],
 					'referrer' => $item['referrer'],

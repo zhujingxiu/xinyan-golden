@@ -41,7 +41,7 @@
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">黄金</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><img src="<?php echo asset_url('images/logo.png')?>"></span>
+                <span class="logo-lg"><img src="<?php echo asset_url('images/logo.gif')?>"></span>
             </a>
         <!-- Header Navbar: style can be found in header.less -->
             <?php echo $navbar ?>
@@ -59,7 +59,7 @@
 
 	    <footer class="main-footer">
 
-	        <strong>Copyright &copy; 2016 <a href="https://www.gong-e.com">信研普惠金融</a>.</strong>
+	        <strong >Ver 1.6.9</strong>
 	    </footer>
 	    <?php echo $controlbar; ?>
 	</div>

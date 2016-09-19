@@ -51,6 +51,7 @@
                         <thead>
                         <tr>
                             <th>公司名称</th>
+                            <th>简称</th>
                             <th>添加时间</th>
                             <th>状态</th>
                         </tr>
@@ -59,6 +60,7 @@
                         <?php foreach ($companies as $item):?>
                             <tr data-entry="<?php echo $item['company_id'];?>" class="company-row">
                                 <td><?php echo $item['title'];?></td>
+                                <td><?php echo $item['alias'];?></td>
                                 <td><?php echo date('Y-m-d H:i:s',$item['addtime']);?></td>
 
                                 <td><?php echo $item['status'] ? lang('label_enabled') : lang('label_disabled');?></td>
@@ -87,7 +89,12 @@
                                 <input type="text" name="title" id="form-title" class="form-control">
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="" class="control-label col-sm-3">简称</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="alias" id="form-title" class="form-control">
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="" class="control-label col-sm-3">状态</label>
                             <div class="col-sm-9">

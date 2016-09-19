@@ -5,7 +5,6 @@
  *
  */
 
-window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs');
@@ -28,6 +27,7 @@ define(function(require,exports,modules){
                 },
                 "columns": [
                     {"data": "status", "name": "p.status"},
+                    {"data": "company", "name": "p.company"},
                     {"data": "sn", "name": "p.project_sn"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "weight", "name": "p.weight"},
