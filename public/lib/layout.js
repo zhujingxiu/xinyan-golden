@@ -1161,7 +1161,7 @@ define(function(require, exports, module) {
                     exports.render_message(json.msg, json.title);
                 }
             },'json');
-        },20*60*1000);
+        },2*60*1000);
     }
     exports.menu = function () {
         $(function(){

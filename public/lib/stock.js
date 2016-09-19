@@ -4,9 +4,7 @@
  * DateTime: 2016/9/2 0002 11:47
  *
  */
-/**
- * Created by Administrator on 2016/8/8 0008.
- */
+
 window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
 define(function(require,exports,modules){
     require('datatables')
@@ -65,6 +63,9 @@ define(function(require,exports,modules){
                     }
                     if(json.terminable){
                         options.btn = ['终止项目', '取消'];
+                        if(json.print){
+                            options.btn = ['终止项目', '取消','打印协议'];
+                        }
                         options.yes = function (index, layero) {
                             layer.prompt({
                                 formType: 2,
@@ -93,6 +94,11 @@ define(function(require,exports,modules){
                                 }
                             });
                         };
+                        if(json.print){
+                            options.btn3 = function (index, layero) {
+                                alert('打印')
+                            }
+                        }
                     }else{
                         options.btn = [ '关闭'];
                     }

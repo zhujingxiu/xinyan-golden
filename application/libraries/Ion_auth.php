@@ -380,8 +380,8 @@ class Ion_auth
 		return $this->get_user_id() ? $this->ion_auth_model->hash_password_db($this->get_user_id(),$pwd) : false;
 	}
 
-	function group_users($code){
-		$result = $this->ion_auth_model->get_users_by_group_code($code);
+	function group_users($code,$company=FALSE){
+		$result = $this->ion_auth_model->get_users_by_group_code($code,$company);
 		if($result->num_rows()){
 			return $result->result_array();
 		}

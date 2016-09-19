@@ -31,15 +31,82 @@ class Tool_model extends XY_Model
         return FALSE;
     }
 
-    public function lastprice()
+    public function hexun_price($url)
     {
-        $date = ( date('w') == 0 || date('w') == 6 ) ? date('Y-m-d',strtotime('last Friday')) : date('Y-m-d',strtotime("-1 day"));
-        $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_price")->get();
-        if($query->num_rows()){
-            $result = $query->row_array();
-            return (float)$result['price'];
-        }else{
-            $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_today")->order_by('updatetime desc')->get();
+        $result = curl_get($url,array('t'=>time()));
+        if($result && is_string($result)){
+            $maybe_json_string = trim(trim($result,'('),')');
+            $list = json_decode($maybe_json_string,TRUE);
+            if(is_array($list)){
+                $this->db->trans_begin();
+                $insert_batch =array();
+                foreach($list as $item){
+                    if(!isset($item['Code']) || !isset($item['Price']) || !isset($item['Date'])){
+                        continue;
+                    }
+                    if($item['Code'] == 'Ag(T+D)'){
+                        continue;
+                    }
+                    $updatetime = strtotime($item['Date']);
+                    $query = $this->db->where(array("updatetime"=>$updatetime,"type"=>$item['Code']))->from("golden_today")->get();
+                    if($query->num_rows()){
+                        continue;
+                    }
+                    $insert_batch[] = array(
+                        'date' => date('Y-m-d',$updatetime),
+                        'type' => $item['Name'],
+                        'typename' => $this->getTypeName($item['Name']),
+                        'price' => $item['Price'],
+                        'lastclosing' => $item['PreClose'],
+                        'maxprice' => $item['High'],
+                        'minprice' => $item['Low'],
+                        'change' => $item['Updown'],
+                        'updatetime' => $updatetime,
+                        'addtime' => time(),
+                    );
+                }
+                if($insert_batch){
+                    $this->db->insert_batch('golden_today',$insert_batch);
+                }
+                if ($this->db->trans_status() === FALSE)
+                {
+                    $this->db->trans_rollback();
+                    return FALSE;
+                }else{
+                    $this->db->trans_commit();
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
+
+    private function getTypeName($name){
+        switch($name){
+            case 'Ag(T+D)':
+                break;
+            case 'Au(T+D)':
+                $text = '黄金延期';
+                break;
+            case 'Au99.99':
+                $text = '沪金99';
+                break;
+        }
+        return $text;
+    }
+
+    public function lastprice($lastday=FALSE)
+    {
+        if($lastday){
+            $date = ( date('w') == 0 || date('w') == 6 ) ? date('Y-m-d',strtotime('last Friday')) : date('Y-m-d',strtotime("-1 day"));
+            $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_price")->get();//,
+            if($query->num_rows()){
+                $result = $query->row_array();
+                return (float)$result['price'];
+            }
+        }
+        else{
+            $query = $this->db->where(array('type'=>'Au99.99'))->from("golden_today")->order_by('updatetime desc')->get();
             if($query->num_rows()){
                 $result = $query->row_array();
                 return (float)$result['price'];

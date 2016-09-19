@@ -21,6 +21,7 @@ class Customer extends XY_Controller {
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
+        $url = $this->setting->get_setting('hexun_url');
 
         $this->layout->view('customer/index',$data);
     }

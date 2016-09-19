@@ -40,4 +40,25 @@ class Crontab extends MX_Controller
 
         //http://data.gold.hexun.com/outData/AuSH.ashx
     }
+
+    public function live_price($token)
+    {
+        //$ php index.php tool crontab live_price q3f5UbyrvkACAZBHW7iOlyLuqSTA4L8KCkM
+        if(XEncrypt($token,'D')==$this->config->item('cron_encrypt')) {
+            set_time_limit(0);
+            ignore_user_abort(true);
+            $interval = $this->setting->get_setting('hexun_interval') ? (int)$this->config->item('hexun_interval') : 5 * 60;
+            $url = $this->setting->get_setting('hexun_url');
+            if($url) {
+                do {
+                    $this->tool_model->hexun_price($url);
+                    sleep($interval);
+                } while (TRUE);
+            }
+        }else{
+            die('Deny');
+        }
+
+        //http://data.gold.hexun.com/outData/AuSH.ashx
+    }
 }

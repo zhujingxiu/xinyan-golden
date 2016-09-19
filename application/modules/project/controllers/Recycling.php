@@ -158,8 +158,8 @@ class Recycling extends Project {
                     $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
                 }
             }
-            $info['transferrers'] = $this->group_users('manager');
-            $info['appraisers'] = $this->group_users('appraiser');
+            $info['transferrers'] = $this->group_users('manager',$this->company_id);
+            $info['appraisers'] = $this->group_users('appraiser',$this->company_id);
             $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
             $info['csrf'] = $this->_get_csrf_nonce();
             //var_dump($this->session->flashdata('csrfkey'));
@@ -267,8 +267,8 @@ class Recycling extends Project {
                     }
                 }
                 $title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
-                $info['transferrers'] = $this->group_users('manager');
-                $info['appraisers'] = $this->group_users('appraiser');
+                $info['transferrers'] = $this->group_users('manager',$this->company_id);
+                $info['appraisers'] = $this->group_users('appraiser',$this->company_id);
                 $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
                 //lock
                 $info['unlock'] = false;
@@ -443,7 +443,7 @@ class Recycling extends Project {
                 $starttime  = strtotime($info['start']);
                 $info['end'] = calculate_end($starttime,$info['month']);
                 $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
-                $info['transferrers'] = $this->group_users('warehouser');
+                $info['transferrers'] = $this->group_users('warehouser',$this->company_id);
 
                 $title = '项目核实 '.$info['realname'].':'.$info['project_sn'];
                 //lock

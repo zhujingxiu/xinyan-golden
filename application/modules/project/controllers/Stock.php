@@ -133,7 +133,8 @@ class Stock extends Project
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
                 'msg'=>$this->load->view('project',$info,TRUE),
                 'mode'=>strtolower($info['mode']),
-                'terminable'=>$info['status'] && $this->inRole('manager')
+                'terminable'=>$info['status'] && $this->inRole('manager'),
+                'print'=>$info['status'] && $this->inRole('manager')
             ));
         }else{
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -199,5 +200,10 @@ class Stock extends Project
             json_success();
         }
         json_error();
+    }
+
+    public function privacy()
+    {
+        $params = XEncrypt($this->input->get('xe'),'D');
     }
 }

@@ -72,7 +72,7 @@ class Login extends MX_Controller {
         }else{
             $data = $this->tool_model->range_price('day');
             $data['title'] = $this->lang->line('text_price_today','default');
-            $data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice().$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
+            $data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice(true).$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
             $data['current'] = $this->tool_model->gold_price();
         }
         if($data){

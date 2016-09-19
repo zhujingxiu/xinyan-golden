@@ -142,7 +142,7 @@
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">损耗比例</span>
-                                        <span class="form-control"><?php echo $loss ?>%</span>
+                                        <span class="form-control"><?php echo $loss ?></span>
                                     </div>
                                 </div>
                             </div>

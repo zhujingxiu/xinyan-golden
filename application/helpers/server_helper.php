@@ -343,10 +343,10 @@ function curl_post($url,$data)
 	return $output;
 }
 
-function curl_get($url,$data){
+function curl_get($url,$data=array()){
 	//设置选项，包括URL
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($data));
+	curl_setopt($ch, CURLOPT_URL, $url.($data?'?'.http_build_query($data):''));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_HEADER, 0);
 

@@ -12,6 +12,8 @@ class Api extends XY_Controller {
 	public function index()
 	{
 		$data = $this->setting->get_settings_by_group('api');
+		$data['hexun_url'] = (isset($data['hexun_url'])) ? $data['hexun_url'] :'';
+		$data['hexun_interval'] = (isset($data['hexun_interval'])) ? $data['hexun_interval'] :'';
 		$this->layout->view('api',$data);
 	}
 

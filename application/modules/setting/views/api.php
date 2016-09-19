@@ -25,7 +25,6 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#api-gold" data-toggle="tab">黄金价格查询接口</a></li>
                             <li class="disabled"><a href="#api-sms" data-toggle="tab">短信接口</a></li>
-                            <li class="hidden"><a href="#tab_3" data-toggle="tab">Tab 3</a></li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="api-gold">
@@ -177,22 +176,32 @@ updatetime：更新时间
 status见错误码列表。
 </pre>
                                     </div>
+                                    <div class="col-sm-12">
+                                        <?php echo form_open('setting/api/save', array('id' =>'api-hexun-price','class'=>'form-horizontal' ))?>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">和讯URL</span>
+
+                                                <input type="text" name="hexun_url" class="form-control" value="<?php echo $hexun_url?>">
+
+                                                <span class="input-group-addon">间隔时间</span>
+
+                                                <input type="text" name="hexun_interval" class="form-control" value="<?php echo $hexun_interval?>">
+                                                <span class="input-group-addon">秒</span>
+                                                <span class="input-group-btn">
+                                                        <button type="button" form="api-hexun-price" class="btn btn-primary btn-flat btn-form-save">保存</button>
+                                                    </span>
+                                            </div>
+                                        </div>
+                                        <?php echo form_close()?>
+                                    </div>
                                 </div>
                             </div>
                             <!-- /.tab-pane -->
                             <div class="tab-pane" id="api-sms">
                                 <h3>暂未开通......</h3>
                             </div>
-                            <!-- /.tab-pane -->
-                            <div class="tab-pane hidden" id="tab_3">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                It has survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                                like Aldus PageMaker including versions of Lorem Ipsum.
-                            </div>
+
                             <!-- /.tab-pane -->
                         </div>
                         <!-- /.tab-content -->

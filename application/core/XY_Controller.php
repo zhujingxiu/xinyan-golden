@@ -4,6 +4,7 @@ class XY_Controller extends MX_Controller {
     protected $tpl_data = array();
     protected $worker;
     protected $worker_id = FALSE;
+    protected $company_id = FALSE;
     protected $ajax_permission = FALSE;
     protected $current_url = FALSE;
     protected $module = FALSE;
@@ -21,6 +22,7 @@ class XY_Controller extends MX_Controller {
             // 登录用户信息
             $this->worker = $this->ion_auth->get_info();
             $this->worker_id = $this->worker['id'];
+            $this->company_id = $this->worker['company_id'];
             $this->module = $this->uri->segment(1);
 
             $url = strtolower($this->uri->uri_string());
@@ -130,8 +132,8 @@ class XY_Controller extends MX_Controller {
         }
     }
 
-    public function group_users($code){
-        return $this->ion_auth->group_users($code);
+    public function group_users($code,$company=FALSE){
+        return $this->ion_auth->group_users($code,$company);
     }
 
     public function inRole($role=array())

@@ -73,7 +73,7 @@
         <!-- /.row -->
         <!-- Main row -->
         <div class="row">
-            <section class="col-lg-12 connectedSortable">
+            <section class="col-lg-12 connectedSortable hidden">
                 <div class="box box-info">
                     <div class="box-header">
                         <i class="fa fa-line-chart"></i>

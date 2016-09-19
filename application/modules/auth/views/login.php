@@ -32,7 +32,7 @@
     </div>
     <div class="loginMain">
         <div class="loginWidth">
-            <div class="loginLogoDiv" style="display: none;">
+            <div class="loginLogoDiv" >
                 <a class="loginLogo" href="<?php echo base_url();?>"></a>
             </div>
             <?php echo form_open("auth/login", ['class' => 'formLogin', 'id' => "login_form"]); ?>

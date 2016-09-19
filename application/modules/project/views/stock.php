@@ -74,7 +74,7 @@
             </div>
             <!-- /.col -->
             <div class="col-xs-3">
-                <div class="box box-info">
+                <div class="box box-info hidden">
                     <div class="box-header">
                         <i class="fa fa-line-chart"></i>
 
