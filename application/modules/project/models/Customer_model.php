@@ -6,12 +6,15 @@ class Customer_model extends XY_Model{
     private $table = 'customer';
     private $stock_table = 'customer_stock';
     private $project_stock_table = 'project_stock';
+    private $recycling_table = 'project_recycling';
+    private $recycling_history_table = 'project_recycling_history';
     private $project_table = 'project_stock';
     private $group_table = 'customer_group';
     private $apply_table = 'customer_apply';
     private $history_table = 'customer_history';
     private $worker_table = 'worker';
     private $card_table = 'customer_card';
+    private $file_table = 'project_file';
 
     public function customer($customer_id,$simple=FALSE)
     {
@@ -222,6 +225,7 @@ class Customer_model extends XY_Model{
             'note'=>empty($data['note']) ? '' : $data['note'],
             'status'=>(int)$data['status'],
             'worker_id'=> $this->ion_auth->get_user_id(),
+            'company_id' => $this->ion_auth->get_company_id(),
             'lasttime' => time()
         ),array('customer_id'=>$id));
         return $this->db->affected_rows();
@@ -450,19 +454,100 @@ class Customer_model extends XY_Model{
         return FALSE;
     }
 
-    private function format_file_value($data){
-
-        if(is_array($data) && count($data)){
-            $_file = array();
-            foreach($data as  $item){
-                $_tmp = explode("|",$item);
-                if(count($_tmp) > 1){
-                    $_file[] = array('name'=> $_tmp[0],'path'=>$_tmp[1]);
-                }
-            }
-            return $_file ? json_encode($_file):'';
+    public function renew($data=array()){
+        if(empty($data['customer_id']) || empty($data['weight'])) {
+            return False;
         }
+        $this->trigger_events('pre_renew_recycling');
+
+        $this->db->trans_begin();
+        $customer_id = $data['customer_id'];
+
+        $result = $this->customer($customer_id,TRUE);
+        if(!$result || !$result->num_rows()){
+
+            return FALSE;
+        }
+        $customer = $result->row_array();
+        $project_sn = $this->generate_sn();
+        $start = $this->calculate_start(time());
+        $end = calculate_end(strtotime($start),$data['month']);
+
+        $this->db->insert($this->recycling_table, array(
+            'project_sn' => $project_sn ,
+            'customer_id' => $customer_id,
+            'referrer_id' => $customer['referrer_id'],
+            'company_id' => empty($customer['company_id'])? $this->ion_auth->get_company_id() : $customer['company_id'],
+            'type' => 'renew',
+            'price' => (float)$data['price'],
+            'origin_weight' => (float)$data['weight'],
+            'number' => 1,
+            'appraiser_id' => 0,
+            'transferrer' => $data['transferrer'],
+            'weight' => (float)$data['weight'],
+            'month' => (int)$data['month'],
+            'profit' => (float)$data['profit'],
+            'payment' => $data['payment'],
+            'loss' => 0.00,
+            'start' => $start,
+            'end' => $end,
+            'note' =>  htmlspecialchars($data['editorValue']),
+            'status_id' => $this->config->item('recycling_renew'),
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time(),
+            'lasttime' => time()
+        ));
+        $project_id = $this->db->insert_id();
+
+        if(isset($data['privacy'])){
+            $this->db->insert($this->file_table,array(
+                'project_sn' => $project_sn,
+                'dir' => 'privacy',
+                'mode' => $this->mode,
+                'file' => $this->format_file_value($data['privacy']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        $this->db->insert($this->recycling_history_table,array(
+            'project_id' => $project_id,
+            'status_id' => $this->config->item('recycling_renew'),
+            'note' => htmlspecialchars($data['editorValue']),
+            'request' => empty($data['card_serial'])? $data['card_serial']:'',
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time(),
+            'ip' => $this->_prepare_ip($this->input->ip_address())
+        ));
+
+        $tmp = array(
+            'project_sn' => $project_sn,
+            'note' => sprintf(lang('text_stock_renew'),number_format($data['weight'],2)),
+            'customer_id' => $customer_id,
+            'fee' => 0.00,
+            'mode' => 'out',
+            'notify' => 1,
+            'weight' => (float)$data['weight']*(-1.00),
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time()
+        );
+        if(isset($data['privacy'])){
+            $tmp['file'] = $this->format_file_value($data['privacy']);
+        }
+        $this->db->insert($this->stock_table,$tmp);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_unsuccessful'));
+            $this->set_error('renew_unsuccessful');
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
+        $this->set_message('renew_successful');
+        return TRUE;
+
     }
-
-
 }

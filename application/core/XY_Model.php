@@ -373,9 +373,55 @@ class XY_Model extends CI_Model
     protected function activity($content)
     {
         $this->db->insert('worker_activity',array(
-           'content' => $content,
+            'content' => $content,
             'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time()
+            'addtime' => time(),
+            'ip' => $this->_prepare_ip($this->input->ip_address()),
         ));
+    }
+
+    protected function format_file_value($data){
+
+        if(is_array($data) && count($data)){
+            $_file = array();
+            foreach($data as  $item){
+                $_tmp = explode("|",$item);
+                if(count($_tmp) > 1){
+                    $_file[] = array('name'=> $_tmp[0],'path'=>$_tmp[1]);
+                }
+            }
+            return $_file ? json_encode($_file):'';
+        }
+    }
+
+    protected function generate_sn($mode='recycling'){
+        if($mode == 'investing'){
+            $table = 'project_investing';
+            $prefix = 'GM';
+        }else{
+            $table = 'project_recycling';
+            $prefix = 'GR';
+        }
+        $_sn = $prefix.date('ymd').rand(100,999).date('H').rand(1,9).date('is');
+
+        $this->db->where(array('project_sn'=>$_sn));
+        if($this->db->count_all_results($table) >0){
+            $_sn = $this->generate_sn();
+        }
+        return $_sn;
+    }
+
+    protected function calculate_start($addtime)
+    {
+        $start = FALSE;
+        switch(strtolower($this->config->item('growing_mode'))){
+            case 't0':
+                $start = date('Y-m-d',$addtime);
+                break;
+            case 't1':
+                $start = date('Y-m-d',$addtime+24*60*60);
+                break;
+        }
+        return $start;
     }
 }

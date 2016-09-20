@@ -71,7 +71,7 @@ class Recycling extends Project {
                     'sn'		=> $row['project_sn'],
                     'customer' 	=> $row['realname'].'<br>'.$row['phone'],
                     'referrer' 	=> $row['referrer'],
-                    'gold'      => ($row['type']=='goldbar' ? lang('text_goldbar'):lang('text_ornaments')).' x '.$row['number'].lang('text_number_unit').($cover ? '<br>'.$cover : ''),
+                    'gold'      => $this->type_text($row['type']).' x '.$row['number'].lang('text_number_unit').($cover ? '<br>'.$cover : ''),
                     'payment'	=> $row['payment'] =='cash' ? lang('text_cash') : lang('text_gold'),
                     'origin'	=> number_format($row['origin_weight'],2).lang('text_weight_unit') ,
                     'period'	=> $row['month'].lang('text_period_unit') ."<br>".lang('text_profit').calculate_profit($row['profit'],$row['month']).lang('text_profit_unit') ,

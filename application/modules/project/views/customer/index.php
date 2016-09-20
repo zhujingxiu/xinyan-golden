@@ -57,8 +57,8 @@
                             <th>推荐人</th>
                             <th>状态</th>
                             <th>金库</th>
-                            <th>可用</th>
                             <th>冻结</th>
+                            <th>可用</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -74,8 +74,8 @@
                             <th>推荐人</th>
                             <th>状态</th>
                             <th>金库</th>
-                            <th>可用</th>
                             <th>冻结</th>
+                            <th>可用</th>
                             <th></th>
                         </tr>
                         </tfoot>
@@ -101,5 +101,6 @@
         c.render_project();
         c.render_bind();
         c.render_unbind();
+        c.render_renew();
     });
 </script>

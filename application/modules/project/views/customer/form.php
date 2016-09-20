@@ -1,12 +1,14 @@
-<div class="nav-tabs-custom">
+<?php if($customer_id){?>
+<div class="nav-tabs-custom" style="margin:10px;">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#customer" data-toggle="tab">客户资料</a></li>
         <li><a href="#projects" data-toggle="tab">项目列表</a></li>
     </ul>
-    <div class="tab-content" style="padding:0px; ">
+    <div class="tab-content" >
         <div class="tab-pane active" id="customer">
-            <div class="col-sm-12" style="padding-top:20px; ">
-                <?php echo form_open_multipart('/project/customer/update',array('id' => "form-customer"))?>
+            <?php }?>
+            <div class="col-sm-12" <?php echo (!$customer_id) ? 'style="margin-top:20px;"':''?>>
+                <?php echo form_open('/project/customer/update',array('id' => "form-customer"))?>
                 <?php echo form_hidden('customer_id',$customer_id)?>
                 <div class="col-sm-6">
                     <div class="form-group clearfix">
@@ -103,12 +105,14 @@
                 </div>
                 <?php echo form_close();?>
             </div>
+            <?php if($customer_id){?>
         </div>
         <div class="tab-pane" id="projects">
 
         </div>
     </div>
 </div>
+<?php }?>
 <script type="text/javascript">
     $(function () {
         $.validator.setDefaults({

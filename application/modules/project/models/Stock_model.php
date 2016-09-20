@@ -145,7 +145,7 @@ class Stock_model extends XY_Model{
         return FALSE;
     }
 
-    public function terminated($project_sn,$reason='',$mode='recycling'){
+    public function terminated($project_sn,$reason='',$mode='recycling',$profit=''){
         $this->trigger_events('pre_terminated_project');
         $this->db->trans_begin();
         $project = $this->_project($project_sn,$mode);
@@ -182,20 +182,34 @@ class Stock_model extends XY_Model{
                 'addtime' => time()
             ));
             //close stock table ,relax mode = in  project weight and calculate project unfinished profit insert into customer stock table
-            if(is_date($project['start']) && is_date($project['end']) ) {
-                if(time()<strtotime($project['end'])){
-                    $number = floor((time()-strtotime($project['start']))/(24*60*60*30));
-                    $this->db->insert($this->customer_stock_table, array(
-                        'customer_id' => $project['customer_id'],
-                        'mode' => 'profit',
-                        'project_sn' => $project_sn,
-                        'weight' => $this->calculate_unfinished_profit($project['month'],$project['profit'],$number,$project['weight']),
-                        'notify' => 1,
-                        'note' => lang('text_unfinished_profit'),
-                        'worker_id' => $this->ion_auth->get_user_id(),
-                        'addtime' => time()
-                    ));
+
+            if($profit === FALSE) {
+                if (is_date($project['start']) && is_date($project['end'])) {
+                    if (time() < strtotime($project['end'])) {
+                        $number = floor((time() - strtotime($project['start'])) / (24 * 60 * 60 * 30));
+                        $this->db->insert($this->customer_stock_table, array(
+                            'customer_id' => $project['customer_id'],
+                            'mode' => 'profit',
+                            'project_sn' => $project_sn,
+                            'weight' => $this->calculate_unfinished_profit($project['month'], $project['profit'], $number, $project['weight']),
+                            'notify' => 1,
+                            'note' => lang('text_unfinished_profit'),
+                            'worker_id' => $this->ion_auth->get_user_id(),
+                            'addtime' => time()
+                        ));
+                    }
                 }
+            }else{
+                $this->db->insert($this->customer_stock_table, array(
+                    'customer_id' => $project['customer_id'],
+                    'mode' => 'profit',
+                    'project_sn' => $project_sn,
+                    'weight' => $profit,
+                    'notify' => 1,
+                    'note' => lang('text_unfinished_profit'),
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                    'addtime' => time()
+                ));
             }
 
             if ($this->db->trans_status() === FALSE)

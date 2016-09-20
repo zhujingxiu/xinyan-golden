@@ -188,20 +188,6 @@ class Recycling_model extends XY_Model{
         return TRUE;
     }
 
-    private function format_file_value($data){
-
-        if(is_array($data) && count($data)){
-            $_file = array();
-            foreach($data as  $item){
-                $_tmp = explode("|",$item);
-                if(count($_tmp) > 1){
-                    $_file[] = array('name'=> $_tmp[0],'path'=>$_tmp[1]);
-                }
-            }
-            return $_file ? json_encode($_file):'';
-        }
-    }
-
     public function files($project_sn,$type=FALSE){
         $info = $this->project($project_sn,TRUE);
         if($info->num_rows()) {
@@ -303,17 +289,6 @@ class Recycling_model extends XY_Model{
         }else{
             return FALSE;
         }
-    }
-
-    public function generate_sn(){
-
-        $_sn = 'GR'.date('ymd').rand(100,999).date('H').rand(1,9).date('is');
-
-        $this->db->where(array('project_sn'=>$_sn));
-        if($this->db->count_all_results($this->table) >0){
-            $_sn = $this->generate_sn();
-        }
-        return $_sn;
     }
 
     public function match_customer($where){
@@ -418,19 +393,7 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    protected function calculate_start($addtime)
-    {
-        $start = FALSE;
-        switch(strtolower($this->config->item('growing_mode'))){
-            case 't0':
-                $start = date('Y-m-d',$addtime);
-                break;
-            case 't1':
-                $start = date('Y-m-d',$addtime+24*60*60);
-                break;
-        }
-        return $start;
-    }
+
 
     public function project_instock($data)
     {
@@ -459,7 +422,7 @@ class Recycling_model extends XY_Model{
                     'idnumber' => $project['idnumber'],
                     'wechat' => $project['wechat'],
                     'price' => $project['price'],
-                    'type' => $project['type']=='goldbar' ?lang('text_gold'):lang('text_ornaments'),
+                    'type' => $this->type_text($project['type']),
                     'number' => $project['number'],
                     'origin_weight' => $project['origin_weight'],
                     'weight' => $project['weight'],
@@ -479,7 +442,24 @@ class Recycling_model extends XY_Model{
         $this->db->insert($this->stock_table,$tmp);
         return $this->db->insert_id();
     }
+    protected function type_text($type){
+        switch(strtolower($type)){
+            case 'goldbar':
+                $text = lang('text_goldbar');
+                break;
+            case 'ornaments':
+                $text = lang('text_ornaments');
+                break;
+            case 'renew':
+                $text = lang('text_renew_gold');
+                break;
+            case 'other':
+                $text = lang('text_other_type');
+                break;
+        }
+        return $text;
 
+    }
     public function project_growing($project_sn){
         if(empty($project_sn)) return FALSE;
 

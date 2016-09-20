@@ -32,8 +32,8 @@ define(function (require, exports, modules) {
                     {"data": "referrer", "name": "referrer"},
                     {"data": "status_text", "name": "c.status"},
                     {"data": "totals"},
-                    {"data": "available", "name": "available"},
                     {"data": "frozen", "name": "frozen"},
+                    {"data": "available", "name": "available"},
                     {"data": "operation"}
                 ],
             });
@@ -73,12 +73,26 @@ define(function (require, exports, modules) {
     exports.render_appling = function () {
 
         $('#list').delegate('.btn-appling','click', function (e) {
+            var card_serial = '';
+            //require('../base/iccardreader');
+            if(ICCardReader.Open()){
+                card_serial = ICCardReader.Request();//'sadsadsa';//
+                if(card_serial.length != 8){
+                    ICCardReader.Beep();
+                    alert('没有检测到磁卡，请重试！');
+                    return false;
+                }
+            }else{
+                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
+                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
+                return false;
+            }
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
             require('customValidate');
-            var id = $(this).parent().parent().attr('id');
-            exports.appling_dialog(id);
+            var id = $(this).parent().parent().parent().attr('id');
+            exports.appling_dialog(id,card_serial);
             //load_index = layer.confirm('申请提金或消费?', {
             //    icon: 3,
             //    btn: ['提金','消费'] //按钮
@@ -91,10 +105,10 @@ define(function (require, exports, modules) {
             //});
         });
     }
-    exports.appling_dialog = function(id){
+    exports.appling_dialog = function(id,card_serial){
         $.ajax({
             url:'/project/customer/applied',
-            data:{customer:id},
+            data:{customer:id,card_serial:card_serial},
             dataType:'json',
             beforeSend:function () {
                 load_index = layer.load();
@@ -120,6 +134,62 @@ define(function (require, exports, modules) {
                     l.render_message(json.msg,json.title);
                 }
             }
+        });
+    }
+    exports.render_renew = function () {
+
+        $('#list').delegate('.btn-renew','click', function (e) {
+            var card_serial = '9C8914DB';
+            /*
+            if (ICCardReader.Open()) {
+                card_serial = ICCardReader.Request();//'sadsadsa';//
+                if (card_serial.length != 8) {
+                    ICCardReader.Beep();
+                    alert('没有检测到磁卡，请重试！');
+                    return false;
+                }
+            } else {
+                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
+                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
+                return false;
+            }
+            */
+            require('layer');
+            require('ajaxSubmit');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('ajaxUpload');
+            var id = $(this).parent().parent().parent().attr('id');
+
+            $.ajax({
+                url: '/project/customer/renew',
+                data: {customer: id, card_serial: card_serial},
+                dataType: 'json',
+                beforeSend: function () {
+                    load_index = layer.load();
+                },
+                success: function (json) {
+                    layer.close(load_index);
+                    if (json.code == 1) {
+                        layer.open({
+                            type: 1,
+                            title: json.title,
+                            area: ['880px', '620px'],
+                            scrollbar: true,
+                            offset: '100px',
+                            zIndex: 99,
+                            btn: ['确认续存', '取消'],
+                            content: json.msg,
+                            yes: function (index, layero) {
+                                $('#form-renew').submit();
+                            }
+                        });
+                    } else {
+                        var l = require('layout');
+                        l.render_message(json.msg, json.title);
+                    }
+                }
+            });
         });
     }
     exports.order_dialog = function (id) {

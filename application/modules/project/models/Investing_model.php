@@ -94,7 +94,7 @@ class Investing_model extends XY_Model{
             ));
             $customer_id = $this->db->insert_id();
         }
-        $project_sn = $this->generate_sn();
+        $project_sn = $this->generate_sn($this->mode);
         $this->db->insert($this->table, array(
             'project_sn' => $project_sn,
             'customer_id' => $customer_id,
@@ -139,19 +139,6 @@ class Investing_model extends XY_Model{
         $this->trigger_events(array('post_insert_investing', 'post_insert_investing_successful'));
         $this->set_message('insert_successful');
         return TRUE;
-    }
-    private function format_file_value($data){
-
-        if(is_array($data) && count($data)){
-            $_file = array();
-            foreach($data as  $item){
-                $_tmp = explode("|",$item);
-                if(count($_tmp) > 1){
-                    $_file[] = array('name'=> $_tmp[0],'path'=>$_tmp[1]);
-                }
-            }
-            return $_file ? json_encode($_file):'';
-        }
     }
 
     public function files($project_sn,$type=FALSE){
@@ -209,16 +196,6 @@ class Investing_model extends XY_Model{
         }
     }
 
-    public function generate_sn(){
-
-        $_sn = 'GM'.date('ymd').rand(100,999).date('H').rand(1,9).date('is');
-
-        $this->db->where(array('project_sn'=>$_sn));
-        if($this->db->count_all_results($this->table) >0){
-            $_sn = $this->generate_sn();
-        }
-        return $_sn;
-    }
 
     public function match_customer($where){
         if(is_array($where) && count($where)){

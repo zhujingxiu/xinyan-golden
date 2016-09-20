@@ -134,6 +134,7 @@ class Stock extends Project
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
                 'msg'=>$this->load->view('project',$info,TRUE),
                 'mode'=>strtolower($info['mode']),
+                'terminating_form'=>$this->load->view('terminating',$info,TRUE),
                 'terminable'=>$info['status'] && $this->inRole('manager'),
                 'print'=>false//$info['status'] && $this->inRole('manager')
             ));
@@ -166,20 +167,26 @@ class Stock extends Project
             json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
         }
         $project_sn = $this->input->post('project_sn');
-        $reason = $this->input->post('value');
+        $reason = $this->input->post('editorValue');
+        $profit = $this->input->post('profit');
         $mode = $this->input->post('mode') ? $this->input->post('mode') : 'recycling';
         if(!$project_sn || !$reason){
             json_error();
         }
         if(strlen($reason) < 10){
-            json_error(array('msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
+            json_error(array('msg'=>lang('error_reason_length')));
         }
         $result = $this->stock_model->project($project_sn);
         if(!$result->num_rows()){
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
         }
 
-        if($this->stock_model->terminated($project_sn,$reason,$mode)){
+        $info = $result->row_array();
+        if($profit*100>=($info['profit']*$info['weight'])*100){
+            json_error(array('msg'=>lang('error_terminating_profit')));
+        }
+
+        if($this->stock_model->terminated($project_sn,$reason,$mode,$profit)){
             $this->session->set_flashdata('success', sprintf("项目已终止！编号: %s",$project_sn));
             json_success();
         }

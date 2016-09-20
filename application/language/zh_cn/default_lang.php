@@ -28,11 +28,15 @@ $lang['error_notify_member'] = '没有选定通知成员';
 $lang['error_notify_title'] = '请输入通知标题';
 $lang['error_login_captcha'] = '登录失败次数过多，请输入正确的验证码';
 $lang['error_card'] = '参数错误，请检查读卡器及磁卡';
+$lang['error_card_match'] = '提供的金卡和当前操作用户不匹配，请更换磁卡后重试';
 $lang['error_card_binded'] = '提供的金卡已绑定给客户<br> %s <br>请更换磁卡后重试';
+$lang['error_terminating_profit'] = '输入的金息不在合理的范围内，请重试';
 
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
 $lang['text_ornaments'] = "金饰";
+$lang['text_renew_type'] = "续存金";
+$lang['text_other_type'] = "其他";
 $lang['text_cash'] = "现金";
 $lang['text_gold'] = "黄金";
 $lang['text_currency_unit'] = "元";
@@ -49,6 +53,7 @@ $lang['text_appling'] = "申请提金 %s 克";
 $lang['text_applied_date'] = "申请日期";
 $lang['text_success_posted'] = "通知已发布";
 $lang['text_success_company'] = "公司信息已更改";
+$lang['text_stock_renew'] = "客户续存 %s 克";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";
@@ -96,8 +101,15 @@ $lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
 
 $lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
 $lang['button_bind'] = '<a class="btn btn-primary btn-bind">绑卡</a>';
-$lang['button_unbind'] = '<a class="btn btn-warning btn-unbind">解绑</a>';
+$lang['button_unbind'] = '<a class="btn btn-social btn-google btn-unbind" data-toggle="tooltip" title="解绑"> <i class="fa fa-unlock-alt"></i> %s </a>';
+$lang['button_available'] = '<div class="btn-group">
+                      <button type="button" class="btn btn-success">%s</button>
+                      <button type="button" class="btn btn-success btn-appling" data-toggle="tooltip" title="申请提金">提金</button>
+                        %s
+                    </div>';
 
+$lang['button_renew'] = '<button type="button" class="btn btn-success btn-renew" data-toggle="tooltip" title="续存生金">续存</button>';
+$lang['button_frozen'] = '<a class="btn btn-sm btn-flat btn-default" disabled>%s</a>';
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
 
 

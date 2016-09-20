@@ -64,30 +64,16 @@ define(function(require,exports,modules){
                             options.btn = ['终止项目', '取消','打印协议'];
                         }
                         options.yes = function (index, layero) {
-                            layer.prompt({
-                                formType: 2,
-                                title: '填写终止原因'
-                            }, function(value, index, elem){
-                                if(value.length >= 10) {
-                                    $.ajax({
-                                        type: 'post',
-                                        url: '/project/stock/terminated',
-                                        data: {project_sn: sn, value: value,mode:json.mode},
-                                        dataType: 'json',
-                                        beforeSubmit: function () {
-                                            layer.load();
-                                        },
-                                        success: function (json) {
-                                            if (json.code == 1) {
-                                                location.reload();
-                                            } else {
-                                                var l = require('layout');
-                                                l.render_message(json.msg, json.title);
-                                            }
-                                        }
-                                    })
-                                }else{
-                                    layer.tips('内容长度不小于10个字符', elem,{tips: 1});
+                            layer.open({
+                                type: 1,
+                                title: '即将提前终止项目',
+                                area:'520px',
+                                offset: '100px',
+                                zIndex:199,
+                                content:json.terminating_form,
+                                btn : ['确定终止', '取消'],
+                                yes:function( index, layero){
+                                    $('#form-terminating').submit();
                                 }
                             });
                         };

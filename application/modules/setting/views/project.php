@@ -407,6 +407,20 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="form-group ">
+                                                <label for="" class="control-label col-sm-2">客户续存初始状态</label>
+                                                <div class="col-sm-4">
+                                                    <select name="recycling_renew" class="form-control">
+                                                        <option value="0">--请选择--</option>
+                                                        <?php foreach($recycling_statuses as $item): ?>
+                                                            <option value="<?php echo $item['status_id']?>"
+                                                                <?php echo (!empty($setting['recycling_renew']) && $setting['recycling_renew']== $item['status_id']) ? 'selected' : ''?>>
+                                                                <?php echo $item['status_id'].' - '.$item['title'];?>
+                                                            </option>
+                                                        <?php endforeach?>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </filedset>
                                         <?php echo form_close()?>
                                     </div>

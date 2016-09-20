@@ -66,21 +66,23 @@ class Customer extends XY_Controller {
                     $operation = 'applied';
                 }
                 $cover = ($row['avatar'] && file_exists($row['avatar'])) ? $cover = '<img class="list-img" src="'.site_url($row['avatar']).'" alt="'.$row['realname'].'" />':false;
-                $available = '<a class="btn btn-sm btn-flat btn-success disabled" >'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+                $available = sprintf(lang('button_frozen'),number_format($row['available'],2).lang('text_weight_unit'));
                 if($row['available']*100>0 && $this->inRole('manager')){
-                    $available = '<a class="btn btn-sm btn-flat btn-success btn-appling" data-toggle="tooltip" title="可申请提金">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+                    //$available = '<a class="btn btn-sm btn-flat btn-success btn-appling" data-toggle="tooltip" title="可申请提金">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+                    $available = sprintf(lang('button_available'),
+                        number_format($row['available'],2).lang('text_weight_unit'),
+                        ($row['available']>10 ? lang('button_renew') : ''));
                 }
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
                     'customer' 	=> ($cover ? $cover : $row['realname']).'<br>'.$row['group_name'],
-
                     'referrer' 	=> $row['referrer'],
                     'phone'	    => $row['phone'],
                     'idnumber'	=> $row['idnumber'] ,
-                    'card_number'	=> $row['card_number'] ? ($row['card_number'].'<br>'.lang('button_unbind')) : lang('button_bind') ,
+                    'card_number'	=> $row['card_number'] ? sprintf(lang('button_unbind'),$row['card_number']) : lang('button_bind') ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> $available,
-                    'frozen'	=> '<a class="btn btn-sm btn-flat btn-default" disabled>'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>',
+                    'frozen'	=> sprintf(lang('button_frozen'),number_format($row['frozen'],2).lang('text_weight_unit')),
                     'totals'	=> '<a class="btn btn-sm btn-flat btn-info" disabled>'.number_format($row['available']+$row['frozen'],2).lang('text_weight_unit').'</a>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
@@ -168,6 +170,8 @@ class Customer extends XY_Controller {
                 'phone' => '',
                 'wechat' => '',
                 'qq' => '',
+                'email' => '',
+                'address' => '',
                 'note' => '',
                 'referrer' => '',
                 'idnumber' => '',
@@ -332,7 +336,22 @@ class Customer extends XY_Controller {
                 )));
             }
         }else{
-            $result = $this->customer_model->customer($this->input->get('customer'));
+            $card_serial = $this->input->get('card_serial');
+            $customer_id = $this->input->get('customer');
+            if(strlen($card_serial)!=8){
+                json_error(array('msg'=>lang('error_card')));
+            }
+            $result = $this->customer_model->get_bind($card_serial);
+
+            if($result->num_rows()){
+                $_customer = $result->row_array();
+                if($_customer['customer_id']!=$this->input->get('customer')){
+                    json_error(array('msg'=>lang('error_card_match')));
+                }
+            }else{
+                json_error(array('msg'=>lang('error_card_match')));
+            }
+            $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()){
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
@@ -584,4 +603,88 @@ class Customer extends XY_Controller {
 
     }
 
+    public function renew()
+    {
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('permission')));
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            if($this->_valid_csrf_nonce() === FALSE){
+                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
+            }
+            $this->form_validation->set_rules('customer_id', '客户编号', 'required');
+            $this->form_validation->set_rules('period_id', '续存周期', 'required');
+            $this->form_validation->set_rules('payment', '交付方式', 'required');
+            $this->form_validation->set_rules('weight', '续存克重', 'required');
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $tmp = array(
+                    'price'=>$this->current_price()
+                );
+                $this->load->model('setting/project_model');
+                $period = $this->project_model->period($this->input->post('period_id'));
+                if($period->num_rows()){
+                    $_p = $period->row_array();
+                    $tmp['month']=$_p['month'];
+                    $tmp['profit']=calculate_rate($_p['profit'],$_p['month']);
+                }else{
+                    json_error(array('msg'=>lang('error_period')));
+                }
+
+                if($this->customer_model->renew( $this->input->post()+$tmp)){
+                    $this->session->set_flashdata('success', '客户续存成功！');
+                    json_success();
+                }else{
+                    //json_error();
+                }
+            }else {
+                $errors = array(
+                    'customer_id' => form_error('customer_id'),
+                    'payment' => form_error('payment'),
+                    'period_id' => form_error('period_id'),
+                    'weight' => form_error('weight'),
+                );
+                if($this->config->item('recycling_privacy')){
+                    //$errors['agree'] = form_error('agree');
+                }
+                json_error(array('errors' => $errors));
+            }
+        }else{
+            $card_serial = $this->input->get('card_serial');
+            $customer_id = $this->input->get('customer');
+            if(strlen($card_serial)!=8){
+                json_error(array('msg'=>lang('error_card')));
+            }
+            $result = $this->customer_model->get_bind($card_serial);
+
+            if($result->num_rows()){
+                $_customer = $result->row_array();
+                if($_customer['customer_id']!=$this->input->get('customer')){
+                    json_error(array('msg'=>lang('error_card_match')));
+                }
+            }else{
+                json_error(array('msg'=>lang('error_card_match')));
+            }
+            $result = $this->customer_model->customer($customer_id);
+            if($result->num_rows()) {
+                $info = $result->row_array();
+            }
+            $info['card_serial'] = $card_serial;
+            $info['agree'] = '';
+            if($this->config->item('recycling_privacy')){
+                $this->load->model('article/article_model');
+                $article = $this->article_model->article($this->config->item('recycling_privacy'))->row_array();
+                if(!empty($article['title'])) {
+                    $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
+                }
+            }
+            $info['transferrers'] = $this->group_users('warehouser',$this->company_id);
+            $this->load->model('setting/project_model');
+            $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
+            $info['csrf'] = $this->_get_csrf_nonce();
+            //var_dump($this->session->flashdata('csrfkey'));
+            json_success(array('title'=>'客户续存入库','msg'=>$this->load->view('customer/renew',$info,TRUE)));
+        }
+    }
 }
