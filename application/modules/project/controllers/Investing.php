@@ -39,7 +39,7 @@ class Investing extends Project {
 		}
 		//搜索
 		if($filter['search']['value']){//获取前台传过来的过滤条件
-
+			$temp['or_where'] = $filter['search']['value'];
 		}
 
 		//分页
@@ -625,5 +625,25 @@ class Investing extends Project {
 		}else if( $this->investing_model->reset_locker($project_sn)){
 			//json_success(array('reset'=>1));
 		}
+	}
+
+	public function privacy(){
+		$sn = XEncrypt($this->input->get('xe'),'D');
+		$result = $this->investing_model->project($sn);
+
+
+		if($result && $result->num_rows()){
+
+			$project = $result->row_array();
+			if(in_array($project['status_id'],array($this->config->item('investing_refused'),$this->config->item('investing_terminated')))){
+
+				die( '参数异常，您查找的项目不符合打印协议');
+			}
+			$this->layout->view('privacy',$project,FALSE);
+		}else{
+			die( '参数异常，您查找的项目不存在');
+		}
+
+
 	}
 }

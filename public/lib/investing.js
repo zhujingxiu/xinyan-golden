@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2016/8/8 0008.
  */
-window.UEDITOR_HOME_URL = "/public/lib/ueditor/";
+
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs');
@@ -48,8 +48,6 @@ define(function(require,exports,modules){
         $('#btn-new').bind('click',function() {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('ajaxUpload');
@@ -58,7 +56,7 @@ define(function(require,exports,modules){
                     layer.open({
                         type: 1,
                         title: json.title,
-                        area: '880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex: 99,
                         btn: ['保存', '取消'],
@@ -80,8 +78,6 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-update','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             var sn = $(this).parent().parent().attr('id');
@@ -90,7 +86,7 @@ define(function(require,exports,modules){
                     var options = {
                         type: 1,
                         title: json.title,
-                        area: '880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex: 99,
                         content: json.msg,
@@ -130,18 +126,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-checking','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/checked', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -183,18 +176,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-confirming','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/confirmed', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -232,18 +222,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-detail','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/investing/detail', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,

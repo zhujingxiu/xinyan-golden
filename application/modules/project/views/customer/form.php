@@ -77,13 +77,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
+                <div class="col-sm-6">
+                    <div class="form-group clearfix">
+                        <div class="input-group col-sm-11">
+                            <span class="input-group-addon">Email</span>
+                            <input name="address" class="form-control" value="<?php echo $email;?>">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group clearfix">
                         <div class="input-group col-sm-12">
                             <span class="input-group-addon">联系地址</span>
                             <input name="address" class="form-control" value="<?php echo $address;?>">
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-12">
+
                     <div class="form-group clearfix">
                         <div class="input-group col-sm-12">
                             <textarea name="editorValue" class="form-control" placeholder="输入客户备注信息"><?php echo $note;?></textarea>

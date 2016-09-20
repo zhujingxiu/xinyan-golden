@@ -155,9 +155,7 @@
 <script type="text/javascript">
     var price='<?php echo $price;?>';
     $(function () {
-        $('#timeline-box').slimScroll({
-            height: '560px'
-        });
+
         <?php if($editable):?>
         $.validator.setDefaults({
             errorElement : 'span',

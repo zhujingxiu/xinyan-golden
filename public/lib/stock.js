@@ -45,18 +45,15 @@ define(function(require,exports,modules){
         $('#list').delegate('.btn-detail','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/stock/detail', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -115,18 +112,15 @@ define(function(require,exports,modules){
         $('#btn-new').bind('click',function(){
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/stock/storage', {n:Math.random()}, function(json){
                 if(json.code==1){
                     layer.open({
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         btn: ['补仓', '取消'],

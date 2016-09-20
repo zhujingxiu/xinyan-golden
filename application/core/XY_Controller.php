@@ -41,7 +41,7 @@ class XY_Controller extends MX_Controller {
             }
             $this->current_url = $url;
             if(!$this->isAllowed($url)){
-                var_dump($url);
+
                 if($this->input->server('HTTP_X_REQUESTED_WITH') && strtolower($this->input->server('HTTP_X_REQUESTED_WITH')) == 'xmlhttprequest'){
                     $this->session->set_flashdata(array('ajax_permission'=>lang('error_no_permission').' <br> ['.$url.']'));
                 }else{

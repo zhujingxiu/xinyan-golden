@@ -39,7 +39,7 @@ class Recycling extends Project {
         }
         //搜索
         if($filter['search']['value']){//获取前台传过来的过滤条件
-
+            $temp['or_where'] = $filter['search']['value'];
         }
 
         //分页
@@ -335,7 +335,8 @@ class Recycling extends Project {
             json_success(array(
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
                 'msg'=>$this->load->view('recycling/detail',$info,TRUE),
-                'terminable'=>false//$this->inRole('manager')
+                'terminable'=>false,//$this->inRole('manager')
+                'print'=>$this->inRole('manager')?site_url('project/recycling/privacy?xe='.XEncrypt($info['project_sn'])):False
             ));
         }else{
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -661,5 +662,24 @@ class Recycling extends Project {
         }else if( $this->recycling_model->reset_locker($project_sn)){
             //json_success(array('reset'=>1));
         }
+    }
+
+    public function privacy(){
+        $sn = XEncrypt($this->input->get('xe'),'D');
+        $result = $this->recycling_model->project($sn);
+
+        if($result && $result->num_rows()){
+
+            $project = $result->row_array();
+            if(in_array($project['status_id'],array($this->config->item('recycling_refused'),$this->config->item('recycling_terminated')))){
+
+                die( '参数异常，您查找的项目不符合打印协议');
+            }
+            $this->layout->view('privacy',$project,FALSE);
+        }else{
+            die( '参数异常，您查找的项目不存在');
+        }
+
+
     }
 }

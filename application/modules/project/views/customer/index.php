@@ -50,8 +50,8 @@
                         <thead>
                         <tr>
                             <th>注册时间</th>
-                            <th>客户组</th>
-                            <th>姓名</th>
+                            <th>金卡</th>
+                            <th>客户</th>
                             <th>手机号</th>
                             <th>身份证号</th>
                             <th>推荐人</th>
@@ -67,8 +67,8 @@
                         <tfoot>
                         <tr>
                             <th>注册时间</th>
-                            <th>客户组</th>
-                            <th>姓名</th>
+                            <th>金卡</th>
+                            <th>客户</th>
                             <th>手机号</th>
                             <th>身份证号</th>
                             <th>推荐人</th>
@@ -99,5 +99,7 @@
         c.render_cancle();
         c.render_taking();
         c.render_project();
+        c.render_bind();
+        c.render_unbind();
     });
 </script>

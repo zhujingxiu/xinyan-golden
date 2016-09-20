@@ -133,7 +133,7 @@ class Stock_model extends XY_Model{
         $project = $this->_project($project_sn,$mode,TRUE);
         if($project){
             $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.avatar', false);
-            $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']))->order_by('h.addtime desc');
+            $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']))->order_by('h.addtime desc,h.history_id desc');
             $this->db->join($status_table.' AS pis','h.status_id = pis.status_id');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
             if(is_numeric($limit)){

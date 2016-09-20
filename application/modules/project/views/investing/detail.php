@@ -172,11 +172,3 @@
     </div>
     <?php echo form_close();?>
 </div>
-
-<script type="text/javascript">
-    $(function () {
-        $('#timeline-box').slimScroll({
-            height: '560px'
-        });
-    });
-</script>

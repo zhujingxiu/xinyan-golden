@@ -19,7 +19,7 @@ class Recycling_model extends XY_Model{
         if($simple){
             return $this->db->get_where($this->table,array('project_sn'=>$sn),1);
         }
-        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,c.idnumber,c.wechat,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser,w3.realname locker', false);
+        $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,c.idnumber,c.wechat,c.email,c.qq,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser,w3.realname locker', false);
         $this->db->from($this->table.' AS p')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
@@ -41,6 +41,7 @@ class Recycling_model extends XY_Model{
         if(isset($data['where']) && is_array($data['where'])){
             $where += $data['where'];
         }
+
         $this->db->select('p.*,pis.title status,pis.code,c.realname,c.phone,w2.realname referrer,w.realname operator, w.username,w1.realname appraiser', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id','left');
@@ -54,6 +55,22 @@ class Recycling_model extends XY_Model{
         $this->db->where(array('p.worker_id '=>$this->ion_auth->get_user_id()));
         $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
         $this->db->group_end();
+
+        if(isset($data['or_where'])){
+            $this->db->group_start();
+            $this->db->or_like(array(
+                'p.project_sn'=>$data['or_where'],
+                'c.realname'=>$data['or_where'],
+                'c.phone'=>$data['or_where'],
+                'p.type'=>$data['or_where'],
+                'p.weight'=>$data['or_where'],
+                'p.payment'=>$data['or_where'],
+                'w1.realname'=>$data['or_where'],
+                'w2.realname'=>$data['or_where'],
+                'w.realname'=>$data['or_where'],
+            ));
+            $this->db->group_end();
+        }
 
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
@@ -495,7 +512,7 @@ class Recycling_model extends XY_Model{
         if($project->num_rows()){
             $info = $project->row_array();
             $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username,w.avatar', false);
-            $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc');
+            $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc,h.history_id desc');
             $this->db->join($this->status_table.' AS pis','h.status_id = pis.status_id');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
             if(is_numeric($limit)){

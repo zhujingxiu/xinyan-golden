@@ -1186,4 +1186,13 @@ define(function(require, exports, module) {
             };
         });
     }
+
+    exports.check_device = function (){
+        if(!ICCardReader.Open()){
+            $('#icbinder-dialog .control-group').html('<div class="alert alert-error alert-block"><h4 class="alert-heading">错误！</h4>读卡器异常，请检查！</div>');
+            $('#icbinder-dialog .modal-footer').html('<a data-dismiss="modal" class="btn btn-inverse" href="#">关闭</a>');
+            $('#icbinder-dialog').modal('show');
+            return false;
+        }
+    }
 });

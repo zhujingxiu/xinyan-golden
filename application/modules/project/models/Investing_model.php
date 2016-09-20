@@ -49,6 +49,20 @@ class Investing_model extends XY_Model{
         $this->db->or_where(sprintf("find_in_set('%d', p.transferrer) !=",$this->ion_auth->get_user_id()),0);
         $this->db->group_end();
 
+        if(isset($data['or_where'])){
+            $this->db->group_start();
+            $this->db->or_like(array(
+                'p.project_sn'=>$data['or_where'],
+                'c.realname'=>$data['or_where'],
+                'c.phone'=>$data['or_where'],
+                'p.weight'=>$data['or_where'],
+                'p.payment'=>$data['or_where'],
+                'w2.realname'=>$data['or_where'],
+                'w.realname'=>$data['or_where'],
+            ));
+            $this->db->group_end();
+        }
+
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
@@ -401,7 +415,7 @@ class Investing_model extends XY_Model{
         if($project->num_rows()){
             $info = $project->row_array();
             $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.username,w.avatar', false);
-            $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc');
+            $this->db->from($this->history_table.' AS h')->where(array("h.project_id" => $info['project_id']))->order_by('h.addtime desc,h.history_id desc');
             $this->db->join($this->status_table.' AS pis','h.status_id = pis.status_id');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
             if(is_numeric($limit)){

@@ -41,7 +41,7 @@
                 <!-- mini logo for sidebar mini 50x50 pixels -->
                 <span class="logo-mini">黄金</span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><img src="<?php echo asset_url('images/logo.gif')?>"></span>
+                <span class="logo-lg"><img height="40px" src="<?php echo asset_url('images/logo.png')?>"></span>
             </a>
         <!-- Header Navbar: style can be found in header.less -->
             <?php echo $navbar ?>
@@ -64,6 +64,10 @@
 	    <?php echo $controlbar; ?>
 	</div>
 <!-- ./wrapper -->
-
+    <?php if(isset($includes['js']) AND count($includes['js']) > 0): ?>
+        <?php foreach($includes['js'] as $file): ?>
+            <script type="text/javascript" src="<?php echo $file['file']; ?>"></script>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </body>
 </html>

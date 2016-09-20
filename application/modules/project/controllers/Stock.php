@@ -135,7 +135,7 @@ class Stock extends Project
                 'msg'=>$this->load->view('project',$info,TRUE),
                 'mode'=>strtolower($info['mode']),
                 'terminable'=>$info['status'] && $this->inRole('manager'),
-                'print'=>$info['status'] && $this->inRole('manager')
+                'print'=>false//$info['status'] && $this->inRole('manager')
             ));
         }else{
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));

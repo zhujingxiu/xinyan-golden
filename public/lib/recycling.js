@@ -4,9 +4,7 @@
  * DateTime: 2016/8/30 0030 9:06
  *
  */
-/**
- * Created by Administrator on 2016/8/8 0008.
- */
+
 define(function(require,exports,modules){
     require('datatables')
     require('datatables.bs');
@@ -53,8 +51,6 @@ define(function(require,exports,modules){
         $('#btn-new').bind('click',function() {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('ajaxUpload');
@@ -63,7 +59,7 @@ define(function(require,exports,modules){
                     layer.open({
                         type: 1,
                         title: json.title,
-                        area: '880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex: 99,
                         btn: ['保存', '取消'],
@@ -85,8 +81,6 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-update','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
             require('ajaxUpload');
@@ -96,7 +90,7 @@ define(function(require,exports,modules){
                     var options = {
                         type: 1,
                         title: json.title,
-                        area: '880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex: 99,
                         content: json.msg,
@@ -136,18 +130,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-checking','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/checked', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -189,18 +180,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-confirming','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/confirmed', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -238,18 +226,15 @@ define(function(require,exports,modules){
         $('#project-list').delegate('.btn-detail','click', function () {
             require('layer');
             require('ajaxSubmit');
-            //require('ueditor/ueditor.config');
-            //require('ueditor');
             require('jqueryvalidate');
             require('customValidate');
-            require('slimscroll');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/detail', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:'880px',
+                        area:['880px','590px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -257,13 +242,19 @@ define(function(require,exports,modules){
                             $.get('/project/recycling/reset_locker',{project_sn:sn})
                         }
                     }
+                    options.btn = [ '关闭'];
+
                     if(json.terminable){
-                        options.btn = ['终止项目', '取消'];
+                        options.btn = ['终止项目', '关闭'];
                         options.yes = function (index, layero) {
                             exports.do_cancle(sn,'/project/recycling/terminated','填写终止原因 '+sn);
                         };
-                    }else{
-                        options.btn = [ '关闭'];
+                    }
+                    if(json.print!=false){
+                        options.btn = ['打印协议', '关闭'];
+                        options.yes = function (index, layero) {
+                            location.href=json.print;
+                        };
                     }
                     layer.open(options);
                 }else{
@@ -308,10 +299,6 @@ define(function(require,exports,modules){
             }else{
                 layer.tips('内容长度不小于10个字符', elem,{tips: 1});
             }
-
         });
     }
-
-
-
 })

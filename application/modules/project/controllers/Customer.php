@@ -15,13 +15,14 @@ class Customer extends XY_Controller {
             json_response($this->_list($this->input->get()));
         }
         $this->layout->add_includes(array(
-            array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/datatables.bootstrap.css'),
             array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
+            array('type'=>'js','src'=>_ASSET_.'base/iccardreader.js'),
+
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
-        $url = $this->setting->get_setting('hexun_url');
+
 
         $this->layout->view('customer/index',$data);
     }
@@ -39,7 +40,7 @@ class Customer extends XY_Controller {
         }
         //搜索
         if($filter['search']['value']){//获取前台传过来的过滤条件
-
+            $temp['or_where'] = $filter['search']['value'];
         }
 
         //分页
@@ -71,11 +72,12 @@ class Customer extends XY_Controller {
                 }
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
-                    'customer' 	=> $cover ? $cover : $row['realname'],
-                    'group' 	=> $row['group_name'],
+                    'customer' 	=> ($cover ? $cover : $row['realname']).'<br>'.$row['group_name'],
+
                     'referrer' 	=> $row['referrer'],
                     'phone'	    => $row['phone'],
                     'idnumber'	=> $row['idnumber'] ,
+                    'card_number'	=> $row['card_number'] ? ($row['card_number'].'<br>'.lang('button_unbind')) : lang('button_bind') ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> $available,
                     'frozen'	=> '<a class="btn btn-sm btn-flat btn-default" disabled>'.number_format($row['frozen'],2).lang('text_weight_unit').'</a>',
@@ -101,7 +103,7 @@ class Customer extends XY_Controller {
         $buttons = array();
         $text_lock = '';
         if($this->inRole('manager')) {
-            $buttons['first'] = sprintf(lang('button_detail'),$text_lock);
+            $buttons['first'] = sprintf(lang('button_detail'),$text_lock) ;
         }else{
             //$buttons['first'] = lang('button_detail');
         }
@@ -202,7 +204,82 @@ class Customer extends XY_Controller {
         }
     }
 
+    public function check_card(){
 
+        $number = $this->input->get('card_number');
+
+        $result = $this->customer_model->get_customer_by_card_number($number);
+
+        if($result){
+            die('false');
+        }else{
+            die('true');
+        }
+    }
+
+    public function unbind()
+    {
+        $this->customer_model->unbind($this->input->post('customer_id'));
+        $this->session->set_flashdata('success', '已解绑客户金卡 ！ ');
+        json_success();
+    }
+
+    public function bind()
+    {
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            //json_response(['code'=>0]+$this->input->post());
+            $this->form_validation->set_rules('card_number', '卡面编号', 'required');
+            $this->form_validation->set_rules('card_serial', '卡序列号', 'required');
+            $this->form_validation->set_rules('customer_id', '客户ID', 'required');
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $id = $this->input->post('customer_id');
+                $result = $this->customer_model->customer($id,TRUE);
+                if($result->num_rows()){
+                    $info = $result->row_array();
+                }else{
+                    json_error(array('msg'=>lang('error_no_customer')));
+                }
+                $this->customer_model->bind_card($this->input->post('customer_id'),$this->input->post('card_number'),$this->input->post('card_serial'));
+
+                $this->session->set_flashdata('success', '客户已绑定金卡 ！ '.$info['realname'].' : '.$this->input->post('card_number'));
+                json_success();
+
+            }else {
+                $errors = array(
+                    'card_number' => form_error('card_number'),
+                    'card_serial' => form_error('card_serial'),
+                    'customer_id' => form_error('customer_id'),
+                );
+                json_error(array('errors' => $errors));
+            }
+        }else{
+            $id = $this->input->get('customer');
+            $card_serial = $this->input->get('card_serial');
+            if(strlen($card_serial)!=8){
+                json_error(array('msg'=>lang('error_card')));
+            }
+            $result = $this->customer_model->get_bind($card_serial);
+
+            if($result->num_rows()){
+                $_customer = $result->row_array();
+                json_error(array('msg'=>sprintf(lang('error_card_binded'),$_customer['realname'].':'.$_customer['card_number'])));
+            }
+            $result = $this->customer_model->customer($id,TRUE);
+
+            if($result->num_rows()){
+                $info = $result->row_array();
+            }else{
+                json_error(array('msg'=>lang('error_no_customer')));
+            }
+            $info['card_serial'] = $card_serial;
+            json_success(array('title'=>'绑定金卡','msg'=>$this->load->view('customer/bind',$info,TRUE)));
+        }
+    }
     public function applied()
     {
         if($msg = $this->session->flashdata('ajax_permission')){

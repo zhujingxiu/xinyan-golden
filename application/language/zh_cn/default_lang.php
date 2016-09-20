@@ -27,6 +27,8 @@ $lang['error_period'] = '预存周期参数错误，请刷新重试';
 $lang['error_notify_member'] = '没有选定通知成员';
 $lang['error_notify_title'] = '请输入通知标题';
 $lang['error_login_captcha'] = '登录失败次数过多，请输入正确的验证码';
+$lang['error_card'] = '参数错误，请检查读卡器及磁卡';
+$lang['error_card_binded'] = '提供的金卡已绑定给客户<br> %s <br>请更换磁卡后重试';
 
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
@@ -93,6 +95,8 @@ $lang['button_taking'] = '<a class="btn btn-success btn-taking">出库</a>';
 $lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
 
 $lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
+$lang['button_bind'] = '<a class="btn btn-primary btn-bind">绑卡</a>';
+$lang['button_unbind'] = '<a class="btn btn-warning btn-unbind">解绑</a>';
 
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
 

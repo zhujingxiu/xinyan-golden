@@ -270,9 +270,6 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#timeline-box').slimScroll({
-            height: '560px'
-        });
         <?php if($editable):?>
         $.validator.setDefaults({
             errorElement : 'span',

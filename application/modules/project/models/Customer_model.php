@@ -11,11 +11,12 @@ class Customer_model extends XY_Model{
     private $apply_table = 'customer_apply';
     private $history_table = 'customer_history';
     private $worker_table = 'worker';
+    private $card_table = 'customer_card';
 
     public function customer($customer_id,$simple=FALSE)
     {
         if($simple){
-            return $this->get_where($this->table,array('customer_id'=>$customer_id));
+            return $this->db->get_where($this->table,array('customer_id'=>$customer_id));
         }
         $available_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->dbprefix('customer_stock')."` WHERE `customer_id` = `c`.`customer_id` ";
         $frozen_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->dbprefix('project_stock')."` WHERE `customer_id` = `c`.`customer_id` AND `status` = '1'";
@@ -43,6 +44,21 @@ class Customer_model extends XY_Model{
         $this->db->join($this->group_table.' AS g', 'g.group_id = c.group_id','left');
         $this->db->join($this->worker_table.' AS w', 'w.id = c.worker_id','left');
         $this->db->join($this->worker_table.' AS w2', 'w2.id = c.referrer_id','left');
+
+        if(isset($data['or_where'])){
+            $this->db->group_start();
+            $this->db->or_like(array(
+                'g.title'=>$data['or_where'],
+                'c.realname'=>$data['or_where'],
+                'c.phone'=>$data['or_where'],
+                'c.idnumber'=>$data['or_where'],
+                'c.card_number'=>$data['or_where'],
+                'w2.realname'=>$data['or_where'],
+                'w.realname'=>$data['or_where'],
+            ));
+            $this->db->group_end();
+        }
+
         if(isset($data['order_by'])){
             $this->db->order_by($data['order_by']);
         }else{
@@ -114,7 +130,7 @@ class Customer_model extends XY_Model{
         if($customer->num_rows()){
             $info = $customer->row_array();
             $this->db->select('s.*,w.realname operator, w.username,w.avatar', false);
-            $this->db->from($this->stock_table.' AS s')->where(array("s.customer_id" => $info['customer_id']))->order_by('s.addtime desc');
+            $this->db->from($this->stock_table.' AS s')->where(array("s.customer_id" => $info['customer_id']))->order_by('s.addtime desc,s.stock_id desc');
 
             $this->db->join($this->worker_table.' AS w', 'w.id = s.worker_id');
             if(is_numeric($limit)){
@@ -144,11 +160,53 @@ class Customer_model extends XY_Model{
             ->limit(1)
             ->count_all_results($this->group_table) >0;
     }
+    public function bind_card($customer_id,$card_number,$card_serial)
+    {
+        $this->db->trans_begin();
 
+        $this->db->update($this->table,array('card_number'=>$card_number),array('customer_id'=>$customer_id));
+        $this->db->delete($this->card_table,array('card_serial'=>$card_serial));
+        $this->db->insert($this->card_table,array('card_serial'=>$card_serial,'card_number'=>$card_number,'status'=>1));
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+        $this->db->trans_commit();
+    }
+
+    public function unbind($customer_id){
+        $this->db->trans_begin();
+        $customer = $this->customer($customer_id,TRUE);
+        if($customer->num_rows()){
+            $info = $customer->row_array();
+            $this->db->update($this->table,array('card_number'=>''),array('customer_id'=>$customer_id));
+            $this->db->delete($this->card_table,array('card_number'=>$info['card_number']));
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                return FALSE;
+            }
+            $this->db->trans_commit();
+            return TRUE;
+        }
+        return FALSE;
+    }
+
+    public function get_bind($serial){
+        return $this->db->select("c.*",false)
+            ->from($this->card_table.' AS cc')
+            ->join($this->table." AS c","c.card_number = cc.card_number","left")
+            ->where(array("cc.card_serial"=>$serial))->limit(1)
+            ->get();
+    }
+
+    public function get_customer_by_card_number($card_number){
+        return $this->db->from($this->table)->where(array("card_number"=>$card_number))
+            ->count_all_results() >0;
+    }
 
     public function update_customer($id,$data = array()){
         if(!$id || empty($data['realname']) || empty($data['phone'])){
-            return false;
+            return FALSE;
         }
 
         $this->db->update($this->table,array(
@@ -158,6 +216,8 @@ class Customer_model extends XY_Model{
             'idnumber'=>(int)$data['idnumber'],
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
+            'address'=>$data['address'],
+            'email'=>$data['email'],
             'referrer_id'=>(int)$data['referrer_id'],
             'note'=>empty($data['note']) ? '' : $data['note'],
             'status'=>(int)$data['status'],
@@ -178,6 +238,8 @@ class Customer_model extends XY_Model{
             'idnumber'=>$data['idnumber'],
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
+            'address'=>$data['address'],
+            'email'=>$data['email'],
             'referrer_id'=>(int)$data['referrer_id'],
             'company_id' => $this->ion_auth->get_company_id(),
             'note'=>empty($data['note']) ? '' : $data['note'],
@@ -230,7 +292,8 @@ class Customer_model extends XY_Model{
                 'note' => $data['note'],
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
+                'addtime' => time(),
+                'ip' => $this->_prepare_ip($this->input->ip_address()),
             ));
             //后置回调
             if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
@@ -400,4 +463,6 @@ class Customer_model extends XY_Model{
             return $_file ? json_encode($_file):'';
         }
     }
+
+
 }

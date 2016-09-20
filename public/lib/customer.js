@@ -25,7 +25,7 @@ define(function (require, exports, modules) {
                 },
                 "columns": [
                     {"data": "addtime", "name": "c.addtime"},
-                    {"data": "group", "name": "group_name"},
+                    {"data": "card_number", "name": "c.card_number"},
                     {"data": "customer", "name": "c.realname"},
                     {"data": "phone", "name": "c.phone"},
                     {"data": "idnumber", "name": "c.idnumber"},
@@ -36,9 +36,7 @@ define(function (require, exports, modules) {
                     {"data": "frozen", "name": "frozen"},
                     {"data": "operation"}
                 ],
-
             });
-
         });
     }
 
@@ -249,5 +247,72 @@ define(function (require, exports, modules) {
             },'json');
         });
     }
+    exports.render_bind = function(){
+        $('#list').delegate('.btn-bind','click', function () {
+            var card_serial = '';
+            //require('../base/iccardreader');
+            if(ICCardReader.Open()){
+                card_serial = ICCardReader.Request();//'sadsadsa';//
+                if(card_serial.length != 8){
+                    ICCardReader.Beep();
+                    alert('没有检测到磁卡，请重试！');
+                    return false;
+                }
+            }else{
+                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
+                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
+                return false;
+            }
+            require('layer');
+            require('ajaxSubmit');
+            require('customValidate');
+            var id = $(this).parent().parent().attr('id');
+            $.get('/project/customer/bind', {customer:id,card_serial:card_serial}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:'600px',
+                        scrollbar:true,
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['确认绑定', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-bind').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
+    exports.render_unbind = function() {
+        $('#list').delegate('.btn-unbind', 'click', function () {
+            require('layer');
+            var id = $(this).parent().parent().attr('id');
+            layer.confirm('确认解绑吗', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    type: 'post',
+                    url: '/project/customer/unbind',
+                    data: {customer_id: id},
+                    dataType: 'json',
+                    beforeSubmit: function () {
+                        layer.load();
+                    },
+                    success: function (json) {
+                        if (json.code == 1) {
+                            location.reload();
+                        } else {
+                            var l = require('layout');
+                            l.render_message(json.msg, json.title);
+                        }
+                    }
+                })
 
+            });
+        });
+    }
 });
