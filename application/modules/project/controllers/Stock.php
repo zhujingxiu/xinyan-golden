@@ -128,6 +128,7 @@ class Stock extends Project
                     $info['privacies'] = json_decode($item['file'],TRUE);
                 }
             }
+
             $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
             $info['histories'] = $this->stock_model->histories($info['project_sn'],10,$info['mode']);
             json_success(array(

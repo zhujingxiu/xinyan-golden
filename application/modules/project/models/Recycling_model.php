@@ -451,7 +451,7 @@ class Recycling_model extends XY_Model{
                 $text = lang('text_ornaments');
                 break;
             case 'renew':
-                $text = lang('text_renew_gold');
+                $text = lang('text_renew_type');
                 break;
             case 'other':
                 $text = lang('text_other_type');

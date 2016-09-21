@@ -25,8 +25,8 @@
                                 <div class="col-sm-4">
                                     <div class="form-group clearfix">
                                         <div class="input-group col-sm-11">
-                                            <span class="input-group-addon">存入周期</span>
-                                            <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
+                                            <span class="input-group-addon">买入价格</span>
+                                            <span class="form-control _highlight"><?php echo $price;?>元/克</span>
                                         </div>
                                     </div>
                                 </div>
@@ -38,12 +38,11 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-sm-4">
                                     <div class="form-group clearfix">
-                                        <div class="input-group col-sm-11">
-                                            <span class="input-group-addon">买入价格</span>
-                                            <span class="form-control _highlight"><?php echo $price;?>元/克</span>
+                                        <div class="input-group col-sm-12">
+                                            <span class="input-group-addon">存入周期</span>
+                                            <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +64,7 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group clearfix">
-                                        <div class="input-group col-sm-11">
+                                        <div class="input-group col-sm-12">
                                             <span class="input-group-addon">到期收益</span>
                                             <span class="form-control _highlight" id="update-totals"><?php echo $profit_weight?>克</span>
                                         </div>
@@ -77,24 +76,25 @@
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">黄金种类</span>
                                         <span class="form-control">
-                                            <?php echo $type =='goldbar' ? lang('text_goldbar') :lang('text_ornaments') ?>
+                                            <?php echo $type ?>
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">预存周期</span>
-                                        <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">交付方式</span>
                                         <span class="form-control" name="payment"><?php echo $payment == 'cash' ? lang('text_cash') : lang('text_gold')?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon">预存周期</span>
+                                        <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
                                     </div>
                                 </div>
                             </div>
@@ -116,8 +116,8 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon"> 鉴 定 人 </span>
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon"><?php echo lang('text_appraiser')?></span>
                                         <span class="form-control" ><?php echo $appraiser?></span>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
+                                    <div class="input-group col-sm-12">
                                         <span class="input-group-addon">损耗比例</span>
                                         <span class="form-control"><?php echo $loss ?></span>
                                     </div>

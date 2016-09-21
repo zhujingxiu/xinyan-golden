@@ -191,6 +191,7 @@ class Project extends XY_Controller
     }
 
     protected function type_text($type){
+        $text = '';
         switch(strtolower($type)){
             case 'goldbar':
                 $text = lang('text_goldbar');
@@ -199,7 +200,7 @@ class Project extends XY_Controller
                 $text = lang('text_ornaments');
                 break;
             case 'renew':
-                $text = lang('text_renew_gold');
+                $text = lang('text_renew_type');
                 break;
             case 'other':
                 $text = lang('text_other_type');

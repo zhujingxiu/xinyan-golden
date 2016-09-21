@@ -140,8 +140,8 @@
                         <i class="fa fa-user bg-aqua"></i>
                         <div class="timeline-item">
                             <span class="time">
-                                ssss<?php echo ($item['mode'] =='out' ? $item['weight'] : '+'.$item['weight']).lang('text_weight_unit')?>
-                                <i class="fa fa-clock-o"></i> sssss<?php echo format_time($item['addtime'],true);?>
+                                <?php echo ($item['mode'] =='out' ? $item['weight'] : '+'.$item['weight']).lang('text_weight_unit')?>
+                                <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
                             </span>
                             <h3 class="timeline-header no-border">
                                 <a href="javascript:;" class="liveim">
@@ -180,9 +180,7 @@
 <script type="text/javascript">
 
     $(function () {
-        $('#timeline-box').slimScroll({
-            height: '560px'
-        });
+
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',
@@ -236,6 +234,9 @@
                     success: function (json) {
                         if(json.code==1){
                             location.reload()
+                        }else {
+                            var l = require('layout');
+                            l.render_message(json.msg, json.title);
                         }
                     }
                 });

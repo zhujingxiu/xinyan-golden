@@ -433,6 +433,17 @@
                                         <fieldset>
                                             <legend>通用参数</legend>
                                             <?php echo form_open('', array('class'=>'form-horizontal setting-project-form' ))?>
+                                            <div class="form-group clearfix ">
+                                                <label for="" class="control-label col-sm-4 text-right">最小克重
+                                                    <span class="help-block">允许登记的最小克重</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <input type="text" name="min_weight" class="form-control" id="inputProfit" value="<?php echo empty($setting['min_weight'])? '' :$setting['min_weight']  ?>"/>
+                                                        <span class="input-group-addon">克</span>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group clearfix" >
                                                 <label for="" class="control-label col-sm-4 text-right">到期提醒天数
                                                     <span class="help-block">项目到期的预警天数</span>

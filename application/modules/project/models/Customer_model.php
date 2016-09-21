@@ -216,7 +216,7 @@ class Customer_model extends XY_Model{
             'realname'=>$data['realname'],
             'group_id'=>$data['group_id'],
             'phone'=>$data['phone'],
-            'idnumber'=>(int)$data['idnumber'],
+            'idnumber'=>$data['idnumber'],
             'wechat'=>$data['wechat'],
             'qq'=>$data['qq'],
             'address'=>$data['address'],
@@ -287,12 +287,14 @@ class Customer_model extends XY_Model{
         $customer = $this->customer($customer_id);
         if($customer->num_rows()){
             $info = $customer->row_array();
+            $mode = empty($data['mode']) ? 'taking': strtolower($data['mode']);
+            $this->db->delete($this->apply_table, array('customer_id' => $customer_id,'mode'=>$mode));
             $this->db->insert($this->apply_table,array(
                 'customer_id' => $info['customer_id'],
                 'phone' => $data['phone'],
                 'weight' => (float)$data['weight'],
                 'fee' => (float)$data['fee'],
-                'mode' => empty($data['mode']) ? 'appling': strtolower($data['mode']),
+                'mode' => $mode,
                 'note' => $data['note'],
                 'status' => 1,
                 'worker_id' => $this->ion_auth->get_user_id(),
@@ -303,7 +305,7 @@ class Customer_model extends XY_Model{
             if(isset($data['call_func']) && method_exists($this,$data['call_func'])){
                 $this->{$data['call_func']}($data['call_param']);
             }
-            $affected = $this->history($customer_id,array('note'=>'申请提金：'.number_format($data['weight'],2).'克'));
+            $affected = $this->history($customer_id,array('note'=>lang('text_mode_').$mode.' '.number_format($data['weight'],2).lang('text_weight_unit')));
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
@@ -320,45 +322,46 @@ class Customer_model extends XY_Model{
         return FALSE;
     }
 
-    public function applied($customer_id,$mode='appling'){
+    public function applied($customer_id,$mode='taking'){
         if(!$mode || !$mode == 'all'){
             $this->db->where(array('mode'=>$mode));
         }
         $query = $this->db->where(array('customer_id'=>$customer_id,'status'=>1))->get($this->apply_table);
         if($query->num_rows()){
-            return $query->row_array();
+            $result = array();
+            foreach($query->result_array() as $item){
+                $result[$item['mode']] = $item;
+            }
+            return $result;
         }
         return FALSE;
     }
 
-    public function cancle_applied($customer_id,$data=array()){
+    public function cancle_applied($appling_id,$data=array()){
         $this->trigger_events('pre_cancle_appling');
 
         $this->db->trans_begin();
-        $customer = $this->customer($customer_id);
-        if($customer->num_rows()) {
-            //$info = $customer->row_array();
-            $applied = $this->applied($customer_id);
-            if($applied){
-
-                $this->db->delete($this->apply_table, array('customer_id' => $customer_id,'mode'=>'appling'));
-                //后置回调
-                if (isset($data['call_func']) && method_exists($this, $data['call_func'])) {
-                    $this->{$data['call_func']}($data['call_param']);
-                }
-                $affected = $this->history($customer_id, array('note' => '取消提金：' . number_format($applied['weight'], 2) . '克'.(empty($data['note']) ? '' : '<br>'.$data['note'])));
-                if ($this->db->trans_status() === FALSE) {
-                    $this->db->trans_rollback();
-                    $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_unsuccessful'));
-                    $this->set_error('cancle_unsuccessful');
-                    return FALSE;
-                }
-                $this->db->trans_commit();
-
-                $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_successful'));
-                $this->set_message('cancle_successful');
-                return $affected;
+        $appling = $this->get_apply($appling_id);
+        if($appling->num_rows()) {
+            $info = $appling->row_array();
+            $this->db->delete($this->apply_table, array('appling_id' => $appling_id));
+            //后置回调
+            if (isset($data['call_func']) && method_exists($this, $data['call_func'])) {
+                $this->{$data['call_func']}($data['call_param']);
             }
+            $affected = $this->history($info['customer_id'], array('note' => '取消提金：' . number_format($info['weight'], 2) . '克'.(empty($data['note']) ? '' : '<br>'.$data['note'])));
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_unsuccessful'));
+                $this->set_error('cancle_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
+
+            $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_successful'));
+            $this->set_message('cancle_successful');
+            return $affected;
+
         }
         return FALSE;
     }
@@ -403,7 +406,7 @@ class Customer_model extends XY_Model{
     public function taken_weight($apply_id,$data)
     {
         if(empty($apply_id)) return FALSE;
-        $this->trigger_events('pre_cancle_appling');
+        $this->trigger_events('pre_taken_weight');
 
         $this->db->trans_begin();
         $applied = $this->get_apply($apply_id);
@@ -441,14 +444,14 @@ class Customer_model extends XY_Model{
             }
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
-                $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_unsuccessful'));
-                $this->set_error('cancle_unsuccessful');
+                $this->trigger_events(array('post_taken_weight', 'post_taken_weight_unsuccessful'));
+                $this->set_error('taken_unsuccessful');
                 return FALSE;
             }
             $this->db->trans_commit();
 
-            $this->trigger_events(array('post_cancle_appling', 'post_cancle_appling_successful'));
-            $this->set_message('cancle_successful');
+            $this->trigger_events(array('post_taken_weight', 'post_taken_weight_successful'));
+            $this->set_message('taken_successful');
             return $affected;
         }
         return FALSE;
@@ -465,15 +468,13 @@ class Customer_model extends XY_Model{
 
         $result = $this->customer($customer_id,TRUE);
         if(!$result || !$result->num_rows()){
-
             return FALSE;
         }
         $customer = $result->row_array();
         $project_sn = $this->generate_sn();
         $start = $this->calculate_start(time());
         $end = calculate_end(strtotime($start),$data['month']);
-
-        $this->db->insert($this->recycling_table, array(
+        $tmp = array(
             'project_sn' => $project_sn ,
             'customer_id' => $customer_id,
             'referrer_id' => $customer['referrer_id'],
@@ -496,7 +497,8 @@ class Customer_model extends XY_Model{
             'worker_id' => $this->ion_auth->get_user_id(),
             'addtime' => time(),
             'lasttime' => time()
-        ));
+        );
+        $this->db->insert($this->recycling_table, $tmp);
         $project_id = $this->db->insert_id();
 
         if(isset($data['privacy'])){
@@ -519,10 +521,48 @@ class Customer_model extends XY_Model{
             'addtime' => time(),
             'ip' => $this->_prepare_ip($this->input->ip_address())
         ));
-
-        $tmp = array(
+        //入库
+        if($this->config->item('recycling_renew') == $this->config->item('recycling_confirmed')) {
+            $referrer = $this->ion_auth->get_worker($tmp['referrer_id']);
+            $project_stock = array(
+                'project_sn' => $tmp['project_sn'],
+                'customer_id' => $tmp['customer_id'],
+                'referrer_id' => $tmp['referrer_id'],
+                'company_id' => $tmp['company_id'],
+                'title' => '项目 '.$tmp['project_sn'].' 存金'.number_format($tmp['weight'],2).'克',
+                'weight'=> (float)$tmp['weight'],
+                'month'=> $tmp['month'],
+                'start'=> $tmp['start'],
+                'end'=> $tmp['end'],
+                'profit'=> $tmp['profit'],
+                'info' => maybe_serialize(array(
+                    'project_id' => $project_id,
+                    'realname' => $customer['realname'],
+                    'phone' => $customer['phone'],
+                    'idnumber' => $customer['idnumber'],
+                    'wechat' => $customer['wechat'],
+                    'price' => $tmp['price'],
+                    'type' => $this->type_text($tmp['type']),
+                    'number' => $tmp['number'],
+                    'origin_weight' => $tmp['origin_weight'],
+                    'weight' => $tmp['weight'],
+                    'loss' => $tmp['loss'].lang('text_percent_unit'),
+                    'appraiser' => '',
+                    'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
+                    'payment'=> $tmp['payment'],
+                )),
+                'note' => htmlspecialchars($data['editorValue']),
+                'mode' => 'recycling',
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'lasttime' => time(),
+            );
+            $this->db->insert($this->project_stock_table, $project_stock);
+        }
+        $customer_stock = array(
             'project_sn' => $project_sn,
-            'note' => sprintf(lang('text_stock_renew'),number_format($data['weight'],2)),
+            'note' => sprintf(lang('text_stock_renew'),number_format($data['weight'],2),$project_sn),
             'customer_id' => $customer_id,
             'fee' => 0.00,
             'mode' => 'out',
@@ -532,9 +572,9 @@ class Customer_model extends XY_Model{
             'addtime' => time()
         );
         if(isset($data['privacy'])){
-            $tmp['file'] = $this->format_file_value($data['privacy']);
+            $customer_stock['file'] = $this->format_file_value($data['privacy']);
         }
-        $this->db->insert($this->stock_table,$tmp);
+        $this->db->insert($this->stock_table,$customer_stock);
         if ($this->db->trans_status() === FALSE)
         {
             $this->db->trans_rollback();
@@ -549,5 +589,45 @@ class Customer_model extends XY_Model{
         $this->set_message('renew_successful');
         return TRUE;
 
+    }
+
+    public function free_stock($customer_id,$weight,$reason){
+        if(empty($customer_id) || empty($weight)) {
+            return False;
+        }
+        $this->trigger_events('pre_renew_recycling');
+
+        $this->db->trans_begin();
+        $result = $this->customer($customer_id,TRUE);
+        if(!$result || !$result->num_rows()){
+            return FALSE;
+        }
+        $customer = $result->row_array();
+        $customer_stock = array(
+            'project_sn' => '',
+            'note' => $reason?$reason:sprintf(lang('text_stock_free'),number_format($weight,2),$customer['realname']),
+            'customer_id' => $customer_id,
+            'fee' => 0.00,
+            'mode' => 'free',
+            'notify' => 1,
+            'weight' => (float)$weight*(1.00),
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time()
+        );
+
+        $this->db->insert($this->stock_table,$customer_stock);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_unsuccessful'));
+            $this->set_error('renew_unsuccessful');
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
+        $this->set_message('renew_successful');
+        return TRUE;
     }
 }

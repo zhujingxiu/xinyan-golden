@@ -83,7 +83,7 @@
                     <div class="form-group clearfix">
                         <div class="input-group col-sm-11">
                             <span class="input-group-addon">Email</span>
-                            <input name="address" class="form-control" value="<?php echo $email;?>">
+                            <input name="email" class="form-control" value="<?php echo $email;?>">
                         </div>
                     </div>
                 </div>
@@ -146,6 +146,9 @@
                     required : true,
                     isIdCardNo : true
                 },
+                email: {
+                    email: true,
+                }
             },
             messages : {
 
@@ -160,6 +163,9 @@
                 idnumber:{
                     required:'身份证号码必须',
                     isIdCardNo : '请输入正确的身份证号码'
+                },
+                email: {
+                    email: '不合法',
                 }
             },
 
@@ -173,6 +179,9 @@
                         success: function (json) {
                             if(json.code==1){
                                 location.reload()
+                            }else{
+                                var l = require('layout');
+                                l.render_message(json.msg, json.title);
                             }
                         }
                     }

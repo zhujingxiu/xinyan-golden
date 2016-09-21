@@ -17,18 +17,14 @@
             <div class="col-sm-4">
                 <div class="form-group clearfix">
                     <div class="input-group col-sm-11">
-                        <span class="input-group-addon">预存周期</span>
-                        <select class="form-control select2" name="period_id">
-                            <?php foreach($periods as $item):?>
-                                <option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['month'] == $month ? 'selected':''?>><?php echo $item['title']?></option>
-                            <?php endforeach?>
-                        </select>
+                        <span class="input-group-addon">实时金价</span>
+                        <span class="form-control _highlight" ><?php echo $price ?> 元/克</span>
                     </div>
                 </div>
                 <div class="form-group clearfix">
                     <div class="input-group col-sm-11">
                         <span class="input-group-addon">预购重量</span>
-                        <input type="text" name="weight" class="form-control" placeholder="最小为1克" value="<?php echo $weight;?>">
+                        <input type="text" name="weight" class="form-control" placeholder="最小值<?php echo number_format($this->config->item('min_weight'),2)?>" value="<?php echo $weight;?>">
                         <span class="input-group-addon">克</span>
                     </div>
                 </div>
@@ -54,8 +50,12 @@
             <div class="col-sm-4">
                 <div class="form-group clearfix">
                     <div class="input-group col-sm-12">
-                        <span class="input-group-addon">实时金价</span>
-                        <span class="form-control _highlight" ><?php echo $price ?> 元/克</span>
+                        <span class="input-group-addon">预存周期</span>
+                        <select class="form-control select2" name="period_id">
+                            <?php foreach($periods as $item):?>
+                                <option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['month'] == $month ? 'selected':''?>><?php echo $item['title']?></option>
+                            <?php endforeach?>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group clearfix">
@@ -182,14 +182,14 @@
             rules : {
                 weight: {
                     required : true,
-                    min:1
+                    minFloat:'<?php echo $this->config->item('min_weight')?>'
                 },
             },
             messages : {
 
                 weight : {
                     required : '请输入购入克重',
-                    min:'最小购入克重不能小于1克'
+                    minFloat:'最小购入克重不能小于<?php echo number_format($this->config->item('min_weight'),2)?>克'
                 },
             },
             //提交
@@ -199,6 +199,10 @@
                         success: function (json) {
                             if(json.code==1){
                                 location.reload()
+                            }else{
+                                layer.alert(json.msg,{icon: 2,title:json.title}, function () {
+                                    location.reload()
+                                });
                             }
                         }
                     }
@@ -222,15 +226,15 @@
                 //layer.tips('数据异常',$('#form-update #update-amount'),{tips: [1, '#CC6666']});
                 return false;
             }else{
-                $('#form-update #update-amount').text(parseFloat(math_mul(_weight,price),2));
-                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+                $('#form-update #update-amount').text(parseFloat(math_mul(_weight,price)).toFixed(2));
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
             }
         });
         $('#form-update select[name="period_id"]').bind('change', function () {
             var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
             var _weight = $('#form-update input[name="weight"]').val();
             if(_weight!='' && $.isNumeric(_profit)){
-                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
             }
         });
         $('#form-update select[name="period_id"]').trigger('change');

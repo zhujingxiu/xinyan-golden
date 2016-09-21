@@ -19,7 +19,8 @@ $lang['error_confirm_phone'] = '输入的手机号与项目的登记的手机号
 $lang['error_reason_length'] = '驳回理由的内容长度不足10个字符';
 $lang['error_no_project'] = '项目不存在';
 $lang['error_no_customer'] = '客户不存在';
-$lang['error_no_applied'] = '没有找到该项目的提金申请数据';
+$lang['error_no_applied'] = '没有找到该客户提金申请数据，请刷新重试';
+
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['error_project_status'] = '项目状态已改变，请刷新重试';
 $lang['error_project_operator'] = '无权限操作当前项目，请刷新重试';
@@ -28,6 +29,7 @@ $lang['error_notify_member'] = '没有选定通知成员';
 $lang['error_notify_title'] = '请输入通知标题';
 $lang['error_login_captcha'] = '登录失败次数过多，请输入正确的验证码';
 $lang['error_card'] = '参数错误，请检查读卡器及磁卡';
+$lang['error_card_customer'] = '该客户尚未绑定磁卡，请绑定后重试';
 $lang['error_card_match'] = '提供的金卡和当前操作用户不匹配，请更换磁卡后重试';
 $lang['error_card_binded'] = '提供的金卡已绑定给客户<br> %s <br>请更换磁卡后重试';
 $lang['error_terminating_profit'] = '输入的金息不在合理的范围内，请重试';
@@ -49,14 +51,19 @@ $lang['text_percent_unit'] = "%";
 $lang['text_profit'] = "年化";
 $lang['text_startdate'] = "起";
 $lang['text_fee'] = "手续费";
+$lang['text_mode_apply'] = "申请提金";
+$lang['text_mode_renew'] = "申请续存";
+$lang['text_mode_order'] = "申请消费抵扣";
+$lang['text_lock']   = '<strong class="lock"><i class="fa fa-lock"></i> 操作人 [ %s ] 正在编辑该表单, 当前为只读模式</strong>';
 $lang['text_appling'] = "申请提金 %s 克";
 $lang['text_applied_date'] = "申请日期";
 $lang['text_success_posted'] = "通知已发布";
 $lang['text_success_company'] = "公司信息已更改";
-$lang['text_stock_renew'] = "客户续存 %s 克";
+$lang['text_stock_renew'] = "客户续存 %s 克 ，项目 %s";
 
 $lang['text_transferrer'] = " 转 交 给 ";
 $lang['text_referrer'] = " 推 荐 人 ";
+$lang['text_appraiser'] = " 鉴 定 人 ";
 $lang['text_period'] = "生息周期";
 $lang['text_pending_widget'] = "待处理";
 $lang['text_expiring_widget'] = "即将到期";
@@ -97,6 +104,7 @@ $lang['button_appling'] = "<a class=\"btn btn-success btn-appling\">%s 提金</a
 $lang['button_confirming'] = "<a class=\"btn btn-primary btn-confirming\">%s 确认</a>";
 $lang['button_order'] = '<a class="btn btn-success btn-order">消费</a>';
 $lang['button_taking'] = '<a class="btn btn-success btn-taking">出库</a>';
+
 $lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
 
 $lang['button_cancle'] = '<a class="btn btn-warning btn-cancle">取消申请</a>';
@@ -112,6 +120,19 @@ $lang['button_renew'] = '<button type="button" class="btn btn-success btn-renew"
 $lang['button_frozen'] = '<a class="btn btn-sm btn-flat btn-default" disabled>%s</a>';
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
 
+$lang['button_phone'] = '<a class="btn btn-social btn-twitter btn-xs" data-toggle="tooltip" title="手机号码"> <i class="fa fa-phone-square"></i> %s </a>';
+$lang['button_idnumber'] = '<a class="btn btn-social btn-linkedin btn-xs" data-toggle="tooltip" title="身份证号"> <i class="fa fa-street-view"></i> %s </a>';
 
+$lang['button_appling_taking'] = '<a class="btn btn-success btn-appling-taking">提金</a>';
+$lang['button_appling_renew'] = '<a class="btn btn-success btn-appling-renew">续存</a>';
+$lang['button_appling_order'] = '<a class="btn btn-success btn-appling-order">消费</a>';
 
-$lang['text_lock']   = '<strong class="lock"><i class="fa fa-lock"></i> 操作人 [ %s ] 正在编辑该表单, 当前为只读模式</strong>';
+$lang['button_cancle_taking'] = '<a class="btn btn-warning btn-cancle-taking">取消提金</a>';
+$lang['button_cancle_renew'] = '<a class="btn btn-warning btn-cancle-taking">取消续存</a>';
+$lang['button_cancle_order'] = '<a class="btn btn-warning btn-cancle-taking">取消消费</a>';
+
+$lang['button_appling_taken'] = '<a class="btn btn-primary btn-taken">出库</a>';
+$lang['button_appling_renewed'] = '<a class="btn btn-primary btn-renewed">入库</a>';
+$lang['button_appling_ordered'] = '<a class="btn btn-primary btn-ordered">抵扣</a>';
+
+$lang['button_customer_detail'] = "<a class=\"btn btn-info btn-detail\">%s 查看</a>";

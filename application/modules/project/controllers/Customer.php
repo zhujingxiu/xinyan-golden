@@ -60,34 +60,34 @@ class Customer extends XY_Controller {
                 $operation = 'detail';
 
                 if($applied){
-                    $status_text = '<label class="label label-warning" data-toggle="tooltip" title="'
-                        .lang('text_applied_date').' '.date('Y-m-d',$applied['addtime'])."\r\n".lang('text_fee').' '.number_format($applied['fee'],2).lang('text_currency_unit').'">'
-                        .sprintf(lang("text_appling"),number_format($applied['weight'])).'</label>';
-                    $operation = 'applied';
+//                    $status_text = '<label class="label label-warning" data-toggle="tooltip" title="'
+//                        .lang('text_applied_date').' '.date('Y-m-d',$applied['addtime'])."\r\n".lang('text_fee').' '.number_format($applied['fee'],2).lang('text_currency_unit').'">'
+//                        .sprintf(lang("text_appling"),number_format($applied['weight'])).'</label>';
+//                    $operation = 'applied';
                 }
                 $cover = ($row['avatar'] && file_exists($row['avatar'])) ? $cover = '<img class="list-img" src="'.site_url($row['avatar']).'" alt="'.$row['realname'].'" />':false;
                 $available = sprintf(lang('button_frozen'),number_format($row['available'],2).lang('text_weight_unit'));
                 if($row['available']*100>0 && $this->inRole('manager')){
-                    //$available = '<a class="btn btn-sm btn-flat btn-success btn-appling" data-toggle="tooltip" title="可申请提金">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
-                    $available = sprintf(lang('button_available'),
-                        number_format($row['available'],2).lang('text_weight_unit'),
-                        ($row['available']>10 ? lang('button_renew') : ''));
+                    $available = '<a class="btn btn-sm btn-xs btn-success ">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
+//                    $available = sprintf(lang('button_available'),
+//                        number_format($row['available'],2).lang('text_weight_unit'),
+//                        ($row['available']>10 ? lang('button_renew') : '')
+//                    );
                 }
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
                     'customer' 	=> ($cover ? $cover : $row['realname']).'<br>'.$row['group_name'],
                     'referrer' 	=> $row['referrer'],
-                    'phone'	    => $row['phone'],
-                    'idnumber'	=> $row['idnumber'] ,
+                    'phone'	    => sprintf(lang('button_phone'),$row['phone']).'<br>'.sprintf(lang('button_idnumber'),$row['idnumber']),
                     'card_number'	=> $row['card_number'] ? sprintf(lang('button_unbind'),$row['card_number']) : lang('button_bind') ,
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> $available,
                     'frozen'	=> sprintf(lang('button_frozen'),number_format($row['frozen'],2).lang('text_weight_unit')),
-                    'totals'	=> '<a class="btn btn-sm btn-flat btn-info" disabled>'.number_format($row['available']+$row['frozen'],2).lang('text_weight_unit').'</a>',
+                    'totals'	=> '<a class="btn btn-sm btn-xs btn-primary">'.number_format($row['available']+$row['frozen'],2).lang('text_weight_unit').'</a>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
                     'addtime'	=> $row['addtime'] ? date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']) :lang("text_unknown"),
-                    'operation'	=> $this->_operation($operation)
+                    'operation'	=> $this->_operation($row['available'],$this->customer_model->applied($row['customer_id']))
                 );
             }
         }
@@ -100,26 +100,56 @@ class Customer extends XY_Controller {
 
     }
 
-    private function _operation($operation)
+    private function _operation($available,$applied)
     {
         $buttons = array();
         $text_lock = '';
         if($this->inRole('manager')) {
-            $buttons['first'] = sprintf(lang('button_detail'),$text_lock) ;
+            $buttons[] = sprintf(lang('button_customer_detail'),$text_lock) ;
         }else{
             //$buttons['first'] = lang('button_detail');
         }
 
-        if($operation == 'applied'){
+        if(isset($applied['taking'])){
             if($this->inRole('manager')) {
-                $buttons['dropdown'] = lang('button_cancle');
+                $buttons[] = lang('button_cancle_taking');
             }
             if($this->inRole('warehouser')){
-                $buttons['second'] = sprintf(lang('button_taking'),$text_lock);
+                $buttons[] = lang('button_apling_taken');
+            }
+        }else{
+            if($available*100 >0 && $this->inRole('manager')){
+                $buttons[] = lang('button_appling_taking');
             }
         }
 
-        return implode(" ",$buttons);
+        if(isset($applied['renew'])){
+            if($this->inRole('manager')) {
+                $buttons[] = lang('button_cancle_renew');
+            }
+            if($this->inRole('warehouser')){
+                $buttons[] = lang('button_appling_renewed');
+            }
+        }else{
+            if($available*100 >= ($this->config->item('min_weight')*100) && $this->inRole('manager')){
+                $buttons[] = lang('button_appling_renew');
+            }
+        }
+
+        if(isset($applied['order'])){
+            if($this->inRole('manager')) {
+                $buttons[] = lang('button_cancle_order');
+            }
+            if($this->inRole('warehouser')){
+                $buttons[] = lang('button_appling_ordered');
+            }
+        }else{
+            if($available*100 >0 && $this->inRole('manager')){
+                $buttons[] = lang('button_appling_order');
+            }
+        }
+
+        return '<div class="btn-group">'.implode(" ",$buttons).'</div>';
     }
 
     public function update()
@@ -142,6 +172,8 @@ class Customer extends XY_Controller {
                     'idnumber' => $this->input->post('idnumber'),
                     'wechat' => $this->input->post('wechat'),
                     'qq' => $this->input->post('qq'),
+                    'email' => $this->input->post('email'),
+                    'address' => $this->input->post('address'),
                     'referrer_id' => $this->input->post('referrer'),
                     'status' => $this->input->post('status'),
                     'note' => htmlspecialchars($this->input->post('editorValue')),
@@ -186,7 +218,13 @@ class Customer extends XY_Controller {
 
             $info['groups'] = $this->customer_model->get_groups()->result_array();
 
-            json_success(array('title'=>$title,'msg'=>$this->load->view('customer/form',$info,TRUE)));
+            json_success(array(
+                'title'=>$title,
+                'msg'=>$this->load->view('customer/form',$info,TRUE),
+                'modify'=>$this->inRole('manager'),
+                'free'=>$info['customer_id']&&$this->inRole('manager'),
+                'free_form'=>$this->load->view('customer/free',$info,TRUE),
+            ));
         }
     }
 
@@ -314,7 +352,7 @@ class Customer extends XY_Controller {
                         json_error(array('msg' => lang('error_total_max')));
                     }
                     $this->customer_model->appling_weight($customer_id,array(
-                        'mode'=>'appling',
+                        'mode'=>'taking',
                         'phone'=>$phone,
                         'weight'=>$weight,
                         'fee'=>$fee,
@@ -349,7 +387,7 @@ class Customer extends XY_Controller {
                     json_error(array('msg'=>lang('error_card_match')));
                 }
             }else{
-                json_error(array('msg'=>lang('error_card_match')));
+                json_error(array('msg'=>lang('error_card_customer')));
             }
             $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()){
@@ -466,20 +504,21 @@ class Customer extends XY_Controller {
         if($msg = $this->session->flashdata('ajax_permission')){
             json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
         }
-        $customer_id = $this->input->post('customer_id');
+        $appling_id = $this->input->post('appling_id');
         $reason = $this->input->post('value');
-        if(!$customer_id || !$reason ){
+        if(!$appling_id || !$reason ){
             json_error();
         }
         if(strlen($reason) < 10){
             json_error(array('msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
         }
-        $result = $this->customer_model->customer($customer_id);
-        if(!$result->num_rows()){
-            json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
+        $result = $this->customer_model->get_apply($appling_id);
+
+        if(!$result || !$result->num_rows()){
+            json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
         }
         $info = $result->row_array();
-        if($this->customer_model->cancle_applied($customer_id,array('note'=>$reason))){
+        if($this->customer_model->cancle_applied($appling_id,array('note'=>$reason))){
             $this->session->set_flashdata('success', sprintf("已取消提金申请！客户: %s",$info['realname']));
             json_success();
         }
@@ -505,7 +544,7 @@ class Customer extends XY_Controller {
                 $weight = $this->input->post('weight');
                 $phone = $this->input->post('phone');
                 $result = $this->customer_model->get_apply($apply_id);
-                if(!$result->num_rows()){
+                if(!$result || !$result->num_rows()){
                     json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
                 }
                 $applied = $result->row_array();
@@ -519,9 +558,12 @@ class Customer extends XY_Controller {
                         'file' =>$this->input->post('file')
                     );
 
-                    $this->customer_model->taken_weight($applied['apply_id'],$tmp);
-                    $this->session->set_flashdata('success', sprintf("申请提金已出库！客户 %s",$applied['realname'].':'.number_format($applied['weight'],2).lang('text_weight_unit')));
-                    json_success();
+                    if($this->customer_model->taken_weight($applied['apply_id'],$tmp)) {
+                        $this->session->set_flashdata('success', sprintf("申请提金已出库！客户 %s", $applied['realname'] . ':' . number_format($applied['weight'], 2) . lang('text_weight_unit')));
+                        json_success();
+                    }else{
+                        json_error();
+                    }
                 }else{
                     json_error(array('errors' => array(
                         'weight' => lang("error_confirm_weight"),
@@ -664,7 +706,7 @@ class Customer extends XY_Controller {
                     json_error(array('msg'=>lang('error_card_match')));
                 }
             }else{
-                json_error(array('msg'=>lang('error_card_match')));
+                json_error(array('msg'=>lang('error_card_customer')));
             }
             $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()) {
@@ -686,5 +728,31 @@ class Customer extends XY_Controller {
             //var_dump($this->session->flashdata('csrfkey'));
             json_success(array('title'=>'客户续存入库','msg'=>$this->load->view('customer/renew',$info,TRUE)));
         }
+    }
+
+    public function free(){
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
+        }
+        $customer_id = $this->input->post('customer_id');
+        $reason = $this->input->post('editorValue');
+        $weight = $this->input->post('weight');
+        if(!$customer_id || !$reason){
+            json_error();
+        }
+        if(strlen($reason) < 10){
+            json_error(array('msg'=>lang('error_reason_length')));
+        }
+        $result = $this->customer_model->customer($customer_id);
+        if(!$result->num_rows()){
+            json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
+        }
+
+        $info = $result->row_array();
+        if($this->customer_model->free_stock($customer_id,$weight,$reason)){
+            $this->session->set_flashdata('success', sprintf("已赠送 %s 克 给客户: %s",number_format($weight,2),$info['realname']));
+            json_success();
+        }
+        json_error();
     }
 }

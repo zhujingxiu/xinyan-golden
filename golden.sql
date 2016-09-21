@@ -1,23 +1,23 @@
 -- phpMyAdmin SQL Dump
--- version phpStudy 2014
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- 主机: localhost
--- 生成日期: 2016 �?09 �?21 �?00:26
--- 服务器版本: 5.5.47
--- PHP 版本: 5.5.30
+-- Host: 127.0.0.1
+-- Generation Time: 2016-09-21 12:00:58
+-- 服务器版本： 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- 数据库: `golden`
+-- Database: `golden`
 --
 
 -- --------------------------------------------------------
@@ -26,17 +26,16 @@ SET time_zone = "+00:00";
 -- 表的结构 `gd_article`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_article` (
-  `article_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_article` (
+  `article_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL DEFAULT '0',
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `text` text COLLATE utf8_unicode_ci,
   `is_top` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `author_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`article_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_article`
@@ -53,16 +52,15 @@ INSERT INTO `gd_article` (`article_id`, `category_id`, `title`, `text`, `is_top`
 -- 表的结构 `gd_article_category`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_article_category` (
-  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_article_category` (
+  `category_id` int(11) NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `is_admin` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_article_category`
@@ -79,14 +77,13 @@ INSERT INTO `gd_article_category` (`category_id`, `code`, `title`, `is_admin`, `
 -- 表的结构 `gd_cron_job`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_cron_job` (
-  `job_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_cron_job` (
+  `job_id` int(11) NOT NULL,
   `method` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `args` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_cron_job`
@@ -103,7 +100,7 @@ INSERT INTO `gd_cron_job` (`job_id`, `method`, `args`, `status`, `addtime`) VALU
 -- 表的结构 `gd_cron_log`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_cron_log` (
+CREATE TABLE `gd_cron_log` (
   `log_time` int(11) NOT NULL,
   `date` date NOT NULL,
   `time` time NOT NULL,
@@ -111,468 +108,22 @@ CREATE TABLE IF NOT EXISTS `gd_cron_log` (
   `text` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- 转存表中的数据 `gd_cron_log`
---
-
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473295843, '2016-09-08', '08:50:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 08:50:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473297213, '2016-09-08', '09:13:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:13:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473298151, '2016-09-08', '09:29:11', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:29:11'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473298452, '2016-09-08', '09:34:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:34:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473298752, '2016-09-08', '09:39:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:39:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473299052, '2016-09-08', '09:44:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:44:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473299352, '2016-09-08', '09:49:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:49:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473299653, '2016-09-08', '09:54:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:54:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473299953, '2016-09-08', '09:59:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 09:59:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473300253, '2016-09-08', '10:04:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:04:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473300554, '2016-09-08', '10:09:14', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:09:14'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473300854, '2016-09-08', '10:14:14', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:14:14'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473301154, '2016-09-08', '10:19:14', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:19:14'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473301472, '2016-09-08', '10:24:32', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:24:32'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473301772, '2016-09-08', '10:29:32', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:29:32'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473302072, '2016-09-08', '10:34:32', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:34:32'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473302373, '2016-09-08', '10:39:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:39:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473302673, '2016-09-08', '10:44:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:44:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473302973, '2016-09-08', '10:49:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:49:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473303275, '2016-09-08', '10:54:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:54:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473303575, '2016-09-08', '10:59:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 10:59:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473303876, '2016-09-08', '11:04:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:04:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473304176, '2016-09-08', '11:09:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:09:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473304476, '2016-09-08', '11:14:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:14:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473304776, '2016-09-08', '11:19:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:19:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473305077, '2016-09-08', '11:24:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:24:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473305377, '2016-09-08', '11:29:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:29:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473305677, '2016-09-08', '11:34:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:34:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473305978, '2016-09-08', '11:39:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:39:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473306278, '2016-09-08', '11:44:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:44:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473306578, '2016-09-08', '11:49:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:49:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473306879, '2016-09-08', '11:54:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:54:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473307179, '2016-09-08', '11:59:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 11:59:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473307479, '2016-09-08', '12:04:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:04:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473307780, '2016-09-08', '12:09:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:09:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473308080, '2016-09-08', '12:14:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:14:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473308380, '2016-09-08', '12:19:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:19:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473308701, '2016-09-08', '12:25:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:25:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473309002, '2016-09-08', '12:30:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:30:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473309302, '2016-09-08', '12:35:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:35:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473309602, '2016-09-08', '12:40:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:40:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473309902, '2016-09-08', '12:45:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:45:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473310203, '2016-09-08', '12:50:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:50:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473310525, '2016-09-08', '12:55:25', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 12:55:25'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473310825, '2016-09-08', '13:00:25', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:00:25'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473311125, '2016-09-08', '13:05:25', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:05:25'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473311425, '2016-09-08', '13:10:25', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:10:25'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473311726, '2016-09-08', '13:15:26', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:15:26'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473312026, '2016-09-08', '13:20:26', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:20:26'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473312352, '2016-09-08', '13:25:52', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:25:52'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473312652, '2016-09-08', '13:30:52', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:30:52'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473312953, '2016-09-08', '13:35:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:35:53'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473313253, '2016-09-08', '13:40:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:40:53'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473313553, '2016-09-08', '13:45:53', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:45:53'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473313854, '2016-09-08', '13:50:54', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:50:54'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473314154, '2016-09-08', '13:55:54', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 13:55:54'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473314454, '2016-09-08', '14:00:54', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:00:54'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473314755, '2016-09-08', '14:05:55', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:05:55'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473316032, '2016-09-08', '14:27:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:27:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473316332, '2016-09-08', '14:32:12', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:32:12'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473316633, '2016-09-08', '14:37:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:37:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473316933, '2016-09-08', '14:42:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:42:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473317233, '2016-09-08', '14:47:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:47:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473317533, '2016-09-08', '14:52:13', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:52:13'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473317881, '2016-09-08', '14:58:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 14:58:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473318182, '2016-09-08', '15:03:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:03:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473318482, '2016-09-08', '15:08:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:08:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473318782, '2016-09-08', '15:13:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:13:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473319082, '2016-09-08', '15:18:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:18:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473319382, '2016-09-08', '15:23:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:23:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473319683, '2016-09-08', '15:28:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:28:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473319983, '2016-09-08', '15:33:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:33:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473320284, '2016-09-08', '15:38:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:38:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473320584, '2016-09-08', '15:43:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:43:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473320884, '2016-09-08', '15:48:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:48:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473321184, '2016-09-08', '15:53:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:53:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473321520, '2016-09-08', '15:58:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 15:58:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473321820, '2016-09-08', '16:03:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:03:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473322120, '2016-09-08', '16:08:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:08:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473322420, '2016-09-08', '16:13:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:13:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473322721, '2016-09-08', '16:18:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:18:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473323021, '2016-09-08', '16:23:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:23:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473323321, '2016-09-08', '16:28:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:28:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473323622, '2016-09-08', '16:33:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:33:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473323922, '2016-09-08', '16:38:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:38:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473324222, '2016-09-08', '16:43:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:43:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473324522, '2016-09-08', '16:48:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:48:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473324823, '2016-09-08', '16:53:43', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:53:43'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473325123, '2016-09-08', '16:58:43', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 16:58:43'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473325423, '2016-09-08', '17:03:43', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:03:43'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473325724, '2016-09-08', '17:08:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:08:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473326024, '2016-09-08', '17:13:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:13:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473326324, '2016-09-08', '17:18:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:18:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473326624, '2016-09-08', '17:23:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:23:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473326925, '2016-09-08', '17:28:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:28:45'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473327225, '2016-09-08', '17:33:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:33:45'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473327525, '2016-09-08', '17:38:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:38:45'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473327826, '2016-09-08', '17:43:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:43:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473328126, '2016-09-08', '17:48:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:48:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473328426, '2016-09-08', '17:53:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:53:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473328727, '2016-09-08', '17:58:47', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 17:58:47'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473329028, '2016-09-08', '18:03:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:03:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473329328, '2016-09-08', '18:08:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:08:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473329628, '2016-09-08', '18:13:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:13:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473329928, '2016-09-08', '18:18:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:18:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473330228, '2016-09-08', '18:23:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:23:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473330529, '2016-09-08', '18:28:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 18:28:49'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473343506, '2016-09-08', '22:05:06', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:05:06'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473343506, '2016-09-08', '22:05:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:05:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473343648, '2016-09-08', '22:07:28', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:07:28'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473343648, '2016-09-08', '22:07:28', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:07:28'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473343839, '2016-09-08', '22:10:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:10:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473343839, '2016-09-08', '22:10:39', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:10:39'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473343839, '2016-09-08', '22:10:39', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:10:39'',\n  ''stock'' => \n  array (\n    0 => ''GR1609072292323723'',\n    1 => ''GR1609089881733728'',\n  ),\n  ''history'' => \n  array (\n    0 => ''1'',\n    1 => ''5'',\n  ),\n)'),
-(1473344140, '2016-09-08', '22:15:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:15:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473344140, '2016-09-08', '22:15:40', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:15:40'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473344140, '2016-09-08', '22:15:40', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:15:40'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473344440, '2016-09-08', '22:20:40', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:20:40'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473344440, '2016-09-08', '22:20:40', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:20:40'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473344440, '2016-09-08', '22:20:40', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:20:40'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473344741, '2016-09-08', '22:25:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:25:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473344741, '2016-09-08', '22:25:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:25:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473344741, '2016-09-08', '22:25:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:25:41'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473345041, '2016-09-08', '22:30:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:30:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473345041, '2016-09-08', '22:30:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:30:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473345041, '2016-09-08', '22:30:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:30:41'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473345341, '2016-09-08', '22:35:41', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:35:41'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473345341, '2016-09-08', '22:35:41', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:35:41'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473345341, '2016-09-08', '22:35:41', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:35:41'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473345642, '2016-09-08', '22:40:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:40:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473345642, '2016-09-08', '22:40:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:40:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473345642, '2016-09-08', '22:40:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:40:42'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473345942, '2016-09-08', '22:45:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:45:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473345942, '2016-09-08', '22:45:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:45:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473345942, '2016-09-08', '22:45:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:45:42'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473346242, '2016-09-08', '22:50:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:50:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473346242, '2016-09-08', '22:50:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:50:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473346242, '2016-09-08', '22:50:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:50:42'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473346542, '2016-09-08', '22:55:42', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 22:55:42'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473346542, '2016-09-08', '22:55:42', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 22:55:42'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473346542, '2016-09-08', '22:55:42', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 22:55:42'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473346843, '2016-09-08', '23:00:43', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:00:43'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473346843, '2016-09-08', '23:00:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:00:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473346843, '2016-09-08', '23:00:43', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:00:43'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473347143, '2016-09-08', '23:05:43', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:05:43'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473347143, '2016-09-08', '23:05:43', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:05:43'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473347143, '2016-09-08', '23:05:43', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:05:43'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473347444, '2016-09-08', '23:10:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:10:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473347444, '2016-09-08', '23:10:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:10:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473347444, '2016-09-08', '23:10:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:10:44'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473347744, '2016-09-08', '23:15:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:15:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473347744, '2016-09-08', '23:15:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:15:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473347744, '2016-09-08', '23:15:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:15:44'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473348044, '2016-09-08', '23:20:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:20:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473348044, '2016-09-08', '23:20:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:20:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473348044, '2016-09-08', '23:20:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:20:44'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473348344, '2016-09-08', '23:25:44', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:25:44'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473348344, '2016-09-08', '23:25:44', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:25:44'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473348344, '2016-09-08', '23:25:44', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:25:44'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473348645, '2016-09-08', '23:30:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-08 23:30:45'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473348645, '2016-09-08', '23:30:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-08 23:30:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473348645, '2016-09-08', '23:30:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-08 23:30:45'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473382443, '2016-09-09', '08:54:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 08:54:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473382443, '2016-09-09', '08:54:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 08:54:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473382443, '2016-09-09', '08:54:03', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 08:54:03'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473382744, '2016-09-09', '08:59:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 08:59:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473382744, '2016-09-09', '08:59:04', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 08:59:04'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473382744, '2016-09-09', '08:59:04', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 08:59:04'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473383044, '2016-09-09', '09:04:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:04:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473383045, '2016-09-09', '09:04:05', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:04:05'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473383045, '2016-09-09', '09:04:05', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:04:05'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473383345, '2016-09-09', '09:09:05', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:09:05'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473383345, '2016-09-09', '09:09:05', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:09:05'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473383345, '2016-09-09', '09:09:05', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:09:05'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473383646, '2016-09-09', '09:14:06', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:14:06'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473383646, '2016-09-09', '09:14:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:14:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473383646, '2016-09-09', '09:14:06', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:14:06'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473383946, '2016-09-09', '09:19:06', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:19:06'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473383946, '2016-09-09', '09:19:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:19:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473383946, '2016-09-09', '09:19:06', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:19:06'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473384246, '2016-09-09', '09:24:06', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:24:06'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473384246, '2016-09-09', '09:24:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:24:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473384246, '2016-09-09', '09:24:06', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:24:06'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473384546, '2016-09-09', '09:29:06', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:29:06'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473384546, '2016-09-09', '09:29:06', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:29:06'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473384546, '2016-09-09', '09:29:06', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:29:06'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473384847, '2016-09-09', '09:34:07', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:34:07'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473384847, '2016-09-09', '09:34:07', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:34:07'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473384847, '2016-09-09', '09:34:07', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:34:07'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473385147, '2016-09-09', '09:39:07', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:39:07'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473385147, '2016-09-09', '09:39:07', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:39:07'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473385147, '2016-09-09', '09:39:07', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:39:07'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473385447, '2016-09-09', '09:44:07', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:44:07'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473385447, '2016-09-09', '09:44:07', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:44:07'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473385447, '2016-09-09', '09:44:07', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:44:07'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473385747, '2016-09-09', '09:49:07', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:49:07'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473385747, '2016-09-09', '09:49:07', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:49:07'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473385747, '2016-09-09', '09:49:07', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:49:07'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473386048, '2016-09-09', '09:54:08', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:54:08'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473386048, '2016-09-09', '09:54:08', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:54:08'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473386048, '2016-09-09', '09:54:08', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:54:08'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473386348, '2016-09-09', '09:59:08', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 09:59:08'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473386348, '2016-09-09', '09:59:08', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 09:59:08'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473386348, '2016-09-09', '09:59:08', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 09:59:08'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473386648, '2016-09-09', '10:04:08', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 10:04:08'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)');
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473386648, '2016-09-09', '10:04:08', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 10:04:08'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473386648, '2016-09-09', '10:04:08', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 10:04:08'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473386955, '2016-09-09', '10:09:15', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 10:09:15'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473386955, '2016-09-09', '10:09:15', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 10:09:15'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473386955, '2016-09-09', '10:09:15', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 10:09:15'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473387255, '2016-09-09', '10:14:15', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 10:14:15'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473387255, '2016-09-09', '10:14:15', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 10:14:15'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473387255, '2016-09-09', '10:14:15', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 10:14:15'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473387555, '2016-09-09', '10:19:15', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 10:19:15'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473387555, '2016-09-09', '10:19:15', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 10:19:15'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473387555, '2016-09-09', '10:19:15', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 10:19:15'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473393562, '2016-09-09', '11:59:22', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 11:59:22'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473393562, '2016-09-09', '11:59:22', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 11:59:22'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473393562, '2016-09-09', '11:59:22', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 11:59:22'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473393863, '2016-09-09', '12:04:23', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:04:23'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473393863, '2016-09-09', '12:04:23', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:04:23'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473393863, '2016-09-09', '12:04:23', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:04:23'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473394163, '2016-09-09', '12:09:23', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:09:23'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473394163, '2016-09-09', '12:09:23', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:09:23'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473394163, '2016-09-09', '12:09:23', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:09:23'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473394463, '2016-09-09', '12:14:23', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:14:23'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473394463, '2016-09-09', '12:14:23', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:14:23'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473394463, '2016-09-09', '12:14:23', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:14:23'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473394763, '2016-09-09', '12:19:23', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:19:23'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473394763, '2016-09-09', '12:19:23', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:19:23'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473394763, '2016-09-09', '12:19:23', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:19:23'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473395064, '2016-09-09', '12:24:24', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:24:24'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473395064, '2016-09-09', '12:24:24', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:24:24'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473395064, '2016-09-09', '12:24:24', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:24:24'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473395364, '2016-09-09', '12:29:24', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:29:24'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473395364, '2016-09-09', '12:29:24', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:29:24'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473395364, '2016-09-09', '12:29:24', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:29:24'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473395685, '2016-09-09', '12:34:45', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:34:45'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473395685, '2016-09-09', '12:34:45', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:34:45'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473395685, '2016-09-09', '12:34:45', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:34:45'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473395986, '2016-09-09', '12:39:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:39:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473395986, '2016-09-09', '12:39:46', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:39:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473395986, '2016-09-09', '12:39:46', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:39:46'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473396286, '2016-09-09', '12:44:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:44:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473396286, '2016-09-09', '12:44:46', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:44:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473396286, '2016-09-09', '12:44:46', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:44:46'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473396586, '2016-09-09', '12:49:46', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:49:46'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473396586, '2016-09-09', '12:49:46', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:49:46'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473396586, '2016-09-09', '12:49:46', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:49:46'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473396887, '2016-09-09', '12:54:47', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:54:47'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473396887, '2016-09-09', '12:54:47', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:54:47'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473396887, '2016-09-09', '12:54:47', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:54:47'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473397187, '2016-09-09', '12:59:47', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 12:59:47'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473397187, '2016-09-09', '12:59:47', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 12:59:47'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473397187, '2016-09-09', '12:59:47', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 12:59:47'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473397487, '2016-09-09', '13:04:47', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:04:47'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473397487, '2016-09-09', '13:04:47', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:04:47'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473397487, '2016-09-09', '13:04:47', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:04:47'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473397787, '2016-09-09', '13:09:47', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:09:47'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473397787, '2016-09-09', '13:09:47', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:09:47'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473397787, '2016-09-09', '13:09:47', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:09:47'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473398088, '2016-09-09', '13:14:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:14:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473398088, '2016-09-09', '13:14:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:14:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473398088, '2016-09-09', '13:14:48', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:14:48'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473398388, '2016-09-09', '13:19:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:19:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473398388, '2016-09-09', '13:19:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:19:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473398388, '2016-09-09', '13:19:48', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:19:48'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473398688, '2016-09-09', '13:24:48', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:24:48'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473398688, '2016-09-09', '13:24:48', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:24:48'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473398688, '2016-09-09', '13:24:48', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:24:48'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473398989, '2016-09-09', '13:29:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:29:49'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473398989, '2016-09-09', '13:29:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:29:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473398989, '2016-09-09', '13:29:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:29:49'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473399289, '2016-09-09', '13:34:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:34:49'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473399289, '2016-09-09', '13:34:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:34:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473399289, '2016-09-09', '13:34:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:34:49'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473399589, '2016-09-09', '13:39:49', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:39:49'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473399589, '2016-09-09', '13:39:49', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:39:49'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473399589, '2016-09-09', '13:39:49', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:39:49'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473399909, '2016-09-09', '13:45:09', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:45:09'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473399909, '2016-09-09', '13:45:09', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:45:09'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473399909, '2016-09-09', '13:45:09', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:45:09'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473400209, '2016-09-09', '13:50:09', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:50:09'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473400209, '2016-09-09', '13:50:09', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:50:09'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473400209, '2016-09-09', '13:50:09', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:50:09'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473400510, '2016-09-09', '13:55:10', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 13:55:10'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473400510, '2016-09-09', '13:55:10', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 13:55:10'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473400510, '2016-09-09', '13:55:10', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 13:55:10'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473400810, '2016-09-09', '14:00:10', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:00:10'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473400810, '2016-09-09', '14:00:10', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:00:10'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473400810, '2016-09-09', '14:00:10', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:00:10'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473401131, '2016-09-09', '14:05:31', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:05:31'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473401131, '2016-09-09', '14:05:31', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:05:31'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473401131, '2016-09-09', '14:05:31', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:05:31'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473401432, '2016-09-09', '14:10:32', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:10:32'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473401432, '2016-09-09', '14:10:32', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:10:32'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473401432, '2016-09-09', '14:10:32', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:10:32'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473401732, '2016-09-09', '14:15:32', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:15:32'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473401732, '2016-09-09', '14:15:32', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:15:32'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473401732, '2016-09-09', '14:15:32', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:15:32'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473402033, '2016-09-09', '14:20:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:20:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473402033, '2016-09-09', '14:20:33', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:20:33'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473402033, '2016-09-09', '14:20:33', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:20:33'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473402333, '2016-09-09', '14:25:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:25:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473402333, '2016-09-09', '14:25:33', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:25:33'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473402333, '2016-09-09', '14:25:33', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:25:33'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473402633, '2016-09-09', '14:30:33', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:30:33'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473402633, '2016-09-09', '14:30:33', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:30:33'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473402633, '2016-09-09', '14:30:33', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:30:33'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473402934, '2016-09-09', '14:35:34', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:35:34'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473402934, '2016-09-09', '14:35:34', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:35:34'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473402934, '2016-09-09', '14:35:34', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:35:34'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473403234, '2016-09-09', '14:40:34', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:40:34'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473403234, '2016-09-09', '14:40:34', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:40:34'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473403234, '2016-09-09', '14:40:34', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:40:34'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473403535, '2016-09-09', '14:45:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:45:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473403535, '2016-09-09', '14:45:35', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:45:35'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473403535, '2016-09-09', '14:45:35', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:45:35'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473403835, '2016-09-09', '14:50:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:50:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473403835, '2016-09-09', '14:50:35', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:50:35'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473403835, '2016-09-09', '14:50:35', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:50:35'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473404135, '2016-09-09', '14:55:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 14:55:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473404135, '2016-09-09', '14:55:35', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 14:55:35'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473404135, '2016-09-09', '14:55:35', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 14:55:35'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473404435, '2016-09-09', '15:00:35', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:00:35'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473404435, '2016-09-09', '15:00:35', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:00:35'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473404435, '2016-09-09', '15:00:35', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:00:35'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473404736, '2016-09-09', '15:05:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:05:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473404736, '2016-09-09', '15:05:36', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:05:36'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473404736, '2016-09-09', '15:05:36', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:05:36'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473405036, '2016-09-09', '15:10:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:10:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473405036, '2016-09-09', '15:10:36', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:10:36'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473405036, '2016-09-09', '15:10:36', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:10:36'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473405336, '2016-09-09', '15:15:36', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:15:36'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473405336, '2016-09-09', '15:15:36', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:15:36'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473405336, '2016-09-09', '15:15:36', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:15:36'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473405637, '2016-09-09', '15:20:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:20:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473405637, '2016-09-09', '15:20:37', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:20:37'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473405637, '2016-09-09', '15:20:37', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:20:37'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473405937, '2016-09-09', '15:25:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:25:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473405937, '2016-09-09', '15:25:37', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:25:37'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473405937, '2016-09-09', '15:25:37', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:25:37'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473406237, '2016-09-09', '15:30:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:30:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473406237, '2016-09-09', '15:30:37', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:30:37'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473406237, '2016-09-09', '15:30:37', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:30:37'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473406537, '2016-09-09', '15:35:37', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:35:37'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473406537, '2016-09-09', '15:35:37', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:35:37'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473406537, '2016-09-09', '15:35:37', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:35:37'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473406838, '2016-09-09', '15:40:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:40:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473406838, '2016-09-09', '15:40:38', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:40:38'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473406838, '2016-09-09', '15:40:38', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:40:38'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473407138, '2016-09-09', '15:45:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:45:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473407138, '2016-09-09', '15:45:38', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:45:38'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473407138, '2016-09-09', '15:45:38', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:45:38'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473407438, '2016-09-09', '15:50:38', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:50:38'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473407438, '2016-09-09', '15:50:38', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:50:38'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473407438, '2016-09-09', '15:50:38', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:50:38'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473407739, '2016-09-09', '15:55:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 15:55:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473407739, '2016-09-09', '15:55:39', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 15:55:39'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473407739, '2016-09-09', '15:55:39', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 15:55:39'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473408039, '2016-09-09', '16:00:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:00:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473408039, '2016-09-09', '16:00:39', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:00:39'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473408039, '2016-09-09', '16:00:39', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:00:39'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473408339, '2016-09-09', '16:05:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:05:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473408339, '2016-09-09', '16:05:39', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:05:39'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473408339, '2016-09-09', '16:05:39', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:05:39'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473408639, '2016-09-09', '16:10:39', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:10:39'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473408639, '2016-09-09', '16:10:39', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:10:39'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473408639, '2016-09-09', '16:10:39', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:10:39'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473408839, '2016-09-09', '16:13:59', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:13:59'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473408839, '2016-09-09', '16:13:59', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:13:59'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473408839, '2016-09-09', '16:13:59', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:13:59'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473409139, '2016-09-09', '16:18:59', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:18:59'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473409139, '2016-09-09', '16:18:59', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:18:59'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473409139, '2016-09-09', '16:18:59', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:18:59'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473409439, '2016-09-09', '16:23:59', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:23:59'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473409439, '2016-09-09', '16:23:59', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:23:59'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473409439, '2016-09-09', '16:23:59', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:23:59'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473409739, '2016-09-09', '16:28:59', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:28:59'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473409739, '2016-09-09', '16:28:59', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:28:59'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473409739, '2016-09-09', '16:28:59', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:28:59'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473410040, '2016-09-09', '16:34:00', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:34:00'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473410040, '2016-09-09', '16:34:00', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:34:00'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473410040, '2016-09-09', '16:34:00', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:34:00'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473410340, '2016-09-09', '16:39:00', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:39:00'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473410340, '2016-09-09', '16:39:00', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:39:00'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473410340, '2016-09-09', '16:39:00', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:39:00'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473410640, '2016-09-09', '16:44:00', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:44:00'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473410640, '2016-09-09', '16:44:00', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:44:00'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473410640, '2016-09-09', '16:44:00', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:44:00'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473410940, '2016-09-09', '16:49:00', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:49:00'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473410940, '2016-09-09', '16:49:00', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:49:00'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473410940, '2016-09-09', '16:49:00', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:49:00'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473411241, '2016-09-09', '16:54:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:54:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473411241, '2016-09-09', '16:54:01', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:54:01'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473411241, '2016-09-09', '16:54:01', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:54:01'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473411541, '2016-09-09', '16:59:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 16:59:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473411541, '2016-09-09', '16:59:01', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 16:59:01'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473411541, '2016-09-09', '16:59:01', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 16:59:01'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473411841, '2016-09-09', '17:04:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:04:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473411841, '2016-09-09', '17:04:01', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:04:01'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473411841, '2016-09-09', '17:04:01', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:04:01'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473412141, '2016-09-09', '17:09:01', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:09:01'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473412141, '2016-09-09', '17:09:01', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:09:01'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473412141, '2016-09-09', '17:09:01', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:09:01'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473412442, '2016-09-09', '17:14:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:14:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473412442, '2016-09-09', '17:14:02', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:14:02'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473412442, '2016-09-09', '17:14:02', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:14:02'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473412742, '2016-09-09', '17:19:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:19:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473412742, '2016-09-09', '17:19:02', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:19:02'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473412742, '2016-09-09', '17:19:02', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:19:02'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473413042, '2016-09-09', '17:24:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:24:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473413042, '2016-09-09', '17:24:02', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:24:02'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473413042, '2016-09-09', '17:24:02', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:24:02'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473413342, '2016-09-09', '17:29:02', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:29:02'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473413342, '2016-09-09', '17:29:02', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:29:02'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473413342, '2016-09-09', '17:29:02', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:29:02'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473413643, '2016-09-09', '17:34:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:34:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473413643, '2016-09-09', '17:34:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:34:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473413643, '2016-09-09', '17:34:03', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:34:03'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473413943, '2016-09-09', '17:39:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:39:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473413943, '2016-09-09', '17:39:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:39:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473413943, '2016-09-09', '17:39:03', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:39:03'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473414243, '2016-09-09', '17:44:03', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:44:03'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473414243, '2016-09-09', '17:44:03', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:44:03'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473414243, '2016-09-09', '17:44:03', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:44:03'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473414544, '2016-09-09', '17:49:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:49:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)');
-INSERT INTO `gd_cron_log` (`log_time`, `date`, `time`, `action`, `text`) VALUES
-(1473414544, '2016-09-09', '17:49:04', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:49:04'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473414544, '2016-09-09', '17:49:04', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:49:04'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473414844, '2016-09-09', '17:54:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:54:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473414844, '2016-09-09', '17:54:04', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:54:04'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473414844, '2016-09-09', '17:54:04', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:54:04'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)'),
-(1473415144, '2016-09-09', '17:59:04', 'Tool_model::today_price', 'array (\n  ''datetime'' => ''2016-09-09 17:59:04'',\n  ''insert'' => \n  array (\n    ''apikey'' => ''101ae9aa1007ce6d'',\n    ''apiurl'' => ''http://api.jisuapi.com/gold/shgold'',\n  ),\n)'),
-(1473415144, '2016-09-09', '17:59:04', 'Tool_model::push_growing', 'array (\n  ''datetime'' => ''2016-09-09 17:59:04'',\n  ''insert'' => \n  array (\n  ),\n  ''update'' => \n  array (\n  ),\n  ''sn'' => \n  array (\n  ),\n)'),
-(1473415144, '2016-09-09', '17:59:04', 'Tool_model::growing', 'array (\n  ''datetime'' => ''2016-09-09 17:59:04'',\n  ''stock'' => \n  array (\n  ),\n  ''history'' => \n  array (\n  ),\n)');
-
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `gd_cron_schedule`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_cron_schedule` (
-  `schedule_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_cron_schedule` (
+  `schedule_id` int(10) UNSIGNED NOT NULL,
   `job_code` varchar(255) NOT NULL DEFAULT '0',
   `status` enum('pending','running','success','missed','error') NOT NULL DEFAULT 'pending',
   `messages` text,
   `created_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `scheduled_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `executed_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `finished_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`schedule_id`),
-  KEY `task_name` (`job_code`),
-  KEY `scheduled_at` (`scheduled_at`,`status`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `finished_at` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -580,8 +131,8 @@ CREATE TABLE IF NOT EXISTS `gd_cron_schedule` (
 -- 表的结构 `gd_customer`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer` (
+  `customer_id` int(11) NOT NULL,
   `realname` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `avatar` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
   `phone` varchar(16) COLLATE utf8_unicode_ci NOT NULL,
@@ -598,9 +149,8 @@ CREATE TABLE IF NOT EXISTS `gd_customer` (
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_customer`
@@ -612,7 +162,7 @@ INSERT INTO `gd_customer` (`customer_id`, `realname`, `avatar`, `phone`, `idnumb
 (4, '马晓云', NULL, '18850219878', '321324195406050508', '', NULL, NULL, NULL, 1, 1, '2', 0, '', NULL, 5, 1472604934, 1472604934),
 (5, '马腾讯', NULL, '18959596565', '321254198808050604', '', NULL, NULL, NULL, 1, 1, '12', 0, '', NULL, 5, 1472605860, 1472605860),
 (6, '余华为', NULL, '18959596767', '321254198908050604', '', NULL, NULL, NULL, 1, 1, '12', 0, '', NULL, 5, 1472605860, 1472605860),
-(7, '雷小米', NULL, '13113213313', '2147483647', 'leixiaomi', '324456532', NULL, NULL, 1, 1, '2', 0, '312355435436554', '', 3, 1472645815, 1474354900),
+(7, '雷小米', NULL, '13113213313', '214748364732125419', 'leixiaomi', '324456532', 'a@a.c', '', 1, 1, '2', 1, '312355435436554', 'sadasdasd', 3, 1472645815, 1474426508),
 (8, '乔苹果', NULL, '18808800990', '325225197008078888', 'qiaopingguo', '32323454435', NULL, NULL, 2, 1, '12', 0, '', '乔帮主', 3, 1472646256, 1472646256),
 (9, '沈万三', NULL, '13813800138', '138139199810039997', 'shenwansan', '64568789797', 'a@b.cc', NULL, 2, 1, '12', 0, '', 'asdsadasds', 3, 1472707274, 1472707274),
 (10, '赵公明', NULL, '13606660888', '123321196606066666', 'zhaogongming', '', NULL, NULL, 3, 1, '12', 0, '', 'asdsad', 1, 1473059868, 1473059868);
@@ -623,21 +173,20 @@ INSERT INTO `gd_customer` (`customer_id`, `realname`, `avatar`, `phone`, `idnumb
 -- 表的结构 `gd_customer_apply`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer_apply` (
-  `apply_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer_apply` (
+  `apply_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `phone` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `weight` decimal(11,2) NOT NULL DEFAULT '0.00',
   `fee` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `mode` enum('appling','order') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'appling',
+  `mode` enum('taking','order','renew') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'taking',
   `note` text COLLATE utf8_unicode_ci,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `locker_id` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`apply_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -645,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `gd_customer_apply` (
 -- 表的结构 `gd_customer_card`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer_card` (
+CREATE TABLE `gd_customer_card` (
   `card_number` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `card_serial` char(8) COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL
@@ -664,8 +213,8 @@ INSERT INTO `gd_customer_card` (`card_number`, `card_serial`, `status`) VALUES
 -- 表的结构 `gd_customer_group`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer_group` (
-  `group_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer_group` (
+  `group_id` int(11) NOT NULL,
   `title` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `code` char(16) COLLATE utf8_unicode_ci NOT NULL,
   `icon` varchar(128) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -674,9 +223,8 @@ CREATE TABLE IF NOT EXISTS `gd_customer_group` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `lasttime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_customer_group`
@@ -694,14 +242,24 @@ INSERT INTO `gd_customer_group` (`group_id`, `title`, `code`, `icon`, `rule`, `n
 -- 表的结构 `gd_customer_history`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer_history` (
+  `history_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- 转存表中的数据 `gd_customer_history`
+--
+
+INSERT INTO `gd_customer_history` (`history_id`, `customer_id`, `note`, `worker_id`, `addtime`) VALUES
+(1, 7, '申请提金：10.00克', 3, 1474421535),
+(2, 7, '申请提金：10.00克', 3, 1474423697),
+(3, 7, '取消提金：10.00克<br>sadsadasdasda', 3, 1474423718),
+(4, 7, '申请提金：10.00克', 3, 1474423921),
+(5, 7, '取消提金：10.00克<br>asdsadsafdfasdsa', 3, 1474423936);
 
 -- --------------------------------------------------------
 
@@ -709,8 +267,8 @@ CREATE TABLE IF NOT EXISTS `gd_customer_history` (
 -- 表的结构 `gd_customer_stock`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_customer_stock` (
-  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_customer_stock` (
+  `stock_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
   `mode` enum('in','out','profit','free') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'profit',
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
@@ -720,9 +278,8 @@ CREATE TABLE IF NOT EXISTS `gd_customer_stock` (
   `notify` tinyint(1) NOT NULL DEFAULT '1',
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_customer_stock`
@@ -733,7 +290,9 @@ INSERT INTO `gd_customer_stock` (`stock_id`, `customer_id`, `mode`, `project_sn`
 (2, 9, 'profit', 'GR1609129651614635', '1.00', '0.00', NULL, 1, '项目提前终止所得金息', 3, 1474380239),
 (3, 7, 'in', 'GR1609129871653602', '98.00', '0.00', NULL, 1, 'asdsadsafafsadsadsa', 3, 1474380914),
 (4, 7, 'profit', 'GR1609129871653602', '1.00', '0.00', NULL, 1, '项目提前终止所得金息', 3, 1474380914),
-(5, 7, 'out', '', '-19.00', '0.00', NULL, 1, '客户续存 19.00 克', 3, 1474388190);
+(5, 7, 'out', '', '-19.00', '0.00', NULL, 1, '客户续存 19.00 克', 3, 1474388190),
+(6, 7, 'out', '', '-10.00', '5.00', NULL, 1, '阿萨德撒大', 7, 1474422108),
+(7, 7, 'free', '', '1.23', '0.00', NULL, 1, 'sadsadsadssss', 3, 1474433515);
 
 -- --------------------------------------------------------
 
@@ -741,15 +300,14 @@ INSERT INTO `gd_customer_stock` (`stock_id`, `customer_id`, `mode`, `project_sn`
 -- 表的结构 `gd_golden_price`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_golden_price` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_golden_price` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `price` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=36 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_golden_price`
@@ -797,7 +355,7 @@ INSERT INTO `gd_golden_price` (`id`, `date`, `type`, `typename`, `price`, `addti
 -- 表的结构 `gd_golden_today`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_golden_today` (
+CREATE TABLE `gd_golden_today` (
   `date` date DEFAULT NULL,
   `type` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `typename` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
@@ -809,9 +367,7 @@ CREATE TABLE IF NOT EXISTS `gd_golden_today` (
   `lastclosing` decimal(8,2) NOT NULL DEFAULT '0.00',
   `tradeamount` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `updatetime` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL,
-  KEY `date` (`date`),
-  KEY `updatetime` (`updatetime`)
+  `addtime` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1018,8 +574,8 @@ INSERT INTO `gd_golden_today` (`date`, `type`, `typename`, `price`, `opening`, `
 -- 表的结构 `gd_node`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_node` (
-  `node_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_node` (
+  `node_id` int(11) NOT NULL,
   `mode` enum('auth','menu') NOT NULL DEFAULT 'auth',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   `level` tinyint(4) NOT NULL DEFAULT '1',
@@ -1029,9 +585,8 @@ CREATE TABLE IF NOT EXISTS `gd_node` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `auth` tinyint(1) NOT NULL DEFAULT '0',
   `sort` smallint(6) NOT NULL DEFAULT '0',
-  `note` text,
-  PRIMARY KEY (`node_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=128 ;
+  `note` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_node`
@@ -1148,7 +703,8 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 (124, 'auth', 104, 1, 'bind', '绑定金卡', 'project/customer/bind', 1, 1, 0, ''),
 (125, 'auth', 104, 1, 'unbind', '取消客户金卡绑定', 'project/customer/unbind', 1, 1, 0, ''),
 (126, 'auth', 104, 1, 'check_card', '验证输入的卡号', 'project/customer/check_card', 1, 1, 0, ''),
-(127, 'auth', 104, 1, 'renew', '客户续存黄金', 'project/customer/renew', 1, 1, 0, '');
+(127, 'auth', 104, 1, 'renew', '客户续存黄金', 'project/customer/renew', 1, 1, 0, ''),
+(128, 'auth', 104, 1, 'free', '赠送客户黄金', 'project/customer/free', 1, 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -1156,17 +712,16 @@ INSERT INTO `gd_node` (`node_id`, `mode`, `parent_id`, `level`, `name`, `title`,
 -- 表的结构 `gd_project_file`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_file` (
-  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_file` (
+  `file_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
   `dir` enum('photo','invoice','report','privacy') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'photo',
   `file` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `worker_id` int(11) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`file_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_file`
@@ -1184,8 +739,8 @@ INSERT INTO `gd_project_file` (`file_id`, `project_sn`, `mode`, `dir`, `file`, `
 -- 表的结构 `gd_project_investing`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing` (
+  `project_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
@@ -1205,16 +760,15 @@ CREATE TABLE IF NOT EXISTS `gd_project_investing` (
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+  `locker_id` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing`
 --
 
 INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `company_id`, `price`, `weight`, `amount`, `month`, `profit`, `payment`, `start`, `end`, `note`, `is_del`, `transferrer`, `worker_id`, `addtime`, `lasttime`, `locker_id`) VALUES
-(1, 'GM1609126411664755', 2, 2, 2, 1, '287.70', '10.00', '2877.00', 12, '0.08', 'gold', '2016-09-12', '2017-09-11', '撒旦撒旦撒', 0, 7, 3, 1473670075, 1474353732, 0);
+(1, 'GM1609126411664755', 4, 2, 2, 1, '287.70', '10.00', '2877.00', 12, '0.08', 'gold', '2016-09-12', '2017-09-11', '库存已确认标记，自动推进到正在增值', 0, 3, 7, 1473670075, 1474424237, 0);
 
 -- --------------------------------------------------------
 
@@ -1222,17 +776,16 @@ INSERT INTO `gd_project_investing` (`project_id`, `project_sn`, `status_id`, `cu
 -- 表的结构 `gd_project_investing_history`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing_history` (
+  `history_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing_history`
@@ -1240,7 +793,9 @@ CREATE TABLE IF NOT EXISTS `gd_project_investing_history` (
 
 INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_id`, `note`, `request`, `worker_id`, `addtime`, `ip`) VALUES
 (1, 1, 1, '87898797', '', 5, 1473670075, '127.0.0.1'),
-(2, 1, 2, '撒旦撒旦撒', 'array (\n  ''amount'' =&gt; ''2877.00'',\n  ''_amount'' =&gt; ''2877.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 3, 1474353732, '127.0.0.1');
+(2, 1, 2, '撒旦撒旦撒', 'array (\n  ''amount'' =&gt; ''2877.00'',\n  ''_amount'' =&gt; ''2877.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 3, 1474353732, '127.0.0.1'),
+(3, 1, 3, 'sadsadadsa', 'array (\n  ''weight'' =&gt; ''10.00'',\n  ''_weight'' =&gt; ''10.00'',\n  ''phone'' =&gt; ''18850911766'',\n  ''_phone'' =&gt; ''18850911766'',\n)', 7, 1474424237, '127.0.0.1'),
+(4, 1, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1474424237, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -1248,15 +803,14 @@ INSERT INTO `gd_project_investing_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_investing_status`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_investing_status` (
-  `status_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_investing_status` (
+  `status_id` int(11) NOT NULL,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_investing_status`
@@ -1276,16 +830,15 @@ INSERT INTO `gd_project_investing_status` (`status_id`, `title`, `code`, `list_l
 -- 表的结构 `gd_project_period`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_period` (
-  `period_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_period` (
+  `period_id` int(11) NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `month` tinyint(4) NOT NULL DEFAULT '1',
   `profit` decimal(5,2) NOT NULL DEFAULT '0.00',
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `default` tinyint(4) NOT NULL DEFAULT '0',
-  `note` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`period_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `note` text COLLATE utf8_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_period`
@@ -1302,8 +855,8 @@ INSERT INTO `gd_project_period` (`period_id`, `title`, `month`, `profit`, `statu
 -- 表的结构 `gd_project_recycling`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
-  `project_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_recycling` (
+  `project_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `status_id` tinyint(4) NOT NULL DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
@@ -1327,9 +880,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
   `transferrer` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `addtime` int(11) NOT NULL DEFAULT '0',
   `lasttime` int(11) NOT NULL DEFAULT '0',
-  `locker_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  `locker_id` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_recycling`
@@ -1338,7 +890,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_recycling` (
 INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `customer_id`, `referrer_id`, `company_id`, `price`, `origin_weight`, `weight`, `number`, `type`, `month`, `profit`, `payment`, `appraiser_id`, `loss`, `start`, `end`, `note`, `is_del`, `worker_id`, `transferrer`, `addtime`, `lasttime`, `locker_id`) VALUES
 (1, 'GR1609129871653602', 6, 7, 2, 1, '287.70', '100.00', '98.00', 1, 'ornaments', 12, '0.0800', 'gold', 9, '2.00', '2016-09-12', '2017-09-11', 'asdsadsafafsadsadsa', 0, 3, '3', 1473669362, 1474380914, 0),
 (2, 'GR1609129651614635', 6, 9, 12, 1, '287.70', '120.00', '118.00', 3, 'ornaments', 12, '0.0800', 'gold', 9, '1.67', '2016-09-12', '2017-09-11', 'asdsasadasdsadsa', 0, 3, '3', 1473669995, 1474380239, 0),
-(3, 'GR1609216850071630', 2, 7, 2, 1, '283.25', '19.00', '19.00', 1, 'renew', 12, '0.0800', 'gold', 0, '0.00', NULL, NULL, 'sadsada', 0, 3, '7', 1474388190, 1474388190, 0);
+(3, 'GR1609216850071630', 4, 7, 2, 1, '283.25', '19.00', '19.00', 1, 'renew', 12, '0.0800', 'gold', 0, '0.00', NULL, NULL, '库存已确认标记，自动推进到正在增值', 0, 7, '3', 1474388190, 1474424148, 0),
+(4, 'GR1609212131243225', 1, 4, 2, 1, '283.25', '100.00', '99.88', 2, 'ornaments', 12, '0.0800', 'gold', 9, '0.12', NULL, NULL, 'ewqqwq', 0, 3, '3', 1474432345, 1474432345, 0);
 
 -- --------------------------------------------------------
 
@@ -1346,17 +899,16 @@ INSERT INTO `gd_project_recycling` (`project_id`, `project_sn`, `status_id`, `cu
 -- 表的结构 `gd_project_recycling_history`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_recycling_history` (
-  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_recycling_history` (
+  `history_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL DEFAULT '0',
   `status_id` int(11) NOT NULL DEFAULT '0',
   `note` text COLLATE utf8_unicode_ci NOT NULL,
   `request` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_recycling_history`
@@ -1373,7 +925,10 @@ INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_
 (8, 2, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1473822287, '127.0.0.1'),
 (9, 2, 6, 'asdsasadasdsadsa', '', 3, 1474380239, '127.0.0.1'),
 (10, 1, 6, 'asdsadsafafsadsadsa', '', 3, 1474380914, '127.0.0.1'),
-(11, 3, 2, 'sadsada', '', 3, 1474388190, '127.0.0.1');
+(11, 3, 2, 'sadsada', '', 3, 1474388190, '127.0.0.1'),
+(12, 3, 3, 'asdsadsadsadsa', 'array (\n  ''weight'' =&gt; ''19.00'',\n  ''_weight'' =&gt; ''19.00'',\n  ''phone'' =&gt; ''13113213313'',\n  ''_phone'' =&gt; ''13113213313'',\n)', 7, 1474424148, '127.0.0.1'),
+(13, 3, 4, '库存已确认标记，自动推进到正在增值', '', 7, 1474424148, '127.0.0.1'),
+(14, 4, 1, 'ewqqwq', '', 3, 1474432345, '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -1381,15 +936,14 @@ INSERT INTO `gd_project_recycling_history` (`history_id`, `project_id`, `status_
 -- 表的结构 `gd_project_recycling_status`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_recycling_status` (
-  `status_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_recycling_status` (
+  `status_id` int(11) NOT NULL,
   `title` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
   `code` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `list_label` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`status_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=7 ;
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_recycling_status`
@@ -1409,8 +963,8 @@ INSERT INTO `gd_project_recycling_status` (`status_id`, `title`, `code`, `list_l
 -- 表的结构 `gd_project_stock`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_stock` (
-  `stock_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_stock` (
+  `stock_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci DEFAULT '0',
   `customer_id` int(11) NOT NULL DEFAULT '0',
   `referrer_id` int(11) NOT NULL DEFAULT '0',
@@ -1428,9 +982,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_stock` (
   `status` tinyint(4) NOT NULL,
   `worker_id` int(11) NOT NULL,
   `addtime` int(11) NOT NULL,
-  `lasttime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`stock_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  `lasttime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_project_stock`
@@ -1438,7 +991,9 @@ CREATE TABLE IF NOT EXISTS `gd_project_stock` (
 
 INSERT INTO `gd_project_stock` (`stock_id`, `project_sn`, `customer_id`, `referrer_id`, `company_id`, `title`, `mode`, `info`, `weight`, `profit`, `month`, `start`, `end`, `last_profit`, `note`, `status`, `worker_id`, `addtime`, `lasttime`) VALUES
 (1, 'GR1609129871653602', 7, 2, 1, '项目GR1609129871653602存金98.00克', 'recycling', 'a:14:{s:10:"project_id";s:1:"1";s:8:"realname";s:9:"雷小米";s:5:"phone";s:11:"13113213313";s:8:"idnumber";s:18:"321254197708053454";s:6:"wechat";s:9:"leixiaomi";s:5:"price";s:6:"287.70";s:4:"type";s:6:"金饰";s:6:"number";s:1:"1";s:13:"origin_weight";s:6:"100.00";s:6:"weight";s:5:"98.00";s:4:"loss";s:5:"2.00%";s:9:"appraiser";s:10:"鉴定人A";s:8:"referrer";s:9:"朱景修";s:7:"payment";s:4:"gold";}', '98.00', '0.0800', 12, '2016-09-12', '2016-09-14', NULL, '入库封存', 0, 7, 1473822264, 1473822264),
-(2, 'GR1609129651614635', 9, 12, 1, '项目GR1609129651614635存金118.00克', 'recycling', 'a:14:{s:10:"project_id";s:1:"2";s:8:"realname";s:9:"沈万三";s:5:"phone";s:11:"13813800138";s:8:"idnumber";s:18:"138139199810039997";s:6:"wechat";s:10:"shenwansan";s:5:"price";s:6:"287.70";s:4:"type";s:6:"金饰";s:6:"number";s:1:"3";s:13:"origin_weight";s:6:"120.00";s:6:"weight";s:6:"118.00";s:4:"loss";s:5:"1.67%";s:9:"appraiser";s:10:"鉴定人A";s:8:"referrer";s:10:"朱景修2";s:7:"payment";s:4:"gold";}', '118.00', '0.0800', 12, '2016-09-12', '2017-09-11', NULL, '入库封存', 0, 7, 1473822287, 1473822287);
+(2, 'GR1609129651614635', 9, 12, 1, '项目GR1609129651614635存金118.00克', 'recycling', 'a:14:{s:10:"project_id";s:1:"2";s:8:"realname";s:9:"沈万三";s:5:"phone";s:11:"13813800138";s:8:"idnumber";s:18:"138139199810039997";s:6:"wechat";s:10:"shenwansan";s:5:"price";s:6:"287.70";s:4:"type";s:6:"金饰";s:6:"number";s:1:"3";s:13:"origin_weight";s:6:"120.00";s:6:"weight";s:6:"118.00";s:4:"loss";s:5:"1.67%";s:9:"appraiser";s:10:"鉴定人A";s:8:"referrer";s:10:"朱景修2";s:7:"payment";s:4:"gold";}', '118.00', '0.0800', 12, '2016-09-12', '2017-09-11', NULL, '入库封存', 0, 7, 1473822287, 1473822287),
+(3, 'GR1609216850071630', 7, 2, 1, '项目GR1609216850071630存金19.00克', 'recycling', 'a:14:{s:10:"project_id";s:1:"3";s:8:"realname";s:9:"雷小米";s:5:"phone";s:11:"13113213313";s:8:"idnumber";s:10:"2147483647";s:6:"wechat";s:9:"leixiaomi";s:5:"price";s:6:"283.25";s:4:"type";s:9:"续存金";s:6:"number";s:1:"1";s:13:"origin_weight";s:5:"19.00";s:6:"weight";s:5:"19.00";s:4:"loss";s:5:"0.00%";s:9:"appraiser";s:13:"库管测试A";s:8:"referrer";s:9:"朱景修";s:7:"payment";s:4:"gold";}', '19.00', '0.0800', 12, NULL, NULL, NULL, 'asdsadsadsadsa', 1, 7, 1474424148, 1474424148),
+(4, 'GM1609126411664755', 2, 2, 1, '项目GM1609126411664755存金10.00克', 'investing', 'a:10:{s:10:"project_id";s:1:"1";s:8:"realname";s:9:"李百度";s:5:"phone";s:11:"18850911766";s:8:"idnumber";s:18:"321245198905080904";s:6:"wechat";s:0:"";s:5:"price";s:6:"287.70";s:6:"amount";s:7:"2877.00";s:6:"weight";s:5:"10.00";s:8:"referrer";s:9:"朱景修";s:7:"payment";s:4:"gold";}', '10.00', '0.0800', 12, '2016-09-12', '2017-09-11', NULL, 'sadsadadsa', 1, 7, 1474424237, 1474424237);
 
 -- --------------------------------------------------------
 
@@ -1446,16 +1001,15 @@ INSERT INTO `gd_project_stock` (`stock_id`, `project_sn`, `customer_id`, `referr
 -- 表的结构 `gd_project_track`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_track` (
-  `track_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_track` (
+  `track_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
   `content` text COLLATE utf8_unicode_ci,
   `file` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL,
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`track_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1463,8 +1017,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_track` (
 -- 表的结构 `gd_project_trash`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_project_trash` (
-  `trash_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_project_trash` (
+  `trash_id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `project_sn` char(18) COLLATE utf8_unicode_ci NOT NULL,
   `mode` enum('investing','recycling') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'recycling',
@@ -1473,9 +1027,8 @@ CREATE TABLE IF NOT EXISTS `gd_project_trash` (
   `note` text COLLATE utf8_unicode_ci,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `addtime` int(11) NOT NULL DEFAULT '0',
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`trash_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1483,12 +1036,11 @@ CREATE TABLE IF NOT EXISTS `gd_project_trash` (
 -- 表的结构 `gd_sessions`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_sessions` (
+CREATE TABLE `gd_sessions` (
   `sess_id` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `ip_address` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
-  `data` text COLLATE utf8_unicode_ci NOT NULL,
-  KEY `ci_sessions_timestamp` (`timestamp`)
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `data` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1661,9 +1213,9 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('16a3e4723c36cb40083de88a40da49b1b573e6a0', '127.0.0.1', 1473330165, '__ci_last_regenerate|i:1473327662;code|s:4:"76y8";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473268843";'),
 ('63724e75552aa6d8a5717c1595e9197d5a3ba2bc', '127.0.0.1', 1473330393, '__ci_last_regenerate|i:1473327892;code|s:4:"57B2";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473298999";'),
 ('35da65f1395583f0b9aa6b7bdc3697e5b0fd58f7', '127.0.0.1', 1473342950, '__ci_last_regenerate|i:1473338119;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";'),
-('0b6c465387a91fb8510d9db58547ff7ebc48f74b', '127.0.0.1', 1473344143, '__ci_last_regenerate|i:1473343907;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";csrfkey|s:8:"PSVE3WZg";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"4u9KhmiTz8QH6SlWaqIR";');
+('0b6c465387a91fb8510d9db58547ff7ebc48f74b', '127.0.0.1', 1473344143, '__ci_last_regenerate|i:1473343907;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";csrfkey|s:8:"PSVE3WZg";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"4u9KhmiTz8QH6SlWaqIR";'),
+('81905645e86988139b8510b01c94bb19e7ed160b', '127.0.0.1', 1473344615, '__ci_last_regenerate|i:1473344386;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";');
 INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
-('81905645e86988139b8510b01c94bb19e7ed160b', '127.0.0.1', 1473344615, '__ci_last_regenerate|i:1473344386;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";'),
 ('b13a01fc0da98c31680951ae0867e4bd369fcadf', '127.0.0.1', 1473345659, '__ci_last_regenerate|i:1473344713;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";csrfkey|s:8:"jrcYu9Zh";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"ne2cYDLqFQzUA8TWhxKb";'),
 ('56dea283e186fa375b4ad790f7593279899d5562', '127.0.0.1', 1473345857, '__ci_last_regenerate|i:1473345669;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";'),
 ('c17077903e09714d17c79aa2e723b7f6e5f27811', '127.0.0.1', 1473346171, '__ci_last_regenerate|i:1473346004;code|s:4:"dtuH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1473306145";'),
@@ -1850,10 +1402,10 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('56e63c69c1f325961e32ab106d75f9ee38cdae77', '127.0.0.1', 1474336466, '__ci_last_regenerate|i:1474335385;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
 ('683c7d80ba8e1a93db36d7fa0cc370c0d93daa48', '127.0.0.1', 1474336793, '__ci_last_regenerate|i:1474336523;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
 ('d9674933802d1f2fe1aa2dbd46c2b75fdea6caff', '127.0.0.1', 1474338605, '__ci_last_regenerate|i:1474338233;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
-('542cc8af7361a076659a442f22e263a6fa75c8c6', '127.0.0.1', 1474338962, '__ci_last_regenerate|i:1474338671;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";');
-INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
+('542cc8af7361a076659a442f22e263a6fa75c8c6', '127.0.0.1', 1474338962, '__ci_last_regenerate|i:1474338671;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
 ('08a57c683c46cf3175be61b03371eb1942fb2d32', '127.0.0.1', 1474358352, '__ci_last_regenerate|i:1474338891;captcha|s:4:"PbwC";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474278184";'),
-('ca608e555c0b8fd01fd1bfa77e39039355b02709', '127.0.0.1', 1474338980, '__ci_last_regenerate|i:1474338975;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
+('ca608e555c0b8fd01fd1bfa77e39039355b02709', '127.0.0.1', 1474338980, '__ci_last_regenerate|i:1474338975;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";');
+INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('fcbce21b2f30ac0aacf11baef6cbb2d7106ee2b8', '127.0.0.1', 1474339737, '__ci_last_regenerate|i:1474339737;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
 ('7e47a13d591f4d30edb54a4068385419e84f1bfd', '127.0.0.1', 1474340336, '__ci_last_regenerate|i:1474340236;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
 ('bae91fe0bf377c56c2a73c2c28d75188d87a5926', '127.0.0.1', 1474340825, '__ci_last_regenerate|i:1474340572;captcha|s:4:"XNVp";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474334843";'),
@@ -1915,7 +1467,69 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 ('cdf79b3345db451aef78ad1d4a6fcf80fbcb8493', '127.0.0.1', 1474387692, '__ci_last_regenerate|i:1474387496;captcha|s:4:"h8RQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474373458";csrfkey|s:8:"aCQeYgib";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"z8k5ynC7VuhYLeZ4aKod";'),
 ('435c410b37306c1b56db3282fe9d488c8a8adec3', '127.0.0.1', 1474388029, '__ci_last_regenerate|i:1474387808;captcha|s:4:"h8RQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474373458";csrfkey|s:8:"tBrudvDH";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"srtU0yPlo71LbZuRcTjp";'),
 ('ef8feac34f60e7fe622e9742cbad5326055379b1', '127.0.0.1', 1474388539, '__ci_last_regenerate|i:1474388140;captcha|s:4:"h8RQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474373458";'),
-('a973d869f912f1e6dab8d1c0cfe3646193fdd1e6', '127.0.0.1', 1474388727, '__ci_last_regenerate|i:1474388606;captcha|s:4:"h8RQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474373458";');
+('a973d869f912f1e6dab8d1c0cfe3646193fdd1e6', '127.0.0.1', 1474388727, '__ci_last_regenerate|i:1474388606;captcha|s:4:"h8RQ";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474373458";'),
+('10f5deea0ed322552bc03fad39845086f3cc4c68', '127.0.0.1', 1474418465, '__ci_last_regenerate|i:1474418163;captcha|s:4:"6ugv";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474375512";'),
+('303fe465d3564c2c9cc163444d01b7e6a18a0260', '127.0.0.1', 1474419544, '__ci_last_regenerate|i:1474418579;captcha|s:4:"6ugv";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474375512";'),
+('45880cee734a7a5a7a4c75b2e070392bb8d5019c', '127.0.0.1', 1474419047, '__ci_last_regenerate|i:1474418621;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";csrfkey|s:8:"tfy6wLOW";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"FxVa50iCozAsbUev9j7H";'),
+('d7e58efae328ccd2d607d5c30b949f2882dd41f9', '127.0.0.1', 1474421047, '__ci_last_regenerate|i:1474419051;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('b0acf8783c68787b41d18b80f79e96a8411f6350', '127.0.0.1', 1474419973, '__ci_last_regenerate|i:1474419597;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('201c1447827433e7043f00e126a77e677dadff1e', '127.0.0.1', 1474421065, '__ci_last_regenerate|i:1474420008;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('ceb26625dd0a974788bfbb4a3b01ec172b6791f6', '127.0.0.1', 1474421479, '__ci_last_regenerate|i:1474421068;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";ajax_permission|s:47:"没有授权访问  <br> [project/stock/detail]";__ci_vars|a:1:{s:15:"ajax_permission";s:3:"new";}'),
+('ee64b3f74d0d865a2e04834af49876fff4de9a02', '127.0.0.1', 1474421392, '__ci_last_regenerate|i:1474421076;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";current_price|s:19:"oHf1B7iruxRIQI4TAfg";__ci_vars|a:1:{s:13:"current_price";i:1474422335;}'),
+('5e4d39ce74a30875b14f9ff6c50a297f76c16ee5', '127.0.0.1', 1474421859, '__ci_last_regenerate|i:1474421498;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('d6838feae69e42025b3d3483ef799ec269fac6c0', '127.0.0.1', 1474423630, '__ci_last_regenerate|i:1474421507;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('0a1d5d924de753fd189471f19385dbc8bed2f2fc', '127.0.0.1', 1474423623, '__ci_last_regenerate|i:1474421890;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('6d1d82a3765618e25aa90fba58565d389dfbc15c', '127.0.0.1', 1474425016, '__ci_last_regenerate|i:1474423660;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('c9c9d89ed7143f4865e1fccc2c0912fa9ebb7990', '127.0.0.1', 1474424048, '__ci_last_regenerate|i:1474423704;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('d80de256136f057457ba2e1ebfb5090364b406b7', '127.0.0.1', 1474424881, '__ci_last_regenerate|i:1474424058;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('60297c021461013892e55ce593f66bce3a4ec987', '127.0.0.1', 1474425654, '__ci_last_regenerate|i:1474424915;captcha|s:4:"vEhu";identity|s:12:"kuguan-demo1";username|s:12:"kuguan-demo1";email|s:11:"kuguan@bb.c";user_id|s:1:"7";old_last_login|s:10:"1473822220";'),
+('54d264c2acbb0597690516a8058085697a5146dc', '127.0.0.1', 1474425563, '__ci_last_regenerate|i:1474425082;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('d8db3685525d34a5800a0d508e683033f75e5717', '127.0.0.1', 1474426378, '__ci_last_regenerate|i:1474425657;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('b8d94db1b2a489914dfda7e316da588d318cea62', '127.0.0.1', 1474426036, '__ci_last_regenerate|i:1474425707;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"TeC2XFZp";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"uKiU2aWQ4EpZM1SxhX93";success|s:36:"客户资料保存成功 : 雷小米";'),
+('2ebc6b096f470230d6b9251a754ab52873d4c6d7', '127.0.0.1', 1474426508, '__ci_last_regenerate|i:1474426037;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";success|s:36:"客户资料保存成功 : 雷小米";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('7dbdec46a02077e21ccb7ba5ec9b20ae6f102fd6', '127.0.0.1', 1474428607, '__ci_last_regenerate|i:1474426447;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";'),
+('b942180f4df9cdb406ffdbe02963ea31dd3a7fa7', '127.0.0.1', 1474426872, '__ci_last_regenerate|i:1474426508;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('05bf40eb6e32a82e52d3c8f329d580cfce5ce08c', '127.0.0.1', 1474427658, '__ci_last_regenerate|i:1474426992;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('f757f11a6ac46f838244e00553b07513d2c68171', '127.0.0.1', 1474428190, '__ci_last_regenerate|i:1474427709;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"SI9lL1Gy";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"z0Qu9C1NKkcVLFiMx7ma";'),
+('219a992e2f239137fda67ebd773790d587f10cae', '127.0.0.1', 1474428469, '__ci_last_regenerate|i:1474428226;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('22aaa2c4c99e0b3ae80e519889085d0b431a0727', '127.0.0.1', 1474429854, '__ci_last_regenerate|i:1474428540;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"r2KwNn34";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"IfTUC2NrvBqQ9ApOgZFV";'),
+('b9371a19e5ecd0d55875ef0b0317eabac03dfd29', '127.0.0.1', 1474429136, '__ci_last_regenerate|i:1474428617;captcha|s:4:"3ijf";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418165";current_price|s:19:"oHf1B7iruxRIQI4TAfg";__ci_vars|a:3:{s:13:"current_price";i:1474430336;s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfkey|s:8:"W9v3sKCa";csrfvalue|s:20:"o9rsFT2cwPaGZu5qMg71";'),
+('1ce43fedc9ae4bcb3dcd0dbc94f8358e0418c76d', '127.0.0.1', 1474429410, '__ci_last_regenerate|i:1474429152;captcha|s:4:"EkNm";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474383382";'),
+('5330772e847e5c45c1da7d14663931198f20dd9b', '127.0.0.1', 1474430173, '__ci_last_regenerate|i:1474429485;captcha|s:4:"EkNm";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474383382";'),
+('af079bf5e23f41f61da71ebc6ce890cc53b5c8b1', '127.0.0.1', 1474430231, '__ci_last_regenerate|i:1474429857;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('5af912f415b0500553a2d33facccb923def75326', '127.0.0.1', 1474430611, '__ci_last_regenerate|i:1474430250;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('6b582b2062a09adbdecacf63a7dc56b13678aec8', '127.0.0.1', 1474430533, '__ci_last_regenerate|i:1474430264;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('954cf22c393b4e2d35cf0db39d5b9e9469ff96d6', '127.0.0.1', 1474432291, '__ci_last_regenerate|i:1474430610;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('dac1b26c873581545822e765ed2858515bf409a4', '127.0.0.1', 1474432345, '__ci_last_regenerate|i:1474430636;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";success|s:21:"项目添加成功！";__ci_vars|a:1:{s:7:"success";s:3:"new";}'),
+('06ec9b97b5656309f4b057e6978917b124517892', '127.0.0.1', 1474441986, '__ci_last_regenerate|i:1474432310;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('867ca0492295e2681bc46269bebf09ff4067464d', '127.0.0.1', 1474432919, '__ci_last_regenerate|i:1474432345;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('2075482492df3effdc5215be17702708dc40a855', '127.0.0.1', 1474433515, '__ci_last_regenerate|i:1474432941;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"alr07I6M";__ci_vars|a:3:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";s:7:"success";s:3:"new";}csrfvalue|s:20:"5VA417BPpnhMoqJ2FYdK";success|s:34:"已赠送1.23 给客户: 雷小米";'),
+('485404a3ce17b5550b58748210c9a43488f81f08', '127.0.0.1', 1474433806, '__ci_last_regenerate|i:1474433515;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"UwHOc5Ty";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"q5l7dLW9hYBRZs8GoOPn";'),
+('eb9e1f905062b2112b49e5ceecdd680daa476433', '127.0.0.1', 1474433630, '__ci_last_regenerate|i:1474433571;captcha|s:4:"CAEH";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474425708";csrfkey|s:8:"lbj2tdkI";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"CP5oQh0ErAmsTUyYLOu1";'),
+('67a4b537a9aa0a488f7ad59fe2053f8aaeca5579', '127.0.0.1', 1474434065, '__ci_last_regenerate|i:1474433838;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"hL8YlFZf";__ci_vars|a:2:{s:7:"csrfkey";s:3:"new";s:9:"csrfvalue";s:3:"new";}csrfvalue|s:20:"CWugqotGniMkpTPxQ4AS";'),
+('807ef86b49eb50800673135ce35d86191650fa52', '127.0.0.1', 1474434526, '__ci_last_regenerate|i:1474434148;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";current_price|s:19:"oHf1B7iruxRIQI4TAfg";__ci_vars|a:3:{s:13:"current_price";i:1474435608;s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfkey|s:8:"vz7NwhoJ";csrfvalue|s:20:"qUYmEi9axJWFCXec5jhL";'),
+('a5f3046e1f47e1b1af279ad75b77da22c559510d', '127.0.0.1', 1474441951, '__ci_last_regenerate|i:1474434629;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('444f0b15ef5d0f42a5fcbacc91656d57e654e4cb', '127.0.0.1', 1474444125, '__ci_last_regenerate|i:1474441964;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('1fa70a8740ad15d4707d3f8bdcaa9a225efdb585', '127.0.0.1', 1474442508, '__ci_last_regenerate|i:1474442011;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('cba356658325e1d237ff95cd7d709795f9683fb1', '127.0.0.1', 1474442945, '__ci_last_regenerate|i:1474442551;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('9f06c0fda085c6609fa341c93025ed320d5b50b6', '127.0.0.1', 1474443275, '__ci_last_regenerate|i:1474442985;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('e931a9d1f18908271e382780514e701366aa43df', '127.0.0.1', 1474445585, '__ci_last_regenerate|i:1474443296;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('2058128504f274944bb59c254a4b171a82ecffd3', '127.0.0.1', 1474444450, '__ci_last_regenerate|i:1474444210;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";csrfkey|s:8:"RkUKYig0";__ci_vars|a:2:{s:7:"csrfkey";s:3:"old";s:9:"csrfvalue";s:3:"old";}csrfvalue|s:20:"Slt0vmZfWANrgsBwEMe8";'),
+('a5c2990329ecebcde39be62b364f120217937891', '127.0.0.1', 1474445814, '__ci_last_regenerate|i:1474444550;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('133185ceb793b21cd7934efdc009a41a2a4dc762', '127.0.0.1', 1474448278, '__ci_last_regenerate|i:1474445598;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('59bb4c9384fc7e414e098deec483e08dc04fe881', '127.0.0.1', 1474446163, '__ci_last_regenerate|i:1474445881;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('d3d4dd33392b7b9f87f5df6f28f13e5fa71274fa', '127.0.0.1', 1474448990, '__ci_last_regenerate|i:1474446229;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('ecd50800852230beaa020b91c60830080d315f27', '127.0.0.1', 1474451786, '__ci_last_regenerate|i:1474448305;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('26b1635e90070de5f85ffcf0ece79f9aa36a78b0', '127.0.0.1', 1474450229, '__ci_last_regenerate|i:1474449028;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('acbea4a6ca5ce0818a07b0688b583fb0d6d4f68e', '127.0.0.1', 1474450636, '__ci_last_regenerate|i:1474450342;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('1e448641bdb82a1a247fc15018d1d453a2eb92b8', '127.0.0.1', 1474450939, '__ci_last_regenerate|i:1474450667;captcha|s:4:"n3Jx";identity|s:12:"jingli-demo1";username|s:12:"jingli-demo1";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474418636";'),
+('88a58454ba4db45e1800653739e09d12b8060e82', '127.0.0.1', 1474450823, '__ci_last_regenerate|i:1474450823;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('0f067d41e3e57c786d0f067e59f2482c9a036cf6', '127.0.0.1', 1474450898, '__ci_last_regenerate|i:1474450830;captcha|s:4:"n4g6";'),
+('a4c294d47f8ba421d95878650842ffcc9a8f9325', '127.0.0.1', 1474450967, '__ci_last_regenerate|i:1474450947;captcha|s:4:"mWjM";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('23ccc9823fcccfc6ce06e84c7184ded102f4677d', '127.0.0.1', 1474451835, '__ci_last_regenerate|i:1474451268;captcha|s:4:"9SDU";identity|s:5:"C1000";username|s:5:"C1000";email|s:0:"";user_id|s:3:"227";old_last_login|s:1:"0";'),
+('3bd507d6fc43f593183d904b2e2e598ae8a0ae09', '127.0.0.1', 1474451420, '__ci_last_regenerate|i:1474451413;captcha|s:4:"r8E9";identity|s:5:"C1000";username|s:5:"C1000";email|s:0:"";user_id|s:3:"227";old_last_login|s:10:"1474451355";'),
+('e859fe40535626c5acb90c8751616331fa05b368', '127.0.0.1', 1474452020, '__ci_last_regenerate|i:1474451853;captcha|s:4:"w4Xs";identity|s:10:"admin-root";username|s:10:"admin-root";email|s:15:"admin@admin.com";user_id|s:1:"1";old_last_login|s:10:"1474429159";'),
+('26405089e17c3bd410969846c4caa67d5a8c20bf', '127.0.0.1', 1474452034, '__ci_last_regenerate|i:1474452025;captcha|s:4:"icuU";identity|s:5:"C1000";username|s:5:"C1000";email|s:5:"a@a.c";user_id|s:1:"3";old_last_login|s:10:"1474433602";');
 
 -- --------------------------------------------------------
 
@@ -1923,17 +1537,14 @@ INSERT INTO `gd_sessions` (`sess_id`, `ip_address`, `timestamp`, `data`) VALUES
 -- 表的结构 `gd_setting`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_setting` (
-  `setting_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_setting` (
+  `setting_id` int(11) UNSIGNED NOT NULL,
   `code` varchar(64) NOT NULL DEFAULT '',
   `value` text,
   `serialized` tinyint(1) NOT NULL DEFAULT '0',
   `group` varchar(64) NOT NULL DEFAULT 'config',
-  `initial` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`setting_id`,`code`),
-  KEY `option_name` (`code`),
-  KEY `auto_load` (`initial`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+  `initial` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_setting`
@@ -1970,7 +1581,8 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 (41, 'default_avatar', 'public/images/avatar/avatar.png', 0, 'site', 1),
 (42, 'hexun_url', 'http://data.gold.hexun.com/outData/AuSH.ashx', 0, 'api', 1),
 (43, 'hexun_intval', '180', 0, 'api', 1),
-(44, 'recycling_renew', '2', 0, 'project', 1);
+(44, 'recycling_renew', '2', 0, 'project', 1),
+(45, 'min_weight', '10', 0, 'project', 1);
 
 -- --------------------------------------------------------
 
@@ -1978,9 +1590,10 @@ INSERT INTO `gd_setting` (`setting_id`, `code`, `value`, `serialized`, `group`, 
 -- 表的结构 `gd_worker`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker` (
+  `id` int(11) UNSIGNED NOT NULL,
   `username` varchar(32) DEFAULT NULL,
+  `code` char(6) DEFAULT NULL,
   `realname` varchar(32) NOT NULL,
   `avatar` varchar(256) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -1994,27 +1607,240 @@ CREATE TABLE IF NOT EXISTS `gd_worker` (
   `phone` varchar(20) DEFAULT NULL,
   `wechat` varchar(64) DEFAULT NULL,
   `qq` char(12) DEFAULT NULL,
-  `company_id` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+  `company_id` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker`
 --
 
-INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`, `wechat`, `qq`, `company_id`) VALUES
-(1, 'admin-root', '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1474383382, '127.0.0.1', 1, '', NULL, NULL, 1),
-(2, 'zhujingxiu', '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766', NULL, NULL, 1),
-(3, 'jingli-demo1', '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$k1dyXUI7CRYqc/CpH9UT0ONk93y3sP7EQ5Jdcr/lvOoUE4Tob05Oe', NULL, 'a@a.c', NULL, 1471598448, 1474375512, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 1),
-(4, 'jingli-demo2', '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1473435360, '127.0.0.1', 1, '', NULL, NULL, 2),
-(5, 'dengji-demo1', '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473738292, '127.0.0.1', 1, '', NULL, NULL, 1),
-(6, 'dengji-demo2', '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1473299074, '127.0.0.1', 1, '', NULL, NULL, 2),
-(7, 'kuguan-demo1', '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1473822220, '127.0.0.1', 1, '', NULL, NULL, 1),
-(8, 'kuguan-demo2', '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1473152537, '127.0.0.1', 1, '', NULL, NULL, 2),
-(9, 'jianding-demo1', '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, '', NULL, NULL, 1),
-(10, 'jianding-demo2', '鉴定人B', 'public/images/avatar/user7-128x128.jpg', '$2y$08$kPYhqg2giK0IhN5v6WS4WuMQvXq0m0gpF6Cx.xAR4..dsxS9UmNDG', NULL, 'admin@admin.com', NULL, 1471599225, 0, '127.0.0.1', 1, '', NULL, NULL, 2),
-(11, 'all-demo1', '综合账户', 'public/images/avatar/user2-160x160.jpg', '$2y$08$bnDehV48c1sDsmwPNmmTHOdMMxUE1MHNGItvkmvL7CC2G20doVhcq', NULL, 'all@b.cc', NULL, 1471599856, 1471600479, '127.0.0.1', 1, '', NULL, NULL, 1),
-(12, 'zhujingxiu1', '朱景修2', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766', NULL, NULL, 1);
+INSERT INTO `gd_worker` (`id`, `username`, `code`, `realname`, `avatar`, `password`, `salt`, `email`, `remember_code`, `addtime`, `last_login`, `last_ip`, `status`, `phone`, `wechat`, `qq`, `company_id`) VALUES
+(1, 'admin-root', NULL, '管理员', 'public/images/avatar/121034209220f1.jpg', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', NULL, 1469999823, 1474430273, '127.0.0.1', 1, '', NULL, NULL, 1),
+(2, 'C0000', NULL, '朱景修', NULL, '$2y$08$QQOBCnHUhFTH/CjeWztJGOOfAz2xuqSki7P2qn5/WojZQvXc10NAK', NULL, 'zhujingxiu@hotmail.com', NULL, 1470736567, 1470736771, '127.0.0.1', 1, '18850911766', NULL, NULL, 1),
+(3, 'C1000', NULL, '经理测试', 'public/images/avatar/avatar2.png', '$2y$08$iBQ3xwkr5PWd/apGKaePh.S3GYcgo5.3HLTh48mc1OyIRUansdkUS', NULL, 'a@a.c', NULL, 1471598448, 1474452033, '127.0.0.1', 1, '13913901390', 'qweweqweq', '', 1),
+(4, 'C2000', NULL, '经理测试B', 'public/images/avatar/user1-128x128.jpg', '$2y$08$1gGt5kfd2/S0WGDZNt6PMu8bj1WBhiww4AgNx4TJSRrJaiQ7jV4gu', NULL, 'a@a.cc', NULL, 1471598720, 1473435360, '127.0.0.1', 1, '', NULL, NULL, 1),
+(5, 'C3000', NULL, '登记测试A', 'public/images/avatar/avatar1.png', '$2y$08$YHzCZKpn3DYoZWYfE4UD4.7KSke2QaVc5Ou04ljhRNZn5sDqc7QF2', NULL, 'b@a.cc', NULL, 1471598889, 1473738292, '127.0.0.1', 1, '', NULL, NULL, 1),
+(6, 'C4000', NULL, '录单测试B', 'public/images/avatar/user3-128x128.jpg', '$2y$08$7JByOlb/P/L.c8P.mqeMX.N7qSiLGBWyx3YWA44wUDkAMY0rGKtQS', NULL, 'ludan@b.cc', NULL, 1471598958, 1473299074, '127.0.0.1', 1, '', NULL, NULL, 1),
+(7, 'C5000', NULL, '库管测试A', 'public/images/avatar/user4-128x128.jpg', '$2y$08$SuuFWJ0sZL2z.SZDLaTX3Od/bkVZ04Ax1fc1SmDtoVf8X0XjuRuJO', NULL, 'kuguan@bb.c', NULL, 1471599005, 1474419608, '127.0.0.1', 1, '', NULL, NULL, 1),
+(8, 'C6000', NULL, '库管测试B', 'public/images/avatar/user5-128x128.jpg', '$2y$08$18MwNqHD5QKE/M2xcF4NXuLScN67KrGQfBCfXPEEEM/W5PNC/5/5G', NULL, 'kuguan@a.cc', NULL, 1471599054, 1473152537, '127.0.0.1', 1, '', NULL, NULL, 1),
+(9, 'C7000', NULL, '鉴定人A', 'public/images/avatar/user8-128x128.jpg', '$2y$08$GqumJcWGIEa25v1OB3i5M.k8Vgxg99kuKXpGsUs5ZzQiUIp.Qer5G', NULL, 'jianding@g.cc', NULL, 1471599152, 0, '127.0.0.1', 1, '', NULL, NULL, 1),
+(10, 'S0896', 'S0896', '方雪静', NULL, '$2y$08$iBQ3xwkr5PWd/apGKaePh.S3GYcgo5.3HLTh48mc1OyIRUansdkUS', NULL, '', NULL, 1474442551, 1474451250, '127.0.0.1', 1, '13305946318', NULL, NULL, 1),
+(11, 'C0892', 'C0892', '蔡凤辉', NULL, '$2y$08$aiuvf3uvmkynVczv.92QVOdSWDgsEqFpN/pt5sxwISowfqtlV3Fg2', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305941363', NULL, NULL, 1),
+(12, 'C0898', 'C0898', '陈卫健', NULL, '$2y$08$9lkra/ZvslU0Gjw0nK9gA.3H21PmWkWz52Z6wgXJqZbub3tCNekVa', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '15080457686', NULL, NULL, 1),
+(13, 'C0888', 'C0888', '林志龙', NULL, '$2y$08$yXs73HxICO7Y.Hs4DFPSzeqZYw1r.75VvHfz.xkKJJ06AVQKZ.3Ju', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305942502', NULL, NULL, 1),
+(14, 'C0891', 'C0891', '郑雯', NULL, '$2y$08$ZwgAzHOYOzTxRGScxWvtjOxdQsZ8hsOehZqB/sgkmrNW5fzrD6ptO', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305946108', NULL, NULL, 1),
+(15, 'C0880', 'C0880', '吴健飞', NULL, '$2y$08$s5dLtqy8ZikflPoCc0x4NeGmbHEk0lnDhDKSq8o6APckkAoxW.JKi', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305942150', NULL, NULL, 1),
+(16, 'C0886', 'C0886', '张琳', NULL, '$2y$08$SbK4FJvRcZpCoGasEvg2POEWphWJxWvabHSAvqgqkVXUgaDd6IqSK', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305945811', NULL, NULL, 1),
+(17, 'S0895', 'S0895', '许俊贤', NULL, '$2y$08$jYCH8TkBqQEX8D0FO7droefQUBvOghj0y8qXXEGhAW5MRbIGqMHAW', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305940231', NULL, NULL, 1),
+(18, 'C0889', 'C0889', '邱辉辉', NULL, '$2y$08$V2ZW7rhyUkefHRzClZ2Vyu/2NgxUrdwJ0dN3U5p4G0URqU0B7IaQe', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305941913', NULL, NULL, 1),
+(19, 'S0888', 'S0888', '陈慕玲', NULL, '$2y$08$TOANg5Fmok8byPc8sNlbvud5S8af2xE1Irm0ezWqk.dByO7rkIc0K', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305945775', NULL, NULL, 1),
+(20, 'C0881', 'C0881', '陈国仁', NULL, '$2y$08$zsUhiNxYgX8T9T7EKFPZoeaUBgrAd9RC65OVe5ENuXotu5VL2IkZC', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305942095', NULL, NULL, 1),
+(21, 'C0885', 'C0885', '陈国仙', NULL, '$2y$08$/mAyKjeQ5dESB4p1zpGkauRiVTHKKJ07KPBgD0j3.FwL1AksSCc5e', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305942113', NULL, NULL, 1),
+(22, 'C0890', 'C0890', '严芳', NULL, '$2y$08$nYZNWqTf8I9fD8O4f8QIt.42NgsZsuTA8vPJSOJ/sZGQC3gmCCWpe', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '18905941255', NULL, NULL, 1),
+(23, 'C0893', 'C0893', '黄建杰', NULL, '$2y$08$D/iYQVmmuAQ0671Jo9CzueL4dXzWiTKN2DPgln4WolKoLcw3QJ61W', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305943039', NULL, NULL, 1),
+(24, 'S0899', 'S0899', '于欣', NULL, '$2y$08$ThrTC5wRIoZMUQYgk0MOTOSGe0q1jwAd/y2eSSczEMMIXBVncDPnG', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305942013', NULL, NULL, 1),
+(25, 'S0890', 'S0890', '林伟', NULL, '$2y$08$1jhn2M41d15Nt7v8HZr7OO4ap7Jlo93CAQq4pSFq7LmOwWsF.IvZ2', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305940132', NULL, NULL, 1),
+(26, 'S0889', 'S0889', '林志忠', NULL, '$2y$08$slVyJY2Omz9yhfdxZ8ArC.0rFbihUTlDGvy4XdvU9/YZvlTE78Y.W', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305940256', NULL, NULL, 1),
+(27, 'S0880', 'S0880', '林淑珍', NULL, '$2y$08$tLIsL1oJPvtz2jv/K1iXjuhqN0h.hLpeT2mpjVjyGRu3jfanJ0QVu', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305948093', NULL, NULL, 1),
+(28, 'S0883', 'S0883', '蒋建山', NULL, '$2y$08$6Ic7/jPnoZ2NOwSWnDJf5e7jNDYjdThUn3lJTxekAhdczWQe4Q8ne', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '18756799811', NULL, NULL, 1),
+(29, 'S0885', 'S0885', '苏晓燕', NULL, '$2y$08$qZinRjABWGE7MegvAqsZGegitZzCpY7R20rqZzSdAspEKrVUOJV1W', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305948352', NULL, NULL, 1),
+(30, 'S0882', 'S0882', '吴秀芳', NULL, '$2y$08$zw2kR1KpZN2J.dyagdRoEuY2oD83mkw3SIGNQyqnKD.h2WgUmk5q2', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305946167', NULL, NULL, 1),
+(31, 'S0887', 'S0887', '陈秀贞', NULL, '$2y$08$Tiw9AfIiTQJBqSsVX2cvSO3bqYqXdEJUiDFcbjaEZsw63Op/Nk9.i', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305948130', NULL, NULL, 1),
+(32, 'C0808', 'C0808', '林国春', NULL, '$2y$08$ZttV5Rd5i5dDcqa8H9ueuu0x98HWEF58wHrWENpUn9D9m1wlsROae', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13515646484', NULL, NULL, 1),
+(33, 'C0866', 'C0866', '黄美宇', NULL, '$2y$08$lS58nOZHfgAAFoPYUU594u8jMVY./PxT44Y3neZg5ApKJtfYEUuh.', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '15654646486', NULL, NULL, 1),
+(34, 'S0875', 'S0875', '郑赛萍', NULL, '$2y$08$w6boZN6oLb78Rc0IfAvXIeS8da4t3cFfhBEw8PP1jP2kulEuqOPPy', NULL, '', NULL, 1474442551, 0, '127.0.0.1', 1, '13305943583', NULL, NULL, 1),
+(35, 'S0876', 'S0876', '方玉腾', NULL, '$2y$08$MZy54dC4W5L44X.D.QoQaeQ5rd/h1DV6e/CdbTo1qDTfcl6io.TuO', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15659398909', NULL, NULL, 1),
+(36, 'S0873', 'S0873', '陈素辉', NULL, '$2y$08$ruqHKRD2W1GUe/gMZNtlx.4mlcIVV.WY0oAXKtUVCYHUqA.kY1I7y', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '17759820207', NULL, NULL, 1),
+(37, 'S0872', 'S0872', '龚钰英', NULL, '$2y$08$7aJeUf2NGUfBHSkZ3naMJ.mLccpGT.fkaIbs9uscsGyBeT6m0TOmG', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13305948010', NULL, NULL, 1),
+(38, 'S0892', 'S0892', '何明枝', NULL, '$2y$08$NBBUrspn9AUeEWiPbReYh.0RWmRUPT2h.WoNigDIRMLzR3YrUfXei', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13959508689', NULL, NULL, 1),
+(39, 'S1269', 'S1269', '黄仁富', NULL, '$2y$08$S1LVmU.hjY1Q1RTL2FS0M.63BofVBdgRJUXeu7SNAspYcpfGq.FIG', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13305941600', NULL, NULL, 1),
+(40, 'S1226', 'S1226', '李雪', NULL, '$2y$08$qmboJFve2pXKtZb5S639HuKiNmx084ydV2JctQMk.ltubR/rAr3Wm', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13850282988', NULL, NULL, 1),
+(41, 'S1111', 'S1111', '推广', NULL, '$2y$08$qhS2nmlXdq/gknc6zeYMQOtvMEcfMZxcXTFKPCpsnuwYqgv.IjecC', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13611111111', NULL, NULL, 1),
+(42, 'C1111', 'C1111', '推广1', NULL, '$2y$08$N4qygr9hBCGIJSH5c1hPE.JvDVcNM3YGgYZPpX1qlwbuIYgOloZuG', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13658685858', NULL, NULL, 1),
+(43, 'S0860', 'S0860', '李静', NULL, '$2y$08$JndQob3Rf4phNqE6IHSyuOW9Z9P4di4uy7SL16a2GlU10f/bXQiLe', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13305948135', NULL, NULL, 1),
+(44, 'S0865', 'S0865', '邹丽榜', NULL, '$2y$08$IeXkI0o0EA4MWdWppB5Zpe8opqaMmeHT8bTdi/m06T03iTiXzutQK', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13305943283', NULL, NULL, 1),
+(45, 'S0870', 'S0870', '林丽钦', NULL, '$2y$08$ny8TacNFHr2PWIhCLhFKMeKvue7Dz3FCor2rik/zUJLOd8NUsKsJm', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13305940213', NULL, NULL, 1),
+(46, 'S0869', 'S0869', '黄俊涵', NULL, '$2y$08$VImfbHuA7zh7XEV0Bsl0mOYkIYE.5xEY0MNlFcAvKsSy4rzvXTYiG', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13110555385', NULL, NULL, 1),
+(47, 'C0895', 'C0895', '环球专用', NULL, '$2y$08$wusHXZYVrnKs3PQYYMmhnuUcxh8UKlzqrmhvoq4celgzKtnYgmQvi', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13325465656', NULL, NULL, 1),
+(48, 'S0855', 'S0855', '杨建花', NULL, '$2y$08$V21Gp1IwaiW9Aq3yUUNHfO2qxZ8IzRYneUMktheaFloX1gY2JGthO', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13607501383', NULL, NULL, 1),
+(49, 'S0858', 'S0858', '陆碧婷', NULL, '$2y$08$qRlEzsIyvEOauTsMXJxnIe2BrhmRZ5WP2YokzEInfsRIbA1bH3bvq', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13850204249', NULL, NULL, 1),
+(50, 'S0859', 'S0859', '李腾达', NULL, '$2y$08$.Ws9EI2/GjEMYhjdLI7eDeTJaUk/6STMiAe49wALIaFfd3IHlVE9m', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13860901122', NULL, NULL, 1),
+(51, 'S0861', 'S0861', '杨世美', NULL, '$2y$08$uCprag5wgyzJSK51Ru2k7Oy6UJOC4sepAheuAIGUcEje/8BplMa2.', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13313805758', NULL, NULL, 1),
+(52, 'S0863', 'S0863', '赵忆涵', NULL, '$2y$08$/7ZzdozaBM5xNqGImP/iV.n5yusRybwm.CMh4VZF4PraIvvMCULMK', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13850264966', NULL, NULL, 1),
+(53, 'S1200', 'S1200', '刘洋', NULL, '$2y$08$C5PTHI.5JmJRiVhW4xuBDOCA5Vupz4kf2Twum2abUgpw96GVpao3W', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13204745298', NULL, NULL, 1),
+(54, 'S1201', 'S1201', '李源', NULL, '$2y$08$c/UJOqUVX43kVWzZxTjF7u8DAvVQApzORIpe5Oqi02ILGcaNjjjG6', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15847457606', NULL, NULL, 1),
+(55, 'S1202', 'S1202', '李玲', NULL, '$2y$08$ixdPvYCaZJ4bRr/WjX7k5e28bfTcl1CI.atML2Dvl9wUmiRUaww1G', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15598164333', NULL, NULL, 1),
+(56, 'S1203', 'S1203', '郭佳丽', NULL, '$2y$08$e34sdsiC21jGF5Ikdk7DNuJLeJiw0w4SlZ5OpVHKlD5bEFc7.5EaC', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18247404272', NULL, NULL, 1),
+(57, 'S1205', 'S1205', '刘晓燕', NULL, '$2y$08$GV3JdTBK4Pa9K6NFxmyvWOqrdIbNr0RgGW7lxDl.jWus6rwWKlId6', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13234726381', NULL, NULL, 1),
+(58, 'S1206', 'S1206', '赵素芳', NULL, '$2y$08$sYmLdJneQdzt53VzG8Gp9.RT5IvOWHqA.xWvAdHW42w/3q7EllIJi', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13947440499', NULL, NULL, 1),
+(59, 'S1207', 'S1207', '张俊芳', NULL, '$2y$08$hH3Wq34UmgeukwU0pg3AquHa4KwbI620TKsqrmd7YSog.e6dGCwMS', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13614842996', NULL, NULL, 1),
+(60, 'S1208', 'S1208', '李利霞', NULL, '$2y$08$tnU9hp3mRtOUXvznXQtIruJ3LHF4O/jYd0Q7hKf0huCjaC3q5sOcK', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15764892288', NULL, NULL, 1),
+(61, 'S1209', 'S1209', '郇瑛', NULL, '$2y$08$ZbiZQOHla8Pw/V5f3KfbzuLVYvryg8ZxUnZHrECZNtE45we2yykDq', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13847464619', NULL, NULL, 1),
+(62, 'S1210', 'S1210', '崔晓娟', NULL, '$2y$08$9mk7rgMS.pZWX4afISeKrut5ZKNElca0e/kjSxqnq3rvmnjwIhlVm', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15384745523', NULL, NULL, 1),
+(63, 'S1211', 'S1211', '郭沙沙', NULL, '$2y$08$/aWA1fQbNg0L/HqLEWU.3ebvKjWmH6mGMtDbirSm07c/wbTpxjDua', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18748401116', NULL, NULL, 1),
+(64, 'S1212', 'S1212', '卢林芳', NULL, '$2y$08$gvD6wwzUbSYbCYNzWK4Kl.PObGY4TDZ4Kg2DTOnfhMBAxjB5a0xye', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15904849094', NULL, NULL, 1),
+(65, 'S1213', 'S1213', '赵利强', NULL, '$2y$08$CkwW7clrVgKp/diAfVrUk.ywL/2/EmMuRtY04rveEO6I5LmnXER1O', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13847418030', NULL, NULL, 1),
+(66, 'S1215', 'S1215', '李静', NULL, '$2y$08$.qJgE2AW6r4qvecLm/ackOOxNnAXRnTvVCGJrjy5yKOgTONAD906y', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18947410660', NULL, NULL, 1),
+(67, 'S1216', 'S1216', '王彦君', NULL, '$2y$08$36ddsjnJbuO8J1kou.MLN..4zLyulL4d5uCLU9dyUAM3FWPAgG.jq', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18647471512', NULL, NULL, 1),
+(68, 'S1217', 'S1217', '贾晓晴', NULL, '$2y$08$sXLQpSMhokMiHjiaKioUD.Qw2mJwZC05EGyMXG1PgX486GXlN8RQO', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13150821742', NULL, NULL, 1),
+(69, 'S1218', 'S1218', '冀连青', NULL, '$2y$08$hfN.0OblbiLKjvv0fAcRgulQ2SqbSMePRVUTpaU9cIBGyu4tWmOFK', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15247484422', NULL, NULL, 1),
+(70, 'S1219', 'S1219', '孙瑞敏', NULL, '$2y$08$3y3/lgugUBR0GYiKdc904.NREZ2G1356zADjgSVcmXadot6/UjQCq', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15849404018', NULL, NULL, 1),
+(71, 'S1220', 'S1220', '田雨', NULL, '$2y$08$NqhELIr0Fmfi5UDQ.fjCuOWTzlHlvBOS2UoZORD.piD9x2fuFSthW', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18947411271', NULL, NULL, 1),
+(72, 'S1221', 'S1221', '李林', NULL, '$2y$08$6wEZayQb9HldQbaK7W2YR.Sgb.wYojgm6Tim1swA8r2jQb.5gP936', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13500644095', NULL, NULL, 1),
+(73, 'S1222', 'S1222', '常振华', NULL, '$2y$08$iVcxrjr2ddfPyGd5Ceo79uCOIR8EvacinhQ.YlmrgIIYunVXHAMqC', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13337146990', NULL, NULL, 1),
+(74, 'S1223', 'S1223', '刘婷', NULL, '$2y$08$U1Eba.Qedfm7swWa7aY9he2PbCuEjzR66LEFPeLtFkffQZL6KyV.a', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15124761160', NULL, NULL, 1),
+(75, 'S1225', 'S1225', '张晔', NULL, '$2y$08$sbTThqAJLpgGZfIe7GeynOoF7FNjtMigdMhgOhjuhn0yYJih3MLKu', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15114749519', NULL, NULL, 1),
+(76, 'S1227', 'S1227', '赵敏', NULL, '$2y$08$PIoRKfMrQ32ibpFgBJsZuee6GI.ocQ3x8pPfrbm4OhULFdjgcU.By', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '13789643488', NULL, NULL, 1),
+(77, 'S1230', 'S1230', '郝俊莲', NULL, '$2y$08$7zU21rUQWVLRcbpta/g1AOTbED3BFue.TPJrFDB3taPvLQQ5EYEl2', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15647480030', NULL, NULL, 1),
+(78, 'S1100', 'S1100', '李琛', NULL, '$2y$08$3SpSljw591Zsb5ogp6.V3ebkfQQhc1V4IMa5a7bsiw4KA0sGCxEz2', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15384745565', NULL, NULL, 1),
+(79, 'S1101', 'S1101', '郝斌', NULL, '$2y$08$2sQrVVdeyKE4GsmTGY3axOli4Zdv0ut9Pl.guLDsJP0oBgNlv67fu', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15704716060', NULL, NULL, 1),
+(80, 'S1102', 'S1102', '杨林', NULL, '$2y$08$q0S8WaJ1qhJdjUNJmQdahOYRcgZ4Wg0bP1cTwoIgzYbcEWsRJUosS', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18548126416', NULL, NULL, 1),
+(81, 'S1103', 'S1103', '陈震', NULL, '$2y$08$98joiDJ60oJ3E5cHceVXz.vhRLdSOafSIV4N4Qn0/oRuG0mM0HXA.', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15947703046', NULL, NULL, 1),
+(82, 'S1105', 'S1105', '苏锦华', NULL, '$2y$08$9WMNOjyuaxlgNXhWDDh2Muv1NiqfV5tLlbUH3ZxN90Ps7Ds3C2zye', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15847784537', NULL, NULL, 1),
+(83, 'S1106', 'S1106', '曹建武', NULL, '$2y$08$IrRovwi4ZprKPSjLZgHvAuau3pxnRtf1316HnQrMkSJp9SEHaDH82', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '15848488813', NULL, NULL, 1),
+(84, 'S1107', 'S1107', '郭振兴', NULL, '$2y$08$w5oivl9.iLDotnxGdJ3QWeEfsveyuxioNzomIZagHqLwQpTu7gx9u', NULL, '', NULL, 1474442552, 0, '127.0.0.1', 1, '18698404550', NULL, NULL, 1),
+(85, 'S1108', 'S1108', '张易', NULL, '$2y$08$9kG7VJMZYS04nyehm9R3Q.TaCfFh3uZjtlO0Hxyp3TnW.MndOPN0e', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18504842014', NULL, NULL, 1),
+(86, 'S1109', 'S1109', '白玉瑛', NULL, '$2y$08$QYc3ctB6Yfa/7wQUtlHbEO.NHvoslxb7Y8EOXprVT9SOTEGAVOvnq', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13150834827', NULL, NULL, 1),
+(87, 'S1110', 'S1110', '杨丽娜', NULL, '$2y$08$k/HbhGt29nRbU2DhP7a/d.Wwc6NnqqCceK33aSED27PWAhBzpukCu', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18548181124', NULL, NULL, 1),
+(88, 'S1112', 'S1112', '赵艳霞', NULL, '$2y$08$soDbkyBlQT3v1yjuqrKwauNnqKkaL.xgOwd5FxzI8D7evWKtB9f0G', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15848460836', NULL, NULL, 1),
+(89, 'S1113', 'S1113', '张红霞', NULL, '$2y$08$6VsHUFAJZym96aqfQPukyuD4iZUlUaMiu8YV0GTLWgXnD.W1EIVli', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18647405605', NULL, NULL, 1),
+(90, 'S1115', 'S1115', '朱莎', NULL, '$2y$08$//Qr2NEYXHxvYEnrvZWwAuk6Bvlw61b3jVPZ7asY8YPuyb5mWnqgW', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '14747461917', NULL, NULL, 1),
+(91, 'S1116', 'S1116', '张荣', NULL, '$2y$08$F3ZsJ4FDOmOl5vwGegjnRelJVG0mcUUzWNF4hCFoZQkNNrwNiSiuu', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15754852687', NULL, NULL, 1),
+(92, 'S1118', 'S1118', '康宁', NULL, '$2y$08$1ksMPEh2hFA9DBOup7YHO.6W8aiidLzHQeYSCBcJiZnATJyI.h3qW', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18647482288', NULL, NULL, 1),
+(93, 'S1117', 'S1117', '付卫敏', NULL, '$2y$08$iykQZuS47KMiixxlXi0w8uAHiKn.ePbvHxBbsAOcKGXOopzYTBSxm', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18847417866', NULL, NULL, 1),
+(94, 'S1119', 'S1119', '刘成刚', NULL, '$2y$08$GaRBuow7PP9Fdv5GG0APXu4xQk6VmAwFfnZwUmvFHpxC8Io91FlJu', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18748111754', NULL, NULL, 1),
+(95, 'S1120', 'S1120', '韩新宇', NULL, '$2y$08$koSC2QZjz28jFdXHPFBAH.MYcQPzA3JZMZRnQI93RkjZefsj6AxMe', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '14784740401', NULL, NULL, 1),
+(96, 'S1121', 'S1121', '王艳清', NULL, '$2y$08$MPphaoYwFO3eAnIbCORDjuAoYKjGbfqSgDQvTpbS3qc8gEepiAOZO', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18748414581', NULL, NULL, 1),
+(97, 'S1122', 'S1122', '刘璐', NULL, '$2y$08$/45erPrqKy5W4eYWwxELPOHFCN3ZAFCYthOe5fs5WGAwwmsTvjZB2', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15384745561', NULL, NULL, 1),
+(98, 'S1123', 'S1123', '刘甲军', NULL, '$2y$08$wChg97NbPBswjwwQMcvx4eCrY6jj6kCc6nBq3AxTtwrjXwgU54MjS', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15148085324', NULL, NULL, 1),
+(99, 'S1125', 'S1125', '杨文英', NULL, '$2y$08$XWRtcg/PEc..pdtDL0ufreIlxQqwEpdNi/4/D2EPCmIVVSFE5s4ve', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18647420424', NULL, NULL, 1),
+(100, 'S1126', 'S1126', '崔乐英', NULL, '$2y$08$.1Njqm/UYX78dqIKRLPohubNQHsI2kOVUxpcpz2Qi.E0JhSlcV6NK', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15164798997', NULL, NULL, 1),
+(101, 'S1127', 'S1127', '褚文静', NULL, '$2y$08$1jsBh3SSidjglP40rbChQOfixgqdToD56u/QLfnHUTieJUovzm5FC', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15947685830', NULL, NULL, 1),
+(102, 'S1128', 'S1128', '张敏', NULL, '$2y$08$9FDY.m/icfibp9WsKLI..egSX7th8lIogVe6VbzU7wh.adzPlYeK2', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13704746941', NULL, NULL, 1),
+(103, 'S1129', 'S1129', '郭文忠', NULL, '$2y$08$alWr5kxTxcWL8XLKNoIfruUkmbzf2qED9LYMe2Iv4n9WFQ6YF.gAy', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13084747683', NULL, NULL, 1),
+(104, 'S1130', 'S1130', '张晓宇', NULL, '$2y$08$rMpZR.5vT2rWWdx2I9mJSu5e6FHajwpCxR6hk.3gLOqnLcNGQvhtW', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13500645678', NULL, NULL, 1),
+(105, 'S1131', 'S1131', '李佳和', NULL, '$2y$08$5FYkk3KcikgXH8BGiTIcj.RD2pyA5Ftyem9JXobmXGqV6tuE01ooq', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15384745533', NULL, NULL, 1),
+(106, 'S1132', 'S1132', '王晶晶', NULL, '$2y$08$l2BonoR/bd2HOZGX/KFDJug3giaoCW7fpfLZnNjra3VFW9e92rSa.', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15014743936', NULL, NULL, 1),
+(107, 'S1133', 'S1133', '马泽宇', NULL, '$2y$08$aqVJL50lhQ1lvYlnbQjuHucsD1bflKdF46wT2vlhK5BxIWS8TTUGu', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18547105066', NULL, NULL, 1),
+(108, 'S1135', 'S1135', '郭荣荣', NULL, '$2y$08$6f6jA7T.VLVuSwJhgRgNNeGiTkdc4G/JC41TtsScEAUdGAqvNqIiq', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15849416766', NULL, NULL, 1),
+(109, 'S1136', 'S1136', '张丽丝', NULL, '$2y$08$jJAhK5agxWomDdqMGSC58.LZNhBrT50bB/A8Wtj3W5CBhnaO.aGYe', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15847418393', NULL, NULL, 1),
+(110, 'S1137', 'S1137', '郎艳', NULL, '$2y$08$Wy1ow2jHCJpavJzLUWOCju8dbSamwS9axxTDcuRkgggLSJytp06Ce', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18504741106', NULL, NULL, 1),
+(111, 'S1138', 'S1138', '张晓龙', NULL, '$2y$08$brmaVUBYyHAcf/VsQts3ae3TRqOzFZ9xzqxB4KnSayWxDagYh9P9.', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13948593907', NULL, NULL, 1),
+(112, 'S1139', 'S1139', '黄东升', NULL, '$2y$08$MFE678h4np5sHF2tmQdNy.8pQWkbzDWv2RjSrJBpVuG3OG6wqUH76', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15354838618', NULL, NULL, 1),
+(113, 'S1140', 'S1140', '曹志慧', NULL, '$2y$08$4cKuS2ehWDNULnhic/bYmu1vXaOTDomhUQ5LATpEsZWVClOn4fGEK', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15124733417', NULL, NULL, 1),
+(114, 'S1141', 'S1141', '张鑫', NULL, '$2y$08$Y45d7R0AUNuxrtcVHt1tzeLMXVOlUkACXyHQgR70jlj18bVlniWFm', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18047428520', NULL, NULL, 1),
+(115, 'S1142', 'S1142', '杨俊华', NULL, '$2y$08$fb6wwx5KOalXpevWdlUNsudMPqdq64oB9LeR4.Su8JEbVxK5zATcG', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15555523592', NULL, NULL, 1),
+(116, 'S1143', 'S1143', '雷乐元', NULL, '$2y$08$qDXLPh6CPStYvQc9gxGLWu9tBe/VOBsgdwXY2M.Wy6SXuWampIEfO', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13214748420', NULL, NULL, 1),
+(117, 'S1145', 'S1145', '胥兰强', NULL, '$2y$08$g9tyGhrBb0dprQMgZTd71eUMk13bRCJ1nnTUuvI8r58Ry93Kb.wba', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15849417619', NULL, NULL, 1),
+(118, 'S1146', 'S1146', '池翠云', NULL, '$2y$08$1SUEkc5sPAXw79oxFZ7Ygeb27HikLT62ZiIteMqviaCml0iPUGT0S', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15847443854', NULL, NULL, 1),
+(119, 'S1148', 'S1148', '薛强', NULL, '$2y$08$euc/7OLeRRWwsnVOj4j7s..mcK9Bpd8533BndU307D/SlPHn0U4jy', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18604742452', NULL, NULL, 1),
+(120, 'S0812', 'S0812', '方芹霞', NULL, '$2y$08$zKo.azvy/Mzh9t/aexdI4O6zuEDZ5LvmT7gq9JLfbtwxeSSzcR/rC', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13799640511', NULL, NULL, 1),
+(121, 'S0871', 'S0871', '林凌', NULL, '$2y$08$oFdUBzv7Ptvz7VYRGN9uau6VYhPKRnKS9egN0GKlvk/QFkdW20EAy', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15928758720', NULL, NULL, 1),
+(122, 'S1229', 'S1229', '高蕾', NULL, '$2y$08$j2d1aV76rFm0wTiw89tiQeQTJ3GZaW0DPxtqZdXJSQu3sE5CT8p2G', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18647471334', NULL, NULL, 1),
+(123, 'S1231', 'S1231', '徐美凤', NULL, '$2y$08$O7MkhwI8C9sEThgpyfihIO4OJDch5dxXUR.LPBQW1mEoz8ZS71i0e', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15904889053', NULL, NULL, 1),
+(124, 'S1232', 'S1232', '武英英', NULL, '$2y$08$SASmtxvWpJK4ztOoKWKBS.jmNMVgs/1gwg5.r88u7E.tfChnvdwqe', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13171300725', NULL, NULL, 1),
+(125, 'S1233', 'S1233', '王宇', NULL, '$2y$08$zyJZX0lfygXdVR/FJJuHlu0lLpxdOkjqyuTgIAiAq3q9wo9cK38C.', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18647479992', NULL, NULL, 1),
+(126, 'S1235', 'S1235', '何龙', NULL, '$2y$08$QNDgW1QrLrEvrw5URQQUGeNxQf17G5Uork4pn0yJOQhzZIJ9siSRe', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13488515043', NULL, NULL, 1),
+(127, 'S1236', 'S1236', '张晓霞', NULL, '$2y$08$6sub2j12YUv9GGoUn0FnheKt5TPtXKNi.oRN9O.DNwIlSeuUTAR2u', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15384745518', NULL, NULL, 1),
+(128, 'S1237', 'S1237', '崔雪英', NULL, '$2y$08$4vKdvTFTRROCC.OT18UNBuDMTl/R5st41c8I/V/vzl5c9gbfEyKK6', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15004743559', NULL, NULL, 1),
+(129, 'S1240', 'S1240', '郭树清', NULL, '$2y$08$ie0yIfa6oW5DJyJgaXHkfeeBmBd5VvkU2qi1nvVwQP.OJlyYBSbAy', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15754740006', NULL, NULL, 1),
+(130, 'C0830', 'C0830', '朱世宗', NULL, '$2y$08$N23Ryx/DGG6m/FEaZt92fONDNlc1ZYrtvbDYIUaLv.NazkFIBt56K', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18105947698', NULL, NULL, 1),
+(131, 'C0825', 'C0825', '陈光和', NULL, '$2y$08$Dt9C4ArHDYmj4k1s4jrtBevGzPuIMt08lFBpapO8FD6HGpwmjU4ou', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '15305946051', NULL, NULL, 1),
+(132, 'C0836', 'C0836', '李冰', NULL, '$2y$08$vTITtGv0KIBGaYwgpcRk7OBSaxaDKbwttfBrQ6Orpt0Q52Qeg.YbO', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13915980413', NULL, NULL, 1),
+(133, 'C0829', 'C0829', '林建清', NULL, '$2y$08$TYv8WNiY6gnz7Csfds2pievwVkFvcQpu/3X9lhXPkdn.IOyzxg4xu', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18850986248', NULL, NULL, 1),
+(134, 'S1241', 'S1241', '姚淑敏', NULL, '$2y$08$LQ80Lpr2XE2149wB/FSDUeY1M53XlCN6iphrGW4qAI.IMBHkCfk.q', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '13848441913', NULL, NULL, 1),
+(135, 'S1245', 'S1245', '李峰', NULL, '$2y$08$rttWuuYwJxSDaYRlNnyqW.moGXWXNfXerqcV0n8EdIAj2awhhMUxC', NULL, '', NULL, 1474442553, 0, '127.0.0.1', 1, '18847400465', NULL, NULL, 1),
+(136, 'S0822', 'S0822', '黄继元', NULL, '$2y$08$vQpGVrJNpP0JEy40Yze3WOdTe5fq53kLjrkpc3XvnsKpY6.0lUxI.', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13599011941', NULL, NULL, 1),
+(137, 'S1239', 'S1239', '蔡耸华', NULL, '$2y$08$9opXHiag4jQlYFKSenwi8Oefwm2U73UjstizpJkb/xVVYmh1UC3l6', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13704746903', NULL, NULL, 1),
+(138, 'S1266', 'S1266', '段缘', NULL, '$2y$08$Iq2XWVV86fnRG82bmvBbo.s9VQtIpgXR5FPrmXtdswNwyzcFzhPJK', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13644749949', NULL, NULL, 1),
+(139, 'S0819', 'S0819', '曾秀芳', NULL, '$2y$08$iQao2Sor3dmKuJxfsRos3.WDb9VNWH97j3PSF8bavsiA2n3ZCszx6', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13559382925', NULL, NULL, 1),
+(140, 'S1255', 'S1255', '杨德辉', NULL, '$2y$08$BhbEOQUGC/26vN7p0euvs.8rwT.jWiM20DyvqEkxJv8tM2l5eiZAy', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18504740006', NULL, NULL, 1),
+(141, 'S1242', 'S1242', '赵利惠', NULL, '$2y$08$IrzqSWQGDABmOv8ObMk6KuSRborbQRXbiMKNykdBMor0iatUIMBRq', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15848474242', NULL, NULL, 1),
+(142, 'S1243', 'S1243', '李文成', NULL, '$2y$08$o2mdLBgUm6WeuH9fTG41b.YfZQiEftil0cNSU85ukesATG3Yg.3y.', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15849456658', NULL, NULL, 1),
+(143, 'S1246', 'S1246', '马春晖', NULL, '$2y$08$TPzPp0733ks.RvAcz1nKLOA6Bm6v5tCYVvG2hgA5sgwqskZpezIbK', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15384745511', NULL, NULL, 1),
+(144, 'S1250', 'S1250', '张俊丽', NULL, '$2y$08$QAP1ej3kEXnOKDjz8DhA2eEVzvr8TSoy8YFNqv1RzatTJSmA5CsMW', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18604740080', NULL, NULL, 1),
+(145, 'S1251', 'S1251', '郭逢雨', NULL, '$2y$08$ButcLNecEDKWDuuEVkZCy.n3pFKeYdqvUQjuch7fTpzp0nRN0X8lO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15147470661', NULL, NULL, 1),
+(146, 'S0818', 'S0818', '张赛华', NULL, '$2y$08$qOQ48pTL2oVKsWPu0mRkX.gjNxrIwCZFGg93twecAnsCEL.LqSiYa', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15375940376', NULL, NULL, 1),
+(147, 'S0810', 'S0810', '郑奋东', NULL, '$2y$08$2EPODA2BVZnOEkP.557fJ.v95m6neiMzyEVsYevOHIi/oPeoY1c2W', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13799699407', NULL, NULL, 1),
+(148, 'S0811', 'S0811', '黄明德', NULL, '$2y$08$ngLXe8J.K1beWsWUkTu3vOVNWhVL3sZDgwGNveA1Z3wx.SSt62wja', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13859895157', NULL, NULL, 1),
+(149, 'S1252', 'S1252', '孙凌浩', NULL, '$2y$08$xp66smvI5Q.M48gPSTsnOOdyNj1fhEyTYunQ0AstK33X/Yd/bXvgO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13394885551', NULL, NULL, 1),
+(150, 'S1256', 'S1256', '弓树繁', NULL, '$2y$08$JMSQNJ4yyvcXlh/8RP89LOZwGdOQuglXIEHcBYWDio0EGv02psNFG', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15384745522', NULL, NULL, 1),
+(151, 'S0836', 'S0836', '何建杭', NULL, '$2y$08$FT90ZEQHNdRHi75KPstfjuyaP1aMy6viygGVIv1fHGpi16LwXzAtO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18259174143', NULL, NULL, 1),
+(152, 'S0815', 'S0815', '蔡峰银', NULL, '$2y$08$fJWW4.irKIwgggMl8l46/eNxBzpdwMtNziB57DI02K0DK5Vn6sTnG', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13860935400', NULL, NULL, 1),
+(153, 'S0838', 'S0838', '吴文华', NULL, '$2y$08$at8Bb2ekxgmbtYxlFPKY0.0324YDwFMxD.XkUtxfd.KHgxvkuIiT.', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13358524225', NULL, NULL, 1),
+(154, 'S0830', 'S0830', '陈宏爱', NULL, '$2y$08$wrWCkTax309nJgzQqieGk.020iGN9hxbbZNnICaznReb636wQhKTy', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18850951198', NULL, NULL, 1),
+(155, 'S0839', 'S0839', '陈洪如', NULL, '$2y$08$mz9leYUcCk8CSoVJBNpQ/.nhNuUBldLn9p1CV1ebQ5yPaoAGp3VNm', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13959577690', NULL, NULL, 1),
+(156, 'S0829', 'S0829', '曾思霞', NULL, '$2y$08$8rf2KDGiE5PU9w/6NVbTYu.8wv96fCXJUoLNjIo93zicRSkWoxDWS', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15060300513', NULL, NULL, 1),
+(157, 'S0868', 'S0868', '杨瑞华', NULL, '$2y$08$ztsDYsX4MG4gjBcBdrt.5.MvTBKTb9Gyu.B5AGDbfG1lcgKmb923q', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15260930586', NULL, NULL, 1),
+(158, 'S0813', 'S0813', '林榕', NULL, '$2y$08$NPrXzR9HhMTWuQ.e9XJqmegSl3C6QgeRAsP7znUlhMv6VX3TlpwWO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18965569056', NULL, NULL, 1),
+(159, 'S0826', 'S0826', '陈光耀', NULL, '$2y$08$uCIwh3Edjx/PjuBAVjVvHOrHfx6RAYQ3LjZ/KaV2ACYQs5vIHWmAe', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18750091652', NULL, NULL, 1),
+(160, 'S0831', 'S0831', '林建清', NULL, '$2y$08$bi/ROSDDGgcZKjDk0qaTT../oBJUa8u342PMF3ixNNupDx0jqzRZi', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13706067813', NULL, NULL, 1),
+(161, 'NM104', 'NM104', '赵明义', NULL, '$2y$08$eDHM5jnt8FxaxIQqO47sD.QMT1pdKO0ZEOVjNp0yrf7DmKIu.z/LO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13674754527', NULL, NULL, 1),
+(162, 'NM113', 'NM113', '朱金凤', NULL, '$2y$08$1HnuAI4ixU8y4OuZ0RZrGuM8E6PC.o/ANj7LcCFtiMMQeTU8x4gFe', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15247102260', NULL, NULL, 1),
+(163, 'NM112', 'NM112', '潘月鲜', NULL, '$2y$08$VhDgauKGzmicfzVp0LW45u.2a4QkeqVbxmgkJNAUZHHxrQbzLbl3W', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13087111166', NULL, NULL, 1),
+(164, 'NM115', 'NM115', '张小强', NULL, '$2y$08$1ITU3VI92rAm/JrNYAqwM.Y7OUIFapRTygR7uqJimUUuABdfiq.zC', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18241111138', NULL, NULL, 1),
+(165, 'NM211', 'NM211', '李国英', NULL, '$2y$08$6HnAIHQV5Uu6tLDUUVVOqu/KO22KAeFJJL9b0j2yVkNgmTQfzIrqC', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15034956657', NULL, NULL, 1),
+(166, 'NM209', 'NM209', '麻晓婷', NULL, '$2y$08$0aUUKCISSiDzJ3SRI.Hx1.lwir5r/nbVv8M4SBEfuN3z.WdnNPWXK', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13847183022', NULL, NULL, 1),
+(167, 'NM2010', 'NM2010', '董茗', NULL, '$2y$08$thiGs7wxHI6HIoGnEvwFQesZcJnIhJxPKstrM973o.wYpKQHuV1Kq', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15149740985', NULL, NULL, 1),
+(168, 'NM216', 'NM216', '张利军', NULL, '$2y$08$KaXJgd0iLrOaA7cGhRRiv.MMpe5K6YuNdUcZ7cybIwjd4NzU/gh3q', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '14747888504', NULL, NULL, 1),
+(169, 'NM208', 'NM208', '赵平小', NULL, '$2y$08$YpCvTDT586q8IHeZX4muzuMuy0mlkZTVQPgVIW6nib3RpUguQyUvS', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15949470045', NULL, NULL, 1),
+(170, 'NM210', 'NM210', '董芳', NULL, '$2y$08$wW3jHUQ5ewBP.Ev39jFLM.hMYrg4WShI3NVME5cSOPEIQnkhUjYhK', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15149740985', NULL, NULL, 1),
+(171, 'NM206', 'NM206', '黄健卫', NULL, '$2y$08$KRgEz9WYP94p4XQTYr0kOuzZIs2MBkT0qd89ox9Sqjk8KKp3T8Laa', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15849196251', NULL, NULL, 1),
+(172, 'NM203', 'NM203', '包晨明', NULL, '$2y$08$AuhFqUchhLPHi4EUpTD4VuUSGUyuPAfSGSbWnuddlIBsPhMr3.rOq', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15247132201', NULL, NULL, 1),
+(173, 'NM301', 'NM301', '王丽', NULL, '$2y$08$iqy8N.u.JJF/swi1w1syduQOLTKYrcWQicOKzHB51xBi4UocAkw8S', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13847178848', NULL, NULL, 1),
+(174, 'NM205', 'NM205', '李波', NULL, '$2y$08$bs753BlcdgMMNnk8A1lGTu80Hf3fEG28yo2or2pK0Bw9nuMr8dDW6', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15947717813', NULL, NULL, 1),
+(175, 'NM207', 'NM207', '刘素珍', NULL, '$2y$08$i6YWsUlJ.cXJrOApPN7/dOhfVvsyXvj8X3YlbY9umHkh1fp8tgunu', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13674842196', NULL, NULL, 1),
+(176, 'NM202', 'NM202', '窦明霞', NULL, '$2y$08$V03.9EcDejgKh9JOVIqyzOIgGWac2fIA0m9M3qm3MRCoqMX5QGGb2', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18604888619', NULL, NULL, 1),
+(177, 'NM204', 'NM204', '郝三厚', NULL, '$2y$08$236uZ7qE/REDwFNclBfn1uulCPitJl3u.d16mY8jQlSZOO04kCyqG', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18847124399', NULL, NULL, 1),
+(178, 'S0820', 'S0820', '蔡秀英', NULL, '$2y$08$xFbxPiHFV/K83YdUFLC2qeJXiVuwIDgx9TlihDXFdELmK.vlRKTVG', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15080147398', NULL, NULL, 1),
+(179, 'NM001', 'NM001', '董怀军', NULL, '$2y$08$.tGzKUQQ5jNcJt9N7bQ86OfUAfxIcHZjk8OxI4lUAOH4DaXp2G7Fi', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13327109212', NULL, NULL, 1),
+(180, 'NM002', 'NM002', '陈金华', NULL, '$2y$08$lbcQSQJ6JkvFDlE7jYxIbOrnKU7Eyh.QvJCrBjpiW08CFoxM8sTY.', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15304792727', NULL, NULL, 1),
+(181, 'NM114', 'NM114', '马海刚', NULL, '$2y$08$uJIKN5S8777eCNaOmbd12eU3FL7vatwm2vWITr./S46K4kaKY98/6', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13384711135', NULL, NULL, 1),
+(182, 'S0835', 'S0835', '郑理政', NULL, '$2y$08$M5d7ULy5qguAdVNdpXQ73.pXBdAguF..zmKAShT8eV0V3Rw3D0/Qi', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18750072321', NULL, NULL, 1),
+(183, 'S0845', 'S0845', '黄肖肖', NULL, '$2y$08$CzUvaavHTKytQ8Tn1CjZLujzgEqVbaGffO8TzORNsS0EHyoo/8lTO', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15959190032', NULL, NULL, 1),
+(184, 'NM118', 'NM118', '潘其乐', NULL, '$2y$08$UhFDO8fhLZVeioWm1cVoIOT04hXEfQ0Segg4Y5wZZSxIVqTRHIAuK', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '15047143060', NULL, NULL, 1),
+(185, 'C0810', 'C0810', '杨鹭', NULL, '$2y$08$vm9N6ffzcW4zr8MLTCiq4uaE0BdHbIF9taRqAUwvwi7b1IYdawJ8G', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18159426920', NULL, NULL, 1),
+(186, 'S0840', 'S0840', '翁玲', NULL, '$2y$08$ik8YQiB51l3pjbSAO6F4o.J/aPB8N.IkiQ0Y4ZBQ2Cc6.1Q.sNnje', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '18650320184', NULL, NULL, 1),
+(187, 's0832', 's0832', '潘晓晨', NULL, '$2y$08$s8PUwstdAEt2.DvHH/zmkO4/omV4etubdfm8wgwC/hB1yTXg1iZ3y', NULL, '', NULL, 1474442554, 0, '127.0.0.1', 1, '13850267585', NULL, NULL, 1),
+(188, 'NM116', 'NM116', '曹雅璐', NULL, '$2y$08$SlZH3DS2j/GRxZLYonmY2up5aTUzwhTgVQwEoweSJKOw4DK.RZUDa', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18748175818', NULL, NULL, 1),
+(189, 'NM117', 'NM117', '郑雅萍', NULL, '$2y$08$hiBB9hiE5UnmXDF8.CkrH.uIHuAzismrIufFUspKIV0ZKTkBbRvhS', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13451318151', NULL, NULL, 1),
+(190, 's0848', 's0848', '蔡剑飞', NULL, '$2y$08$0hcrpdYCpE6Ju7Ae2EXnue3gr9qQK6mH.O0PILlAB7kwzj95rTGmy', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13666037753', NULL, NULL, 1),
+(191, 's0809', 's0809', '林向红', NULL, '$2y$08$n7NPMKYMqYHpsKVJ7zg5l.ox5c2LGGUyl/RSh9imAbuiBM62wm0c6', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13799688269', NULL, NULL, 1),
+(192, 's0821', 's0821', '黄爱武', NULL, '$2y$08$4usQvtsgBSILJSLvqr2I4eK7MFVTLFWbcQP7j8mekL2l22G.i.HVq', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13607522072', NULL, NULL, 1),
+(193, 's0833', 's0833', '林剑波', NULL, '$2y$08$lnd456ByKNugB.9vreE9/uhNX75W6qgQm90dFoklLFqcRbs041s1S', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13860979899', NULL, NULL, 1),
+(194, 's0846', 's0846', '林雪梅', NULL, '$2y$08$/WAW/3/BjvWOZH8TwvAiQuIYNN9Yrf5fZ5XGlx9K6t74ZBd50/JCS', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13626929711', NULL, NULL, 1),
+(195, 'C0809', 'C0809', '陈彩霞', NULL, '$2y$08$yNrR6NF8FI58dfV1RpOppOGNgKDnryZWbBz1chIo9TlX7ABZpw382', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18005948060', NULL, NULL, 1),
+(196, 'NM212', 'NM212', '李娜', NULL, '$2y$08$cXvqHg6kdbXbMd8lMNgU4uup9lYyQyExM7SEx2SJv3TX7/cBA7J/.', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15849109275', NULL, NULL, 1),
+(197, 'NM213', 'NM213', '吕小龙', NULL, '$2y$08$iZVqzi3xaZkVrbPYESlSQeWNNexXz5ejPR0yBehNgzPL9DsVwpPeu', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13074738830', NULL, NULL, 1),
+(198, 'NM214', 'NM214', '于静', NULL, '$2y$08$dFntYTP18uTOj7WpRw0M5eHumoAzA2Cr6bvnfXadAO2tIlsVm9NSO', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18947104858', NULL, NULL, 1),
+(199, 'NM215', 'NM215', '杨雪敏', NULL, '$2y$08$FzRWk0ld.GA3bPHmVRjib.EmJ7GpThjQWsJxcyIAKb45Mbe3gJ2Q6', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13384892392', NULL, NULL, 1),
+(200, 'NM217', 'NM217', '姜雪娇', NULL, '$2y$08$gqOm0yeObtWagzXZht2rY.mlvHCBPleEQlcqp4ag9N6FN6fAdz.Qy', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15326091152', NULL, NULL, 1),
+(201, 'NM218', 'NM218', '王利敏', NULL, '$2y$08$7pkHC5U9m04.2jf7On/CW.7Bq.vNyCEJu.2GYwONgouQM0yGfhq8a', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15754865150', NULL, NULL, 1),
+(202, 'S0862', 'S0862', '徐丽婷', NULL, '$2y$08$uVtzstWw7ob1erRCsaMxSefEAcwHJFo.zeyC6rbqQaYFmZ/8Zxg/.', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18720933092', NULL, NULL, 1),
+(203, 'S1087', 'S1087', '林宁', NULL, '$2y$08$WPz4jKcRDgkgzRBtoraztujrTgEJvqdsIxtnVVYJGOfq8IhaorENe', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15080177750', NULL, NULL, 1),
+(204, 'S0816', 'S0816', '严琳琳', NULL, '$2y$08$o4bo2a7XUNoDETwCkPVSW.UkY2Q9pKVvNLfSgFDvrw3/pTEEzQKEG', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13607527966', NULL, NULL, 1),
+(205, 'S0842', 'S0842', '张燕花', NULL, '$2y$08$RHGlg3WjO.BOMC72kfUhreF0cRBHTxiLQLc4N6CL.z6eX.BdLnOeK', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13194444457', NULL, NULL, 1),
+(206, 'S0867', 'S0867', '林建聪', NULL, '$2y$08$/bNNk/mTBZUkB9aGFFOLQ.CBl/b9KjCvrR2y6Sp7OJAUT6S2AdSvO', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13799662162', NULL, NULL, 1),
+(207, 'NM201', 'NM201', '王爱', NULL, '$2y$08$FJiE1yumXQV3YoYl4ylqduHvxEhen.4lVWIx3TW68mEy4PVPAJEGm', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18047182554', NULL, NULL, 1),
+(208, 'NM111', 'NM111', '陈国雯', NULL, '$2y$08$tBwDks0ECnX7j4GmsVNcHupgw5HKFgbATrly9/78j1EC.v.gsWA1i', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15847757050', NULL, NULL, 1),
+(209, 'NM219', 'NM219', '谭国强', NULL, '$2y$08$noCoVZEBDKlxr0tsvjgXQeu6isuTi3Rs/9qUJ3Qcy2mTRGvtJZRl2', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13029504100', NULL, NULL, 1),
+(210, 'S0968', 'S0968', '吴志斌', NULL, '$2y$08$fXpzk6InziFgYg3Dla2fJO30Sq.wAN2y78wG9s3cKjiLNEjSxoZYu', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13905947375', NULL, NULL, 1),
+(211, 'S0827', 'S0827', '陈伟正', NULL, '$2y$08$D3UW3SpyfL7nB7lGahmHO.9I5Q9vvzlK3tYXsOFHxI1I3iU73LiyK', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18705043621', NULL, NULL, 1),
+(212, 'S0841', 'S0841', '林晨霞', NULL, '$2y$08$H.w7okBNnbOzSpv0DGyuY.dGrDVQOzR8VdT1Rvy2gxtqL/tJ9NqGu', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18350267909', NULL, NULL, 1),
+(213, 'S0828', 'S0828', '邱陶楠', NULL, '$2y$08$iFvVfDL6W3O3FSUe7XLZVuAbb62OArd9HKj2AybD2N1i8lrZm00HO', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13850241323', NULL, NULL, 1),
+(214, 'S0837', 'S0837', '郑志敏', NULL, '$2y$08$QnJLprv5qvjZuIzix8IqAubKVb2uuH5s5AciMu5SIardCDpH9mw6O', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13615993226', NULL, NULL, 1),
+(215, 'S0853', 'S0853', '陈文斌', NULL, '$2y$08$c7YPAnxqWYbWu239AsFQ8eslKcmGgFFXJxyzSpPLH2862Ioxj5DIS', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15260828778', NULL, NULL, 1),
+(216, 'NM220', 'NM220', '胡慧娟', NULL, '$2y$08$pHGM4KAg2thnB.Go5d70P.LQX/IXPYWmgHArgH8a.oZfs3gX50lyC', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18698408728', NULL, NULL, 1),
+(217, 'NM302', 'NM302', '温海洋', NULL, '$2y$08$KeZ/Y3577bvMZsUpncZ2PuG76eHOKBwJLyT1LP3Q2OLzit7Dnqioi', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15124707079', NULL, NULL, 1),
+(218, 'NM303', 'NM303', '赵建文', NULL, '$2y$08$XH6u329R9wLoIRlaWpB02uABwpnvvkvD/wJL7UriDagSKTpQFIO2i', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15248103931', NULL, NULL, 1),
+(219, 'NM304', 'NM304', '段罗娜', NULL, '$2y$08$pyxKoMHxKR5JnrVys/eKTeaiKRP/fkoQoHXRy4hd6AB38tfqa88s2', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '17704889892', NULL, NULL, 1),
+(220, 'NM305', 'NM305', '玮玮', NULL, '$2y$08$ceJ5x3N1kfQgIq4BZtOMluCFK98Eot.R3uDkNqk4t6NEd/FQzifdC', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18847137170', NULL, NULL, 1),
+(221, 'S0843', 'S0843', '吕碧红', NULL, '$2y$08$HOZxo.5GJxtH5MXdNBZ5ROc.0DyFwwD7vEuuhPsVnsXDShuSaCk56', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13959593312', NULL, NULL, 1),
+(222, 'NM119', 'NM119', '杨滢', NULL, '$2y$08$MeFZwZ5LOgBK/1W.59cuOOUV.d/oudOXmnxUMoymodqhGsnmBXbCW', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13488517038', NULL, NULL, 1),
+(223, 'S0897', 'S0897', '于梅', NULL, '$2y$08$5QCO7chXZRcWD2nlmi3jz.3JzvHMlDAj/KfVt8sKVJJ4dMpdRl75u', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15255293278', NULL, NULL, 1),
+(224, 'S0847', 'S0847', '林梅钦', NULL, '$2y$08$vHIfrhziefEr/3XMi5/aCum2F6YcXJOVB9F0mxhkyNVqlYzVw7uQC', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '13599863241', NULL, NULL, 1),
+(225, 'S0998', 'S0998', '朱冷冷', NULL, '$2y$08$Av27limkxUbLzsZolEuAHOy8V4ZkX9tQueqlt/bTQhcRQQQ05zoFO', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '15080357426', NULL, NULL, 1),
+(226, 'HJMT8', 'HJMT8', '朱景修', NULL, '$2y$08$fAMixznNM45CRXM.Lf2/aOGpZfh30NvnYz4CdHO6fhD43VNHITax6', NULL, '', NULL, 1474442555, 0, '127.0.0.1', 1, '18850911766', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -2022,14 +1848,13 @@ INSERT INTO `gd_worker` (`id`, `username`, `realname`, `avatar`, `password`, `sa
 -- 表的结构 `gd_worker_activity`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_activity` (
-  `activity_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_activity` (
+  `activity_id` int(11) NOT NULL,
   `worker_id` int(11) NOT NULL DEFAULT '0',
   `content` varchar(256) COLLATE utf8_unicode_ci DEFAULT NULL,
   `addtime` int(11) NOT NULL,
-  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`activity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+  `ip` char(15) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_worker_activity`
@@ -2048,13 +1873,12 @@ INSERT INTO `gd_worker_activity` (`activity_id`, `worker_id`, `content`, `addtim
 -- 表的结构 `gd_worker_attempt`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_attempt` (
+  `id` int(11) UNSIGNED NOT NULL,
   `ip_address` varchar(15) NOT NULL,
   `login` varchar(100) NOT NULL,
-  `time` int(11) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `time` int(11) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -2062,14 +1886,13 @@ CREATE TABLE IF NOT EXISTS `gd_worker_attempt` (
 -- 表的结构 `gd_worker_company`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_company` (
-  `company_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_company` (
+  `company_id` int(11) NOT NULL,
   `title` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
   `alias` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
-  `addtime` int(11) NOT NULL,
-  PRIMARY KEY (`company_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  `addtime` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_worker_company`
@@ -2085,15 +1908,14 @@ INSERT INTO `gd_worker_company` (`company_id`, `title`, `alias`, `status`, `addt
 -- 表的结构 `gd_worker_group`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_group` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_group` (
+  `id` mediumint(8) UNSIGNED NOT NULL,
   `code` varchar(20) NOT NULL,
   `title` varchar(100) NOT NULL,
   `is_system` tinyint(4) NOT NULL DEFAULT '0',
   `permission` text,
-  `status` tinyint(4) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+  `status` tinyint(4) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker_group`
@@ -2102,7 +1924,7 @@ CREATE TABLE IF NOT EXISTS `gd_worker_group` (
 INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`, `status`) VALUES
 (1, 'admin', '管理组', 1, '', 1),
 (2, 'member', '业务员', 0, '2997,2999,3001,3003,2998,3000,3002', 1),
-(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,54,55,57,59,61,62,63,64,65,67,68,69,70,72,78,80,81,82,83,84,85,87,93,94,96,98,100,101,102,103,105,106,107,108,109,110,112,113,114,115,116,118,120,121,124,125,126,127', 1),
+(3, 'manager', '经理', 0, '1,2,3,5,6,7,8,9,10,11,22,23,24,25,26,27,30,33,35,48,49,50,51,52,54,55,57,59,61,62,63,64,65,67,68,69,70,72,78,80,81,82,83,84,85,87,93,94,96,98,100,101,102,103,105,106,107,108,109,110,112,113,114,115,116,118,120,121,124,125,126,127,128', 1),
 (4, 'warehouser', '库管', 0, '1,2,3,55,61,65,70,82,87,98,100,101,105,107,108,111,117,118,119', 1),
 (5, 'appraiser', '鉴定人', 0, '74,73,70,1,3,2', 1),
 (6, 'booker', '登记人', 0, '1,2,3,52,55,57,70,72,93,98,100,101,103', 1);
@@ -2113,8 +1935,8 @@ INSERT INTO `gd_worker_group` (`id`, `code`, `title`, `is_system`, `permission`,
 -- 表的结构 `gd_worker_notify`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
-  `notify_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `gd_worker_notify` (
+  `notify_id` int(11) NOT NULL,
   `sender_id` int(11) NOT NULL DEFAULT '0',
   `receiver_id` int(11) NOT NULL,
   `mode` enum('announcement','summary') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'announcement',
@@ -2122,9 +1944,8 @@ CREATE TABLE IF NOT EXISTS `gd_worker_notify` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '1',
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
-  `addtime` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`notify_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+  `addtime` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- 转存表中的数据 `gd_worker_notify`
@@ -2143,15 +1964,11 @@ INSERT INTO `gd_worker_notify` (`notify_id`, `sender_id`, `receiver_id`, `mode`,
 -- 表的结构 `gd_worker_rel`
 --
 
-CREATE TABLE IF NOT EXISTS `gd_worker_rel` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `worker_id` int(11) unsigned NOT NULL,
-  `group_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
-  KEY `fk_users_groups_users1_idx` (`worker_id`),
-  KEY `fk_users_groups_groups1_idx` (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
+CREATE TABLE `gd_worker_rel` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `worker_id` int(11) UNSIGNED NOT NULL,
+  `group_id` mediumint(8) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `gd_worker_rel`
@@ -2167,12 +1984,849 @@ INSERT INTO `gd_worker_rel` (`id`, `worker_id`, `group_id`) VALUES
 (13, 7, 4),
 (29, 8, 4),
 (17, 9, 5),
-(27, 10, 5),
-(22, 11, 3),
-(23, 11, 5),
-(24, 11, 6),
-(21, 12, 2);
+(248, 10, 2),
+(249, 11, 2),
+(250, 12, 2),
+(251, 13, 2),
+(252, 14, 2),
+(253, 15, 2),
+(254, 16, 2),
+(255, 17, 2),
+(256, 18, 2),
+(257, 19, 2),
+(258, 20, 2),
+(259, 21, 2),
+(260, 22, 2),
+(261, 23, 2),
+(262, 24, 2),
+(263, 25, 2),
+(264, 26, 2),
+(265, 27, 2),
+(266, 28, 2),
+(267, 29, 2),
+(268, 30, 2),
+(269, 31, 2),
+(466, 32, 1),
+(271, 33, 2),
+(272, 34, 2),
+(273, 35, 2),
+(274, 36, 2),
+(275, 37, 2),
+(276, 38, 2),
+(277, 39, 2),
+(278, 40, 2),
+(279, 41, 2),
+(280, 42, 2),
+(281, 43, 2),
+(282, 44, 2),
+(283, 45, 2),
+(284, 46, 2),
+(285, 47, 2),
+(286, 48, 2),
+(287, 49, 2),
+(288, 50, 2),
+(289, 51, 2),
+(290, 52, 2),
+(291, 53, 2),
+(292, 54, 2),
+(293, 55, 2),
+(294, 56, 2),
+(295, 57, 2),
+(296, 58, 2),
+(297, 59, 2),
+(298, 60, 2),
+(299, 61, 2),
+(300, 62, 2),
+(301, 63, 2),
+(302, 64, 2),
+(303, 65, 2),
+(304, 66, 2),
+(305, 67, 2),
+(306, 68, 2),
+(307, 69, 2),
+(308, 70, 2),
+(309, 71, 2),
+(310, 72, 2),
+(311, 73, 2),
+(312, 74, 2),
+(313, 75, 2),
+(314, 76, 2),
+(315, 77, 2),
+(316, 78, 2),
+(317, 79, 2),
+(318, 80, 2),
+(319, 81, 2),
+(320, 82, 2),
+(321, 83, 2),
+(322, 84, 2),
+(323, 85, 2),
+(324, 86, 2),
+(325, 87, 2),
+(326, 88, 2),
+(327, 89, 2),
+(328, 90, 2),
+(329, 91, 2),
+(330, 92, 2),
+(331, 93, 2),
+(332, 94, 2),
+(333, 95, 2),
+(334, 96, 2),
+(335, 97, 2),
+(336, 98, 2),
+(337, 99, 2),
+(338, 100, 2),
+(339, 101, 2),
+(340, 102, 2),
+(341, 103, 2),
+(342, 104, 2),
+(343, 105, 2),
+(344, 106, 2),
+(345, 107, 2),
+(346, 108, 2),
+(347, 109, 2),
+(348, 110, 2),
+(349, 111, 2),
+(350, 112, 2),
+(351, 113, 2),
+(352, 114, 2),
+(353, 115, 2),
+(354, 116, 2),
+(355, 117, 2),
+(356, 118, 2),
+(357, 119, 2),
+(358, 120, 2),
+(359, 121, 2),
+(360, 122, 2),
+(361, 123, 2),
+(362, 124, 2),
+(363, 125, 2),
+(364, 126, 2),
+(365, 127, 2),
+(366, 128, 2),
+(367, 129, 2),
+(368, 130, 2),
+(369, 131, 2),
+(370, 132, 2),
+(371, 133, 2),
+(372, 134, 2),
+(373, 135, 2),
+(374, 136, 2),
+(375, 137, 2),
+(376, 138, 2),
+(377, 139, 2),
+(378, 140, 2),
+(379, 141, 2),
+(380, 142, 2),
+(381, 143, 2),
+(382, 144, 2),
+(383, 145, 2),
+(384, 146, 2),
+(385, 147, 2),
+(386, 148, 2),
+(387, 149, 2),
+(388, 150, 2),
+(389, 151, 2),
+(390, 152, 2),
+(391, 153, 2),
+(392, 154, 2),
+(393, 155, 2),
+(394, 156, 2),
+(395, 157, 2),
+(396, 158, 2),
+(397, 159, 2),
+(398, 160, 2),
+(399, 161, 2),
+(400, 162, 2),
+(401, 163, 2),
+(402, 164, 2),
+(403, 165, 2),
+(404, 166, 2),
+(405, 167, 2),
+(406, 168, 2),
+(407, 169, 2),
+(408, 170, 2),
+(409, 171, 2),
+(410, 172, 2),
+(411, 173, 2),
+(412, 174, 2),
+(413, 175, 2),
+(414, 176, 2),
+(415, 177, 2),
+(416, 178, 2),
+(417, 179, 2),
+(418, 180, 2),
+(419, 181, 2),
+(420, 182, 2),
+(421, 183, 2),
+(422, 184, 2),
+(423, 185, 2),
+(424, 186, 2),
+(425, 187, 2),
+(426, 188, 2),
+(427, 189, 2),
+(428, 190, 2),
+(429, 191, 2),
+(430, 192, 2),
+(431, 193, 2),
+(432, 194, 2),
+(433, 195, 2),
+(434, 196, 2),
+(435, 197, 2),
+(436, 198, 2),
+(437, 199, 2),
+(438, 200, 2),
+(439, 201, 2),
+(440, 202, 2),
+(441, 203, 2),
+(442, 204, 2),
+(443, 205, 2),
+(444, 206, 2),
+(445, 207, 2),
+(446, 208, 2),
+(447, 209, 2),
+(448, 210, 2),
+(449, 211, 2),
+(450, 212, 2),
+(451, 213, 2),
+(452, 214, 2),
+(453, 215, 2),
+(454, 216, 2),
+(455, 217, 2),
+(456, 218, 2),
+(457, 219, 2),
+(458, 220, 2),
+(459, 221, 2),
+(460, 222, 2),
+(461, 223, 2),
+(462, 224, 2),
+(463, 225, 2),
+(464, 226, 2);
 
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `gd_work_num`
+--
+
+CREATE TABLE `gd_work_num` (
+  `num_id` int(11) UNSIGNED NOT NULL COMMENT '工号id',
+  `realname` char(50) NOT NULL,
+  `numinfo` varchar(50) NOT NULL COMMENT '工号',
+  `phone` varchar(200) NOT NULL,
+  `logintime` int(11) NOT NULL DEFAULT '0',
+  `add_ip` char(15) NOT NULL,
+  `add_time` int(10) NOT NULL,
+  `up_ip` char(15) NOT NULL,
+  `up_time` int(10) NOT NULL,
+  `last_ip` char(15) NOT NULL,
+  `last_time` int(10) NOT NULL,
+  `block_status` int(1) NOT NULL,
+  `password` varchar(25) DEFAULT '123456',
+  `is_madmin` tinyint(3) DEFAULT '0',
+  `salt` char(16) NOT NULL,
+  `pwdhash` varchar(40) NOT NULL,
+  `ismarket` int(20) NOT NULL DEFAULT '0' COMMENT '纳入营销',
+  `entrytime` int(30) NOT NULL COMMENT '入职时间 ',
+  `checktime` varchar(60) NOT NULL COMMENT '考核时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `gd_work_num`
+--
+
+INSERT INTO `gd_work_num` (`num_id`, `realname`, `numinfo`, `phone`, `logintime`, `add_ip`, `add_time`, `up_ip`, `up_time`, `last_ip`, `last_time`, `block_status`, `password`, `is_madmin`, `salt`, `pwdhash`, `ismarket`, `entrytime`, `checktime`) VALUES
+(28, '方雪静', 'S0896', '13305946318', 0, '59.58.128.42', 1421467552, '27.153.239.206', 1422151465, '59.58.128.42', 1421467552, 0, '123456', 10, '', '', 0, 0, '0'),
+(31, '蔡凤辉', 'C0892', '13305941363', 0, '59.58.128.42', 1421805941, '59.58.128.42', 1421807378, '59.58.128.42', 1421805941, 0, '123456', 0, '', '', 0, 0, '0'),
+(33, '陈卫健', 'C0898', '15080457686', 0, '59.58.128.42', 1421806119, '59.58.128.42', 1421807355, '59.58.128.42', 1421806119, 0, '123456', 0, '', '', 0, 0, '0'),
+(34, '林志龙', 'C0888', '13305942502', 0, '59.58.128.42', 1421806701, '59.58.128.42', 1421807362, '59.58.128.42', 1421806701, 0, '123456', 0, '', '', 0, 0, '0'),
+(35, '郑雯', 'C0891', '13305946108', 0, '59.58.128.42', 1421807529, '59.58.128.42', 1421807529, '59.58.128.42', 1421807529, 0, '123456', 0, '', '', 0, 0, '0'),
+(36, '吴健飞', 'C0880', '13305942150', 0, '59.58.128.42', 1421807707, '59.58.128.42', 1421807707, '59.58.128.42', 1421807707, 0, '123456', 0, '', '', 0, 0, '0'),
+(38, '张琳', 'C0886', '13305945811', 0, '59.58.128.42', 1421809409, '59.58.128.42', 1421809409, '59.58.128.42', 1421809409, 0, '123456', 0, '', '', 0, 0, '0'),
+(41, '许俊贤', 'S0895', '13305940231', 0, '59.58.128.42', 1421828988, '59.58.128.42', 1433898165, '59.58.128.42', 1421828988, 0, '123456', 0, '', '', 0, 0, '0'),
+(42, '邱辉辉', 'C0889', '13305941913', 0, '59.58.128.42', 1421898634, '27.153.240.140', 1439951463, '59.58.128.42', 1421898634, 0, '123456', 1, '', '', 0, 0, '0'),
+(43, '陈慕玲', 'S0888', '13305945775', 0, '59.58.128.42', 1421907779, '59.58.128.42', 1421907779, '59.58.128.42', 1421907779, 0, '123456', 1, '', '', 0, 0, '0'),
+(44, '陈国仁', 'C0881', '13305942095', 0, '10.171.218.31', 1422256899, '59.58.128.42', 1427340125, '10.171.218.31', 1422256899, 0, 'a123456', 1, '', '', 0, 0, '0'),
+(45, '陈国仙', 'C0885', '13305942113', 0, '10.171.218.31', 1422256939, '10.171.218.31', 1422256939, '10.171.218.31', 1422256939, 0, '123456', 0, '', '', 0, 0, '0'),
+(46, '严芳', 'C0890', '18905941255', 0, '10.171.218.31', 1422256975, '10.171.218.31', 1422256975, '10.171.218.31', 1422256975, 0, '123456', 0, '', '', 0, 0, '0'),
+(47, '黄建杰', 'C0893', '13305943039', 0, '10.171.218.31', 1422257030, '10.171.218.31', 1422257030, '10.171.218.31', 1422257030, 0, '123456', 0, '', '', 0, 0, '0'),
+(48, '于欣', 'S0899', '13305942013', 0, '10.171.218.31', 1425519371, '10.171.218.31', 1425519371, '10.171.218.31', 1425519371, 0, '123456', 0, '', '', 0, 0, '0'),
+(49, '林伟', 'S0890', '13305940132', 0, '10.171.218.31', 1425519511, '10.171.218.31', 1425519511, '10.171.218.31', 1425519511, 0, '123456', 0, '', '', 0, 0, '0'),
+(50, '林志忠', 'S0889', '13305940256', 0, '10.171.218.31', 1426125566, '59.58.128.42', 1432521975, '10.171.218.31', 1426125566, 0, '123456', 0, '', '', 0, 0, '0'),
+(53, '林淑珍', 'S0880', '13305948093', 0, '10.171.218.31', 1426125693, '59.58.128.42', 1432521997, '10.171.218.31', 1426125693, 0, '123456', 0, '', '', 0, 0, '0'),
+(54, '蒋建山', 'S0883', '18756799811', 0, '10.171.218.31', 1426317067, '10.171.218.31', 1426317067, '10.171.218.31', 1426317067, 0, '123456', 0, '', '', 0, 0, '0'),
+(55, '苏晓燕', 'S0885', '13305948352', 0, '10.171.218.31', 1426641756, '59.58.128.42', 1432521932, '10.171.218.31', 1426641756, 0, '123456', 0, '', '', 0, 0, '0'),
+(56, '吴秀芳', 'S0882', '13305946167', 0, '10.171.218.31', 1426641784, '59.58.128.42', 1433898180, '10.171.218.31', 1426641784, 0, '123456', 0, '', '', 0, 0, '0'),
+(57, '陈秀贞', 'S0887', '13305948130', 0, '10.171.218.31', 1426641860, '59.58.128.42', 1432521900, '10.171.218.31', 1426641860, 0, '123456', 0, '', '', 0, 0, '0'),
+(58, '林国春', 'C0808', '13515646484', 0, '10.171.218.31', 1427944526, '10.171.218.31', 1427944526, '10.171.218.31', 1427944526, 0, '123456', 0, '', '', 0, 0, '0'),
+(59, '黄美宇', 'C0866', '15654646486', 0, '10.171.218.31', 1427944550, '10.171.218.31', 1427944550, '10.171.218.31', 1427944550, 0, '123456', 0, '', '', 0, 0, '0'),
+(60, '郑赛萍', 'S0875', '13305943583', 0, '10.171.218.31', 1427946054, '59.58.128.42', 1432521879, '10.171.218.31', 1427946054, 0, '123456', 0, '', '', 0, 0, '0'),
+(61, '方玉腾', 'S0876', '15659398909', 0, '10.171.218.31', 1427946085, '10.171.218.31', 1427946085, '10.171.218.31', 1427946085, 0, '123456', 0, '', '', 0, 0, '0'),
+(62, '陈素辉', 'S0873', '17759820207', 0, '10.171.218.31', 1427946415, '10.171.218.31', 1427946415, '10.171.218.31', 1427946415, 0, '123456', 0, '', '', 0, 0, '0'),
+(63, '龚钰英', 'S0872', '13305948010', 0, '10.171.218.31', 1427946547, '59.58.128.42', 1431311003, '10.171.218.31', 1427946547, 0, '123456', 0, '', '', 0, 0, '0'),
+(64, '何明枝', 'S0892', '13959508689', 0, '10.171.218.31', 1427946580, '10.171.218.31', 1427946580, '10.171.218.31', 1427946580, 0, '123456', 0, '', '', 0, 0, '0'),
+(65, '黄仁富', 'S1269', '13305941600', 0, '10.171.218.31', 1428052395, '10.171.218.31', 1428052395, '10.171.218.31', 1428052395, 0, '123456', 0, '', '', 0, 0, '0'),
+(66, '李雪', 'S1226', '13850282988', 0, '10.171.218.31', 1428913689, '10.171.218.31', 1428913689, '10.171.218.31', 1428913689, 0, '123456', 0, '', '', 0, 0, '0'),
+(67, '推广', 'S1111', '13611111111', 0, '10.171.218.31', 1429370331, '10.171.218.31', 1429370331, '10.171.218.31', 1429370331, 0, '123456', 0, '', '', 0, 0, '0'),
+(68, '推广1', 'C1111', '13658685858', 0, '10.171.218.31', 1429598120, '10.171.218.31', 1429598120, '10.171.218.31', 1429598120, 0, '123456', 0, '', '', 0, 0, '0'),
+(69, '李静', 'S0860', '13305948135', 0, '10.171.218.31', 1429607838, '59.58.128.42', 1432521802, '10.171.218.31', 1429607838, 0, '123456', 0, '', '', 0, 0, '0'),
+(70, '邹丽榜', 'S0865', '13305943283', 0, '10.171.218.31', 1430355072, '10.171.218.31', 1430355072, '10.171.218.31', 1430355072, 0, '123456', 0, '', '', 0, 0, '0'),
+(71, '林丽钦', 'S0870', '13305940213', 0, '10.171.218.31', 1431311084, '59.58.128.42', 1432521849, '10.171.218.31', 1431311084, 0, '123456', 0, '', '', 0, 0, '0'),
+(73, '黄俊涵', 'S0869', '13110555385', 0, '59.58.128.42', 1431573352, '59.58.128.42', 1431573352, '59.58.128.42', 1431573352, 0, '123456', 0, '', '', 0, 0, '0'),
+(76, '环球专用', 'C0895', '13325465656', 0, '59.58.128.42', 1433757989, '59.58.128.42', 1433758074, '59.58.128.42', 1433757989, 0, '123456', 0, '', '', 0, 0, '0'),
+(77, '杨建花', 'S0855', '13607501383', 0, '121.205.241.28', 1434680678, '121.205.241.28', 1434680678, '121.205.241.28', 1434680678, 0, '123456', 0, '', '', 0, 0, '0'),
+(78, '陆碧婷', 'S0858', '13850204249', 0, '121.205.241.28', 1434680739, '121.205.241.28', 1434680739, '121.205.241.28', 1434680739, 0, '123456', 0, '', '', 0, 0, '0'),
+(79, '李腾达', 'S0859', '13860901122', 0, '121.205.241.28', 1434680803, '121.205.241.28', 1434680803, '121.205.241.28', 1434680803, 0, '123456', 0, '', '', 0, 0, '0'),
+(81, '杨世美', 'S0861', '13313805758', 0, '222.77.213.109', 1434705238, '222.77.213.109', 1434705238, '222.77.213.109', 1434705238, 0, '123456', 0, '', '', 0, 0, '0'),
+(83, '赵忆涵', 'S0863', '13850264966', 0, '110.89.13.147', 1435022401, '110.89.13.147', 1435022401, '110.89.13.147', 1435022401, 0, '123456', 0, '', '', 0, 0, '0'),
+(88, '刘洋', 'S1200', '13204745298', 0, '120.37.229.228', 1435916971, '120.37.229.228', 1435916971, '120.37.229.228', 1435916971, 0, '123456', 0, '', '', 0, 0, '0'),
+(89, '李源', 'S1201', '15847457606', 0, '120.37.229.228', 1435916993, '120.37.229.228', 1435916993, '120.37.229.228', 1435916993, 0, '123456', 0, '', '', 0, 0, '0'),
+(90, '李玲', 'S1202', '15598164333', 0, '120.37.229.228', 1435917011, '120.37.229.228', 1435917011, '120.37.229.228', 1435917011, 0, '123456', 0, '', '', 0, 0, '0'),
+(91, '郭佳丽', 'S1203', '18247404272', 0, '120.37.229.228', 1435917085, '120.37.229.228', 1435917085, '120.37.229.228', 1435917085, 0, '123456', 0, '', '', 0, 0, '0'),
+(92, '刘晓燕', 'S1205', '13234726381', 0, '120.37.229.228', 1435917108, '120.37.229.228', 1435917108, '120.37.229.228', 1435917108, 0, '123456', 0, '', '', 0, 0, '0'),
+(93, '赵素芳', 'S1206', '13947440499', 0, '120.37.229.228', 1435917196, '120.37.229.228', 1435917196, '120.37.229.228', 1435917196, 0, '123456', 0, '', '', 0, 0, '0'),
+(94, '张俊芳', 'S1207', '13614842996', 0, '120.37.229.228', 1435917305, '120.37.229.228', 1435917305, '120.37.229.228', 1435917305, 0, '123456', 0, '', '', 0, 0, '0'),
+(95, '李利霞', 'S1208', '15764892288', 0, '120.37.229.228', 1435917344, '120.37.229.228', 1435917344, '120.37.229.228', 1435917344, 0, '123456', 0, '', '', 0, 0, '0'),
+(96, '郇瑛', 'S1209', '13847464619', 0, '120.37.229.228', 1435917418, '120.37.229.228', 1435917418, '120.37.229.228', 1435917418, 0, '123456', 0, '', '', 0, 0, '0'),
+(97, '崔晓娟', 'S1210', '15384745523', 0, '120.37.229.228', 1435917448, '120.37.229.228', 1435917448, '120.37.229.228', 1435917448, 0, '123456', 0, '', '', 0, 0, '0'),
+(98, '郭沙沙', 'S1211', '18748401116', 0, '120.37.229.228', 1435917525, '120.37.229.228', 1435917525, '120.37.229.228', 1435917525, 0, '123456', 0, '', '', 0, 0, '0'),
+(99, '卢林芳', 'S1212', '15904849094', 0, '120.37.229.228', 1435917558, '120.37.229.228', 1435917558, '120.37.229.228', 1435917558, 0, '123456', 0, '', '', 0, 0, '0'),
+(100, '赵利强', 'S1213', '13847418030', 0, '120.37.229.228', 1435917576, '120.37.229.228', 1435917576, '120.37.229.228', 1435917576, 0, '123456', 0, '', '', 0, 0, '0'),
+(101, '李静', 'S1215', '18947410660', 0, '120.37.229.228', 1435917593, '120.37.229.228', 1435917593, '120.37.229.228', 1435917593, 0, '123456', 0, '', '', 0, 0, '0'),
+(102, '王彦君', 'S1216', '18647471512', 0, '120.37.229.228', 1435917607, '120.37.229.228', 1435917607, '120.37.229.228', 1435917607, 0, '123456', 0, '', '', 0, 0, '0'),
+(103, '贾晓晴', 'S1217', '13150821742', 0, '120.37.229.228', 1435917627, '120.37.229.228', 1435917627, '120.37.229.228', 1435917627, 0, '123456', 0, '', '', 0, 0, '0'),
+(104, '冀连青', 'S1218', '15247484422', 0, '120.37.229.228', 1435917644, '120.37.229.228', 1435917644, '120.37.229.228', 1435917644, 0, '123456', 0, '', '', 0, 0, '0'),
+(105, '孙瑞敏', 'S1219', '15849404018', 0, '120.37.229.228', 1435917658, '120.37.229.228', 1435917658, '120.37.229.228', 1435917658, 0, '123456', 0, '', '', 0, 0, '0'),
+(106, '田雨', 'S1220', '18947411271', 0, '120.37.229.228', 1435917672, '120.37.229.228', 1435917672, '120.37.229.228', 1435917672, 0, '123456', 0, '', '', 0, 0, '0'),
+(107, '李林', 'S1221', '13500644095', 0, '120.37.229.228', 1435917689, '120.37.229.228', 1435917689, '120.37.229.228', 1435917689, 0, '123456', 0, '', '', 0, 0, '0'),
+(108, '常振华', 'S1222', '13337146990', 0, '120.37.229.228', 1435917704, '120.37.229.228', 1435917704, '120.37.229.228', 1435917704, 0, '123456', 0, '', '', 0, 0, '0'),
+(109, '刘婷', 'S1223', '15124761160', 0, '120.37.229.228', 1435917719, '120.37.229.228', 1435917719, '120.37.229.228', 1435917719, 0, '123456', 0, '', '', 0, 0, '0'),
+(110, '张晔', 'S1225', '15114749519', 0, '120.37.229.228', 1435917734, '120.37.229.228', 1435917734, '120.37.229.228', 1435917734, 0, '123456', 0, '', '', 0, 0, '0'),
+(111, '赵敏', 'S1227', '13789643488', 0, '120.37.229.228', 1435917748, '120.37.229.228', 1435917748, '120.37.229.228', 1435917748, 0, '123456', 0, '', '', 0, 0, '0'),
+(112, '郝俊莲', 'S1230', '15647480030', 0, '120.37.229.228', 1435917762, '120.37.229.228', 1435917762, '120.37.229.228', 1435917762, 0, '123456', 0, '', '', 0, 0, '0'),
+(113, '李琛', 'S1100', '15384745565', 0, '59.58.128.42', 1436233331, '59.58.128.42', 1436233331, '59.58.128.42', 1436233331, 0, '123456', 0, '', '', 0, 0, '0'),
+(114, '郝斌', 'S1101', '15704716060', 0, '59.58.128.42', 1436233409, '110.85.70.219', 1436758937, '59.58.128.42', 1436233409, 0, '123456', 0, '', '', 0, 0, '0'),
+(115, '杨林', 'S1102', '18548126416', 0, '59.58.128.42', 1436233446, '59.58.128.42', 1436233446, '59.58.128.42', 1436233446, 0, '123456', 0, '', '', 0, 0, '0'),
+(116, '陈震', 'S1103', '15947703046', 0, '59.58.128.42', 1436233528, '59.58.128.42', 1436233528, '59.58.128.42', 1436233528, 0, '123456', 0, '', '', 0, 0, '0'),
+(117, '苏锦华', 'S1105', '15847784537', 0, '59.58.128.42', 1436233563, '59.58.128.42', 1436233563, '59.58.128.42', 1436233563, 0, '123456', 0, '', '', 0, 0, '0'),
+(118, '曹建武', 'S1106', '15848488813', 0, '59.58.128.42', 1436233698, '59.58.128.42', 1436236315, '59.58.128.42', 1436233698, 0, '123456', 0, '', '', 0, 0, '0'),
+(119, '郭振兴', 'S1107', '18698404550', 0, '59.58.128.42', 1436233731, '59.58.128.42', 1436235398, '59.58.128.42', 1436233731, 0, '123456', 0, '', '', 0, 0, '0'),
+(120, '张易', 'S1108', '18504842014', 0, '59.58.128.42', 1436233760, '59.58.128.42', 1436233760, '59.58.128.42', 1436233760, 0, '123456', 0, '', '', 0, 0, '0'),
+(121, '白玉瑛', 'S1109', '13150834827', 0, '59.58.128.42', 1436233791, '110.85.70.219', 1436758396, '59.58.128.42', 1436233791, 0, '123456', 0, '', '', 0, 0, '0'),
+(122, '杨丽娜', 'S1110', '18548181124', 0, '59.58.128.42', 1436233817, '59.58.128.42', 1436233817, '59.58.128.42', 1436233817, 0, '123456', 0, '', '', 0, 0, '0'),
+(123, '赵艳霞', 'S1112', '15848460836', 0, '59.58.128.42', 1436233844, '59.58.128.42', 1436233844, '59.58.128.42', 1436233844, 0, '123456', 0, '', '', 0, 0, '0'),
+(124, '张红霞', 'S1113', '18647405605', 0, '59.58.128.42', 1436233874, '59.58.128.42', 1436233874, '59.58.128.42', 1436233874, 0, '123456', 0, '', '', 0, 0, '0'),
+(125, '朱莎', 'S1115', '14747461917', 0, '59.58.128.42', 1436233901, '59.58.128.42', 1436233901, '59.58.128.42', 1436233901, 0, '123456', 0, '', '', 0, 0, '0'),
+(126, '张荣', 'S1116', '15754852687', 0, '59.58.128.42', 1436233931, '59.58.128.42', 1436233931, '59.58.128.42', 1436233931, 0, '123456', 0, '', '', 0, 0, '0'),
+(127, '康宁', 'S1118', '18647482288', 0, '59.58.128.42', 1436233963, '59.58.128.42', 1436233963, '59.58.128.42', 1436233963, 0, '123456', 0, '', '', 0, 0, '0'),
+(128, '付卫敏', 'S1117', '18847417866', 0, '59.58.128.42', 1436237836, '59.58.128.42', 1436237836, '59.58.128.42', 1436237836, 0, '123456', 0, '', '', 0, 0, '0'),
+(129, '刘成刚', 'S1119', '18748111754', 0, '59.58.128.42', 1436240115, '59.58.128.42', 1436240115, '59.58.128.42', 1436240115, 0, '123456', 0, '', '', 0, 0, '0'),
+(130, '韩新宇', 'S1120', '14784740401', 0, '121.205.215.247', 1436244935, '121.205.215.247', 1436244935, '121.205.215.247', 1436244935, 0, '123456', 0, '', '', 0, 0, '0'),
+(131, '王艳清', 'S1121', '18748414581', 0, '121.205.215.247', 1436244956, '121.205.215.247', 1436244956, '121.205.215.247', 1436244956, 0, '123456', 0, '', '', 0, 0, '0'),
+(132, '刘璐', 'S1122', '15384745561', 0, '121.205.215.247', 1436244972, '121.205.215.247', 1436244972, '121.205.215.247', 1436244972, 0, '123456', 0, '', '', 0, 0, '0'),
+(133, '刘甲军', 'S1123', '15148085324', 0, '121.205.215.247', 1436244988, '121.205.215.247', 1436244988, '121.205.215.247', 1436244988, 0, '123456', 0, '', '', 0, 0, '0'),
+(134, '杨文英', 'S1125', '18647420424', 0, '121.205.215.247', 1436245008, '121.205.215.247', 1436245008, '121.205.215.247', 1436245008, 0, '123456', 0, '', '', 0, 0, '0'),
+(135, '崔乐英', 'S1126', '15164798997', 0, '121.205.215.247', 1436245030, '121.205.215.247', 1436245030, '121.205.215.247', 1436245030, 0, '123456', 0, '', '', 0, 0, '0'),
+(136, '褚文静', 'S1127', '15947685830', 0, '121.205.215.247', 1436245048, '121.205.215.247', 1436245048, '121.205.215.247', 1436245048, 0, '123456', 0, '', '', 0, 0, '0'),
+(137, '张敏', 'S1128', '13704746941', 0, '121.205.215.247', 1436245065, '121.205.215.247', 1436245065, '121.205.215.247', 1436245065, 0, '123456', 0, '', '', 0, 0, '0'),
+(138, '郭文忠', 'S1129', '13084747683', 0, '121.205.215.247', 1436245086, '121.205.215.247', 1436245086, '121.205.215.247', 1436245086, 0, '123456', 0, '', '', 0, 0, '0'),
+(139, '张晓宇', 'S1130', '13500645678', 0, '121.205.215.247', 1436245112, '121.205.215.247', 1436245112, '121.205.215.247', 1436245112, 0, '123456', 0, '', '', 0, 0, '0'),
+(140, '李佳和', 'S1131', '15384745533', 0, '121.205.215.247', 1436245136, '121.205.215.247', 1436245136, '121.205.215.247', 1436245136, 0, '123456', 0, '', '', 0, 0, '0'),
+(141, '王晶晶', 'S1132', '15014743936', 0, '121.205.215.247', 1436245158, '121.205.215.247', 1436245158, '121.205.215.247', 1436245158, 0, '123456', 0, '', '', 0, 0, '0'),
+(142, '马泽宇', 'S1133', '18547105066', 0, '121.205.215.247', 1436245175, '121.205.215.247', 1436245175, '121.205.215.247', 1436245175, 0, '123456', 0, '', '', 0, 0, '0'),
+(143, '郭荣荣', 'S1135', '15849416766', 0, '121.205.215.247', 1436245199, '121.205.215.247', 1436245199, '121.205.215.247', 1436245199, 0, '123456', 0, '', '', 0, 0, '0'),
+(144, '张丽丝', 'S1136', '15847418393', 0, '121.205.215.247', 1436245215, '121.205.215.247', 1436245215, '121.205.215.247', 1436245215, 0, '123456', 0, '', '', 0, 0, '0'),
+(145, '郎艳', 'S1137', '18504741106', 0, '121.205.215.247', 1436245236, '121.205.215.247', 1436245236, '121.205.215.247', 1436245236, 0, '123456', 0, '', '', 0, 0, '0'),
+(146, '张晓龙', 'S1138', '13948593907', 0, '121.205.215.247', 1436245253, '121.205.215.247', 1436245253, '121.205.215.247', 1436245253, 0, '123456', 0, '', '', 0, 0, '0'),
+(147, '黄东升', 'S1139', '15354838618', 0, '121.205.215.247', 1436245275, '121.205.215.247', 1436245275, '121.205.215.247', 1436245275, 0, '123456', 0, '', '', 0, 0, '0'),
+(148, '曹志慧', 'S1140', '15124733417', 0, '121.205.215.247', 1436245297, '121.205.215.247', 1436245297, '121.205.215.247', 1436245297, 0, '123456', 0, '', '', 0, 0, '0'),
+(149, '张鑫', 'S1141', '18047428520', 0, '121.205.215.247', 1436245312, '121.205.215.247', 1436245312, '121.205.215.247', 1436245312, 0, '123456', 0, '', '', 0, 0, '0'),
+(150, '杨俊华', 'S1142', '15555523592', 0, '121.205.215.247', 1436245331, '121.205.215.247', 1436245331, '121.205.215.247', 1436245331, 0, '123456', 0, '', '', 0, 0, '0'),
+(151, '雷乐元', 'S1143', '13214748420', 0, '121.205.215.247', 1436245349, '121.205.215.247', 1436245349, '121.205.215.247', 1436245349, 0, '123456', 0, '', '', 0, 0, '0'),
+(152, '胥兰强', 'S1145', '15849417619', 0, '121.205.215.247', 1436245365, '121.205.215.247', 1436245365, '121.205.215.247', 1436245365, 0, '123456', 0, '', '', 0, 0, '0'),
+(153, '池翠云', 'S1146', '15847443854', 0, '121.205.215.247', 1436245382, '121.205.215.247', 1436245382, '121.205.215.247', 1436245382, 0, '123456', 0, '', '', 0, 0, '0'),
+(154, '薛强', 'S1148', '18604742452', 0, '121.205.215.247', 1436245407, '121.205.215.247', 1436245407, '121.205.215.247', 1436245407, 0, '123456', 0, '', '', 0, 0, '0'),
+(155, '方芹霞', 'S0812', '13799640511', 0, '59.58.128.42', 1436321116, '59.58.128.42', 1436321116, '59.58.128.42', 1436321116, 0, '123456', 0, '', '', 0, 0, '0'),
+(156, '林凌', 'S0871', '15928758720', 0, '59.58.128.42', 1436341748, '59.58.128.42', 1436341748, '59.58.128.42', 1436341748, 0, '123456', 0, '', '', 0, 0, '0'),
+(157, '高蕾', 'S1229', '18647471334', 0, '59.58.128.42', 1436409022, '59.58.128.42', 1436409022, '59.58.128.42', 1436409022, 0, '123456', 0, '', '', 0, 0, '0'),
+(158, '徐美凤', 'S1231', '15904889053', 0, '59.58.128.42', 1436409056, '59.58.128.42', 1436409056, '59.58.128.42', 1436409056, 0, '123456', 0, '', '', 0, 0, '0'),
+(159, '武英英', 'S1232', '13171300725', 0, '59.58.128.42', 1436409087, '59.58.128.42', 1436409087, '59.58.128.42', 1436409087, 0, '123456', 0, '', '', 0, 0, '0'),
+(160, '王宇', 'S1233', '18647479992', 0, '59.58.128.42', 1436409117, '59.58.128.42', 1436409117, '59.58.128.42', 1436409117, 0, '123456', 0, '', '', 0, 0, '0'),
+(161, '何龙', 'S1235', '13488515043', 0, '59.58.128.42', 1436409151, '59.58.128.42', 1436409151, '59.58.128.42', 1436409151, 0, '123456', 0, '', '', 0, 0, '0'),
+(162, '张晓霞', 'S1236', '15384745518', 0, '59.58.128.42', 1436409180, '59.58.128.42', 1436409180, '59.58.128.42', 1436409180, 0, '123456', 0, '', '', 0, 0, '0'),
+(163, '崔雪英', 'S1237', '15004743559', 0, '59.58.128.42', 1436409205, '59.58.128.42', 1436409205, '59.58.128.42', 1436409205, 0, '123456', 0, '', '', 0, 0, '0'),
+(164, '郭树清', 'S1240', '15754740006', 0, '59.58.128.42', 1436409233, '59.58.128.42', 1436409233, '59.58.128.42', 1436409233, 0, '123456', 0, '', '', 0, 0, '0'),
+(166, '朱世宗', 'C0830', '18105947698', 0, '59.58.128.42', 1436434461, '59.58.128.42', 1436434461, '59.58.128.42', 1436434461, 0, '123456', 0, '', '', 0, 0, '0'),
+(167, '陈光和', 'C0825', '15305946051', 0, '59.58.128.42', 1436434489, '59.58.128.42', 1436434489, '59.58.128.42', 1436434489, 0, '123456', 0, '', '', 0, 0, '0'),
+(169, '李冰', 'C0836', '13915980413', 0, '59.58.128.42', 1436434551, '59.58.128.42', 1436434551, '59.58.128.42', 1436434551, 0, '123456', 0, '', '', 0, 0, '0'),
+(170, '林建清', 'C0829', '18850986248', 0, '59.58.128.42', 1436434647, '59.58.128.42', 1436434647, '59.58.128.42', 1436434647, 0, '123456', 0, '', '', 0, 0, '0'),
+(171, '姚淑敏', 'S1241', '13848441913', 0, '59.58.128.42', 1436498054, '59.58.128.42', 1436498054, '59.58.128.42', 1436498054, 0, '123456', 0, '', '', 0, 0, '0'),
+(172, '李峰', 'S1245', '18847400465', 0, '222.77.227.65', 1436519203, '222.77.227.65', 1436519203, '222.77.227.65', 1436519203, 0, '123456', 0, '', '', 0, 0, '0'),
+(173, '黄继元', 'S0822', '13599011941', 0, '59.58.128.42', 1436758772, '59.58.128.42', 1436758772, '59.58.128.42', 1436758772, 0, '123456', 0, '', '', 0, 0, '0'),
+(174, '蔡耸华', 'S1239', '13704746903', 0, '110.85.70.219', 1436779829, '110.85.70.219', 1436779850, '110.85.70.219', 1436779829, 0, '123456', 0, '', '', 0, 0, '0'),
+(175, '段缘', 'S1266', '13644749949', 0, '117.26.192.169', 1436842320, '117.26.192.169', 1436842320, '117.26.192.169', 1436842320, 0, '123456', 0, '', '', 0, 0, '0'),
+(176, '曾秀芳', 'S0819', '13559382925', 0, '59.58.128.42', 1436842725, '59.58.128.42', 1437382916, '59.58.128.42', 1436842725, 0, '123456', 0, '', '', 0, 0, '0'),
+(179, '杨德辉', 'S1255', '18504740006', 0, '117.26.192.169', 1436846530, '117.26.192.169', 1436846530, '117.26.192.169', 1436846530, 0, '123456', 0, '', '', 0, 0, '0'),
+(180, '赵利惠', 'S1242', '15848474242', 0, '110.85.70.167', 1436922242, '110.85.70.167', 1436922341, '110.85.70.167', 1436922242, 0, '123456', 0, '', '', 0, 0, '0'),
+(181, '李文成', 'S1243', '15849456658', 0, '110.85.70.167', 1436922259, '110.85.70.167', 1436922334, '110.85.70.167', 1436922259, 0, '123456', 0, '', '', 0, 0, '0'),
+(182, '马春晖', 'S1246', '15384745511', 0, '110.85.70.167', 1436922292, '110.85.70.167', 1436922322, '110.85.70.167', 1436922292, 0, '123456', 0, '', '', 0, 0, '0'),
+(183, '张俊丽', 'S1250', '18604740080', 0, '110.85.70.167', 1436922376, '110.85.70.167', 1436922376, '110.85.70.167', 1436922376, 0, '123456', 0, '', '', 0, 0, '0'),
+(184, '郭逢雨', 'S1251', '15147470661', 0, '110.85.70.167', 1436922392, '110.85.70.167', 1436922392, '110.85.70.167', 1436922392, 0, '123456', 0, '', '', 0, 0, '0'),
+(185, '张赛华', 'S0818', '15375940376', 0, '59.58.128.42', 1436922773, '59.58.128.42', 1436922773, '59.58.128.42', 1436922773, 0, '123456', 0, '', '', 0, 0, '0'),
+(186, '郑奋东', 'S0810', '13799699407', 0, '59.58.128.42', 1436942725, '59.58.128.42', 1436942725, '59.58.128.42', 1436942725, 0, '123456', 0, '', '', 0, 0, '0'),
+(187, '黄明德', 'S0811', '13859895157', 0, '59.58.128.42', 1436942766, '59.58.128.42', 1436942766, '59.58.128.42', 1436942766, 0, '123456', 0, '', '', 0, 0, '0'),
+(188, '孙凌浩', 'S1252', '13394885551', 0, '110.85.114.198', 1437012158, '110.85.114.198', 1437012158, '110.85.114.198', 1437012158, 0, '123456', 0, '', '', 0, 0, '0'),
+(189, '弓树繁', 'S1256', '15384745522', 0, '110.85.114.198', 1437012246, '110.85.114.198', 1437012246, '110.85.114.198', 1437012246, 0, '123456', 0, '', '', 0, 0, '0'),
+(192, '何建杭', 'S0836', '18259174143', 0, '59.58.128.42', 1437636806, '59.58.128.42', 1437636806, '59.58.128.42', 1437636806, 0, '123456', 0, '', '', 0, 0, '0'),
+(193, '蔡峰银', 'S0815', '13860935400', 0, '59.58.128.42', 1437636848, '59.58.128.42', 1437636848, '59.58.128.42', 1437636848, 0, '123456', 0, '', '', 0, 0, '0'),
+(195, '吴文华', 'S0838', '13358524225', 0, '59.58.128.42', 1437638550, '59.58.128.42', 1437638550, '59.58.128.42', 1437638550, 0, '123456', 0, '', '', 0, 0, '0'),
+(197, '陈宏爱', 'S0830', '18850951198', 0, '59.58.128.42', 1437710321, '59.58.128.42', 1437710321, '59.58.128.42', 1437710321, 0, '123456', 0, '', '', 0, 0, '0'),
+(198, '陈洪如', 'S0839', '13959577690', 0, '59.58.128.42', 1438157036, '59.58.128.42', 1438157036, '59.58.128.42', 1438157036, 0, '123456', 0, '', '', 0, 0, '0'),
+(199, '曾思霞', 'S0829', '15060300513', 0, '110.82.165.34', 1438221192, '110.82.165.34', 1438221192, '110.82.165.34', 1438221192, 0, '123456', 0, '', '', 0, 0, '0'),
+(201, '杨瑞华', 'S0868', '15260930586', 0, '117.26.243.132', 1438586527, '117.26.243.132', 1438586527, '117.26.243.132', 1438586527, 0, '123456', 0, '', '', 0, 0, '0'),
+(202, '林榕', 'S0813', '18965569056', 0, '59.58.128.42', 1439364937, '59.58.128.42', 1439364937, '59.58.128.42', 1439364937, 0, '123456', 0, '', '', 0, 0, '0'),
+(204, '陈光耀', 'S0826', '18750091652', 0, '59.58.128.42', 1439780704, '59.58.128.42', 1439780704, '59.58.128.42', 1439780704, 0, '123456', 0, '', '', 0, 0, '0'),
+(205, '林建清', 'S0831', '13706067813', 0, '59.58.128.42', 1439785505, '59.58.128.42', 1439785505, '59.58.128.42', 1439785505, 0, '123456', 0, '', '', 0, 0, '0'),
+(206, '赵明义', 'NM104', '13674754527', 0, '27.153.240.140', 1439794888, '27.153.240.140', 1439794888, '27.153.240.140', 1439794888, 0, '123456', 0, '', '', 0, 0, '0'),
+(207, '朱金凤', 'NM113', '15247102260', 0, '27.153.240.140', 1439794962, '27.153.240.140', 1439794962, '27.153.240.140', 1439794962, 0, '123456', 0, '', '', 0, 0, '0'),
+(208, '潘月鲜', 'NM112', '13087111166', 0, '27.153.240.140', 1439795057, '27.153.240.140', 1439795057, '27.153.240.140', 1439795057, 0, '123456', 0, '', '', 0, 0, '0'),
+(209, '张小强', 'NM115', '18241111138', 0, '27.153.240.140', 1439795113, '27.153.240.140', 1439795113, '27.153.240.140', 1439795113, 0, '123456', 0, '', '', 0, 0, '0'),
+(210, '李国英', 'NM211', '15034956657', 0, '27.153.240.140', 1439795161, '27.153.240.140', 1439799915, '27.153.240.140', 1439795161, 0, '123456', 0, '', '', 0, 0, '0'),
+(212, '麻晓婷', 'NM209', '13847183022', 0, '27.153.240.140', 1439795742, '27.153.240.140', 1439799931, '27.153.240.140', 1439795742, 0, '123456', 0, '', '', 0, 0, '0'),
+(213, '董茗', 'NM2010', '15149740985', 0, '27.153.240.140', 1439795802, '27.153.240.140', 1439795802, '27.153.240.140', 1439795802, 0, '123456', 0, '', '', 0, 0, '0'),
+(214, '张利军', 'NM216', '14747888504', 0, '27.153.240.140', 1439795840, '27.153.240.140', 1439799978, '27.153.240.140', 1439795840, 0, '123456', 0, '', '', 0, 0, '0'),
+(215, '赵平小', 'NM208', '15949470045', 0, '27.153.240.140', 1439795875, '117.26.86.75', 1442053310, '27.153.240.140', 1439795875, 0, '123456', 0, '', '', 0, 0, '0'),
+(216, '董芳', 'NM210', '15149740985', 0, '27.153.240.140', 1439799952, '27.153.240.140', 1439799952, '27.153.240.140', 1439799952, 0, '123456', 0, '', '', 0, 0, '0'),
+(217, '黄健卫', 'NM206', '15849196251', 0, '27.153.240.140', 1439800014, '117.26.242.154', 1439967463, '27.153.240.140', 1439800014, 0, '123456', 0, '', '', 0, 0, '0'),
+(218, '包晨明', 'NM203', '15247132201', 0, '27.153.240.140', 1439800033, '27.153.240.140', 1439800033, '27.153.240.140', 1439800033, 0, '123456', 0, '', '', 0, 0, '0'),
+(219, '王丽', 'NM301', '13847178848', 0, '27.153.240.140', 1439800049, '222.77.212.213', 1442627473, '27.153.240.140', 1439800049, 0, '123456', 0, '', '', 0, 0, '0'),
+(220, '李波', 'NM205', '15947717813', 0, '27.153.240.140', 1439800075, '27.153.240.140', 1439800075, '27.153.240.140', 1439800075, 0, '123456', 0, '', '', 0, 0, '0'),
+(221, '刘素珍', 'NM207', '13674842196', 0, '27.153.240.140', 1439800098, '27.153.240.140', 1439800098, '27.153.240.140', 1439800098, 0, '123456', 0, '', '', 0, 0, '0'),
+(222, '窦明霞', 'NM202', '18604888619', 0, '27.153.240.140', 1439800113, '27.153.240.140', 1439800113, '27.153.240.140', 1439800113, 0, '123456', 0, '', '', 0, 0, '0'),
+(223, '郝三厚', 'NM204', '18847124399', 0, '27.153.240.140', 1439802624, '110.82.167.76', 1441866780, '27.153.240.140', 1439802624, 0, '123456', 0, '', '', 0, 0, '0'),
+(224, '蔡秀英', 'S0820', '15080147398', 0, '59.58.128.42', 1439947048, '59.58.128.42', 1439947048, '59.58.128.42', 1439947048, 0, '123456', 0, '', '', 0, 0, '0'),
+(225, '董怀军', 'NM001', '13327109212', 0, '27.153.240.140', 1439956368, '27.153.240.140', 1439956368, '27.153.240.140', 1439956368, 0, '123456', 0, '', '', 0, 0, '0'),
+(226, '陈金华', 'NM002', '15304792727', 0, '27.153.240.140', 1439956395, '27.153.240.140', 1439956395, '27.153.240.140', 1439956395, 0, '123456', 0, '', '', 0, 0, '0'),
+(227, '马海刚', 'NM114', '13384711135', 0, '117.26.242.154', 1439967436, '117.26.242.154', 1439967436, '117.26.242.154', 1439967436, 0, '123456', 0, '', '', 0, 0, '0'),
+(228, '郑理政', 'S0835', '18750072321', 0, '59.58.128.42', 1440040445, '59.58.128.42', 1440040445, '59.58.128.42', 1440040445, 0, '123456', 0, '', '', 0, 0, '0'),
+(229, '黄肖肖', 'S0845', '15959190032', 0, '59.58.128.42', 1440404862, '59.58.128.42', 1440404862, '59.58.128.42', 1440404862, 0, '123456', 0, '', '', 0, 0, '0'),
+(230, '潘其乐', 'NM118', '15047143060', 0, '120.33.252.109', 1440640231, '120.33.252.109', 1440640231, '120.33.252.109', 1440640231, 0, '123456', 0, '', '', 0, 0, '0'),
+(231, '杨鹭', 'C0810', '18159426920', 0, '120.33.252.109', 1440661030, '120.33.252.109', 1440661030, '120.33.252.109', 1440661030, 0, '123456', 10, 'h0anEFAwUY7JbbmW', 'b9342d0d6092cccde9a6c6bae0ca70a46da50819', 0, 0, '0'),
+(232, '翁玲', 'S0840', '18650320184', 0, '59.58.128.42', 1441016730, '117.26.241.71', 1441069723, '59.58.128.42', 1441016730, 0, '123456', 0, '', '', 0, 0, '0'),
+(233, '潘晓晨', 's0832', '13850267585', 0, '59.58.128.42', 1441696865, '59.58.128.42', 1441696865, '59.58.128.42', 1441696865, 0, '123456', 0, '', '', 0, 0, '0'),
+(234, '曹雅璐', 'NM116', '18748175818', 0, '110.82.167.76', 1441855566, '110.82.167.76', 1441855566, '110.82.167.76', 1441855566, 0, '123456', 0, '', '', 0, 0, '0'),
+(235, '郑雅萍', 'NM117', '13451318151', 0, '110.82.167.76', 1441855613, '110.82.167.76', 1441855613, '110.82.167.76', 1441855613, 0, '123456', 0, '', '', 0, 0, '0'),
+(236, '蔡剑飞', 's0848', '13666037753', 0, '59.58.128.42', 1441871717, '59.58.128.42', 1441871717, '59.58.128.42', 1441871717, 0, '123456', 0, '', '', 0, 0, '0'),
+(237, '林向红', 's0809', '13799688269', 0, '59.58.128.42', 1441934949, '59.58.128.42', 1441934949, '59.58.128.42', 1441934949, 0, '123456', 0, '', '', 0, 0, '0'),
+(238, '黄爱武', 's0821', '13607522072', 0, '59.58.128.42', 1441935905, '59.58.128.42', 1441935905, '59.58.128.42', 1441935905, 0, '123456', 0, '', '', 0, 0, '0'),
+(239, '林剑波', 's0833', '13860979899', 0, '59.58.128.42', 1441936016, '59.58.128.42', 1441936016, '59.58.128.42', 1441936016, 0, '123456', 0, '', '', 0, 0, '0'),
+(240, '林雪梅', 's0846', '13626929711', 0, '59.58.128.42', 1441936082, '59.58.128.42', 1441936082, '59.58.128.42', 1441936082, 0, '123456', 0, '', '', 0, 0, '0'),
+(241, '陈彩霞', 'C0809', '18005948060', 0, '59.58.128.42', 1441957171, '59.58.128.42', 1441957171, '59.58.128.42', 1441957171, 0, '123456', 0, '', '', 0, 0, '0'),
+(242, '李娜', 'NM212', '15849109275', 0, '140.237.11.168', 1442195696, '140.237.11.168', 1442195696, '140.237.11.168', 1442195696, 0, '123456', 0, '', '', 0, 0, '0'),
+(243, '吕小龙', 'NM213', '13074738830', 0, '140.237.11.168', 1442195722, '140.237.11.168', 1442195722, '140.237.11.168', 1442195722, 0, '123456', 0, '', '', 0, 0, '0'),
+(244, '于静', 'NM214', '18947104858', 0, '140.237.11.168', 1442196137, '140.237.11.168', 1442196137, '140.237.11.168', 1442196137, 0, '123456', 0, '', '', 0, 0, '0'),
+(245, '杨雪敏', 'NM215', '13384892392', 0, '140.237.11.168', 1442196574, '140.237.11.168', 1442196574, '140.237.11.168', 1442196574, 0, '123456', 0, '', '', 0, 0, '0'),
+(246, '姜雪娇', 'NM217', '15326091152', 0, '140.237.11.168', 1442196598, '140.237.11.168', 1442196598, '140.237.11.168', 1442196598, 0, '123456', 0, '', '', 0, 0, '0'),
+(247, '王利敏', 'NM218', '15754865150', 0, '140.237.11.168', 1442202249, '140.237.11.168', 1442202249, '140.237.11.168', 1442202249, 0, '123456', 0, '', '', 0, 0, '0'),
+(248, '徐丽婷', 'S0862', '18720933092', 0, '59.58.128.42', 1442214591, '59.58.128.42', 1442214591, '59.58.128.42', 1442214591, 0, '123456', 0, '', '', 0, 0, '0'),
+(249, '林宁', 'S1087', '15080177750', 0, '59.58.128.42', 1442214658, '59.58.128.42', 1442214658, '59.58.128.42', 1442214658, 0, '123456', 0, '', '', 0, 0, '0'),
+(250, '严琳琳', 'S0816', '13607527966', 0, '59.58.128.42', 1442214736, '59.58.128.42', 1442214736, '59.58.128.42', 1442214736, 0, '123456', 0, '', '', 0, 0, '0'),
+(251, '张燕花', 'S0842', '13194444457', 0, '59.58.128.42', 1442214865, '59.58.128.42', 1442214865, '59.58.128.42', 1442214865, 0, '123456', 0, '', '', 0, 0, '0'),
+(252, '林建聪', 'S0867', '13799662162', 0, '59.58.128.42', 1442395687, '59.58.128.42', 1442395687, '59.58.128.42', 1442395687, 0, '123456', 0, '', '', 0, 0, '0'),
+(253, '王爱', 'NM201', '18047182554', 0, '222.77.212.213', 1442627728, '222.77.212.213', 1442627990, '222.77.212.213', 1442627728, 0, '123456', 0, '', '', 0, 0, '0'),
+(254, '陈国雯', 'NM111', '15847757050', 0, '222.77.212.213', 1442632662, '222.77.212.213', 1442632662, '222.77.212.213', 1442632662, 0, '123456', 0, '', '', 0, 0, '0'),
+(255, '谭国强', 'NM219', '13029504100', 0, '222.77.212.213', 1442632690, '222.77.212.213', 1442632690, '222.77.212.213', 1442632690, 0, '123456', 0, '', '', 0, 0, '0'),
+(256, '吴志斌', 'S0968', '13905947375', 0, '59.58.128.42', 1442796714, '59.58.128.42', 1442817528, '59.58.128.42', 1442796714, 0, '123456', 0, 'h0anEFAwUY7JbbmW', 'b9342d0d6092cccde9a6c6bae0ca70a46da50819', 0, 0, '0'),
+(257, '陈伟正', 'S0827', '18705043621', 0, '59.58.128.42', 1442802778, '59.58.128.42', 1442802778, '59.58.128.42', 1442802778, 0, '123456', 0, '', '', 0, 0, '0'),
+(258, '林晨霞', 'S0841', '18350267909', 0, '59.58.128.42', 1442828528, '59.58.128.42', 1442828528, '59.58.128.42', 1442828528, 0, '123456', 0, '', '', 0, 0, '0'),
+(259, '邱陶楠', 'S0828', '13850241323', 0, '59.58.128.42', 1442886022, '59.58.128.42', 1442886022, '59.58.128.42', 1442886022, 0, '123456', 0, '', '', 0, 0, '0'),
+(260, '郑志敏', 'S0837', '13615993226', 0, '59.58.128.42', 1442910293, '59.58.128.42', 1442910293, '59.58.128.42', 1442910293, 0, '123456', 0, '', '', 0, 0, '0'),
+(261, '陈文斌', 'S0853', '15260828778', 0, '59.58.128.42', 1443145004, '59.58.128.42', 1443145004, '59.58.128.42', 1443145004, 0, '123456', 0, '', '', 0, 0, '0'),
+(262, '胡慧娟', 'NM220', '18698408728', 0, '27.153.221.219', 1443153018, '27.153.221.219', 1443153018, '27.153.221.219', 1443153018, 0, '123456', 0, '', '', 0, 0, '0'),
+(263, '温海洋', 'NM302', '15124707079', 0, '27.153.221.219', 1443153115, '27.153.221.219', 1443153115, '27.153.221.219', 1443153115, 0, '123456', 0, '', '', 0, 0, '0'),
+(264, '赵建文', 'NM303', '15248103931', 0, '27.153.221.219', 1443153154, '27.153.221.219', 1443153154, '27.153.221.219', 1443153154, 0, '123456', 0, '', '', 0, 0, '0'),
+(265, '段罗娜', 'NM304', '17704889892', 0, '27.153.221.219', 1443153205, '27.153.221.219', 1443153205, '27.153.221.219', 1443153205, 0, '123456', 0, '', '', 0, 0, '0'),
+(266, '玮玮', 'NM305', '18847137170', 0, '27.153.221.219', 1443153242, '27.153.221.219', 1443153242, '27.153.221.219', 1443153242, 0, '123456', 0, '', '', 0, 0, '0'),
+(267, '吕碧红', 'S0843', '13959593312', 0, '59.58.128.42', 1443163897, '59.58.128.42', 1443163897, '59.58.128.42', 1443163897, 0, '123456', 0, '', '', 0, 0, '0'),
+(268, '杨滢', 'NM119', '13488517038', 0, '110.85.74.162', 1443233891, '110.85.74.162', 1443233891, '110.85.74.162', 1443233891, 0, '123456', 0, '', '', 0, 0, '0'),
+(269, '于梅', 'S0897', '15255293278', 0, '110.82.164.185', 1443425059, '110.82.164.185', 1443425059, '110.82.164.185', 1443425059, 0, '123456', 0, '', '', 0, 0, '0'),
+(270, '林梅钦', 'S0847', '13599863241', 0, '59.58.128.42', 1443490953, '59.58.128.42', 1443490953, '59.58.128.42', 1443490953, 0, '123456', 0, '', '', 0, 0, '0'),
+(271, '朱冷冷', 'S0998', '15080357426', 0, '59.58.128.42', 1443492803, '59.58.128.42', 1443492803, '59.58.128.42', 1443492803, 0, '123456', 0, '', '', 0, 0, '0'),
+(272, '朱景修', 'HJMT8', '18850911766', 0, '59.58.128.42', 1468492803, '59.58.128.42', 1468496803, '59.58.128.42', 1468496803, 0, '123456', 0, '', '', 0, 0, '0'),
+(273, '朱景修', 'C1000', '18850911766', 0, '59.58.128.42', 1468492803, '59.58.128.42', 1468496803, '59.58.128.42', 1468496803, 0, '123456', 0, 'h0anEFAwUY7JbbmW', 'b9342d0d6092cccde9a6c6bae0ca70a46da50819', 0, 0, '0');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `gd_article`
+--
+ALTER TABLE `gd_article`
+  ADD PRIMARY KEY (`article_id`);
+
+--
+-- Indexes for table `gd_article_category`
+--
+ALTER TABLE `gd_article_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `gd_cron_job`
+--
+ALTER TABLE `gd_cron_job`
+  ADD PRIMARY KEY (`job_id`);
+
+--
+-- Indexes for table `gd_cron_schedule`
+--
+ALTER TABLE `gd_cron_schedule`
+  ADD PRIMARY KEY (`schedule_id`),
+  ADD KEY `task_name` (`job_code`),
+  ADD KEY `scheduled_at` (`scheduled_at`,`status`);
+
+--
+-- Indexes for table `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  ADD PRIMARY KEY (`customer_id`);
+
+--
+-- Indexes for table `gd_customer_apply`
+--
+ALTER TABLE `gd_customer_apply`
+  ADD PRIMARY KEY (`apply_id`);
+
+--
+-- Indexes for table `gd_customer_group`
+--
+ALTER TABLE `gd_customer_group`
+  ADD PRIMARY KEY (`group_id`);
+
+--
+-- Indexes for table `gd_customer_history`
+--
+ALTER TABLE `gd_customer_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `gd_customer_stock`
+--
+ALTER TABLE `gd_customer_stock`
+  ADD PRIMARY KEY (`stock_id`);
+
+--
+-- Indexes for table `gd_golden_price`
+--
+ALTER TABLE `gd_golden_price`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_golden_today`
+--
+ALTER TABLE `gd_golden_today`
+  ADD KEY `date` (`date`),
+  ADD KEY `updatetime` (`updatetime`);
+
+--
+-- Indexes for table `gd_node`
+--
+ALTER TABLE `gd_node`
+  ADD PRIMARY KEY (`node_id`);
+
+--
+-- Indexes for table `gd_project_file`
+--
+ALTER TABLE `gd_project_file`
+  ADD PRIMARY KEY (`file_id`);
+
+--
+-- Indexes for table `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `gd_project_investing_status`
+--
+ALTER TABLE `gd_project_investing_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_period`
+--
+ALTER TABLE `gd_project_period`
+  ADD PRIMARY KEY (`period_id`);
+
+--
+-- Indexes for table `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `gd_project_recycling_history`
+--
+ALTER TABLE `gd_project_recycling_history`
+  ADD PRIMARY KEY (`history_id`);
+
+--
+-- Indexes for table `gd_project_recycling_status`
+--
+ALTER TABLE `gd_project_recycling_status`
+  ADD PRIMARY KEY (`status_id`);
+
+--
+-- Indexes for table `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  ADD PRIMARY KEY (`stock_id`);
+
+--
+-- Indexes for table `gd_project_track`
+--
+ALTER TABLE `gd_project_track`
+  ADD PRIMARY KEY (`track_id`);
+
+--
+-- Indexes for table `gd_project_trash`
+--
+ALTER TABLE `gd_project_trash`
+  ADD PRIMARY KEY (`trash_id`);
+
+--
+-- Indexes for table `gd_sessions`
+--
+ALTER TABLE `gd_sessions`
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+
+--
+-- Indexes for table `gd_setting`
+--
+ALTER TABLE `gd_setting`
+  ADD PRIMARY KEY (`setting_id`,`code`),
+  ADD KEY `option_name` (`code`),
+  ADD KEY `auto_load` (`initial`);
+
+--
+-- Indexes for table `gd_worker`
+--
+ALTER TABLE `gd_worker`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_activity`
+--
+ALTER TABLE `gd_worker_activity`
+  ADD PRIMARY KEY (`activity_id`);
+
+--
+-- Indexes for table `gd_worker_attempt`
+--
+ALTER TABLE `gd_worker_attempt`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_company`
+--
+ALTER TABLE `gd_worker_company`
+  ADD PRIMARY KEY (`company_id`);
+
+--
+-- Indexes for table `gd_worker_group`
+--
+ALTER TABLE `gd_worker_group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gd_worker_notify`
+--
+ALTER TABLE `gd_worker_notify`
+  ADD PRIMARY KEY (`notify_id`);
+
+--
+-- Indexes for table `gd_worker_rel`
+--
+ALTER TABLE `gd_worker_rel`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uc_users_groups` (`worker_id`,`group_id`),
+  ADD KEY `fk_users_groups_users1_idx` (`worker_id`),
+  ADD KEY `fk_users_groups_groups1_idx` (`group_id`);
+
+--
+-- Indexes for table `gd_work_num`
+--
+ALTER TABLE `gd_work_num`
+  ADD PRIMARY KEY (`num_id`),
+  ADD UNIQUE KEY `num_id` (`num_id`) USING BTREE,
+  ADD KEY `block_status` (`block_status`),
+  ADD KEY `numinfo` (`numinfo`) USING BTREE,
+  ADD KEY `realname` (`realname`) USING BTREE;
+
+--
+-- 在导出的表使用AUTO_INCREMENT
+--
+
+--
+-- 使用表AUTO_INCREMENT `gd_article`
+--
+ALTER TABLE `gd_article`
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_article_category`
+--
+ALTER TABLE `gd_article_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_cron_job`
+--
+ALTER TABLE `gd_cron_job`
+  MODIFY `job_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_cron_schedule`
+--
+ALTER TABLE `gd_cron_schedule`
+  MODIFY `schedule_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_customer`
+--
+ALTER TABLE `gd_customer`
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- 使用表AUTO_INCREMENT `gd_customer_apply`
+--
+ALTER TABLE `gd_customer_apply`
+  MODIFY `apply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_customer_group`
+--
+ALTER TABLE `gd_customer_group`
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `gd_customer_history`
+--
+ALTER TABLE `gd_customer_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `gd_customer_stock`
+--
+ALTER TABLE `gd_customer_stock`
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `gd_golden_price`
+--
+ALTER TABLE `gd_golden_price`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+--
+-- 使用表AUTO_INCREMENT `gd_node`
+--
+ALTER TABLE `gd_node`
+  MODIFY `node_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=129;
+--
+-- 使用表AUTO_INCREMENT `gd_project_file`
+--
+ALTER TABLE `gd_project_file`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing`
+--
+ALTER TABLE `gd_project_investing`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing_history`
+--
+ALTER TABLE `gd_project_investing_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `gd_project_investing_status`
+--
+ALTER TABLE `gd_project_investing_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- 使用表AUTO_INCREMENT `gd_project_period`
+--
+ALTER TABLE `gd_project_period`
+  MODIFY `period_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling`
+--
+ALTER TABLE `gd_project_recycling`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling_history`
+--
+ALTER TABLE `gd_project_recycling_history`
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- 使用表AUTO_INCREMENT `gd_project_recycling_status`
+--
+ALTER TABLE `gd_project_recycling_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- 使用表AUTO_INCREMENT `gd_project_stock`
+--
+ALTER TABLE `gd_project_stock`
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- 使用表AUTO_INCREMENT `gd_project_track`
+--
+ALTER TABLE `gd_project_track`
+  MODIFY `track_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_project_trash`
+--
+ALTER TABLE `gd_project_trash`
+  MODIFY `trash_id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- 使用表AUTO_INCREMENT `gd_setting`
+--
+ALTER TABLE `gd_setting`
+  MODIFY `setting_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+--
+-- 使用表AUTO_INCREMENT `gd_worker`
+--
+ALTER TABLE `gd_worker`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=228;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_activity`
+--
+ALTER TABLE `gd_worker_activity`
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_attempt`
+--
+ALTER TABLE `gd_worker_attempt`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_company`
+--
+ALTER TABLE `gd_worker_company`
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_group`
+--
+ALTER TABLE `gd_worker_group`
+  MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_notify`
+--
+ALTER TABLE `gd_worker_notify`
+  MODIFY `notify_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- 使用表AUTO_INCREMENT `gd_worker_rel`
+--
+ALTER TABLE `gd_worker_rel`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=467;
+--
+-- 使用表AUTO_INCREMENT `gd_work_num`
+--
+ALTER TABLE `gd_work_num`
+  MODIFY `num_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '工号id', AUTO_INCREMENT=274;
 --
 -- 限制导出的表
 --

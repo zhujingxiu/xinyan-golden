@@ -41,7 +41,7 @@
                         <table id="list" class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>用户名</th>
+                                <th>工号</th>
                                 <th>姓名</th>
                                 <th>角色</th>
                                 <th>公司</th>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="" class="control-label col-sm-3">用户名</label>
+                            <label for="" class="control-label col-sm-3">工号</label>
                             <div class="col-sm-9">
                                 <input type="text" name="username" id="form-username" class="form-control">
                             </div>
@@ -125,7 +125,7 @@
                             <label for="" class="control-label col-sm-3">角色设置</label>
                             <div class="col-sm-9">
                                 <?php foreach($groups as $item) : ?>
-                                    <?php if ($item['code']=='admin') continue;?>
+
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="groups[]" value="<?php echo $item['id']?>" ><?php echo $item['title']?></label>
                                 </div>

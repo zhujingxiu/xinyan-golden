@@ -330,6 +330,7 @@ class Recycling extends Project {
                     $info['privacies'] = json_decode($item['file'],TRUE);
                 }
             }
+            $info['type_text'] = $this->type_text($info['type']);
             $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
             $info['histories'] = $this->recycling_model->histories($info['project_sn']);
             json_success(array(
@@ -440,6 +441,7 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
+                $info['type_text'] = $this->type_text($info['type']);
                 $info['start'] = $this->calculate_start($info['addtime']);
                 $starttime  = strtotime($info['start']);
                 $info['end'] = calculate_end($starttime,$info['month']);
@@ -584,6 +586,7 @@ class Recycling extends Project {
                         $info['privacies'] = json_decode($item['file'],TRUE);
                     }
                 }
+                $info['type_text'] = $this->type_text($info['type']);
                 $info['profit_weight'] = number_format($info['weight']*$info['profit'],2);
                 $title = '项目入库 '.$info['realname'].':'.$info['project_sn'];
                 //lock

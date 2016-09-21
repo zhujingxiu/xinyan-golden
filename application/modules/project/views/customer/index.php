@@ -50,12 +50,11 @@
                         <thead>
                         <tr>
                             <th>注册时间</th>
-                            <th>金卡</th>
-                            <th>客户</th>
-                            <th>手机号</th>
-                            <th>身份证号</th>
                             <th>推荐人</th>
                             <th>状态</th>
+                            <th>客户</th>
+                            <th>金卡</th>
+                            <th>联系方式</th>
                             <th>金库</th>
                             <th>冻结</th>
                             <th>可用</th>
@@ -67,12 +66,11 @@
                         <tfoot>
                         <tr>
                             <th>注册时间</th>
-                            <th>金卡</th>
-                            <th>客户</th>
-                            <th>手机号</th>
-                            <th>身份证号</th>
                             <th>推荐人</th>
                             <th>状态</th>
+                            <th>客户</th>
+                            <th>金卡</th>
+                            <th>联系方式</th>
                             <th>金库</th>
                             <th>冻结</th>
                             <th>可用</th>

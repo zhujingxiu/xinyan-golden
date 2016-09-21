@@ -25,12 +25,11 @@ define(function (require, exports, modules) {
                 },
                 "columns": [
                     {"data": "addtime", "name": "c.addtime"},
-                    {"data": "card_number", "name": "c.card_number"},
-                    {"data": "customer", "name": "c.realname"},
-                    {"data": "phone", "name": "c.phone"},
-                    {"data": "idnumber", "name": "c.idnumber"},
                     {"data": "referrer", "name": "referrer"},
                     {"data": "status_text", "name": "c.status"},
+                    {"data": "customer", "name": "c.realname"},
+                    {"data": "card_number", "name": "c.card_number"},
+                    {"data": "phone", "name": "c.phone"},
                     {"data": "totals"},
                     {"data": "frozen", "name": "frozen"},
                     {"data": "available", "name": "available"},
@@ -46,7 +45,7 @@ define(function (require, exports, modules) {
         })
 
         $('#list').delegate('.btn-detail','click',function(){
-            exports.do_detail($(this).parent().parent().attr('id'));
+            exports.do_detail($(this).parent().parent().parent().attr('id'));
         })
     }
 
@@ -56,23 +55,47 @@ define(function (require, exports, modules) {
         require('jqueryvalidate');
         require('customValidate');
         $.get('/project/customer/update', {customer_id:cid}, function(json){
-            layer.open({
+            var options = {
                 type: 1,
                 title:json.title,
                 area:'880px',
                 offset: '100px',
                 zIndex:99,
-                btn: ['保存', '取消'],
+                btn: ['关闭'],
                 content: json.msg ,//注意，如果str是object，那么需要字符拼接。
-                yes: function(index, layero){
+
+            };
+            if(json.modify){
+                options.btn = ['保存', '关闭'];
+                if(json.free){
+                    options.btn = ['保存', '关闭','赠金'];
+                }
+                options.yes = function(index, layero){
                     $('#form-customer').submit();
                 }
-            });
+                if(json.free){
+                    options.btn3 = function(index, layero){
+                        layer.open({
+                            type: 1,
+                            title: '赠送客户黄金克重',
+                            area:'520px',
+                            offset: '100px',
+                            zIndex:199,
+                            content:json.free_form,
+                            btn : ['确定赠送', '取消'],
+                            yes:function( index, layero){
+                                $('#form-free').submit();
+                            }
+                        });
+                    }
+                }
+            }
+            layer.open(options);
         },'json');
     }
     exports.render_appling = function () {
 
-        $('#list').delegate('.btn-appling','click', function (e) {
+        $('#list').delegate('.btn-appling-taking','click', function (e) {
             var card_serial = '';
             //require('../base/iccardreader');
             if(ICCardReader.Open()){
@@ -139,8 +162,8 @@ define(function (require, exports, modules) {
     exports.render_renew = function () {
 
         $('#list').delegate('.btn-renew','click', function (e) {
-            var card_serial = '9C8914DB';
-            /*
+            var card_serial = '';
+
             if (ICCardReader.Open()) {
                 card_serial = ICCardReader.Request();//'sadsadsa';//
                 if (card_serial.length != 8) {
@@ -153,7 +176,7 @@ define(function (require, exports, modules) {
                 window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
                 return false;
             }
-            */
+
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');

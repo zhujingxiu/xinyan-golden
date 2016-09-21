@@ -53,8 +53,14 @@ class Company_model extends CI_Model{
 
     public function delete($company_id)
     {
-
         return $this->db->delete($this->table,array('company_id'=>$company_id));
     }
 
+    public function sync()
+    {
+        $workers = $this->db->get('work_num');
+        foreach($workers->result_array() as $item){
+            $this->ion_auth->register($item['numinfo'], '123456', '', array('company'=>1,'realname'=>$item['realname'],'phone'=>$item['phone']));
+        }
+    }
 }

@@ -33,18 +33,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">预存周期</span>
-                                        <select class="form-control select2" name="period_id">
-                                            <?php foreach($periods as $item):?>
-                                                <option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['month'] == $month ? 'selected':''?>><?php echo $item['title']?></option>
-                                            <?php endforeach?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
@@ -58,9 +47,21 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon">预存周期</span>
+                                        <select class="form-control select2" name="period_id">
+                                            <?php foreach($periods as $item):?>
+                                                <option data-profit="<?php echo calculate_rate($item['profit'],$item['month']);?>" value="<?php echo $item['period_id']?>" <?php echo $item['month'] == $month ? 'selected':''?>><?php echo $item['title']?></option>
+                                            <?php endforeach?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">黄金称重</span>
-                                        <input type="text" name="origin_weight" class="form-control" value="<?php echo (float)$origin_weight;?>">
+                                        <input type="text" name="origin_weight" class="form-control" value="<?php echo (float)$origin_weight;?>" placeholder="最小值<?php echo number_format($this->config->item('min_weight'),2)?>">
                                         <span class="input-group-addon">克</span>
                                     </div>
                                 </div>
@@ -76,8 +77,8 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">鉴定人</span>
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon"><?php echo lang('text_appraiser')?></span>
                                         <select id="appraiser" name="appraiser" class="form-control select2" >
                                             <?php foreach($appraisers as $item):?>
                                                 <option value="<?php echo $item['id']?>" <?php echo $item['id']==$appraiser_id ? 'selected' : ''?> ><?php echo $item['realname']?></option>
@@ -106,7 +107,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
+                                    <div class="input-group col-sm-12">
                                         <span class="input-group-addon">损耗比例</span>
                                         <input id="update-loss" type="text" name="loss" class="form-control" value="<?php echo $loss ?>">
                                         <span class="input-group-addon">%</span>
@@ -265,7 +266,8 @@
             rules : {
                 origin_weight : {
                     required : true,
-                    isFloatGtZero : true
+                    isFloatGtZero : true,
+                    minFloat:'<?php echo $this->config->item('min_weight')?>'
                 },
                 number: {
                     required : true,
@@ -288,7 +290,8 @@
             messages : {
                 origin_weight:{
                     required : '黄金克重必填',
-                    isFloatGtZero : '请输入有效的数字'
+                    isFloatGtZero : '请输入有效的数字',
+                    minFloat:'最小购入克重不能小于<?php echo number_format($this->config->item('min_weight'),2)?>克'
                 },
                 number: {
                     required : '黄金件数必填',
@@ -340,10 +343,10 @@
                 //layer.tips('数据异常',$('#form-update #update-amount'),{tips: [1, '#CC6666']});
                 return false;
             }else{
-                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
                 var _origin = $('#form-update input[name="origin_weight"]').val();
                 if($.isNumeric(_origin)){
-                    $('#form-booking #booking-loss').val(parseFloat(100.00-parseFloat(math_div(_weight,_origin),2)*100.00),2);
+                    $('#form-booking #booking-loss').val(parseFloat(100.00-parseFloat(math_div(_weight,_origin),2)*100.00).toFixed(2));
                 }
             }
         });
@@ -351,7 +354,7 @@
             var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
             var _weight = $('#form-update input[name="weight"]').val();
             if(_weight!='' && $.isNumeric(_profit)){
-                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit),3));
+                $('#form-update #update-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
             }
 
         });

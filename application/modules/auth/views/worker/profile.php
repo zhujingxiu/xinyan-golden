@@ -200,8 +200,7 @@
                         <div class="timeline-item">
                             <span class="time"><i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?></span>
 
-                            <h3 class="timeline-header no-border"><?php echo str_truncate($item['content']);?>
-                            </h3>
+                            <h3 class="timeline-header no-border"><?php echo str_truncate($item['content']);?></h3>
                         </div>
                     </li>
                     <?php endforeach?>

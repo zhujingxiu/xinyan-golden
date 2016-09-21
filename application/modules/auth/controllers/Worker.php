@@ -11,6 +11,10 @@ class Worker extends XY_Controller {
     }
     public function index()
     {
+        $this->layout->add_includes(array(
+            array('type'=>'css','src'=>_ASSET_.'lib/datatables/datatables.bootstrap.css'),
+
+        ));
         $data['users'] = $this->ion_auth->users()->result();
         foreach ($data['users'] as $k => $user)
         {
@@ -19,8 +23,14 @@ class Worker extends XY_Controller {
         $data['companies'] = $this->company_model->companies()->result_array();
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
-        $data['groups']=$this->ion_auth->groups()->result_array();
-
+        $data['groups']= array();
+        $groups=$this->ion_auth->groups()->result_array();
+        foreach($groups as $item){
+            if(!$this->ion_auth->is_admin() && $item['code'] == 'admin'){
+                continue;
+            }
+            $data['groups'][] = $item;
+        }
 
         $this->layout->view('worker/list',$data);
     }
@@ -55,9 +65,9 @@ class Worker extends XY_Controller {
     public function save()
     {
         if($this->input->server('REQUEST_METHOD') == 'POST'){
-            $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[16]');
-            $this->form_validation->set_rules('realname', 'Realname', 'trim|required|min_length[2]|max_length[16]');
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+            $this->form_validation->set_rules('username', '工号', 'trim|required|min_length[5]|max_length[16]');
+            $this->form_validation->set_rules('realname', '姓名', 'trim|required|min_length[2]|max_length[16]');
+            $this->form_validation->set_rules('email', 'Email', 'trim|valid_email');
             if(empty($this->input->post('user_id'))){
                 $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[8]');
                 $this->form_validation->set_rules('confirm', 'Password Confirmation', 'trim|required|matches[password]');
@@ -238,7 +248,7 @@ class Worker extends XY_Controller {
                 foreach ($results as $result) {
                     $json[] = array(
                         'entry_id' => $result['id'],
-                        'name' => strip_tags(html_entity_decode($result['realname'], ENT_QUOTES, 'UTF-8')),
+                        'name' => strip_tags(html_entity_decode($result['username'].' '.$result['realname'], ENT_QUOTES, 'UTF-8')),
                         'value' => $result['id']
                     );
                 }

@@ -924,6 +924,7 @@ class Ion_auth_model extends CI_Model
 		// Users table.
 		$data = array(
 		    $this->identity_column   => $identity,
+		    'code'   => $identity,
 		    'password'   => $password,
 		    'email'      => $email,
 		    'last_ip' 	 => $ip_address,

@@ -23,8 +23,8 @@
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">存入周期</span>
-                                        <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
+                                        <span class="input-group-addon">买入价格</span>
+                                        <span class="form-control _highlight"><?php echo $price;?>元/克</span>
                                     </div>
                                 </div>
                             </div>
@@ -36,12 +36,11 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">买入价格</span>
-                                        <span class="form-control _highlight"><?php echo $price;?>元/克</span>
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon">存入周期</span>
+                                        <span class="form-control"><?php echo $month.lang('text_period_unit').' '.lang('text_profit').calculate_profit($profit,$month).lang('text_profit_unit');?> </span>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +62,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
+                                    <div class="input-group col-sm-12">
                                         <span class="input-group-addon">到期收益</span>
                                         <span class="form-control _highlight" id="update-totals"><?php echo $profit_weight?>克</span>
                                     </div>

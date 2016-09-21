@@ -35,7 +35,7 @@ class Login extends MX_Controller {
                 $captcha = $this->input->post('captcha');
                 if ($this->ion_auth->is_max_login_attempts_exceeded($identity)) {
                     if (!$captcha ||$captcha != strtolower($this->session->userdata('captcha'))) {
-                        json_error(array('code' => -1, 'msg' => lang('error_login_captcha', 'default'), 'errcount' => $this->ion_auth->get_attempts_num($identity)));
+                        json_error(array('code' => -1, 'msg' => lang('error_login_captcha', 'default'), 'errcount' => $this->ion_auth->get_attempts_num($identity),'c'=>$captcha));
                     }
                 }
                 $remember = (bool)$this->input->post('remember');

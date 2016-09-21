@@ -138,7 +138,7 @@
             <!-- Tasks: style can be found in dropdown.less -->
             <li class="dropdown tasks-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown tooltip" id="post-notify" title="发布通告">
-                    <i class="fa fa-rss"></i>
+                    <i class="fa fa-bullhorn"></i>
                 </a>
             </li>
             <!-- User Account: style can be found in dropdown.less -->
