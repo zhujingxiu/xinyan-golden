@@ -393,7 +393,29 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-
+    public function customer_frozen($project_sn){
+        if(empty($project_sn) ) return FALSE;
+        $project = $this->project($project_sn);
+        if($project->num_rows()) {
+            $info = $project->row_array();
+            $tmp = array(
+                'customer_id'=>$info['customer_id'],
+                'project_sn'=>$info['project_sn'],
+                'weight'=>$info['weight'],
+                'addtime'=>time(),
+                'mode'=>'frozen',
+                'frozen'=>'checking',
+                'fee'=>0.00,
+                'notify'=>1,
+                'status'=>1,
+                'note'=>sprintf(lang('text_porject_frozen_weight'),$project_sn,number_format($info['weight'],2)),
+                'worker_id'=>$this->ion_auth->get_user_id()
+            );
+            $this->db->insert($this->customer_stock_table,$tmp);
+            return $this->db->affected_rows();
+        }
+        return FALSE;
+    }
 
     public function project_instock($data)
     {

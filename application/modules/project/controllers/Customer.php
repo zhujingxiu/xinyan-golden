@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
-class Customer extends XY_Controller {
+require_once('Project.php');
+class Customer extends Project {
 
     public function __construct(){
         parent::__construct();
@@ -55,24 +55,12 @@ class Customer extends XY_Controller {
         $total = $result->num_rows();
         if($total){
             foreach($result->result_array() as $row){
-                $applied = $this->customer_model->applied($row['customer_id']);
                 $status_text = $row['status'] ? lang('label_enabled') : lang('label_disabled');
-                $operation = 'detail';
 
-                if($applied){
-//                    $status_text = '<label class="label label-warning" data-toggle="tooltip" title="'
-//                        .lang('text_applied_date').' '.date('Y-m-d',$applied['addtime'])."\r\n".lang('text_fee').' '.number_format($applied['fee'],2).lang('text_currency_unit').'">'
-//                        .sprintf(lang("text_appling"),number_format($applied['weight'])).'</label>';
-//                    $operation = 'applied';
-                }
                 $cover = ($row['avatar'] && file_exists($row['avatar'])) ? $cover = '<img class="list-img" src="'.site_url($row['avatar']).'" alt="'.$row['realname'].'" />':false;
                 $available = sprintf(lang('button_frozen'),number_format($row['available'],2).lang('text_weight_unit'));
                 if($row['available']*100>0 && $this->inRole('manager')){
                     $available = '<a class="btn btn-sm btn-xs btn-success ">'.number_format($row['available'],2).lang('text_weight_unit').'</a>';
-//                    $available = sprintf(lang('button_available'),
-//                        number_format($row['available'],2).lang('text_weight_unit'),
-//                        ($row['available']>10 ? lang('button_renew') : '')
-//                    );
                 }
                 $rows[] = array(
                     'DT_RowId'  => $row['customer_id'],
@@ -83,7 +71,7 @@ class Customer extends XY_Controller {
                     'wechatqq'	=> '<label class="label label-default">'.$row['wechat'] .'</label><br/><label class="label label-default">'.$row['qq'].'</label>',
                     'available'	=> $available,
                     'frozen'	=> sprintf(lang('button_frozen'),number_format($row['frozen'],2).lang('text_weight_unit')),
-                    'totals'	=> '<a class="btn btn-sm btn-xs btn-primary">'.number_format($row['available']+$row['frozen'],2).lang('text_weight_unit').'</a>',
+                    'totals'	=> '<a class="btn btn-sm btn-xs btn-primary">'.number_format($row['totals'],2).lang('text_weight_unit').'</a>',
                     'status_text'	=> $status_text,
                     'operator'	=> $row['operator'],
                     'addtime'	=> $row['addtime'] ? date('Y-m-d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']) :lang("text_unknown"),
@@ -115,7 +103,7 @@ class Customer extends XY_Controller {
                 $buttons[] = lang('button_cancle_taking');
             }
             if($this->inRole('warehouser')){
-                $buttons[] = lang('button_apling_taken');
+                //$buttons[] = lang('button_apling_taken');
             }
         }else{
             if($available*100 >0 && $this->inRole('manager')){
@@ -128,7 +116,7 @@ class Customer extends XY_Controller {
                 $buttons[] = lang('button_cancle_renew');
             }
             if($this->inRole('warehouser')){
-                $buttons[] = lang('button_appling_renewed');
+                //$buttons[] = lang('button_appling_renewed');
             }
         }else{
             if($available*100 >= ($this->config->item('min_weight')*100) && $this->inRole('manager')){
@@ -141,7 +129,7 @@ class Customer extends XY_Controller {
                 $buttons[] = lang('button_cancle_order');
             }
             if($this->inRole('warehouser')){
-                $buttons[] = lang('button_appling_ordered');
+                //$buttons[] = lang('button_appling_ordered');
             }
         }else{
             if($available*100 >0 && $this->inRole('manager')){
@@ -322,7 +310,7 @@ class Customer extends XY_Controller {
             json_success(array('title'=>'绑定金卡','msg'=>$this->load->view('customer/bind',$info,TRUE)));
         }
     }
-    public function applied()
+    public function taking()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
             json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
@@ -357,6 +345,7 @@ class Customer extends XY_Controller {
                         'weight'=>$weight,
                         'fee'=>$fee,
                         'note' 	=> $note,
+                        'file' =>$this->input->post('file')
                     ));
                     $this->session->set_flashdata('success', sprintf("已申请提金！客户: %s",$customer['realname']));
 
@@ -409,242 +398,12 @@ class Customer extends XY_Controller {
                     }
                 }
 
-                json_success(array('title'=>'申请提金 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/appling',$info,TRUE)));
+                json_success(array('title'=>'申请提金 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/taking',$info,TRUE)));
             }else{
                 json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
             }
         }
     }
-
-    public function order()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        if($this->input->server('REQUEST_METHOD') == 'POST'){
-            if($this->_valid_csrf_nonce() === FALSE){
-                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
-            }
-            $this->form_validation->set_rules('weight', '申请重量', 'required');
-            $this->form_validation->set_rules('phone', '联系电话', 'required');
-
-            if ($this->form_validation->run() == TRUE)
-            {
-                $customer_id = $this->input->post('customer_id');
-                $note = htmlspecialchars($this->input->post('editorValue'));
-                $weight = $this->input->post('weight');
-                $phone = $this->input->post('phone');
-                $result = $this->customer_model->customer($customer_id);
-                if(!$result->num_rows()){
-                    json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
-                }
-                $customer = $result->row_array();
-                if( $customer['phone'] == $phone){
-                    $max = $this->config->item('order_percent')
-                        ? (float)($customer['available']*($this->config->item('order_percent')/100))*1.00
-                        : (float)$customer['available']*1.00;;
-
-                    if($weight*100 > $max*100){
-                        json_error(array('msg' => lang('error_total_max')));
-                    }
-
-                    $this->customer_model->appling_weight($customer_id,array(
-                        'customer_id'=>$customer_id,
-                        'mode'=>'order',
-                        'phone'=>$phone,
-                        'weight'=>$weight,
-                        'note' 	=> $note,
-                    ));
-                    $this->session->set_flashdata('success', sprintf("已申请门店消费！客户: %s",$customer['realname']));
-
-                    json_success();
-                }else{
-                    json_error(array('errors' => array(
-                        'weight' => lang("error_confirm_weight"),
-                        'phone' => lang("error_confirm_phone"),
-                    )));
-                }
-            }else {
-                json_error(array('errors' =>  array(
-                    'weight' => form_error('weight'),
-                    'phone' => form_error('phone'),
-                )));
-            }
-        }else{
-            $result = $this->customer_model->customer($this->input->get('customer'));
-            if($result->num_rows()){
-                $info = $result->row_array();
-                $info['csrf'] = $this->_get_csrf_nonce();
-                $info['order_percent'] = $this->config->item('order_percent');
-                $info['max'] = $this->config->item('order_percent')
-                    ? (float)($info['available']*($this->config->item('order_percent')/100))*1.00
-                    : (float)$info['available']*1.00;
-                $info['total'] = (float)($info['available']+$info['frozen']);
-                $info['histories'] = array();
-                $stocks = $this->customer_model->stocks($info['customer_id'],5);
-                if(is_array($stocks)){
-                    foreach($stocks as $key => $item){
-                        if(!empty($item['file'])){
-                            $_tmp = json_decode($item['file'],TRUE);
-                            if(is_array($_tmp)){
-                                $item['file'] = $_tmp;
-                            }
-                        }
-                        $info['histories'][] = $item;
-                    }
-                }
-                json_success(array('title'=>'门店消费申请 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/order',$info,TRUE)));
-            }else{
-                json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
-            }
-        }
-    }
-    public function cancle()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        $appling_id = $this->input->post('appling_id');
-        $reason = $this->input->post('value');
-        if(!$appling_id || !$reason ){
-            json_error();
-        }
-        if(strlen($reason) < 10){
-            json_error(array('msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
-        }
-        $result = $this->customer_model->get_apply($appling_id);
-
-        if(!$result || !$result->num_rows()){
-            json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
-        }
-        $info = $result->row_array();
-        if($this->customer_model->cancle_applied($appling_id,array('note'=>$reason))){
-            $this->session->set_flashdata('success', sprintf("已取消提金申请！客户: %s",$info['realname']));
-            json_success();
-        }
-        json_error();
-    }
-
-    public function taken()
-    {
-        if($msg = $this->session->flashdata('ajax_permission')){
-            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
-        }
-        if($this->input->server('REQUEST_METHOD') == 'POST'){
-            if($this->_valid_csrf_nonce() === FALSE){
-                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
-            }
-            $this->form_validation->set_rules('weight', '申请重量', 'required');
-            $this->form_validation->set_rules('phone', '联系电话', 'required');
-
-            if ($this->form_validation->run() == TRUE)
-            {
-                $apply_id = $this->input->post('apply_id');
-                $note = htmlspecialchars($this->input->post('editorValue'));
-                $weight = $this->input->post('weight');
-                $phone = $this->input->post('phone');
-                $result = $this->customer_model->get_apply($apply_id);
-                if(!$result || !$result->num_rows()){
-                    json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
-                }
-                $applied = $result->row_array();
-
-                if(($applied['weight']*100 == $weight*100) && $applied['phone'] == $phone){
-                    $tmp =  array(
-                        'customer_id'=>$applied['customer_id'],
-                        'phone'=>$phone,
-                        'weight'=>$weight,
-                        'note' 	=> $note,
-                        'file' =>$this->input->post('file')
-                    );
-
-                    if($this->customer_model->taken_weight($applied['apply_id'],$tmp)) {
-                        $this->session->set_flashdata('success', sprintf("申请提金已出库！客户 %s", $applied['realname'] . ':' . number_format($applied['weight'], 2) . lang('text_weight_unit')));
-                        json_success();
-                    }else{
-                        json_error();
-                    }
-                }else{
-                    json_error(array('errors' => array(
-                        'weight' => lang("error_confirm_weight"),
-                        'phone' => lang("error_confirm_phone"),
-                    )));
-                }
-            }else {
-                json_error(array('errors' =>  array(
-                    'weight' => form_error('weight'),
-                    'phone' => form_error('phone'),
-                )));
-            }
-        }else{
-            $result = $this->customer_model->customer($this->input->get('customer_id'));
-            if($result->num_rows()){
-                $info = $result->row_array();
-                $applied = $this->customer_model->applied($info['customer_id']);
-                if(!$applied){
-                    json_error(array('msg' => lang('error_no_applied') ));
-                }
-                $info['applied_weight'] = number_format($applied['weight'],2);
-                $info['applied_phone'] = $applied['phone'];
-                $info['applied_fee'] = number_format($applied['fee'],2).lang('text_currency_unit');
-                $info['apply_id'] = $applied['apply_id'];
-                $info['total'] = (float)($info['available']+$info['frozen']);
-                $info['csrf'] = $this->_get_csrf_nonce();
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
-                if(is_array($info['histories'])){
-                    foreach($info['histories'] as $key => $item){
-                        if(!empty($item['file'])){
-                            $_tmp = json_decode($item['file'],TRUE);
-                            if(is_array($_tmp)){
-                                $info['histories'][$key]['file'] = $item;
-                            }
-                        }
-                    }
-                }
-                json_success(array('title'=>'提金出库 '.$info['realname'].':'.$applied['weight'].lang('text_weight_unit'),'msg'=>$this->load->view('customer/taking',$info,TRUE)));
-            }else{
-                json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
-            }
-        }
-    }
-
-    public function autocomplete()
-    {
-        $json = array();
-        if ($this->input->get('filter_name')) {
-            $data = array(
-                'filter_name' => $this->input->get('filter_name'),
-                'filter_group' => $this->input->get('filter_role'),
-                'start'       		=> 0,
-                'limit'       		=> 20
-            );
-            $results = $this->customer_model->filter_customers($data);
-            if($results) {
-                foreach ($results as $result) {
-                    $json[] = array(
-                        'entry_id' => $result['customer_id'],
-                        'name' => strip_tags(html_entity_decode($result['realname'], ENT_QUOTES, 'UTF-8')),
-                        'value' => $result['customer_id'],
-                        'phone' => $result['phone'],
-                        'idnumber' => $result['idnumber'],
-                        'wechat' => $result['wechat'],
-                        'referrer' => $result['referrer'],
-                        'referrer_id' => $result['referrer_id'],
-                    );
-                }
-            }
-        }
-        $sort_order = array();
-        if($json){
-            foreach ($json as $key => $value) {
-                $sort_order[$key] = $value['name'];
-            }
-            array_multisort($sort_order, SORT_ASC, $json);
-            json_response($json);
-        }
-
-    }
-
     public function renew()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
@@ -661,21 +420,47 @@ class Customer extends XY_Controller {
 
             if ($this->form_validation->run() == TRUE)
             {
-                $tmp = array(
-                    'price'=>$this->current_price()
-                );
+                $card_serial = $this->input->post('card_serial');
+                $customer_id = $this->input->post('customer_id');
+                $note = htmlspecialchars($this->input->post('editorValue'));
+                $result = $this->customer_model->customer($customer_id);
+                if(!$result->num_rows()) {
+                    json_error(array('msg'=>lang('error_no_customer')));
+                }
+                $customer = $result->row_array();
+                $weight = (float)$this->input->post('weight');
                 $this->load->model('setting/project_model');
+                $tmp=array(
+                    'mode' => 'renew',
+                    'weight' => $weight,
+                    'phone' => $customer['phone'],
+                    'fee' => $this->input->post('fee'),
+                    'note' => $note,
+                );
                 $period = $this->project_model->period($this->input->post('period_id'));
-                if($period->num_rows()){
-                    $_p = $period->row_array();
-                    $tmp['month']=$_p['month'];
-                    $tmp['profit']=calculate_rate($_p['profit'],$_p['month']);
-                }else{
+                if(!$period->num_rows()){
                     json_error(array('msg'=>lang('error_period')));
                 }
-
-                if($this->customer_model->renew( $this->input->post()+$tmp)){
-                    $this->session->set_flashdata('success', '客户续存成功！');
+                $_p = $period->row_array();
+                $start = $this->calculate_start(time());
+                $tmp['renew']=array(
+                    'customer_id' => $customer_id,
+                    'refferer_id' => $customer['referrer_id'],
+                    'company_id' => empty($customer['company_id'])? $this->ion_auth->get_company_id() : $customer['company_id'],
+                    'price'=>$this->current_price(),
+                    'weight' => $weight,
+                    'month' => (int)$_p['month'],
+                    'profit'=> $this->calculate_rate((float)$_p['profit'],$_p['month']),
+                    'payment' => $this->input->post('payment'),
+                    'transferrer' => $this->input->post('transferrer'),
+                    'start'=>$start,
+                    'end'=>calculate_end(strtotime($start),$_p['month']),
+                    'note' => $note,
+                    'status_id' => $this->config->item('recycling_renew'),
+                    'worker_id' => $this->ion_auth->get_user_id(),
+                );
+                if($this->customer_model->appling_weight($customer_id, $tmp)){
+                    $this->session->set_flashdata('success', sprintf('申请续存 %s 克 成功！客户 %s ',$weight,$customer['realname']));
                     json_success();
                 }else{
                     //json_error();
@@ -729,6 +514,176 @@ class Customer extends XY_Controller {
             json_success(array('title'=>'客户续存入库','msg'=>$this->load->view('customer/renew',$info,TRUE)));
         }
     }
+
+    public function order()
+    {
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            if($this->_valid_csrf_nonce() === FALSE){
+                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
+            }
+            $this->form_validation->set_rules('weight', '申请重量', 'required');
+            $this->form_validation->set_rules('phone', '联系电话', 'required');
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $customer_id = $this->input->post('customer_id');
+                $note = htmlspecialchars($this->input->post('editorValue'));
+                $weight = $this->input->post('weight');
+                $phone = $this->input->post('phone');
+                $result = $this->customer_model->customer($customer_id);
+                if(!$result->num_rows()){
+                    json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
+                }
+                $customer = $result->row_array();
+                if( $customer['phone'] == $phone){
+                    $max = $this->config->item('order_percent')
+                        ? (float)($customer['available']*($this->config->item('order_percent')/100))*1.00
+                        : (float)$customer['available']*1.00;;
+
+                    if($weight*100 > $max*100){
+                        json_error(array('msg' => lang('error_total_max')));
+                    }
+
+                    $this->customer_model->appling_weight($customer_id,array(
+                        'customer_id'=>$customer_id,
+                        'mode'=>'order',
+                        'phone'=>$phone,
+                        'weight'=>$weight,
+                        'note' 	=> $note,
+                        'fee' => $this->input->post('fee')
+                    ));
+                    $this->session->set_flashdata('success', sprintf("已申请门店消费 ".number_format($weight,2)."克！客户: %s",$customer['realname']));
+
+                    json_success();
+                }else{
+                    json_error(array('errors' => array(
+                        'weight' => lang("error_confirm_weight"),
+                        'phone' => lang("error_confirm_phone"),
+                    )));
+                }
+            }else {
+                json_error(array('errors' =>  array(
+                    'weight' => form_error('weight'),
+                    'phone' => form_error('phone'),
+                )));
+            }
+        }else{
+            $card_serial = $this->input->get('card_serial');
+            $customer_id = $this->input->get('customer');
+            if(strlen($card_serial)!=8){
+                json_error(array('msg'=>lang('error_card')));
+            }
+            $result = $this->customer_model->get_bind($card_serial);
+
+            if($result->num_rows()){
+                $_customer = $result->row_array();
+                if($_customer['customer_id']!=$this->input->get('customer')){
+                    json_error(array('msg'=>lang('error_card_match')));
+                }
+            }else{
+                json_error(array('msg'=>lang('error_card_customer')));
+            }
+            $result = $this->customer_model->customer($customer_id);
+            if($result->num_rows()) {
+
+                $info = $result->row_array();
+                $info['card_serial'] = $card_serial;
+                $info['csrf'] = $this->_get_csrf_nonce();
+                $info['order_percent'] = $this->config->item('order_percent');
+                $info['max'] = $this->config->item('order_percent')
+                    ? (float)($info['available']*($this->config->item('order_percent')/100))*1.00
+                    : (float)$info['available']*1.00;
+                $info['total'] = (float)($info['available']+$info['frozen']);
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
+                        if(!empty($item['file'])){
+                            $_tmp = json_decode($item['file'],TRUE);
+                            if(is_array($_tmp)){
+                                $item['file'] = $_tmp;
+                            }
+                        }
+                        $info['histories'][] = $item;
+                    }
+                }
+                json_success(array('title'=>'门店消费申请 '.$info['realname'].':'.$info['phone'],'msg'=>$this->load->view('customer/order',$info,TRUE)));
+            }else{
+                json_error(array('msg' => lang('error_no_customer'),'title'=>lang('error_no_result')));
+            }
+        }
+    }
+    public function cancle()
+    {
+        if($msg = $this->session->flashdata('ajax_permission')){
+            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
+        }
+        $customer_id = $this->input->post('customer_id');
+        $reason = $this->input->post('value');
+        $mode = $this->input->post('mode');
+        if(!$customer_id || !$reason ){
+            json_error();
+        }
+        if(strlen($reason) < 10){
+            json_error(array('msg'=>lang('error_reason_length'),'title'=>lang('error_title')));
+        }
+        $result = $this->customer_model->applied($customer_id,$mode);
+        if(!$result){
+            json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
+        }
+
+        $info =current($result);
+
+        if($this->customer_model->cancle_applied($customer_id,$mode,array('note'=>$reason))){
+            $this->session->set_flashdata('success', sprintf("已取消提金申请！客户: %s",$info['realname']));
+            json_success();
+        }
+        json_error();
+    }
+
+
+
+    public function autocomplete()
+    {
+        $json = array();
+        if ($this->input->get('filter_name')) {
+            $data = array(
+                'filter_name' => $this->input->get('filter_name'),
+                'filter_group' => $this->input->get('filter_role'),
+                'start'       		=> 0,
+                'limit'       		=> 20
+            );
+            $results = $this->customer_model->filter_customers($data);
+            if($results) {
+                foreach ($results as $result) {
+                    $json[] = array(
+                        'entry_id' => $result['customer_id'],
+                        'name' => strip_tags(html_entity_decode($result['realname'], ENT_QUOTES, 'UTF-8')),
+                        'value' => $result['customer_id'],
+                        'phone' => $result['phone'],
+                        'idnumber' => $result['idnumber'],
+                        'wechat' => $result['wechat'],
+                        'referrer' => $result['referrer'],
+                        'referrer_id' => $result['referrer_id'],
+                    );
+                }
+            }
+        }
+        $sort_order = array();
+        if($json){
+            foreach ($json as $key => $value) {
+                $sort_order[$key] = $value['name'];
+            }
+            array_multisort($sort_order, SORT_ASC, $json);
+            json_response($json);
+        }
+
+    }
+
+
 
     public function free(){
         if($msg = $this->session->flashdata('ajax_permission')){

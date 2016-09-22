@@ -36,8 +36,13 @@ define(function(require,exports,modules){
                     {"data": "referrer", "name": "referrer"},
                     {"data": "operator", "name": "operator"},
                     {"data": "addtime", "name": "p.addtime"},
-                    {"data": "operation"}
                 ],
+            })
+
+            $('#applies').DataTable({
+                "language": {
+                    "url": "/public/lib/datatables/Chinese.json"
+                },
             })
         });
     }
@@ -93,7 +98,36 @@ define(function(require,exports,modules){
             },'json');
         });
     };
-
+    exports.render_taking = function () {
+        $('#applies').delegate('.btn-taking','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            require('jqueryvalidate');
+            require('customValidate');
+            require('ajaxUpload');
+            var id = $(this).parent().parent().data('entry');
+            $.get('/project/stock/taken', {apply_id:id}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:['880px','600px'],
+                        scrollbar:true,
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['出库', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-taking').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
     exports.render_storage = function(){
         $('#btn-new').bind('click',function(){
             require('layer');

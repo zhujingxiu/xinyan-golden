@@ -16,6 +16,7 @@ class Stock_model extends XY_Model{
     private $customer_stock_table = 'customer_stock';
     private $file_table = 'project_file';
     private $trash_table = 'project_trash';
+    private $apply_table = 'customer_apply';
     public function project($sn,$simple=FALSE)
     {
         if(!$sn){return false;}
@@ -134,8 +135,8 @@ class Stock_model extends XY_Model{
         if($project){
             $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.avatar', false);
             $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']))->order_by('h.addtime desc,h.history_id desc');
-            $this->db->join($status_table.' AS pis','h.status_id = pis.status_id');
-            $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id');
+            $this->db->join($status_table.' AS pis','h.status_id = pis.status_id','left');
+            $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id','left');
             if(is_numeric($limit)){
                 $this->db->limit($limit);
             }
@@ -171,6 +172,8 @@ class Stock_model extends XY_Model{
             // update status =0 for stock table
             $this->db->update($this->table,array('status'=>0), array('project_sn'=>$project_sn));
             // insert mode = in for customer stock table
+
+            $this->db->update($this->customer_stock_table,array('status'=>0), array('customer_id' => $project['customer_id'],'project_sn'=>$project_sn,'mode'=>'frozen','frozen'=>'checking'));
             $this->db->insert($this->customer_stock_table,array(
                 'customer_id' => $project['customer_id'],
                 'mode' => 'in',
@@ -314,5 +317,158 @@ class Stock_model extends XY_Model{
         }
         return FALSE;
     }
+    public function renew($data=array()){
+        if(empty($data['customer_id']) || empty($data['weight'])) {
+            return False;
+        }
+        $this->trigger_events('pre_renew_recycling');
 
+        $this->db->trans_begin();
+        $customer_id = $data['customer_id'];
+
+        $result = $this->customer($customer_id,TRUE);
+        if(!$result || !$result->num_rows()){
+            return FALSE;
+        }
+        $customer = $result->row_array();
+        $project_sn = $this->generate_sn();
+        $start = $this->calculate_start(time());
+        $end = calculate_end(strtotime($start),$data['month']);
+        $tmp = array(
+            'project_sn' => $project_sn ,
+            'customer_id' => $customer_id,
+            'referrer_id' => $customer['referrer_id'],
+            'company_id' => empty($customer['company_id'])? $this->ion_auth->get_company_id() : $customer['company_id'],
+            'type' => 'renew',
+            'price' => (float)$data['price'],
+            'origin_weight' => (float)$data['weight'],
+            'number' => 1,
+            'appraiser_id' => 0,
+            'transferrer' => $data['transferrer'],
+            'weight' => (float)$data['weight'],
+            'month' => (int)$data['month'],
+            'profit' => (float)$data['profit'],
+            'payment' => $data['payment'],
+            'loss' => 0.00,
+            'start' => $start,
+            'end' => $end,
+            'note' =>  htmlspecialchars($data['editorValue']),
+            'status_id' => $this->config->item('recycling_renew'),
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time(),
+            'lasttime' => time()
+        );
+        $this->db->insert($this->recycling_table, $tmp);
+        $project_id = $this->db->insert_id();
+
+        if(isset($data['privacy'])){
+            $this->db->insert($this->file_table,array(
+                'project_sn' => $project_sn,
+                'dir' => 'privacy',
+                'mode' => $this->mode,
+                'file' => $this->format_file_value($data['privacy']),
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+            ));
+        }
+        $this->db->insert($this->recycling_history_table,array(
+            'project_id' => $project_id,
+            'status_id' => $this->config->item('recycling_renew'),
+            'note' => htmlspecialchars($data['editorValue']),
+            'request' => empty($data['card_serial'])? $data['card_serial']:'',
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time(),
+            'ip' => $this->_prepare_ip($this->input->ip_address())
+        ));
+        //入库
+        if($this->config->item('recycling_renew') == $this->config->item('recycling_confirmed')) {
+            $referrer = $this->ion_auth->get_worker($tmp['referrer_id']);
+            $project_stock = array(
+                'project_sn' => $tmp['project_sn'],
+                'customer_id' => $tmp['customer_id'],
+                'referrer_id' => $tmp['referrer_id'],
+                'company_id' => $tmp['company_id'],
+                'title' => '项目 '.$tmp['project_sn'].' 存金'.number_format($tmp['weight'],2).'克',
+                'weight'=> (float)$tmp['weight'],
+                'month'=> $tmp['month'],
+                'start'=> $tmp['start'],
+                'end'=> $tmp['end'],
+                'profit'=> $tmp['profit'],
+                'info' => maybe_serialize(array(
+                    'project_id' => $project_id,
+                    'realname' => $customer['realname'],
+                    'phone' => $customer['phone'],
+                    'idnumber' => $customer['idnumber'],
+                    'wechat' => $customer['wechat'],
+                    'price' => $tmp['price'],
+                    'type' => $this->type_text($tmp['type']),
+                    'number' => $tmp['number'],
+                    'origin_weight' => $tmp['origin_weight'],
+                    'weight' => $tmp['weight'],
+                    'loss' => $tmp['loss'].lang('text_percent_unit'),
+                    'appraiser' => '',
+                    'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
+                    'payment'=> $tmp['payment'],
+                )),
+                'note' => htmlspecialchars($data['editorValue']),
+                'mode' => 'recycling',
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'lasttime' => time(),
+            );
+            $this->db->insert($this->project_stock_table, $project_stock);
+        }
+        $customer_stock = array(
+            'project_sn' => $project_sn,
+            'note' => sprintf(lang('text_stock_renew'),number_format($data['weight'],2),$project_sn),
+            'customer_id' => $customer_id,
+            'fee' => 0.00,
+            'mode' => 'out',
+            'notify' => 1,
+            'weight' => (float)$data['weight']*(-1.00),
+            'worker_id' => $this->ion_auth->get_user_id(),
+            'addtime' => time()
+        );
+        if(isset($data['privacy'])){
+            $customer_stock['file'] = $this->format_file_value($data['privacy']);
+        }
+        $this->db->insert($this->stock_table,$customer_stock);
+        if ($this->db->trans_status() === FALSE)
+        {
+            $this->db->trans_rollback();
+            $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_unsuccessful'));
+            $this->set_error('renew_unsuccessful');
+            return FALSE;
+        }
+
+        $this->db->trans_commit();
+
+        $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
+        $this->set_message('renew_successful');
+        return TRUE;
+
+    }
+
+    public function customer_applies(){
+
+        $this->db->select('ca.*,w.realname operator,c.realname customer', false);
+        $this->db->from($this->apply_table.' AS ca');
+        $this->db->join($this->customer_table.' AS c', 'c.customer_id = ca.customer_id','left');
+
+        $this->db->join($this->worker_table.' AS w', 'w.id = ca.worker_id','left');
+
+        $this->db->order_by('ca.addtime desc');
+         return $this->db->get();
+
+    }
+
+    public function get_apply($apply_id){
+        return $this->db->select("a.*,c.realname,c.phone,c.idnumber,w.realname operator")->from($this->apply_table." AS a")
+            ->join($this->customer_table." AS c","c.customer_id = a.customer_id",'left')
+            ->join($this->worker_table." AS w","w.id = a.worker_id",'left')
+            ->where(array('a.apply_id'=>$apply_id))
+            ->limit(1)->get();
+    }
 }

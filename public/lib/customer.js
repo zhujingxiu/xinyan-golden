@@ -30,7 +30,7 @@ define(function (require, exports, modules) {
                     {"data": "customer", "name": "c.realname"},
                     {"data": "card_number", "name": "c.card_number"},
                     {"data": "phone", "name": "c.phone"},
-                    {"data": "totals"},
+                    {"data": "totals","name":"totals"},
                     {"data": "frozen", "name": "frozen"},
                     {"data": "available", "name": "available"},
                     {"data": "operation"}
@@ -95,7 +95,7 @@ define(function (require, exports, modules) {
     }
     exports.render_appling = function () {
 
-        $('#list').delegate('.btn-appling-taking','click', function (e) {
+        $('#list').delegate('.btn-appling','click', function (e) {
             var card_serial = '';
             //require('../base/iccardreader');
             if(ICCardReader.Open()){
@@ -115,53 +115,42 @@ define(function (require, exports, modules) {
             require('jqueryvalidate');
             require('customValidate');
             var id = $(this).parent().parent().parent().attr('id');
-            exports.appling_dialog(id,card_serial);
-            //load_index = layer.confirm('申请提金或消费?', {
-            //    icon: 3,
-            //    btn: ['提金','消费'] //按钮
-            //}, function(){
-            //    layer.close(load_index);
-            //    exports.appling_dialog(id);
-            //}, function(){
-            //    layer.close(load_index);
-            //    exports.order_dialog(id);
-            //});
-        });
-    }
-    exports.appling_dialog = function(id,card_serial){
-        $.ajax({
-            url:'/project/customer/applied',
-            data:{customer:id,card_serial:card_serial},
-            dataType:'json',
-            beforeSend:function () {
-                load_index = layer.load();
-            },
-            success:function(json){
-                layer.close(load_index);
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:['880px','600px'],
-                        scrollbar:true,
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['确认申请', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-appling').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
+            var mode = $(this).data('mode');
+            $.ajax({
+                url:'/project/customer/'+mode,
+                data:{customer:id,card_serial:card_serial},
+                dataType:'json',
+                beforeSend:function () {
+                    load_index = layer.load();
+                },
+                success:function(json){
+                    layer.close(load_index);
+                    if(json.code==1){
+                        layer.open({
+                            type: 1,
+                            title:json.title,
+                            area:['880px','600px'],
+                            scrollbar:true,
+                            offset: '100px',
+                            zIndex:99,
+                            btn: ['确认申请', '取消'],
+                            content: json.msg ,
+                            yes: function(index, layero){
+                                $('#form-appling').submit();
+                            }
+                        });
+                    }else{
+                        var l = require('layout');
+                        l.render_message(json.msg,json.title);
+                    }
                 }
-            }
+            });
         });
     }
+
     exports.render_renew = function () {
 
-        $('#list').delegate('.btn-renew','click', function (e) {
+        $('#list').delegate('.btn-appling-renew','click', function (e) {
             var card_serial = '';
 
             if (ICCardReader.Open()) {
@@ -246,71 +235,38 @@ define(function (require, exports, modules) {
             }
         });
     }
-    exports.render_taking = function () {
-        $('#list').delegate('.btn-taking','click', function () {
-            require('layer');
-            require('ajaxSubmit');
-            require('jqueryvalidate');
-            require('customValidate');
-            require('ajaxUpload');
-            var id = $(this).parent().parent().attr('id');
-            $.get('/project/customer/taken', {customer_id:id}, function(json){
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:['880px','600px'],
-                        scrollbar:true,
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['出库', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-taking').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            },'json');
-        });
-    }
+
     exports.render_cancle = function(){
         $('#list').delegate('.btn-cancle','click',function(){
-            var id = $(this).parent().parent().attr('id');
-            exports.do_cancle(id,'/project/customer/cancle','填写取消提金申请原因 ');
-        });
-
-    }
-
-    exports.do_cancle = function (id,url,title) {
-        require('layer');
-        layer.prompt({
-            formType: 2,
-            title: title
-        }, function(value, index, elem){
-            if(value.length >= 10) {
-                $.ajax({
-                    type: 'post',
-                    url: url,
-                    data: {customer_id: id, value: value},
-                    dataType: 'json',
-                    beforeSubmit: function () {
-                        layer.load();
-                    },
-                    success: function (json) {
-                        if (json.code == 1) {
-                            location.reload();
-                        } else {
-                            var l = require('layout');
-                            l.render_message(json.msg, json.title);
+            var id = $(this).parent().parent().parent().attr('id');
+            var mode = $(this).data('mode');
+            require('layer');
+            layer.prompt({
+                formType: 2,
+                title: '填写取消申请原因'
+            }, function(value, index, elem){
+                if(value.length >= 10) {
+                    $.ajax({
+                        type: 'post',
+                        url: '/project/customer/cancle',
+                        data: {customer_id: id, value: value,mode:mode},
+                        dataType: 'json',
+                        beforeSubmit: function () {
+                            layer.load();
+                        },
+                        success: function (json) {
+                            if (json.code == 1) {
+                                location.reload();
+                            } else {
+                                var l = require('layout');
+                                l.render_message(json.msg, json.title);
+                            }
                         }
-                    }
-                })
-            }else{
-                layer.tips('内容长度不小于10个字符', elem,{tips: 1});
-            }
+                    })
+                }else{
+                    layer.tips('内容长度不小于10个字符', elem,{tips: 1});
+                }
+            });
 
         });
     }
@@ -358,6 +314,7 @@ define(function (require, exports, modules) {
             }
             require('layer');
             require('ajaxSubmit');
+            require('jqueryvalidate');
             require('customValidate');
             var id = $(this).parent().parent().attr('id');
             $.get('/project/customer/bind', {customer:id,card_serial:card_serial}, function(json){

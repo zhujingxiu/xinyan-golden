@@ -354,8 +354,10 @@ class Investing extends Project {
 						'start'		=> $this->calculate_start($project['addtime']),
 						'transferrer' =>$this->input->post('transferrer'),
 						'note' 		=> $note,
-						'call_func' => 'active_period',
-						'call_param'=> $project_sn
+						'call_func' => array(
+							'active_period'=>$project_sn,
+							'customer_frozen'=>$project_sn
+						),
 					));
 					$this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
 					json_success();

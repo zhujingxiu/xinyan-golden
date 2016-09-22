@@ -13,6 +13,9 @@ class Stock extends Project
 
     public function index()
     {
+        if ($this->input->get('list')) {
+            json_response($this->_list($this->input->get()));
+        }
         $this->layout->add_includes(array(
             array('type' => 'css', 'src' => _ASSET_ . 'lib/datatables/dataTables.bootstrap.css'),
             //array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
@@ -20,11 +23,20 @@ class Stock extends Project
         ));
         $data['success'] = $this->session->flashdata('success');
         $data['warning'] = $this->session->flashdata('warning');
-
-        if ($this->input->get('list')) {
-            json_response($this->_list($this->input->get()));
+        $data['applies'] = array();
+        $result = $this->stock_model->customer_applies();
+        foreach ($result->result_array() as $row) {
+            $data['applies'][] = array(
+                'date_added'=>date('y/m/d',$row['addtime']).'<br>'.date('H:i:s',$row['addtime']),
+                'customer' => $row['customer'],
+                'mode' => lang('label_'.$row['mode']),
+                'weight' => $row['weight'],
+                'operator' => $row['operator'],
+                'apply_id' => $row['apply_id'],
+                'operation' => lang('button_stock_'.$row['mode'])
+            );
         }
-        $this->layout->view('stock', $data);
+        $this->layout->view('stock/index', $data);
     }
 
     protected function _list($filter)
@@ -68,16 +80,15 @@ class Stock extends Project
                 $rows[] = array(
                     'DT_RowId' => $row['project_sn'],
                     'sn' => $row['project_sn'].'<br>'.($row['mode'] == 'investing' ? lang('text_investing') : lang('text_recycling')),
-                    'company' => $row['company'],
+                    'company' => $row['short_title'],
                     'customer' => $row['realname'].'<br>'.$row['phone'],
-                    'status' => $row['status'] ? lang('label_growing') : lang('label_terminated'),
+                    'status' => ($row['status'] ? lang('label_growing') : lang('label_terminated')).sprintf(lang('button_detail'),''),
                     'referrer' => $row['referrer'],
                     'weight' => number_format($row['weight'],2) .lang('text_weight_unit'),
                     'period'	=> $period ."<br>".lang('text_profit').calculate_profit($row['profit'],$row['month']).lang('text_profit_unit') ,
                     'operator' => $row['operator'],
                     'profit' => number_format($row['stock_profit'],2) .lang('text_weight_unit'),
                     'addtime' => $row['addtime'] ? date('Y-m-d', $row['addtime']) . '<br>' . date('H:i:s', $row['addtime']) : lang("text_unknown"),
-                    'operation' => sprintf(lang('button_detail'),'')
                 );
             }
         }
@@ -133,9 +144,9 @@ class Stock extends Project
             $info['histories'] = $this->stock_model->histories($info['project_sn'],10,$info['mode']);
             json_success(array(
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
-                'msg'=>$this->load->view('project',$info,TRUE),
+                'msg'=>$this->load->view('stock/detail',$info,TRUE),
                 'mode'=>strtolower($info['mode']),
-                'terminating_form'=>$this->load->view('terminating',$info,TRUE),
+                'terminating_form'=>$this->load->view('stock/terminating',$info,TRUE),
                 'terminable'=>$info['status'] && $this->inRole('manager'),
                 'print'=>false//$info['status'] && $this->inRole('manager')
             ));
@@ -143,24 +154,87 @@ class Stock extends Project
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
         }
     }
-    public function storage()
+
+    public function taken()
     {
         if($msg = $this->session->flashdata('ajax_permission')){
-            json_error(array('msg'=>$msg,'title'=>lang('error_permission')));
+            json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
         }
-        $trash_id = $this->input->post('trash_id');
-        if(!$trash_id ){
-            json_error();
-        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            if($this->_valid_csrf_nonce() === FALSE){
+                //json_error(array('msg' => lang('error_csrf'),'title'=>lang('error_title')));
+            }
+            $this->form_validation->set_rules('weight', '申请重量', 'required');
+            $this->form_validation->set_rules('phone', '联系电话', 'required');
 
-        if($this->stock_model->delete($trash_id)){
-            $this->session->set_flashdata('success', "项目已删除");
-            json_success();
+            if ($this->form_validation->run() == TRUE)
+            {
+                $apply_id = $this->input->post('apply_id');
+                $note = htmlspecialchars($this->input->post('editorValue'));
+                $weight = $this->input->post('weight');
+                $phone = $this->input->post('phone');
+                $result = $this->customer_model->get_apply($apply_id);
+                if(!$result || !$result->num_rows()){
+                    json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
+                }
+                $applied = $result->row_array();
+
+                if(($applied['weight']*100 == $weight*100) && $applied['phone'] == $phone){
+                    $tmp =  array(
+                        'customer_id'=>$applied['customer_id'],
+                        'phone'=>$phone,
+                        'weight'=>$weight,
+                        'note' 	=> $note,
+
+                    );
+
+                    if($this->customer_model->taken_weight($applied['apply_id'],$tmp)) {
+                        $this->session->set_flashdata('success', sprintf("申请提金已出库！客户 %s", $applied['realname'] . ':' . number_format($applied['weight'], 2) . lang('text_weight_unit')));
+                        json_success();
+                    }else{
+                        json_error();
+                    }
+                }else{
+                    json_error(array('errors' => array(
+                        'weight' => lang("error_confirm_weight"),
+                        'phone' => lang("error_confirm_phone"),
+                    )));
+                }
+            }else {
+                json_error(array('errors' =>  array(
+                    'weight' => form_error('weight'),
+                    'phone' => form_error('phone'),
+                )));
+            }
+        }else{
+            $result = $this->stock_model->get_apply($this->input->get('apply_id'));
+            if($result->num_rows()){
+                $info = $result->row_array();
+
+                $info['applied_weight'] = number_format($info['weight'],2);
+                $info['applied_phone'] = $info['phone'];
+                $info['applied_fee'] = number_format($info['fee'],2).lang('text_currency_unit');
+                $info['apply_id'] = $info['apply_id'];
+                $info['total'] =0;// (float)($info['available']+$info['frozen']);
+                $info['csrf'] = $this->_get_csrf_nonce();
+                $this->load->model('customer_model');
+                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($info['histories'])){
+                    foreach($info['histories'] as $key => $item){
+                        if(!empty($item['file'])){
+                            $_tmp = json_decode($item['file'],TRUE);
+                            if(is_array($_tmp)){
+                                $info['histories'][$key]['file'] = $item;
+                            }
+                        }
+                    }
+                }
+                json_success(array('title'=>'提金出库 '.$info['realname'].':'.$info['weight'].lang('text_weight_unit'),'msg'=>$this->load->view('stock/taken',$info,TRUE)));
+            }else{
+                json_error(array('msg' => lang('error_no_applied'),'title'=>lang('error_no_result')));
+            }
         }
-        json_error();
     }
-
-
 
     public function terminated()
     {

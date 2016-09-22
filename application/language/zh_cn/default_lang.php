@@ -73,6 +73,7 @@ $lang['text_not_open'] = "尚未开启";
 $lang['text_investing'] = '<label class="label label-info">钱生金</label>';
 $lang['text_recycling'] = '<label class="label label-primary">金生金</label>';
 
+$lang['text_porject_frozen_weight'] = "核实并冻结项目 %s 黄金克重 %s 克 到客户账户";
 $lang['text_price_desc'] = " 若无特殊说明，本站的黄金价格均指上海黄金交易所的沪金99 （即Au99.99）";
 $lang['text_price_month'] = " 黄金价格走势图 （30日内）";
 $lang['text_price_today'] = " 今日黄金价格走势图";
@@ -83,6 +84,9 @@ $lang['text_finished_note'] = "项目到期完结";
 $lang['text_finished_in_note'] = "项目到期完结解冻本金";
 $lang['text_finished_profit_note'] = "项目到期完结所得金息";
 $lang['text_unfinished_profit'] = "项目提前终止所得金息";
+$lang['text_cancle_taking'] = "取消提金申请 %s 克，取消原因：%s ";
+$lang['text_cancle_renew'] = "取消续存申请 %s 克，取消原因：%s ";
+$lang['text_cancle_order'] = "取消消费抵扣申请 %s 克，取消原因：%s ";
 
 $lang['label_booked'] = '<a class="btn btn-info disabled">待核实</a>';
 $lang['label_checked'] = '<a class="btn btn-primary disabled">待确认</a>';
@@ -90,6 +94,9 @@ $lang['label_confirmed'] = '<a class="btn btn-primary disabled">已确认</a>';
 $lang['label_growing'] = '<a class="btn btn-success disabled">增值中</a>';
 $lang['label_refused'] = '<a class="btn btn-warning disabled">已驳回</a>';
 $lang['label_terminated'] = '<a class="btn btn-danger disabled">已终止</a>';
+$lang['label_taking'] = '<label class="label label-primary" >提金</label>';
+$lang['label_renew'] = '<label class="label label-primary" >续存</label>';
+$lang['label_order'] = '<label class="label label-primary" >消费</label>';
 
 $lang['label_disabled'] = '<label class="label label-danger">已禁用</label>';
 $lang['label_enabled'] = '<label class="label label-success">已启用</label>';
@@ -121,18 +128,18 @@ $lang['button_frozen'] = '<a class="btn btn-sm btn-flat btn-default" disabled>%s
 $lang['button_terminating'] = '<a class="btn btn-danger btn-terminated">终止</a>';
 
 $lang['button_phone'] = '<a class="btn btn-social btn-twitter btn-xs" data-toggle="tooltip" title="手机号码"> <i class="fa fa-phone-square"></i> %s </a>';
-$lang['button_idnumber'] = '<a class="btn btn-social btn-linkedin btn-xs" data-toggle="tooltip" title="身份证号"> <i class="fa fa-street-view"></i> %s </a>';
+$lang['button_idnumber'] = '<a class="btn btn-social btn-twitter btn-xs" data-toggle="tooltip" title="身份证号"> <i class="fa fa-street-view"></i> %s </a>';
 
-$lang['button_appling_taking'] = '<a class="btn btn-success btn-appling-taking">提金</a>';
-$lang['button_appling_renew'] = '<a class="btn btn-success btn-appling-renew">续存</a>';
-$lang['button_appling_order'] = '<a class="btn btn-success btn-appling-order">消费</a>';
+$lang['button_appling_taking'] = '<a class="btn btn-success btn-appling" data-mode="taking" data-toggle="tooltip" title="申请提金"><i class="fa fa-download"></i></a>';
+$lang['button_appling_renew'] = '<a class="btn btn-success btn-appling" data-mode="renew" data-toggle="tooltip" title="申请续存"><i class="fa fa-exchange"></i></a>';
+$lang['button_appling_order'] = '<a class="btn btn-success btn-appling" data-mode="order" data-toggle="tooltip" title="申请消费抵扣"><i class="fa fa-cart-plus"></i></a>';
 
-$lang['button_cancle_taking'] = '<a class="btn btn-warning btn-cancle-taking">取消提金</a>';
-$lang['button_cancle_renew'] = '<a class="btn btn-warning btn-cancle-taking">取消续存</a>';
-$lang['button_cancle_order'] = '<a class="btn btn-warning btn-cancle-taking">取消消费</a>';
+$lang['button_cancle_taking'] = '<a class="btn btn-warning btn-cancle" data-mode="taking" data-toggle="tooltip" title="取消提金申请"><i class="fa fa-download"></i></a>';
+$lang['button_cancle_renew'] = '<a class="btn btn-warning btn-cancle" data-mode="renew" data-toggle="tooltip" title="取消续存申请"><i class="fa fa-exchange"></i></a>';
+$lang['button_cancle_order'] = '<a class="btn btn-warning btn-cancle" data-mode="order" data-toggle="tooltip" title="取消消费抵扣申请"><i class="fa fa-cart-plus"></i></a>';
 
-$lang['button_appling_taken'] = '<a class="btn btn-primary btn-taken">出库</a>';
-$lang['button_appling_renewed'] = '<a class="btn btn-primary btn-renewed">入库</a>';
-$lang['button_appling_ordered'] = '<a class="btn btn-primary btn-ordered">抵扣</a>';
+$lang['button_stock_taking'] = '<a class="btn btn-primary btn-taking">出库</a>';
+$lang['button_stock_renew'] = '<a class="btn btn-primary btn-renew">入库</a>';
+$lang['button_stock_order'] = '<a class="btn btn-primary btn-order">抵扣</a>';
 
-$lang['button_customer_detail'] = "<a class=\"btn btn-info btn-detail\">%s 查看</a>";
+$lang['button_customer_detail'] = '<a class="btn btn-info btn-detail" data-toggle="tooltip" title="查看详情">%s <i class="fa fa-save"></i> </a>';

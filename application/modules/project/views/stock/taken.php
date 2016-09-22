@@ -3,14 +3,16 @@
  * Created by PhpStorm.
  * Author: zhujingxiu
  * Date: 2016/8/31 0031
- * Time: 13:33
+ * Time: 16:40
  */
 ?>
+
+
 <div class="col-sm-12" style="padding-top:10px; ">
-    <?php echo form_open('/project/customer/order',array('id' => "form-appling", 'class'=>'form-horizontal'))?>
-    <?php echo form_hidden('customer_id',$customer_id);?>
-    <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">
-    <input type="hidden" name="_max" id="confirm_max" value="<?php echo $max;?>">
+    <?php echo form_open('/project/stock/taken',array('id' => "form-taking", 'class'=>'form-horizontal'))?>
+    <?php echo form_hidden('apply_id',$apply_id);?>
+    <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $applied_phone;?>">
+    <input type="hidden" name="_weight" id="confirm_weight" value="<?php echo $applied_weight;?>">
     <?php echo form_hidden($csrf)?>
 
     <div class="col-sm-12">
@@ -18,7 +20,7 @@
         <div class="form-group">
             <ul class="timeline timeline-inverse " id="timeline-box">
                 <li class="time-label">
-                    <span class="bg-green"> 门店消费 </span>
+                    <span class="bg-green"> 客户提金 </span>
                 </li>
                 <li>
                     <i class="fa fa-user bg-green"></i>
@@ -32,70 +34,53 @@
                                         <span class="form-control"><?php echo $realname?></span>
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">提金克重</span>
+                                        <span class="form-control"><?php echo number_format($applied_weight,2).lang('text_weight_unit')?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-12">
+                                        <span class="input-group-addon"><?php echo '申请主管'?></span>
+                                        <span class="form-control"><?php echo $operator?></span>
+                                    </div>
+                                </div>
                             </div>
 
+                            <div class="col-sm-4">
+                                <div class="form-group clearfix">
+                                    <div class="input-group col-sm-11">
+                                        <span class="input-group-addon">相关费用</span>
+                                        <span class="form-control"><?php echo number_format($fee,2).lang('text_currency_unit')?></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-sm-8">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-12">
-                                        <span class="input-group-addon">身份证号</span>
-                                        <span class="form-control"><?php echo $idnumber;?></span>
+                                        <span class="input-group-addon">申请时间</span>
+                                        <span class="form-control"><?php echo date('Y-m-d H:i:s',$addtime)?></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">手机号码</span>
-                                        <span class="form-control"><?php echo $phone;?></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">推荐人</span>
-                                        <span class="form-control"><?php echo $referrer?></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-12">
                                 <div class="form-group clearfix">
                                     <div class="input-group col-sm-12">
-                                        <span class="input-group-addon">微信账号</span>
-                                        <span class="form-control"><?php echo $wechat;?></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">黄金重量</span>
-                                        <span class="form-control"><?php echo number_format($total,2).lang('text_weight_unit')?></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-11">
-                                        <span class="input-group-addon">客户分组</span>
-                                        <span class="form-control"><?php echo $group_name;?></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group clearfix">
-                                    <div class="input-group col-sm-12">
-                                        <span class="input-group-addon">QQ号码</span>
-                                        <span class="form-control"><?php echo $qq;?></span>
+                                        <span class="form-control"><?php echo htmlspecialchars_decode($note)?></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="timeline-footer" style="clear: both;">
-                            <a class="btn btn-success btn-flat btn-xs">可消费抵扣克重 <?php echo number_format($max,2).lang('text_weight_unit')?></a>
+                            <a class="btn btn-primary btn-xs" id="button-upload">
+                                <i class="fa fa-upload"></i> 客户提金协议或相关费用清单
+                            </a>
+                            <div class="upload-file" id="uploads"></div>
                         </div>
                     </div>
 
@@ -103,21 +88,25 @@
                 <li>
                     <i class="fa fa-edit bg-red"></i>
                     <div class="timeline-item">
-                        <span class="time">当前门店消费比例<?php echo $order_percent?>%</span>
-                        <h3 class="timeline-header">门店消费确认</h3>
+                        <h3 class="timeline-header">
+                            提金确认
+                        </h3>
                         <div class="timeline-body" style="clear: both">
-                            <div class="input-group">
-                                <span class="input-group-addon">客户手机</span>
-                                <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
-                                <span class="input-group-addon">消费克重</span>
-                                <input class="form-control" name="weight" type="text" placeholder="最大值为<?php echo $max;?>">
+                            <div class="input-group ">
+                                <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 客 户 手 机 </span>
+                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_phone;?>" disabled>
+                                <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 申 请 重 量 </span>
+                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_weight;?>" disabled>
                                 <span class="input-group-addon">克</span>
-                                <input type="text" name="fee" class="form-control" placeholder="如有手续费，请输入">
-                                <span class="input-group-addon">元</span>
                             </div>
-                        </div>
-                        <div class="timeline-footer">
-                            <textarea class="form-control" name="editorValue" placeholder="填写消费备注"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-addon" ><b> 确 认 手 机 </b></span>
+                                <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
+                                <span class="input-group-addon" ><b> 确 认 重 量 </b></span>
+                                <input class="form-control" name="weight" type="text" placeholder="确认申请提金重量" >
+                                <span class="input-group-addon">克</span>
+                            </div>
+                            <textarea class="form-control" name="editorValue" placeholder="填写提金备注"></textarea>
                         </div>
                     </div>
                 </li>
@@ -130,7 +119,7 @@
                         <i class="fa fa-user bg-aqua"></i>
                         <div class="timeline-item">
                             <span class="time">
-                                <?php echo ($item['mode'] =='out' ? $item['weight']*(-1.00) : '+'.$item['weight']).lang('text_weight_unit')?>
+                                <?php echo ($item['mode'] =='out' ? $item['weight'] : '+'.$item['weight']).lang('text_weight_unit')?>
                                 <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
                             </span>
                             <h3 class="timeline-header no-border">
@@ -143,6 +132,17 @@
                                 </a>
                                 <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
                             </h3>
+                            <?php if(is_array($item['file'])):?>
+                                <div class="timeline-footer">
+                                    <div class="upload-file" id="uploads">
+                                <?php foreach($item['file'] as $_file) :?>
+                                        <div class="uploads-thumb">
+                                            <img title="<?php echo $_file['name']?>" src="<?php echo base_url(get_image_url($_file['path']));?>"
+                                        </div>
+                                <?php endforeach ?>
+                                    </div>
+                                </div>
+                            <?php endif?>
                         </div>
                     </li>
                     <?php endforeach ?>
@@ -176,11 +176,11 @@
             }
         });
 
-        $("#form-appling").validate({
+        $("#form-taking").validate({
             rules : {
                 weight : {
                     required : true,
-                    maxFloat: '<?php echo $max;?>'
+                    equalTo: '#confirm_weight'
                 },
                 phone: {
                     required : true,
@@ -191,16 +191,20 @@
             messages : {
                 weight : {
                     required : '请输入购入重量',
-                    maxFloat: "申请重量不得大于最大重量:<?php echo $max;?>"
+                    equalTo: "与客户申请的重量不符"
+
                 },
                 phone:{
                     required:'手机号码必须',
                     isMobile : '请输入有效的手机号码',
-                    equalTo: "与客户登记的手机号码不相符"
+                    equalTo: "与客户申请的手机号码不相符"
                 },
             },
             //提交
             submitHandler : function(form){
+                $.each($('.uploads-thumb img'),function(){
+                    $(form).append('<input type="hidden" name="file[]" value="'+$(this).data('name')+'|'+$(this).data('path')+'">');
+                });
                 $(form).ajaxSubmit({
                     dataType:'json',
                     beforeSubmit:function(){
@@ -219,5 +223,24 @@
         });
 
     });
-
+    new AjaxUpload('#button-upload', {
+        action: '/tool/filemanager/upload',
+        name: 'uploads',
+        data: { date_path : true,'encrypt' : true },
+        autoSubmit: false,
+        responseType: 'json',
+        onChange: function(file, extension) {this.submit();},
+        onComplete: function(file, json) {
+            if(json.code=1) {
+                var _html = '<div class="uploads-thumb">';
+                _html += '<img title="'+json.upload['origin']+'" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
+                _html += '</div>';
+                $('#uploads').append(_html);
+            }else{
+                alert(json.error);
+            }
+            $('.loading').remove();
+        }
+    });
 </script>

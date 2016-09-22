@@ -7,7 +7,7 @@
  */
 ?>
 <div class="col-sm-12" style="padding-top:10px; ">
-	<?php echo form_open('/project/customer/renew',array('id' => "form-renew", 'class'=>'form-horizontal'))?>
+	<?php echo form_open('/project/customer/renew',array('id' => "form-appling", 'class'=>'form-horizontal'))?>
 	<?php echo form_hidden($csrf)?>
 	<?php echo form_hidden('customer_id',$customer_id)?>
 	<?php echo form_hidden('card_serial',$card_serial)?>
@@ -65,7 +65,9 @@
 							</div>
 
 						</div>
-						<div class="timeline-footer">&nbsp;</div>
+						<div class="timeline-footer">
+							<a class="btn btn-success btn-flat btn-xs">可续存克重 <?php echo number_format($available,2).lang('text_weight_unit')?></a>
+						</div>
 					</div>
 				</li>
 				<li>
@@ -127,7 +129,9 @@
 						</div>
 					</div>
 				</li>
-
+				<li>
+					<i class="fa fa-clock-o bg-gray"></i>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -152,7 +156,7 @@
 			}
 		});
 
-		$("#form-renew").validate({
+		$("#form-appling").validate({
 			rules : {
 				weight: {
 					required : true,
@@ -180,36 +184,39 @@
 					},
 					success: function (json) {
 						if(json.code==1){
-							location.href = '<?php echo site_url('project/recycling')?>'
+							location.reload();
+						}else {
+							var l = require('layout');
+							l.render_message(json.msg, json.title);
 						}
 					}
 				});
 			}
 		});
-		$('#form-renew input[name="weight"]').bind('keyup blur', function () {
-			var _period = $('#form-renew select[name="period_id"]');
+		$('#form-appling input[name="weight"]').bind('keyup blur', function () {
+			var _period = $('#form-appling select[name="period_id"]');
 			var _profit = parseFloat(_period.find('option[value="'+_period.val()+'"]').data('profit'),4);
 			var _weight = $(this).val();
 			if(!$.isNumeric(_profit)){
-				layer.tips('数据异常',$('#form-renew #renew-totals'),{tips: [1, '#CC6666']});
+				layer.tips('数据异常',$('#form-appling #renew-totals'),{tips: [1, '#CC6666']});
 				return false;
 			}
 			if(!$.isNumeric(_weight)){
-				//layer.tips('数据异常',$('#form-renew #renew-amount'),{tips: [1, '#CC6666']});
+				//layer.tips('数据异常',$('#form-appling #renew-amount'),{tips: [1, '#CC6666']});
 				return false;
 			}else{
-				$('#form-renew #renew-totals').text(parseFloat(math_mul(_weight,_profit),3));
+				$('#form-appling #renew-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
 
 			}
 		});
-		$('#form-renew select[name="period_id"]').bind('change', function () {
+		$('#form-appling select[name="period_id"]').bind('change', function () {
 			var _profit = parseFloat($(this).find('option[value="'+$(this).val()+'"]').data('profit'),4);
-			var _weight = $('#form-renew input[name="weight"]').val();
+			var _weight = $('#form-appling input[name="weight"]').val();
 			if(_weight!='' && $.isNumeric(_profit)){
-				$('#form-renew #renew-totals').text(parseFloat(math_mul(_weight,_profit),3));
+				$('#form-appling #renew-totals').text(parseFloat(math_mul(_weight,_profit)).toFixed(2));
 			}
 		});
-		$('#form-renew select[name="period_id"]').trigger('change');
+		$('#form-appling select[name="period_id"]').trigger('change');
 	});
 
 	new AjaxUpload('#button-privacy', {
