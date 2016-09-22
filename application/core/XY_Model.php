@@ -424,4 +424,24 @@ class XY_Model extends CI_Model
         }
         return $start;
     }
+
+    protected function type_text($type){
+        $text = '';
+        switch(strtolower($type)){
+            case 'goldbar':
+                $text = lang('text_goldbar');
+                break;
+            case 'ornaments':
+                $text = lang('text_ornaments');
+                break;
+            case 'renew':
+                $text = lang('text_renew_type');
+                break;
+            case 'other':
+                $text = lang('text_other_type');
+                break;
+        }
+        return $text;
+
+    }
 }

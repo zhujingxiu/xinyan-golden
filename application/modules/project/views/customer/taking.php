@@ -10,6 +10,7 @@
 <div class="col-sm-12" style="padding-top:10px; ">
     <?php echo form_open('/project/customer/taking',array('id' => "form-appling", 'class'=>'form-horizontal'))?>
     <?php echo form_hidden('customer_id',$customer_id);?>
+    <?php echo form_hidden('card_serial',$card_serial);?>
     <input type="hidden" name="_phone" id="confirm_phone" value="<?php echo $phone;?>">
     <input type="hidden" name="_max" id="confirm_max" value="<?php echo $max;?>">
     <?php echo form_hidden($csrf)?>
@@ -105,9 +106,9 @@
                         <div class="timeline-footer" style="clear: both;">
                             <div class="timeline-footer" style="clear: both;">
                                 <a class="btn btn-primary btn-xs" id="button-privacy">
-                                    <i class="fa fa-upload"></i> 客户提金协议
+                                    <i class="fa fa-upload"></i> 客户提金协议及费用清单
                                 </a>
-                                <div class="upload-file" id="privacy-uploads"></div>
+                                <div class="upload-file" id="uploads"></div>
                             </div>
                         </div>
                     </div>
@@ -228,6 +229,9 @@
             },
             //提交
             submitHandler : function(form){
+                $.each($('.uploads-thumb img'),function(){
+                    $(form).append('<input type="hidden" name="file[]" value="'+$(this).data('name')+'|'+$(this).data('path')+'">');
+                });
                 $(form).ajaxSubmit({
                     dataType:'json',
                     beforeSubmit:function(){
@@ -256,10 +260,10 @@
         onComplete: function(file, json) {
             if(json.code=1) {
                 var _html = '<div class="uploads-thumb">';
-                _html += '<img title="客户提金协议 '+json.upload['origin']+'" data-entry="privacy" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
+                _html += '<img title="'+json.upload['origin']+'" data-name="'+json.upload['origin']+'" data-path="'+json.upload['path']+'"  src="'+getImgURL(HTTP_SERVER+json.upload['path'])+'">';
                 _html += '<a href="javascript:;" onclick="$(this).parent().remove();">删除</a>';
                 _html += '</div>';
-                $('#privacy-uploads').append(_html);
+                $('#uploads').append(_html);
             }else{
                 alert(json.error);
             }

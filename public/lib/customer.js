@@ -93,11 +93,13 @@ define(function (require, exports, modules) {
             layer.open(options);
         },'json');
     }
+
+    //taking and order
     exports.render_appling = function () {
 
         $('#list').delegate('.btn-appling','click', function (e) {
-            var card_serial = '';
-            //require('../base/iccardreader');
+            var card_serial = '3B8814DB';
+            /*;
             if(ICCardReader.Open()){
                 card_serial = ICCardReader.Request();//'sadsadsa';//
                 if(card_serial.length != 8){
@@ -110,10 +112,12 @@ define(function (require, exports, modules) {
                 window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
                 return false;
             }
+            */
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
             require('customValidate');
+            require('ajaxUpload');
             var id = $(this).parent().parent().parent().attr('id');
             var mode = $(this).data('mode');
             $.ajax({
@@ -204,37 +208,6 @@ define(function (require, exports, modules) {
             });
         });
     }
-    exports.order_dialog = function (id) {
-        $.ajax({
-            url:'/project/customer/order',
-            data:{customer:id},
-            dataType:'json',
-            beforeSend:function () {
-                load_index = layer.load();
-            },
-            success:function(json){
-                layer.close(load_index);
-                if(json.code==1){
-                    layer.open({
-                        type: 1,
-                        title:json.title,
-                        area:['880px','600px'],
-                        scrollbar:true,
-                        offset: '100px',
-                        zIndex:99,
-                        btn: ['确认消费', '取消'],
-                        content: json.msg ,
-                        yes: function(index, layero){
-                            $('#form-order').submit();
-                        }
-                    });
-                }else{
-                    var l = require('layout');
-                    l.render_message(json.msg,json.title);
-                }
-            }
-        });
-    }
 
     exports.render_cancle = function(){
         $('#list').delegate('.btn-cancle','click',function(){
@@ -274,7 +247,6 @@ define(function (require, exports, modules) {
     exports.render_project = function () {
         $('#list').delegate('.btn-project','click', function () {
             require('layer');
-
             var id = $(this).parent().parent().attr('id');
             $.get('/project/customer/projects', {customer:id}, function(json){
                 if(json.code==1){
@@ -361,7 +333,6 @@ define(function (require, exports, modules) {
                         }
                     }
                 })
-
             });
         });
     }

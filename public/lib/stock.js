@@ -128,6 +128,66 @@ define(function(require,exports,modules){
             },'json');
         });
     }
+
+    exports.render_order = function () {
+        $('#applies').delegate('.btn-order','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            require('jqueryvalidate');
+            require('customValidate');
+            var id = $(this).parent().parent().data('entry');
+            $.get('/project/stock/order', {apply_id:id,t:Math.random()}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:['880px','600px'],
+                        scrollbar:true,
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['出库', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-order').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
+
+    exports.render_renew = function () {
+        $('#applies').delegate('.btn-renew','click', function () {
+            require('layer');
+            require('ajaxSubmit');
+            require('jqueryvalidate');
+            require('customValidate');
+            var id = $(this).parent().parent().data('entry');
+            $.get('/project/stock/renew', {apply_id:id}, function(json){
+                if(json.code==1){
+                    layer.open({
+                        type: 1,
+                        title:json.title,
+                        area:['880px','600px'],
+                        scrollbar:true,
+                        offset: '100px',
+                        zIndex:99,
+                        btn: ['出库', '取消'],
+                        content: json.msg ,
+                        yes: function(index, layero){
+                            $('#form-renew').submit();
+                        }
+                    });
+                }else{
+                    var l = require('layout');
+                    l.render_message(json.msg,json.title);
+                }
+            },'json');
+        });
+    }
     exports.render_storage = function(){
         $('#btn-new').bind('click',function(){
             require('layer');

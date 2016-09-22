@@ -14,6 +14,7 @@ class Stock_model extends XY_Model{
     private $company_table = 'worker_company';
     private $customer_table = 'customer';
     private $customer_stock_table = 'customer_stock';
+    private $project_stock_table = 'project_stock';
     private $file_table = 'project_file';
     private $trash_table = 'project_trash';
     private $apply_table = 'customer_apply';
@@ -134,12 +135,13 @@ class Stock_model extends XY_Model{
         $project = $this->_project($project_sn,$mode,TRUE);
         if($project){
             $this->db->select('h.*,pis.title status,pis.code,w.realname operator, w.avatar', false);
-            $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']))->order_by('h.addtime desc,h.history_id desc');
+            $this->db->from($history_table.' AS h')->where(array("h.project_id" => $project['project_id']));
             $this->db->join($status_table.' AS pis','h.status_id = pis.status_id','left');
             $this->db->join($this->worker_table.' AS w', 'w.id = h.worker_id','left');
             if(is_numeric($limit)){
                 $this->db->limit($limit);
             }
+            $this->db->order_by('h.addtime desc,h.history_id desc');
             $result = $this->db->get();
             return $result->num_rows() ? $result->result_array() : FALSE;
         }
@@ -317,148 +319,15 @@ class Stock_model extends XY_Model{
         }
         return FALSE;
     }
-    public function renew($data=array()){
-        if(empty($data['customer_id']) || empty($data['weight'])) {
-            return False;
-        }
-        $this->trigger_events('pre_renew_recycling');
 
-        $this->db->trans_begin();
-        $customer_id = $data['customer_id'];
-
-        $result = $this->customer($customer_id,TRUE);
-        if(!$result || !$result->num_rows()){
-            return FALSE;
-        }
-        $customer = $result->row_array();
-        $project_sn = $this->generate_sn();
-        $start = $this->calculate_start(time());
-        $end = calculate_end(strtotime($start),$data['month']);
-        $tmp = array(
-            'project_sn' => $project_sn ,
-            'customer_id' => $customer_id,
-            'referrer_id' => $customer['referrer_id'],
-            'company_id' => empty($customer['company_id'])? $this->ion_auth->get_company_id() : $customer['company_id'],
-            'type' => 'renew',
-            'price' => (float)$data['price'],
-            'origin_weight' => (float)$data['weight'],
-            'number' => 1,
-            'appraiser_id' => 0,
-            'transferrer' => $data['transferrer'],
-            'weight' => (float)$data['weight'],
-            'month' => (int)$data['month'],
-            'profit' => (float)$data['profit'],
-            'payment' => $data['payment'],
-            'loss' => 0.00,
-            'start' => $start,
-            'end' => $end,
-            'note' =>  htmlspecialchars($data['editorValue']),
-            'status_id' => $this->config->item('recycling_renew'),
-            'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time(),
-            'lasttime' => time()
-        );
-        $this->db->insert($this->recycling_table, $tmp);
-        $project_id = $this->db->insert_id();
-
-        if(isset($data['privacy'])){
-            $this->db->insert($this->file_table,array(
-                'project_sn' => $project_sn,
-                'dir' => 'privacy',
-                'mode' => $this->mode,
-                'file' => $this->format_file_value($data['privacy']),
-                'status' => 1,
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time(),
-            ));
-        }
-        $this->db->insert($this->recycling_history_table,array(
-            'project_id' => $project_id,
-            'status_id' => $this->config->item('recycling_renew'),
-            'note' => htmlspecialchars($data['editorValue']),
-            'request' => empty($data['card_serial'])? $data['card_serial']:'',
-            'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time(),
-            'ip' => $this->_prepare_ip($this->input->ip_address())
-        ));
-        //入库
-        if($this->config->item('recycling_renew') == $this->config->item('recycling_confirmed')) {
-            $referrer = $this->ion_auth->get_worker($tmp['referrer_id']);
-            $project_stock = array(
-                'project_sn' => $tmp['project_sn'],
-                'customer_id' => $tmp['customer_id'],
-                'referrer_id' => $tmp['referrer_id'],
-                'company_id' => $tmp['company_id'],
-                'title' => '项目 '.$tmp['project_sn'].' 存金'.number_format($tmp['weight'],2).'克',
-                'weight'=> (float)$tmp['weight'],
-                'month'=> $tmp['month'],
-                'start'=> $tmp['start'],
-                'end'=> $tmp['end'],
-                'profit'=> $tmp['profit'],
-                'info' => maybe_serialize(array(
-                    'project_id' => $project_id,
-                    'realname' => $customer['realname'],
-                    'phone' => $customer['phone'],
-                    'idnumber' => $customer['idnumber'],
-                    'wechat' => $customer['wechat'],
-                    'price' => $tmp['price'],
-                    'type' => $this->type_text($tmp['type']),
-                    'number' => $tmp['number'],
-                    'origin_weight' => $tmp['origin_weight'],
-                    'weight' => $tmp['weight'],
-                    'loss' => $tmp['loss'].lang('text_percent_unit'),
-                    'appraiser' => '',
-                    'referrer' => empty($referrer['realname']) ? '' :$referrer['realname'],
-                    'payment'=> $tmp['payment'],
-                )),
-                'note' => htmlspecialchars($data['editorValue']),
-                'mode' => 'recycling',
-                'status' => 1,
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time(),
-                'lasttime' => time(),
-            );
-            $this->db->insert($this->project_stock_table, $project_stock);
-        }
-        $customer_stock = array(
-            'project_sn' => $project_sn,
-            'note' => sprintf(lang('text_stock_renew'),number_format($data['weight'],2),$project_sn),
-            'customer_id' => $customer_id,
-            'fee' => 0.00,
-            'mode' => 'out',
-            'notify' => 1,
-            'weight' => (float)$data['weight']*(-1.00),
-            'worker_id' => $this->ion_auth->get_user_id(),
-            'addtime' => time()
-        );
-        if(isset($data['privacy'])){
-            $customer_stock['file'] = $this->format_file_value($data['privacy']);
-        }
-        $this->db->insert($this->stock_table,$customer_stock);
-        if ($this->db->trans_status() === FALSE)
-        {
-            $this->db->trans_rollback();
-            $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_unsuccessful'));
-            $this->set_error('renew_unsuccessful');
-            return FALSE;
-        }
-
-        $this->db->trans_commit();
-
-        $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
-        $this->set_message('renew_successful');
-        return TRUE;
-
-    }
 
     public function customer_applies(){
 
         $this->db->select('ca.*,w.realname operator,c.realname customer', false);
         $this->db->from($this->apply_table.' AS ca');
+        $this->db->where(array('ca.status'=>1));
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = ca.customer_id','left');
-
         $this->db->join($this->worker_table.' AS w', 'w.id = ca.worker_id','left');
-
         $this->db->order_by('ca.addtime desc');
          return $this->db->get();
 
@@ -470,5 +339,299 @@ class Stock_model extends XY_Model{
             ->join($this->worker_table." AS w","w.id = a.worker_id",'left')
             ->where(array('a.apply_id'=>$apply_id))
             ->limit(1)->get();
+    }
+
+    public function taken_weight($apply_id,$data)
+    {
+        if(empty($apply_id)) return FALSE;
+        $this->trigger_events('pre_taken_weight');
+
+        $this->db->trans_begin();
+        $applied = $this->get_apply($apply_id);
+        if($applied->num_rows()){
+            $info = $applied->row_array();
+            $this->db->update($this->apply_table,array('status' => 0),array('apply_id'=>$apply_id));//设置申请失效
+            //删除临时冻结记录
+            $this->db->delete($this->customer_stock_table,array('mode'=>'frozen','frozen'=>'taking','customer_id'=>$info['customer_id']));
+            //生成出库单 project_stock
+            $tmp = array(
+                'project_sn' => '',
+                'note' => empty($data['note']) ? '' :$data['note'],
+                'customer_id' => $info['customer_id'],
+                'fee' => $info['fee'],
+                'mode' => 'out',
+                'notify' => 1,
+                'weight' => (float)$info['weight']*(-1.00),
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            );
+            if(!empty($info['file'])){
+                $tmp['file'] = $info['file'];
+            }
+            $this->db->insert($this->customer_stock_table,$tmp);
+            $affected = $this->db->insert_id();
+            //后置回调
+            if(isset($data['call_func']) ){
+                if(is_array($data['call_func'])){
+                    foreach($data['call_func'] as $method => $params){
+                        if(method_exists($this,$method)){
+                            $this->{$method}($params);
+                        }
+                    }
+                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
+                    $this->{$data['call_func']}($data['call_param']);
+                }
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_taken_weight', 'post_taken_weight_unsuccessful'));
+                $this->set_error('taken_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
+
+            $this->trigger_events(array('post_taken_weight', 'post_taken_weight_successful'));
+            $this->set_message('taken_successful');
+            return $affected;
+        }
+        return FALSE;
+    }
+
+
+    public function order_weight($apply_id,$data)
+    {
+        if(empty($apply_id)) return FALSE;
+        $this->trigger_events('pre_order_weight');
+
+        $this->db->trans_begin();
+        $applied = $this->get_apply($apply_id);
+        if($applied->num_rows()){
+            $info = $applied->row_array();
+            $this->db->update($this->apply_table,array('status' => 0),array('apply_id'=>$apply_id));//设置申请失效
+            //删除临时冻结记录
+            $this->db->delete($this->customer_stock_table,array('mode'=>'frozen','frozen'=>'order','customer_id'=>$info['customer_id']));
+            //生成出库单 project_stock
+            $tmp = array(
+                'project_sn' => '',
+                'note' => empty($data['note']) ? '' :$data['note'],
+                'customer_id' => $info['customer_id'],
+                'fee' => $info['fee'],
+                'mode' => 'out',
+                'notify' => 1,
+                'weight' => (float)$info['weight']*(-1.00),
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            );
+            if(!empty($info['file'])){
+                $tmp['file'] = $info['file'];
+            }
+            $this->db->insert($this->customer_stock_table,$tmp);
+            $affected = $this->db->insert_id();
+            //后置回调
+            if(isset($data['call_func']) ){
+                if(is_array($data['call_func'])){
+                    foreach($data['call_func'] as $method => $params){
+                        if(method_exists($this,$method)){
+                            $this->{$method}($params);
+                        }
+                    }
+                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
+                    $this->{$data['call_func']}($data['call_param']);
+                }
+            }
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_order_weight', 'post_order_weight_unsuccessful'));
+                $this->set_error('order_unsuccessful');
+                return FALSE;
+            }
+            $this->db->trans_commit();
+
+            $this->trigger_events(array('post_order_weight', 'post_order_weight_successful'));
+            $this->set_message('order_successful');
+            return $affected;
+        }
+        return FALSE;
+    }
+
+    public function renew_weight($apply_id,$data=array()){
+        if(empty($apply_id)) return FALSE;
+        $this->trigger_events('pre_renew_recycling');
+
+        $this->db->trans_begin();
+        $applied = $this->get_apply($apply_id);
+        if($applied->num_rows()) {
+            $info = $applied->row_array();
+            $_renew = array();
+            if(isset($info['data'])){
+                $_renew = json_decode($info['data'],TRUE);
+                if(!is_array($_renew) || !isset($_renew['weight']) || !isset($_renew['month']) || !isset($_renew['profit'])){
+                    return FALSE;
+                }
+            }
+            $result = $this->db->get_where($this->customer_table,array('customer_id'=>$_renew['customer_id'],'status'=>1),1);
+            if(!$result || !$result->num_rows()){
+                return FALSE;
+            }
+            $customer = $result->row_array();
+            $project_sn = $this->generate_sn();
+            $tmp = array(
+                'project_sn' => $project_sn,
+                'customer_id' => $_renew['customer_id'],
+                'referrer_id' => $_renew['referrer_id'],
+                'company_id' => $_renew['company_id'],
+                'type' => 'renew',
+                'price' => (float)$_renew['price'],
+                'origin_weight' => (float)$_renew['weight'],
+                'number' => 1,
+                'appraiser_id' => 0,
+                'transferrer' => $info['worker_id'],
+                'weight' => (float)$_renew['weight'],
+                'month' => (int)$_renew['month'],
+                'profit' => (float)$_renew['profit'],
+                'payment' => $_renew['payment'],
+                'loss' => 0.00,
+                'start' => $_renew['start'],
+                'end' => $_renew['end'],
+                'note' => $_renew['note'],
+                'status_id' => $_renew['status_id'],
+                'worker_id' => $_renew['worker_id'],
+                'addtime' => isset($_renew['addtime'])?$_renew['addtime']:time(),
+                'lasttime' => isset($_renew['addtime'])?$_renew['addtime']:time()
+            );
+            $this->db->insert($this->recycling_table, $tmp);
+            $project_id = $this->db->insert_id();
+            //项目文件
+            if (isset($info['file'])) {
+                $this->db->insert($this->file_table, array(
+                    'project_sn' => $project_sn,
+                    'dir' => 'privacy',
+                    'mode' => 'recycling',
+                    'file' => $info['privacy'],
+                    'status' => 1,
+                    'worker_id' => $_renew['worker_id'],
+                    'addtime' => isset($_renew['addtime'])?$_renew['addtime']:time(),
+                ));
+            }
+            //项目初始状态记录
+            $this->db->insert($this->recycling_history_table, array(
+                'project_id' => $project_id,
+                'status_id' => $_renew['status_id'],
+                'note' => $_renew['note'],
+                'request' => empty($_renew['card_serial']) ? '' : $_renew['card_serial'],
+                'worker_id' => $_renew['worker_id'],
+                'addtime' => isset($_renew['addtime'])?$_renew['addtime']:time(),
+                'ip' => $this->_prepare_ip($this->input->ip_address())
+            ));
+
+            $this->db->update($this->recycling_table,array('status_id'=>$this->config->item('recycling_growing')),array('project_id'=>$project_id));
+            //项目库管确认状态记录
+            $this->db->insert($this->recycling_history_table, array(
+                'project_id' => $project_id,
+                'status_id' => $this->config->item('recycling_confirmed'),
+                'note' => sprintf(lang('text_renew_confirmed'),$project_sn),
+                'request' =>  '',
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'ip' => $this->_prepare_ip($this->input->ip_address())
+            ));
+
+            //库管确认入库
+            $referrer = $this->ion_auth->get_worker($_renew['referrer_id']);
+            $project_stock = array(
+                'project_sn' => $tmp['project_sn'],
+                'customer_id' => $tmp['customer_id'],
+                'referrer_id' => $tmp['referrer_id'],
+                'company_id' => $tmp['company_id'],
+                'title' => '项目 ' . $tmp['project_sn'] . ' 续存黄金' . number_format($tmp['weight'], 2) . '克',
+                'weight' => (float)$tmp['weight'],
+                'month' => $tmp['month'],
+                'start' => $tmp['start'],
+                'end' => $tmp['end'],
+                'profit' => $tmp['profit'],
+                'info' => maybe_serialize(array(
+                    'project_id' => $project_id,
+                    'realname' => $customer['realname'],
+                    'phone' => $customer['phone'],
+                    'idnumber' => $customer['idnumber'],
+                    'wechat' => $customer['wechat'],
+                    'price' => $tmp['price'],
+                    'type' => $this->type_text($tmp['type']),
+                    'number' => $tmp['number'],
+                    'origin_weight' => $tmp['origin_weight'],
+                    'weight' => $tmp['weight'],
+                    'loss' => $tmp['loss'] . lang('text_percent_unit'),
+                    'appraiser' => '',
+                    'referrer' => empty($referrer['realname']) ? '' : $referrer['realname'],
+                    'payment' => $tmp['payment'],
+                )),
+                'note' => $_renew['note'],
+                'mode' => 'recycling',
+                'status' => 1,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'lasttime' => time(),
+            );
+            $this->db->insert($this->project_stock_table, $project_stock);
+            //项目增值状态记录
+            $this->db->insert($this->recycling_history_table, array(
+                'project_id' => $project_id,
+                'status_id' => $this->config->item('recycling_growing'),
+                'note' => sprintf(lang('text_renew_growing'),$project_sn),
+                'request' =>  '',
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time(),
+                'ip' => $this->_prepare_ip($this->input->ip_address())
+            ));
+            //设置申请失效
+            $this->db->update($this->apply_table,array('status' => 0),array('apply_id'=>$apply_id));
+            //删除临时冻结记录
+            $this->db->delete($this->customer_stock_table,array('mode'=>'frozen','frozen'=>'renew','customer_id'=>$info['customer_id']));
+            //先隐式取出
+            $customer_stock = array(
+                'project_sn' => '',
+                'note' => sprintf(lang('text_stock_renew'), number_format($data['weight'], 2), $project_sn),
+                'customer_id' => $info['customer_id'],
+                'fee' => 0.00,
+                'mode' => 'out',
+                'frozen' => '0',
+                'notify' => 0,
+                'weight' => (float)$data['weight']*(-1.00) ,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            );
+            $this->db->insert($this->customer_stock_table, $customer_stock);
+            //再显式存入并冻结
+            $customer_stock = array(
+                'project_sn' => $project_sn,
+                'note' => sprintf(lang('text_stock_renew'), number_format($data['weight'], 2), $project_sn),
+                'customer_id' => $info['customer_id'],
+                'fee' => 0.00,
+                'mode' => 'frozen',
+                'frozen' => 'checking',
+                'notify' => 1,
+                'weight' => (float)$data['weight'] ,
+                'worker_id' => $this->ion_auth->get_user_id(),
+                'addtime' => time()
+            );
+            if (isset($info['file'])) {
+                $customer_stock['file'] = $info['file'];
+            }
+            $this->db->insert($this->customer_stock_table, $customer_stock);
+
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_unsuccessful'));
+                $this->set_error('renew_unsuccessful');
+                return FALSE;
+            }
+
+            $this->db->trans_commit();
+
+            $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
+            $this->set_message('renew_successful');
+            return TRUE;
+        }
+        return FALSE;
     }
 }

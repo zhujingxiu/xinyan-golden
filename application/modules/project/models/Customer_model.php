@@ -323,15 +323,17 @@ class Customer_model extends XY_Model{
         if($customer->num_rows()){
             $info = $customer->row_array();
             $mode = empty($data['mode']) ? 'taking': strtolower($data['mode']);
-            $this->db->delete($this->apply_table, array('customer_id' => $customer_id,'mode'=>$mode));//删除同类型申请
-            //设置同类型的申请过期
-            $this->db->update($this->stock_table, array('status' => 0),array('mode'=>'frozen','frozen'=>$mode,'customer_id'=>$customer_id));
+            $this->db->update($this->apply_table, array('status' => 0),array('customer_id' => $customer_id,'mode'=>$mode));//设置同类型申请失效
+            //删除临时申请的冻结记录
+            $this->db->delete($this->stock_table, array('mode'=>'frozen','frozen'=>$mode,'customer_id'=>$customer_id));
             //添加到申请列表
+
             $tmp = '';
             if($mode=='renew' && isset($data['renew']) && is_array($data['renew'])){
                 $tmp = json_encode($data['renew']);
             }
-            $this->db->insert($this->apply_table,array(
+
+            $apply_data = array(
                 'customer_id' => $info['customer_id'],
                 'phone' => $data['phone'],
                 'weight' => (float)$data['weight'],
@@ -343,7 +345,11 @@ class Customer_model extends XY_Model{
                 'worker_id' => $this->ion_auth->get_user_id(),
                 'addtime' => time(),
                 'ip' => $this->_prepare_ip($this->input->ip_address()),
-            ));
+            );
+            if(isset($data['file'])){
+                $apply_data['file'] = $this->format_file_value($data['file']);
+            }
+            $this->db->insert($this->apply_table,$apply_data);
             //冻结客户申请的部分克重
             $this->db->insert($this->stock_table,array(
                 'customer_id' => $info['customer_id'],
@@ -406,10 +412,10 @@ class Customer_model extends XY_Model{
         $appling = $this->applied($customer_id,$mode);
         if($appling) {
             $info = current($appling);
-            //删除申请
-            $this->db->delete($this->apply_table, array('apply_id' => $info['apply_id']));
-            //设置同类型的申请过期
-            $this->db->update($this->stock_table, array('status' => 0),array('mode'=>'frozen','frozen'=>$mode,'customer_id'=>$customer_id));
+            //设置同类型申请失效
+            $this->db->update($this->apply_table, array('status' => 0),array('apply_id' => $info['apply_id']));
+            //删除申请临时冻结数据
+            $this->db->delete($this->stock_table, array('mode'=>'frozen','frozen'=>$mode,'customer_id'=>$customer_id));
 
             $affected = $this->history($customer_id, array('note' => sprintf(lang('text_cancle_'.$mode), number_format($info['weight'], 2) ,(empty($data['note']) ? '' : $data['note']))));
             //后置回调
@@ -438,59 +444,7 @@ class Customer_model extends XY_Model{
             ->limit(1)->get();
     }
 
-    public function taken_weight($apply_id,$data)
-    {
-        if(empty($apply_id)) return FALSE;
-        $this->trigger_events('pre_taken_weight');
 
-        $this->db->trans_begin();
-        $applied = $this->get_apply($apply_id);
-        if($applied->num_rows()){
-            $info = $applied->row_array();
-            $this->db->delete($this->apply_table,array('apply_id'=>$apply_id));//删除申请
-            //生成出库单 project_stock
-            $tmp = array(
-                'project_sn' => '',
-                'note' => empty($data['note']) ? '' :$data['note'],
-                'customer_id' => $info['customer_id'],
-                'fee' => $info['fee'],
-                'mode' => 'out',
-                'notify' => 1,
-                'weight' => (float)$info['weight']*(-1.00),
-                'worker_id' => $this->ion_auth->get_user_id(),
-                'addtime' => time()
-            );
-            if(isset($data['file'])){
-                $tmp['file'] = $this->format_file_value($data['file']);
-            }
-            $this->db->insert($this->stock_table,$tmp);
-            $affected = $this->db->insert_id();
-            //后置回调
-            if(isset($data['call_func']) ){
-                if(is_array($data['call_func'])){
-                    foreach($data['call_func'] as $method => $params){
-                        if(method_exists($this,$method)){
-                            $this->{$method}($params);
-                        }
-                    }
-                }else if(is_string($this,$data['call_func']) && method_exists($this,$data['call_func'])){
-                    $this->{$data['call_func']}($data['call_param']);
-                }
-            }
-            if ($this->db->trans_status() === FALSE) {
-                $this->db->trans_rollback();
-                $this->trigger_events(array('post_taken_weight', 'post_taken_weight_unsuccessful'));
-                $this->set_error('taken_unsuccessful');
-                return FALSE;
-            }
-            $this->db->trans_commit();
-
-            $this->trigger_events(array('post_taken_weight', 'post_taken_weight_successful'));
-            $this->set_message('taken_successful');
-            return $affected;
-        }
-        return FALSE;
-    }
 
     public function renew($data=array()){
         if(empty($data['customer_id']) || empty($data['weight'])) {

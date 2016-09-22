@@ -130,6 +130,8 @@
             project.render_list();
             project.render_storage();
             project.render_taking();
+            project.render_order();
+            project.render_renew();
             project.render_detail();
         })
     </script>

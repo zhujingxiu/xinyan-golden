@@ -324,6 +324,7 @@ class Customer extends Project {
 
             if ($this->form_validation->run() == TRUE)
             {
+                $card_serial = $this->input->post('card_serial');
                 $customer_id = $this->input->post('customer_id');
                 $note = htmlspecialchars($this->input->post('editorValue'));
                 $weight = $this->input->post('weight');
@@ -445,7 +446,7 @@ class Customer extends Project {
                 $start = $this->calculate_start(time());
                 $tmp['renew']=array(
                     'customer_id' => $customer_id,
-                    'refferer_id' => $customer['referrer_id'],
+                    'referrer_id' => $customer['referrer_id'],
                     'company_id' => empty($customer['company_id'])? $this->ion_auth->get_company_id() : $customer['company_id'],
                     'price'=>$this->current_price(),
                     'weight' => $weight,
