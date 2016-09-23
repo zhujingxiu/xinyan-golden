@@ -192,7 +192,7 @@ define(function(require,exports,module){
     $('.table-period tbody').delegate('.period-row','dblclick',function(){
         exports.render_period($(this).data('entry'));
     });
-    $('.btn-period').bind('click', function () {
+    $('#new-period').bind('click', function () {
         exports.render_period(false);
     });
 
@@ -291,7 +291,7 @@ define(function(require,exports,module){
                 }
             }, 'json');
         }else{
-            $('#project-period input[type="text"],#project-period input[name="status_id"]').val('');
+            $('#project-period input[type="text"],#project-period input[name="period_id"]').val('');
             $('#project-period input[name="status"][value="1"]').prop('checked', true);
             $('#project-period input[name="default"][value="0"]').prop('checked', true);
         }

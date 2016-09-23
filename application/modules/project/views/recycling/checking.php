@@ -210,16 +210,15 @@
                 </li>
                 <li>
                     <i class="fa fa-edit bg-blue"></i>
-
                     <div class="timeline-item">
-
                         <div class="input-group">
                             <span class="input-group-addon">客户手机</span>
                             <input type="text" class="form-control" name="phone" placeholder="确认客户手机">
                             <span class="input-group-addon">实际克重</span>
                             <input type="text" name="weight" class="form-control" placeholder="确认鉴定克重">
                             <span class="input-group-addon">克</span>
-
+                            <input type="text" name="start" class="form-control date" value="<?php echo $start?>" placeholder="计息起始日" data-toggle="tooltip" title="计息起始日">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                         </div>
                         <div class="input-group col-sm-12">
                             <span class="input-group-addon"><?php echo lang('text_transferrer')?></span>
@@ -229,10 +228,6 @@
                                 <?php endforeach?>
                             </select>
                             <span class="input-group-addon">确认入库标记</span>
-                            <span class="input-group-addon"><?php echo lang('text_period')?></span>
-                            <span class="form-control" id="start"><?php echo $start?></span>
-                            <span class="input-group-addon"> - </span>
-                            <span class="form-control" id="end"><?php echo $end;?></span>
                         </div>
                         <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
                     </div>
@@ -272,6 +267,11 @@
 <script type="text/javascript">
     $(function () {
         <?php if($editable):?>
+        $('.date').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            format:'yyyy-mm-dd'
+        });
         $.validator.setDefaults({
             errorElement : 'span',
             errorClass : 'help-block',

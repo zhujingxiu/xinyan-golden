@@ -376,28 +376,18 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function active_period($project_sn){
+    public function project_checked($project_sn,$start=FALSE){
         if(empty($project_sn) ) return FALSE;
         $project = $this->project($project_sn);
         if($project->num_rows()) {
             $info = $project->row_array();
-            $start = $this->calculate_start($info['addtime']);
+            $start = $start ? $start :$this->calculate_start($info['addtime']);
             $tmp = array('start'=>$start,'lasttime'=>time(),'worker_id'=>$this->ion_auth->get_user_id());
             if($info['month']){
                 $tmp['end'] = calculate_end(strtotime($start),$info['month']);
             }
             $this->db->update($this->table,$tmp,array('project_sn'=>$info['project_sn']));
-            return $this->db->affected_rows();
-        }
 
-        return FALSE;
-    }
-
-    public function customer_frozen($project_sn){
-        if(empty($project_sn) ) return FALSE;
-        $project = $this->project($project_sn);
-        if($project->num_rows()) {
-            $info = $project->row_array();
             $tmp = array(
                 'customer_id'=>$info['customer_id'],
                 'project_sn'=>$info['project_sn'],

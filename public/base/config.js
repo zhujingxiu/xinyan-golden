@@ -17,6 +17,7 @@ seajs.config({
         , "fastclick"       : "fastclick/fastclick"
         , "iCheck"          : "iCheck/icheck.min"
         , "datepicker"      : "datepicker/bootstrap-datepicker"
+        , "datepicker_cn"      : "datepicker/locales/bootstrap-datepicker.zh-CN"
         , "ueditor"         : "ueditor/ueditor.all.min"
         , "datatables"      : "datatables/jquery.dataTables.min"
         , "datatables.bs"   : "datatables/dataTables.bootstrap.min"

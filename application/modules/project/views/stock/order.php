@@ -131,8 +131,9 @@
                                     <div class="timeline-footer">
                                         <div class="upload-file" id="uploads">
                                             <?php foreach($item['file'] as $_file) :?>
-                                                <div class="uploads-thumb">
-                                                    <img title="<?php echo $_file['name']?>" src="<?php echo base_url(get_image_url($_file['path']));?>"/>
+                                                <div class="uploads-thumb-sm">
+                                                    <img title="<?php echo $_file['name']?>" src="<?php echo base_url(get_image_url($_file['path']));?>"><br>
+                                                    <?php echo download_link($_file['path'],'下载',array('class'=>'btn btn-link'))?>
                                                 </div>
                                             <?php endforeach ?>
                                         </div>

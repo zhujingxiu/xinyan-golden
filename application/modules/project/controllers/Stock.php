@@ -216,15 +216,17 @@ class Stock extends Project
                 $info['privacies'] = json_decode($info['file'],TRUE);
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $this->load->model('customer_model');
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
-                if(is_array($info['histories'])){
-                    foreach($info['histories'] as $key => $item){
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
                         if(!empty($item['file'])){
                             $_tmp = json_decode($item['file'],TRUE);
                             if(is_array($_tmp)){
-                                $info['histories'][$key]['file'] = $item;
+                                $item['file'] = $_tmp;
                             }
                         }
+                        $info['histories'][] = $item;
                     }
                 }
                 json_success(array(
@@ -299,15 +301,17 @@ class Stock extends Project
                 $info['privacies'] = json_decode($info['file'],TRUE);
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $this->load->model('customer_model');
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
-                if(is_array($info['histories'])){
-                    foreach($info['histories'] as $key => $item){
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
                         if(!empty($item['file'])){
                             $_tmp = json_decode($item['file'],TRUE);
                             if(is_array($_tmp)){
-                                $info['histories'][$key]['file'] = $item;
+                                $item['file'] = $_tmp;
                             }
                         }
+                        $info['histories'][] = $item;
                     }
                 }
 
@@ -399,16 +403,17 @@ class Stock extends Project
 
                 $info['privacies'] = json_decode($info['file'],TRUE);
                 $info['csrf'] = $this->_get_csrf_nonce();
-                $this->load->model('customer_model');
-                $info['histories'] = $this->customer_model->stocks($info['customer_id'],5);
-                if(is_array($info['histories'])){
-                    foreach($info['histories'] as $key => $item){
+                $info['histories'] = array();
+                $stocks = $this->customer_model->stocks($info['customer_id'],5);
+                if(is_array($stocks)){
+                    foreach($stocks as $key => $item){
                         if(!empty($item['file'])){
                             $_tmp = json_decode($item['file'],TRUE);
                             if(is_array($_tmp)){
-                                $info['histories'][$key]['file'] = $item;
+                                $item['file'] = $_tmp;
                             }
                         }
+                        $info['histories'][] = $item;
                     }
                 }
                 json_success(array(

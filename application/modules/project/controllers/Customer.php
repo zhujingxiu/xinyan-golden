@@ -383,6 +383,7 @@ class Customer extends Project {
             if($result->num_rows()){
                 $info = $result->row_array();
                 $info['csrf'] = $this->_get_csrf_nonce();
+                $info['card_serial'] = $card_serial;
                 $info['max'] = (float)$info['available'];
                 $info['total'] = (float)($info['available']+$info['frozen']);
                 $info['histories'] = array();

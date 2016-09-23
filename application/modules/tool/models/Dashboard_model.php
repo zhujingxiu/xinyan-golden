@@ -50,10 +50,10 @@ class Dashboard_model extends XY_Model
         return $total.' <small>'.lang('text_person_unit').'</small>';
     }
 
-    public function sum_today()
+    public function sum_today_instock()
     {
         $this->db->select_sum('weight','totals');
-        $query = $this->db->where(array('addtime > '=> strtotime(date('Y-m-d'))))->get($this->stock_table);
+        $query = $this->db->where(array('mode'=>'frozen','frozen'=>'checking','addtime >= '=> strtotime(date('Y-m-d'))))->get($this->customer_stock_table);
         if($query->num_rows()){
             $_tmp = $query->row_array();
             $total = (float)$_tmp['totals'];// = '7305260.56';
@@ -63,6 +63,49 @@ class Dashboard_model extends XY_Model
         return format_weight($total);
     }
 
+    public function sum_today_outstock()
+    {
+        $where = array(
+            $this->customer_stock_table.'.mode'=>'out',
+            $this->customer_stock_table.'.addtime >= '=> strtotime(date('Y-m-d'))
+        );
+        if(!$this->ion_auth->is_admin()){
+            $where['c.company_id'] = $this->ion_auth->get_company_id();
+        }
+        $this->db->select_sum($this->customer_stock_table.'.weight','totals')->join($this->customer_table." AS c","c.customer_id = ".$this->customer_stock_table.".customer_id");
+        $query = $this->db->where($where)->get($this->customer_stock_table);
+        if($query->num_rows()){
+            $_tmp = $query->row_array();
+            $total = (float)$_tmp['totals'];// = '7305260.56';
+        }else{
+            $total = '0.00';
+        }
+        return format_weight($total);
+    }
+
+    public function expiring_warning($mode='all')
+    {
+        $mode = strtolower($mode);
+
+        $interval_string = "DATE_ADD( CURDATE(),INTERVAL ".(int)$this->config->item('warning_end')." DAY ) >= `end`";
+        $where = array('status'=>1);
+        if(!$this->ion_auth->is_admin()){
+            $where['company_id'] = $this->ion_auth->get_company_id();
+        }
+        switch($mode){
+            case 'investing':
+                $where['mode'] = 'investing';
+                break;
+            case 'recycling':
+                $where['mode'] = 'recycling';
+                break;
+        }
+        $this->db->where($where);
+
+        $this->db->where($interval_string,NULL, FALSE);
+        $total = $this->db->count_all_results($this->stock_table);
+        return $total ? (int)$total : 0;//'|'.$this->db->last_query();
+    }
     public function latest($limit=10)
     {
         return $this->db->select("cp.title AS company ,cp.alias short_title,ps.*,c.realname , c.phone,w.realname referrer")->from($this->stock_table.' AS ps')
@@ -94,10 +137,16 @@ class Dashboard_model extends XY_Model
     {
         return $this->db->select("wn.*,w.realname sender,w.avatar ")->from($this->notify_table.' AS wn')
             ->where(array('wn.receiver_id'=>$this->ion_auth->get_user_id(),'mode'=>'announcement'))
+
             ->join($this->worker_table.' as w','w.id = wn.sender_id','left')
             ->order_by("wn.is_read = '0',wn.addtime desc")
             ->limit($limit)
             ->get();
+
+/*        ->group_start()
+        ->or_where(array('wn.receiver_id'=>$this->ion_auth->get_user_id()))
+        ->or_where(array('wn.sender_id'=>$this->ion_auth->get_user_id()))
+        ->group_end()*/
     }
 
     public function notify($data=array()){
@@ -187,25 +236,8 @@ class Dashboard_model extends XY_Model
             : '';//.$this->db->last_query();
     }
     public function widget_expiring($mode='all'){
-        $mode = strtolower($mode);
 
-        $interval_string = "DATE_ADD( CURDATE(),INTERVAL ".(int)$this->config->item('warning_end')." DAY ) >= `end`";
-        $where = array('status'=>1);
-        if(!$this->ion_auth->is_admin()){
-            $where['company_id'] = $this->ion_auth->get_company_id();
-        }
-        switch($mode){
-            case 'investing':
-                $where['mode'] = 'investing';
-                break;
-            case 'recycling':
-                $where['mode'] = 'recycling';
-                break;
-        }
-        $this->db->where($where);
-
-        $this->db->where($interval_string,NULL, FALSE);
-        $total = $this->db->count_all_results($this->stock_table);
+        $total = $this->expiring_warning($mode);
         return $total
             ? '<span class="label label-warning pull-right" data-toggle="tooltip" title="'.lang('text_expiring_widget').'">'.$total.'</span>'
             : '';//'|'.$this->db->last_query();

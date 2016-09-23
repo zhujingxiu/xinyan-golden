@@ -529,7 +529,7 @@
                                         <filedset>
                                             <legend>金息设定
                                                 <div class="pull-right">
-                                                    <button type="button" class="btn btn-primary btn-sm btn-period" >
+                                                    <button type="button" class="btn btn-primary btn-sm " id="new-period">
                                                         <i class="fa fa-plus"></i>
                                                     </button>
                                                 </div>
@@ -582,7 +582,7 @@
                                             </div>
                                             <div class="form-group clearfix">
                                                 <div class="col-sm-10 col-sm-offset-2">
-                                                    <button type="button" form="project-period" class="btn btn-primary btn-status">保存</button>
+                                                    <button type="button" form="project-period" class="btn btn-primary btn-period">保存</button>
                                                 </div>
                                             </div>
                                         </filedset>

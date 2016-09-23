@@ -16,7 +16,7 @@ class Recycling extends Project {
         }
         $this->layout->add_includes(array(
             array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
-            //array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
+            array('type'=>'css','src'=>_ASSET_.'lib/datepicker/datepicker3.css'),
 
         ));
         $data['success'] = $this->session->flashdata('success');
@@ -362,6 +362,7 @@ class Recycling extends Project {
                 $note = htmlspecialchars($this->input->post('editorValue'));
                 $weight = $this->input->post('weight');
                 $phone = $this->input->post('phone');
+                $startdate = $this->input->post('start');
                 $result = $this->recycling_model->project($project_sn);
                 if(!$result->num_rows()){
                     json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -388,10 +389,8 @@ class Recycling extends Project {
                         'status'	=> $this->config->item('recycling_checked'),
                         'transferrer' =>$this->input->post('transferrer'),
                         'note' 		=> $note,
-                        'call_func' => array(
-                                'active_period'=>$project_sn,
-                                'customer_instock'=>$project_sn
-                            )
+                        'call_func' => 'project_checked',
+                        'call_param' => array($project_sn,$startdate),
 
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));

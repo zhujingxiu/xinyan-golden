@@ -59,7 +59,7 @@ define(function(require,exports,modules){
                     layer.open({
                         type: 1,
                         title: json.title,
-                        area:['880px','590px'],
+                        area:['900px','600px'],
                         offset: '100px',
                         zIndex: 99,
                         btn: ['保存', '取消'],
@@ -90,7 +90,7 @@ define(function(require,exports,modules){
                     var options = {
                         type: 1,
                         title: json.title,
-                        area:['880px','590px'],
+                        area:['900px','600px'],
                         offset: '100px',
                         zIndex: 99,
                         content: json.msg,
@@ -132,13 +132,14 @@ define(function(require,exports,modules){
             require('ajaxSubmit');
             require('jqueryvalidate');
             require('customValidate');
+            require('datepicker');
             var sn = $(this).parent().parent().attr('id');
             $.get('/project/recycling/checked', {project:sn}, function(json){
                 if(json.code==1){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:['880px','590px'],
+                        area:['900px','600px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -188,7 +189,7 @@ define(function(require,exports,modules){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:['880px','590px'],
+                        area:['900px','600px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,
@@ -234,7 +235,7 @@ define(function(require,exports,modules){
                     var options = {
                         type: 1,
                         title:json.title,
-                        area:['880px','590px'],
+                        area:['900px','600px'],
                         offset: '100px',
                         zIndex:99,
                         content: json.msg ,

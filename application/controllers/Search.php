@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends XY_Controller {
+class Search extends MX_Controller {
 
 	public function __construct()
 	{
@@ -71,47 +71,7 @@ class Home extends XY_Controller {
 		}
 
 
-		$this->layout->view('common/dashboard',$data);
-	}
-
-	public function notification(){
-
-		if($msg = $this->session->flashdata('ajax_permission')){
-			json_response(array('code'=>-1,'msg'=>$msg,'title'=>lang('error_permission')));
-		}
-		if($this->input->server('REQUEST_METHOD') == 'POST') {
-			if ($this->_valid_csrf_nonce() === FALSE) {
-				//json_error(array( 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
-			}
-			$this->form_validation->set_rules('title', '标题', 'required');
-			$this->form_validation->set_rules('member[]', '成员', 'required');
-
-			if ($this->form_validation->run() == TRUE) {
-				$this->dashboard_model->notify($this->input->post());
-
-				json_success(array('msg'=>lang('text_success_posted')));
-			}else{
-				$errors = array(
-					'title' => form_error('title'),
-					'member' => form_error('member[]'),
-				);
-				json_error(array('errors' =>$errors));
-			}
-		}else {
-			$info['worker_id'] = $this->worker_id;
-			$info['groups'] = array();
-			$groups = $this->ion_auth_model->groups()->result_array();
-			foreach($groups as $item){
-				if($item['code'] == 'member') continue;
-				$info['groups'][] = array(
-					'group_id' => $item['id'],
-					'title' => $item['title'],
-					'code' => $item['code'],
-					'member' => $this->ion_auth->get_group_users($item['id'])
-				);
-			}
-			json_success(array('title' => '发布通知', 'msg' => $this->load->view('common/notify', $info, TRUE)));
-		}
+		$this->load->view('common/dashboard',$data);
 	}
 
 }
