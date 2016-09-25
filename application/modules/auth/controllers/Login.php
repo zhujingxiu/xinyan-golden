@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @filesource
  */
 class Login extends MX_Controller {
-
+    protected $login_page = 'landing';
     public function __construct()
     {
         parent::__construct();
@@ -65,9 +65,9 @@ class Login extends MX_Controller {
     public function price()
     {
         $this->load->model('tool/tool_model');
-        if(date('w') ==0 || date('w') ==6){
+        if(true/*date('w') ==0 || date('w') ==6*/){
             $data = $this->tool_model->range_price('month');
-            $data['title'] = $this->lang->line('text_price_month','default');
+            $data['title'] = sprintf($this->lang->line('text_login_price_title','default'),(date('w')) ? '昨天' : '周五',$this->tool_model->lastprice(TRUE));
             $data['subtitle'] = $this->lang->line('text_price_desc','default');
         }else{
             $data = $this->tool_model->range_price('day');

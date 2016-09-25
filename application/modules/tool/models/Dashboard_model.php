@@ -11,6 +11,7 @@ class Dashboard_model extends XY_Model
     private $stock_table = "project_stock";
     private $customer_table = "customer";
     private $customer_stock_table = "customer_stock";
+    private $customer_apply_table = "customer_apply";
     private $worker_table = "worker";
     private $company_table = "worker_company";
     private $notify_table = "worker_notify";
@@ -73,10 +74,10 @@ class Dashboard_model extends XY_Model
             $where['c.company_id'] = $this->ion_auth->get_company_id();
         }
         $this->db->select_sum($this->customer_stock_table.'.weight','totals')->join($this->customer_table." AS c","c.customer_id = ".$this->customer_stock_table.".customer_id");
-        $query = $this->db->where($where)->get($this->customer_stock_table);
+        $query = $this->db->where($where)->get($this->customer_stock_table);//var_dump($query);
         if($query->num_rows()){
             $_tmp = $query->row_array();
-            $total = (float)$_tmp['totals'];// = '7305260.56';
+            $total = abs((float)$_tmp['totals']);
         }else{
             $total = '0.00';
         }
@@ -121,6 +122,7 @@ class Dashboard_model extends XY_Model
     public function top_referrers($limit=12){
         return $this->db->select("SUM(ps.weight) totals,w.realname referrer,w.avatar")->from($this->stock_table.' AS ps')
             ->join($this->worker_table.' as w','w.id = ps.referrer_id','left')
+            ->where(array('ps.referrer_id > '=>'0'))
             ->group_by('ps.referrer_id')
             ->having('SUM(ps.weight) > 0')
             ->order_by('SUM(ps.weight) desc')
@@ -263,5 +265,21 @@ class Dashboard_model extends XY_Model
         return $total
             ? '<span class="label label-info pull-right" data-toggle="tooltip" title="'.lang('text_today_widget').'">'.$total.'</span>'
             : '';
+    }
+
+    public function widget_appling($mode='all'){
+        $where['ca.status'] = 1;
+        if(!$this->ion_auth->is_admin()){
+            $where['c.company_id'] = $this->ion_auth->get_company_id();
+        }
+
+            $this->db->select("ca.*",false)->from($this->customer_apply_table." AS ca")
+                ->join($this->customer_table." AS c","c.customer_id = ca.customer_id")
+                ->where(array('ca.status'=>1));
+            $total = $this->db->count_all_results();
+
+        return $total
+            ? '<span class="label label-warning pull-right" data-toggle="tooltip" title="'.lang('text_appling_widget').'">'.$total.'</span>'
+            : '';//.$this->db->last_query();
     }
 }

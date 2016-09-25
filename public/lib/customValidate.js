@@ -202,6 +202,46 @@ define(function (require,exports,modules) {
             return this.optional(element) || !reg.test(value);
         }, "含有中英文特殊字符");
 
+        jQuery.validator.addMethod("validateCaptcha", function(captcha, element) {
+            captcha = captcha.replace(/\(|\)|\s+|-/g, "");
+            var validateCaptcha = this.optional(element) || captcha.length == 4 ;
+            if(validateCaptcha){
+                var validate = false;
+                $.ajax({
+                    url:'/tool/validate/captcha',
+                    data:{captcha:captcha},
+                    type:'post',
+                    dataType:'json',
+                    async:false,
+                    success:function(json){
+                        validate = ( json.status == 1 );
+                    }
+                });
+                return validate ;
+            }
+            return validateCaptcha;
+        }, "验证码错误");
+
+        jQuery.validator.addMethod("validateSMS", function(sms, element,param) {
+            sms = sms.replace(/\(|\)|\s+|-/g, "");
+            var target = $( param );
+            var validateSMS = this.optional(element) || sms.length == 6 ;
+            if(validateSMS){
+                var validate = false;
+                $.ajax({
+                    url:'/tool/validate/sms',
+                    data:{sms:sms,mobile_phone:target.val()},
+                    type:'post',
+                    dataType:'json',
+                    async:false,
+                    success:function(json){
+                        validate = ( json.status == 1 );
+                    }
+                });
+                return validate;
+            }
+            return validateSMS;
+        }, "短信验证码错误");
 
         //身份证号码的验证规则
         function isIdCardNo(num){

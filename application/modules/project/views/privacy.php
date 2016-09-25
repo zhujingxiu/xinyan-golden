@@ -12,8 +12,8 @@
         .content-last {}
 
         table tr {height: 40px;line-height: 40px;}
-        table{width: 680px;border: none;margin-left:100px;}
-        .ptitle{height: 40px;line-height: 40px;padding-left: 100px; font-size: 21px;width: 680px;margin-top: 10px;}
+        table{width: 690px;border: none;margin-left:100px;}
+        .ptitle{height: 40px;line-height: 40px;padding-left: 100px; font-size: 21px;width: 690px;margin-top: 10px;}
         span.upcase{display: inline-block;/*width:273px;*/}
         span.lowercase{display: inline-block;}
     </style>
@@ -40,8 +40,8 @@
         <td class="content-right" style="width:40%"><b>预期年化收益:</b> <?php echo calculate_profit($profit,$month).lang('text_profit_unit');?></td>
     </tr>
     <tr>
-        <td class="content-left" style="width:40%"><b>投资起息日:</b> <?php echo date('Y年m月d',strtotime($start));?></td>
-        <td  class="content-right"><b>投资到期日:</b> <?php echo date('Y年m月d',strtotime($end));?></td>
+        <td class="content-left" style="width:40%"><b>投资起息日:</b> <?php echo date('Y年m月d日',strtotime($start));?></td>
+        <td  class="content-right"><b>投资到期日:</b> <?php echo date('Y年m月d日',strtotime($end));?></td>
 
     </tr>
     <tr>
@@ -60,7 +60,7 @@
         <td colspan="2" class="content-right"><b>电子邮件:</b> <?php echo $email;?></td>
     </tr>
     <tr>
-        <td class="content-left"><b>微信号码:</b><?php echo $wechat;?> </td>
+        <td class="content-left"><b>微信号码:</b> <?php echo $wechat;?> </td>
         <td colspan="2" class="content-right"><b>QQ号码:</b> <?php echo $qq;?></td>
     </tr>
 </table>

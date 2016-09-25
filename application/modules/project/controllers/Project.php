@@ -18,7 +18,7 @@ class Project extends XY_Controller
         $this->load->model(array('setting/project_model'));
     }
 
-    protected function investing_operation($status,$locker_id)
+    protected function investing_operation($status,$locker_id,$sn=false)
     {
 
         $buttons = array();
@@ -32,7 +32,9 @@ class Project extends XY_Controller
                 }
                 if($this->inRole('booker')){
                     $buttons[] = sprintf(lang('button_update'),$text_lock);
+
                 }
+                $buttons[] = sprintf(lang('button_print'),site_url('project/investing/privacy?xe='.$sn));
                 break;
             case $this->config->item('investing_checked'):
                 //$buttons[] = lang('label_checked');
@@ -77,7 +79,7 @@ class Project extends XY_Controller
         return implode(" ",$buttons);
     }
 
-    protected function recycling_operation($status,$locker_id=FALSE)
+    protected function recycling_operation($status,$locker_id=FALSE,$sn=false)
     {
         $buttons = array();
         $text_lock = $locker_id && $locker_id!=$this->worker_id ? '<i class="fa fa-lock"></i>' : '<i class="fa fa-edit"></i>';
@@ -91,6 +93,7 @@ class Project extends XY_Controller
                 if($this->inRole('booker')){
                     $buttons[] = sprintf(lang('button_update'),$text_lock);
                 }
+                $buttons[] = sprintf(lang('button_print'),site_url('project/recycling/privacy?xe='.$sn));
                 break;
             case $this->config->item('recycling_checked'):
                 //$buttons[] = lang('label_checked');
@@ -150,7 +153,7 @@ class Project extends XY_Controller
     }
 
     protected function calculate_profit($rate,$month){
-        return number_format(($month*$rate/12)*100,2);
+        return number_format(($rate*(12/$month)*100.00),2);
     }
 
     protected function calculate_start($addtime)
@@ -190,23 +193,9 @@ class Project extends XY_Controller
         }
     }
 
-    protected function type_text($type){
-        $text = '';
-        switch(strtolower($type)){
-            case 'goldbar':
-                $text = lang('text_goldbar');
-                break;
-            case 'ornaments':
-                $text = lang('text_ornaments');
-                break;
-            case 'renew':
-                $text = lang('text_renew_type');
-                break;
-            case 'other':
-                $text = lang('text_other_type');
-                break;
-        }
-        return $text;
+    protected function type_text($code){
+        $this->load->model('recycling_model');
+        return $this->recycling_model->type_text($code);
 
     }
 

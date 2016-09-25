@@ -1,79 +1,262 @@
 define(function(require, exports, module) {
     require('ajaxSubmit');
-    $(document).ready(function () {
-        var refer = $('base').attr('href');
-        $("#loginBtn").click(function () {
-            $('.sysError').css('display', 'none');
-            $('.errorTips').css('display', 'none');
-            $("#loginBtn").val('登录中...').prop("disabled", true);
-            var identity = $("#identity").val();
-            var userpass = $("#password").val();
-            var captcha = $("#captcha").val();
-            identity = $.trim(identity);
-            userpass = $.trim(userpass);
-            captcha = $.trim(captcha);
+    var resetSMS,searchPhone,interval = 120;
+    exports.render_search = function() {
 
-            if (identity.length < 5) {
-                exports.error('请输入正确格式的用户名!', $("#identity"));
-                return false;
-            }
-            else if (userpass.length < 6) {
-                exports.error('请输入正确格式的密码!', $("#password"));
-                return false;
-            }
-            else if ($(".loginListCode").css('display') == 'block' && captcha == '') {
-                exports.error('请输入正确的验证码', $("#captcha"));
-                return false;
-            }
+        $(function () {
 
-            $("#login_form").ajaxSubmit({
-                dataType:'json',
-                success: function (json) {
-                    var code = json.code;
-                    //当用户登录错误且次数超过3次,显示验证码
-                    if (code != '1' && $(".loginListCode").css('display') == 'none' && json.errcount > 2) {
-                        $(".loginListCode").css('display', 'block');
-                    }
-                    if (code == '1') {
-                        window.location.href = json.redirect;
-                    }
-                    else {
-                        if (code == '0') {//登录数据库验证,登录失败显示
-                            $('.sysError').show().find('em').html(json.msg);
+            $("#searchBtn").click(function () {
+                $('.sysError').css('display', 'none');
+                $('.errorTips').css('display', 'none');
+                $(this).val('查询中...').prop("disabled", true);
+                var number = $("#search_number").val();
+                var phone = $("#search_phone").val();
+                var captcha = $("#search_captcha").val();
+                var code = $("#search_code").val();
+                number = $.trim(number);
+                phone = $.trim(phone);
+                captcha = $.trim(captcha);
+                code = $.trim(code);
 
-                        }
-                        if(code == '-1'){//验证码错误显示
-                            $(".loginListCode").css('display','block');
-                            exports.error(json.msg,$("#captcha"));
-                        }
-
-                        if ($(".loginListCode").css('display') == 'block') {
-                            $("#captchaimg").click();
-                        }
-
-                        $("#loginBtn").val('登录').prop("disabled", false);
-                        return false;
-                    }
+                if (number.length < 5) {
+                    exports.error('请输入有效的卡号', $("#search_number"), $("#searchBtn"));
+                    return false;
+                }else if (phone.length < 6) {
+                    exports.error('请输入有效的手机号码', $("#search_phone"), $("#searchBtn"));
+                    return false;
+                }else if ( captcha == '') {
+                    exports.error('请输入有效的验证码', $("#captcha-search"), $("#searchBtn"));
+                    return false;
+                }else if ( code == '') {
+                    exports.error('请输入有效的验证码', $("#captcha-code"), $("#searchBtn"));
+                    return false;
                 }
-            })
-        });
+                require('layer')
+                $("#search_form").ajaxSubmit({
+                    dataType: 'json',
+                    success: function (json) {
+                        var code = json.code;
+                        //当用户登录错误且次数超过3次,显示验证码
 
-        document.onkeydown = function (e) {
-            var ev = document.all ? window.event : e;
-            if (ev.keyCode == 13) {
-                $("#loginBtn").click();
-            }
+                        if (code == '1') {
+                            layer.open({
+                                type: 1,
+                                title: json.title,
+                                area:['900px','600px'],
+                                offset: '100px',
+                                zIndex: 99,
+                                btn: [ '关闭'],
+                                content: json.msg,
+
+                            });
+                        }
+                        else {
+                            if (code == '0') {//登录数据库验证,登录失败显示
+                                $('.sysError').show().find('em').html(json.msg);
+                            }
+                            if (code == '-1') {//验证码错误显示
+                                $("#search-captcha").css('display', 'block');
+                                exports.error(json.msg, $("#captcha-search"),$("#searchBtn"));
+                            }
+
+                            if ($("#search-captcha").css('display') == 'block') {
+                                $("#captchasearch").click();
+                            }
+
+                            $("#searchBtn").val('登录').prop("disabled", false);
+                            return false;
+                        }
+                    }
+                })
+            });
+
+            $('#search_number').bind('blur', function () {
+                var number = $('#search_number').val();
+                if(number == ''){
+                    exports.error('请输入有效的卡号', $(this), $("#searchBtn"));
+                    return false;
+                }
+                $.get('/tool/common/validate_number',{number:$(this).val()},function(json){
+                    if(json.code == 0){
+                        exports.error(json.msg, $(this), $("#searchBtn"));
+                        return false;
+                    }else{
+                        exports.success($('#search_number'));
+                    }
+                },'json');
+            });
+
+            $('#search_phone').bind('blur', function () {
+                var number = $('#search_number').val();
+                if(number == ''){
+                    exports.error('请输入有效的卡号', $("#search_number"), $("#searchBtn"));
+                    //return false;
+                }
+                var phone = $('#search_phone').val();
+                if(phone == '' || !isMoblieCN(phone)){
+                    exports.error('请输入有效的手机号', $('#search_phone'), $("#searchBtn"));
+                    return false;
+                }
+                $.get('/tool/common/validate_phone',{number:number,phone:phone},function(json){
+                    if(json.code == 0){
+                        exports.error(json.msg, $('#search_phone'), $("#searchBtn"));
+                        return false;
+                    }else{
+                        exports.success($('#search_phone'));
+                    }
+                },'json');
+            });
+
+            $('#search_captcha').bind('blur', function () {
+                var captcha = $(this).val();
+                if(captcha == ''){
+                    exports.error('请输入图形验证码', $(this), $("#searchBtn"));
+                    return false;
+                }
+                $.get('/tool/common/validate_captcha',{captcha:captcha},function(json){
+                    if(json.code == 0){
+                        exports.error(json.msg, $('#search_captcha'), $("#searchBtn"));
+                        return false;
+                    }else{
+                        exports.success($('#search_captcha'));
+                    }
+                },'json');
+            });
+
+            $('#get_smscode').bind('click',function() {
+                if ($(this).attr('disabled') == 'disabled') {
+                    alert('短信验证码申请太过于频繁，请稍后再试！');
+                    return false;
+                }
+                $('#search_captcha').trigger('blur');
+                $('#search_number').trigger('blur');
+                $('#search_phone').trigger('blur');
+                var obj_number = $('#search_number').val();
+                var obj_mobile = $('#search_phone').val();
+                var obj_captcha = $('#search_captcha').val();
+                var $that = $(this);
+                $.ajax({
+                    url:'/tool/common/get_smscode',
+                    data:{number:obj_number,phone:obj_mobile,captcha:obj_captcha},
+                    dataType:'json',
+                    success:function(json){
+                        if(json.code==1){
+                            $that.attr('disabled','disabled');
+                            searchPhone = obj_mobile;
+                            exports.send_agin();
+                        }else{
+                            exports.error(json.error,$that,$("#searchBtn"));
+                            return false;
+                        }
+                    }
+                })
+            });
+
+            $('input[name="phone"]').bind("propertychange input",function(){
+                if($(this).val() != searchPhone ){
+                    clearTimeout(resetSMS);
+                    $('#get_smscode').removeAttr('disabled').text('发送验证码');
+                }
+            });
+
+        })
+    }
+
+    exports.send_agin = function (){
+        interval--;
+        if(interval>0){
+            resetSMS = setTimeout(function(){exports.send_agin();},1000);
+            $('#get_smscode').text(interval+'秒后获取验证码');
+        }else{
+            $('#get_smscode').removeAttr('disabled').text('获取验证码');
+            interval=120;
         }
-    });
+    }
+    exports.render_login = function() {
+        $(document).ready(function () {
+            var refer = $('base').attr('href');
+            $("#loginBtn").click(function () {
+                $('.sysError').css('display', 'none');
+                $('.errorTips').css('display', 'none');
+                $("#loginBtn").val('登录中...').prop("disabled", true);
+                var identity = $("#identity").val();
+                var userpass = $("#password").val();
+                var captcha = $("#captcha").val();
+                identity = $.trim(identity);
+                userpass = $.trim(userpass);
+                captcha = $.trim(captcha);
 
-    exports.error =  function(msg, selector) {
+                if (identity.length < 5) {
+                    exports.error('请输入有效的用户名!', $("#identity"), $("#loginBtn"));
+                    return false;
+                }
+                else if (userpass.length < 6) {
+                    exports.error('请输入有效的密码!', $("#password"), $("#loginBtn"));
+                    return false;
+                }
+                else if ($("#login-captcha").css('display') == 'block' && captcha == '') {
+                    exports.error('请输入有效的验证码', $("#captcha-login"), $("#loginBtn"));
+                    return false;
+                }
+
+                $("#login_form").ajaxSubmit({
+                    dataType: 'json',
+                    success: function (json) {
+                        var code = json.code;
+                        //当用户登录错误且次数超过3次,显示验证码
+                        if (code != '1' && $("#login-captcha").css('display') == 'none' && json.errcount > 2) {
+                            $("#login-captcha").css('display', 'block');
+                        }
+                        if (code == '1') {
+                            window.location.href = json.redirect;
+                        }
+                        else {
+                            if (code == '0') {//登录数据库验证,登录失败显示
+                                $('.sysError').show().find('em').html(json.msg);
+                            }
+                            if (code == '-1') {//验证码错误显示
+                                $("#login-captcha").css('display', 'block');
+                                exports.error(json.msg, $("#captcha-login"),$("#loginBtn"));
+                            }
+
+                            if ($("#login-captcha").css('display') == 'block') {
+                                $("#captchalogin").click();
+                            }
+
+                            $("#loginBtn").val('登录').prop("disabled", false);
+                            return false;
+                        }
+                    }
+                })
+            });
+
+            document.onkeydown = function (e) {
+                var ev = document.all ? window.event : e;
+                if (ev.keyCode == 13) {
+                    $.each($(".formLogin"), function () {
+                        if ($(this).css('display') != 'none') {
+                            $(this).find('.loginBtn').click();
+                        }
+                    })
+                }
+            }
+        });
+    }
+
+    exports.error =  function(msg, selector,formBtn) {
         selector.parent().find('.errorTips').find('em').html(msg)
         selector.parent().find('.errorTips').fadeIn();
-        $("#loginBtn").val('登录').prop('disabled', false);
+        formBtn.prop('disabled', false);
+    }
+
+    exports.success =  function(selector) {
+        selector.parent().find('.errorTips').find('em').html('')
+        selector.parent().find('.errorTips').fadeOut();
+
     }
     exports.price = function (el) {
         require('echarts');
-        $.get('/auth/login/price',{r:Math.random()},function(json){
+        $.get('/landing/price',{r:Math.random()},function(json){
 
             if(json.code==1)
             exports.renderEchart('gold-price-charts',json.title,json.subtitle,json.time,json.price);

@@ -397,10 +397,108 @@ function calculate_rate($profit,$month)
 }
 
 function calculate_profit($rate,$month){
-	return number_format(($month*$rate/12)*100,2);
+	return number_format(($rate*(12/$month)*100.00),2);
 }
 
 function calculate_end($starttime,$month)
 {
 	return date('Y-m-d',mktime(0,0,0,date('m',$starttime)+(int)$month,date('d',$starttime)-1,date('Y',$starttime)));;
+}
+
+/**
+
+ * *
+
+ * @param string $value
+
+ * @param string $match
+
+ * @return boolean
+
+ */
+function isURL($url,$match='/^(http:\/\/)?(https:\/\/)?([\w\d-]+\.)+[\w-]+(\/[\d\w-.\+\/?%&=#]*)?$/i'){
+	if(empty($url)){
+		return false;
+	}
+	$url = strtolower(trim($url));
+	return preg_match($match, $url);
+	return false;
+
+}
+
+/**
+
+ * @param string $value
+
+ * @param int $length
+
+ * @return boolean
+
+ */
+function isEmail($value,$match='/^[\w\d]+[\w\d-.]*@[\w\d-.]+\.[\w\d]{2,10}$/i'){
+	$v = trim($value);
+	if(empty($v))
+		return false;
+
+	return preg_match($match,$v);
+}
+
+/**
+
+ * @param string $value
+
+ * @return boolean
+
+ */
+function isTelephone($value,$match='/^0[0-9]{2,3}[-]?\d{7,8}$/'){
+	$v = trim($value);
+	if(empty($v))
+		return false;
+	return preg_match($match,$v);
+}
+
+/**
+
+ * @param string $value
+
+ * @param string $match
+
+ * @return boolean
+
+ */
+function isMobile($value,$match='/^[(86)|0]?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/'){
+	$v = trim($value);
+	if(empty($v))
+		return false;
+	return preg_match($match,$v);
+}
+/**
+
+ * @param string $value
+
+ * @param string $match
+
+ * @return boolean
+
+ */
+function isPostcode($value,$match='/\d{6}/'){
+	$v = trim($value);
+	if(empty($v))
+		return false;
+	return preg_match($match,$v);
+}
+/**
+
+ * @param string $value
+
+ * @param string $match
+
+ * @return boolean
+
+ */
+function isIP($value,$match='/^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$/'){
+	$v = trim($value);
+	if(empty($v))
+		return false;
+	return preg_match($match,$v);
 }

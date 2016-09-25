@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Logout extends MX_Controller {
+    protected $login_page = 'landing';
     public function __construct()
     {
         parent::__construct();
@@ -20,6 +21,6 @@ class Logout extends MX_Controller {
 
         // redirect them to the login page
         $this->session->set_flashdata('message', $this->ion_auth->messages());
-        redirect('auth/login', 'refresh');
+        redirect($this->login_page, 'refresh');
     }
 }

@@ -49,6 +49,22 @@ define(function (require, exports, modules) {
         })
     }
 
+    exports.detected_card = function(){
+        if (ICCardReader.Open()) {
+
+            if (card_serial.length != 8) {
+                ICCardReader.Beep();
+                alert('没有检测到磁卡，请重试！');
+                return false;
+            }
+        } else {
+            alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
+            window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
+            return false;
+        }
+        return true;
+    }
+
     exports.do_detail = function(cid){
         require('layer');
         require('ajaxSubmit');
@@ -98,21 +114,9 @@ define(function (require, exports, modules) {
     exports.render_appling = function () {
 
         $('#list').delegate('.btn-appling','click', function (e) {
+            //exports.detected_card();
+            //var card_serial = ICCardReader.Request();//'sadsadsa';//
             var card_serial = '3B8814DB';
-            /*;
-            if(ICCardReader.Open()){
-                card_serial = ICCardReader.Request();//'sadsadsa';//
-                if(card_serial.length != 8){
-                    ICCardReader.Beep();
-                    alert('没有检测到磁卡，请重试！');
-                    return false;
-                }
-            }else{
-                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
-                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
-                return false;
-            }
-            */
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
@@ -155,21 +159,10 @@ define(function (require, exports, modules) {
     exports.render_renew = function () {
 
         $('#list').delegate('.btn-appling-renew','click', function (e) {
-            var card_serial = '';
 
-            if (ICCardReader.Open()) {
-                card_serial = ICCardReader.Request();//'sadsadsa';//
-                if (card_serial.length != 8) {
-                    ICCardReader.Beep();
-                    alert('没有检测到磁卡，请重试！');
-                    return false;
-                }
-            } else {
-                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
-                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
-                return false;
-            }
-
+            //exports.detected_card();
+            //var card_serial = ICCardReader.Request();//'sadsadsa';//
+            var card_serial = '3B8814DB';
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
@@ -270,20 +263,10 @@ define(function (require, exports, modules) {
     }
     exports.render_bind = function(){
         $('#list').delegate('.btn-bind','click', function () {
-            var card_serial = '';
-            //require('../base/iccardreader');
-            if(ICCardReader.Open()){
-                card_serial = ICCardReader.Request();//'sadsadsa';//
-                if(card_serial.length != 8){
-                    ICCardReader.Beep();
-                    alert('没有检测到磁卡，请重试！');
-                    return false;
-                }
-            }else{
-                alert("请确认当前浏览器为IE8+系列，并且安装了YW60x读写器控件。若未安装，请点击确定下载");
-                window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
-                return false;
-            }
+            //exports.detected_card();
+            //var card_serial = ICCardReader.Request();//'sadsadsa';//
+            var card_serial = '3B8814DB';
+
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');

@@ -254,7 +254,7 @@ define(function(require,exports,modules){
                     if(json.print!=false){
                         options.btn = ['打印协议', '关闭'];
                         options.yes = function (index, layero) {
-                            location.href=json.print;
+                            window.open(json.print);
                         };
                     }
                     layer.open(options);

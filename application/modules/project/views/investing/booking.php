@@ -9,7 +9,12 @@
 					<div class="form-group clearfix">
 						<div class="input-group col-sm-11">
 							<span class="input-group-addon">实时金价</span>
+							<?php if($is_manager) : ?>
+							<input type="text" name="_price" class="form-control _highlight" value="<?php echo $price ?>">
+							<span class="input-group-addon">元/克</span>
+							<?php else:?>
 							<span class="form-control _highlight" style=""><?php echo $price ?> 元/克</span>
+							<?php endif?>
 						</div>
 					</div>
 					<div class="form-group clearfix">
@@ -142,7 +147,8 @@
 </div>
 
 <script type="text/javascript">
-	var price='<?php echo $price;?>';
+
+
 	$(function () {
 
 		$.validator.setDefaults({
@@ -230,6 +236,11 @@
 			var _period = $('#form-booking select[name="period_id"]');
 			var _profit = parseFloat(_period.find('option[value="'+_period.val()+'"]').data('profit'),4);
 			var _weight = $(this).val();
+			<?php if($is_manager):?>
+			var price=parseFloat($('input[name="_price"]').val()).toFixed(2);
+			<?php else: ?>
+			var price=parseFloat('<?php echo $price;?>').toFixed(2);
+			<?php endif?>
 			if(!$.isNumeric(price)){
 				layer.tips('数据异常',$('#form-booking #booking-amount'),{tips: [1, '#CC6666']});
 				return false;

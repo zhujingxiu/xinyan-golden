@@ -22,8 +22,11 @@
 									<div class="input-group col-sm-11">
 										<span class="input-group-addon">黄金种类</span>
 										<select class="form-control select2" name="type">
-											<option value="ornaments">金饰</option>
-											<option value="goldbar">金条</option>
+											<?php if(is_array($gold_types)):?>
+												<?php foreach($gold_types as $item):?>
+												<option value="<?php echo $item['code']?>"><?php echo $item['title']?></option>
+												<?php endforeach?>
+											<?php endif?>
 										</select>
 									</div>
 								</div>
@@ -34,6 +37,7 @@
 									<div class="input-group col-sm-11">
 										<span class="input-group-addon">交付方式</span>
 										<select class="form-control select2" name="payment">
+
 											<option value="gold">黄金</option>
 											<option value="cash">现金</option>
 										</select>
@@ -199,7 +203,9 @@
 						</div>
 					</div>
 				</li>
-
+				<li>
+					<i class="fa fa-clock-o bg-gray"></i>
+				</li>
 			</ul>
 		</div>
 	</div>

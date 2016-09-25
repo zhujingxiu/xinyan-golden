@@ -78,7 +78,7 @@ class Recycling extends Project {
                     'weight'	=> number_format($row['weight'],2).lang('text_weight_unit').'<br>'.$row['appraiser'],
                     'operator'	=> $row['operator'],
                     'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
-                    'operation'	=> $this->recycling_operation($row['status_id'],$row['locker_id'])
+                    'operation'	=> $this->recycling_operation($row['status_id'],$row['locker_id'],$row['project_sn'])
                 );
             }
         }
@@ -158,6 +158,7 @@ class Recycling extends Project {
                     $info['agree'] = sprintf(lang('text_agree'), anchor(site_url('article/article/detail/'.$article['article_id']), $article['title'], 'target="_blank"'));
                 }
             }
+            $info['gold_types'] = $this->recycling_model->gold_types();
             $info['transferrers'] = $this->group_users('manager',$this->company_id);
             $info['appraisers'] = $this->group_users('appraiser',$this->company_id);
             $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
@@ -267,6 +268,7 @@ class Recycling extends Project {
                     }
                 }
                 $title = '编辑项目 '.$info['realname'].':'.$info['project_sn'];
+                $info['gold_types'] = $this->recycling_model->gold_types();
                 $info['transferrers'] = $this->group_users('manager',$this->company_id);
                 $info['appraisers'] = $this->group_users('appraiser',$this->company_id);
                 $info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
@@ -337,7 +339,7 @@ class Recycling extends Project {
                 'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
                 'msg'=>$this->load->view('recycling/detail',$info,TRUE),
                 'terminable'=>false,//$this->inRole('manager')
-                'print'=>$this->inRole('manager')?site_url('project/recycling/privacy?xe='.XEncrypt($info['project_sn'])):False
+                'print'=>$this->inRole('manager')?site_url('project/recycling/privacy?xe='.$info['project_sn']):False
             ));
         }else{
             json_error(array('msg' => lang('error_no_project'),'title'=>lang('error_no_result')));
@@ -389,8 +391,7 @@ class Recycling extends Project {
                         'status'	=> $this->config->item('recycling_checked'),
                         'transferrer' =>$this->input->post('transferrer'),
                         'note' 		=> $note,
-                        'call_func' => 'project_checked',
-                        'call_param' => array($project_sn,$startdate),
+                        'call_func' => array('project_checked' => array('project_sn'=>$project_sn,'start'=>$startdate)),
 
                     ));
                     $this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
@@ -670,7 +671,8 @@ class Recycling extends Project {
     }
 
     public function privacy(){
-        $sn = XEncrypt($this->input->get('xe'),'D');
+        //$sn = XEncrypt(urldecode($this->input->get('xe')),'D');
+        $sn = $this->input->get('xe');
         $result = $this->recycling_model->project($sn);
 
         if($result && $result->num_rows()){
@@ -679,6 +681,12 @@ class Recycling extends Project {
             if(in_array($project['status_id'],array($this->config->item('recycling_refused'),$this->config->item('recycling_terminated')))){
 
                 die( '参数异常，您查找的项目不符合打印协议');
+            }
+
+            if(empty($project['start'])){
+                $project['start'] = $this->calculate_start($project['addtime']);
+                $starttime  = strtotime($project['start']);
+                $project['end'] = calculate_end($starttime,$project['month']);
             }
             $this->layout->view('privacy',$project,FALSE);
         }else{

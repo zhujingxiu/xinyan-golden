@@ -172,10 +172,11 @@
                         <textarea class="form-control" name="editorValue" placeholder="填写核实备注"></textarea>
                     </div>
                 </li>
+                <?php if(!empty($histories) && is_array($histories)): ?>
                 <li class="time-label">
                     <span class="bg-purple"> 状态变更 </span>
                 </li>
-                <?php if(!empty($histories) && is_array($histories)): ?>
+
                 <?php foreach($histories as $item) :?>
                 <li>
                     <i class="fa fa-user bg-aqua"></i>
@@ -198,6 +199,9 @@
                 </li>
                 <?php endforeach ?>
                 <?php endif ?>
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
             </ul>
         </div>
     </div>

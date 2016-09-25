@@ -77,6 +77,8 @@ class Customer_model extends XY_Model{
         return $this->db->get();
     }
 
+
+
     public function group($group_id)
     {
 
@@ -482,5 +484,57 @@ class Customer_model extends XY_Model{
         $this->trigger_events(array('post_renew_recycling', 'post_renew_recycling_successful'));
         $this->set_message('renew_successful');
         return TRUE;
+    }
+
+    public function get_smscode($phone){
+
+        return $this->db->get_where('customer_sms',array('phone'=>$phone));
+    }
+    public function add_smscode($phone,$sms){
+        $fields = array(
+            'phone' => $phone,
+            'code' => $sms,
+            'time' => time()
+        );
+        return $this->db->insert('customer_sms',$fields);
+    }
+
+    public function del_smscode($phone){
+        return $this->db->delete('customer_sms',array('phone'=>$phone));
+    }
+
+    public function get_customer($data){
+        $this->db->from($this->table);
+
+        if(isset($data['phone'])){
+            $this->db->where(array('phone'=>$data['phone']));
+        }
+        if(isset($data['number'])){
+            $this->db->group_start();
+            $this->db->where(array('idnumber' => $data['number']));
+            $this->db->or_where(array('card_number' => $data['number']));
+            $this->db->group_end();
+        }
+        $query = $this->db->get();
+        return $query->num_rows()
+            ? $query->row_array()
+            : False;
+
+    }
+
+    public function search_projects($customer_id)
+    {
+        $customer = $this->customer($customer_id);
+        if($customer->num_rows()){
+
+            $this->db->where(array('ps.customer_id'=>$customer_id));
+            $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->dbprefix('customer_stock')."` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
+            $query = $this->db->select("p.addtime,ps.*,w2.realname referrer,( ".$profit_weight." ) stock_profit ",FALSE)
+                ->from($this->project_stock_table." AS ps")
+                ->join($this->worker_table.' AS w2', 'w2.id = ps.referrer_id','left')
+                ->join($this->project_table." AS p","p.project_sn = ps.project_sn")->order_by('ps.addtime DESC')->get();
+            return $query->num_rows() ? $query->result_array() : FALSE;
+        }
+        return FALSE;
     }
 }

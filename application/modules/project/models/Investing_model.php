@@ -8,13 +8,14 @@ class Investing_model extends XY_Model{
     private $history_table = 'project_investing_history';
     private $worker_table = 'worker';
     private $customer_table = 'customer';
+    private $customer_stock_table = 'customer_stock';
     private $stock_table = 'project_stock';
     private $file_table = 'project_file';
     private $mode = 'investing';
     public function project($sn)
     {
         if(!$sn){return false;}
-        $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username,c.realname,c.phone,c.idnumber,c.wechat,w2.realname referrer,w3.realname locker', false);
+        $this->db->select('p.*,pis.title status,pis.code,w.realname operator, w.username,c.realname,c.phone,c.idnumber,c.wechat,c.email,c.qq,w2.realname referrer,w3.realname locker', false);
         $this->db->from($this->table.' AS p')->where(array("p.project_sn" => $sn))->limit(1);
         $this->db->join($this->status_table.' AS pis','p.status_id = pis.status_id');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
@@ -282,7 +283,21 @@ class Investing_model extends XY_Model{
         }
         return FALSE;
     }
-    public function active_period($project_sn){
+
+    protected function calculate_start($addtime)
+    {
+        $start = FALSE;
+        switch(strtolower($this->config->item('growing_mode'))){
+            case 't0':
+                $start = date('Y-m-d',$addtime);
+                break;
+            case 't1':
+                $start = date('Y-m-d',$addtime+24*60*60);
+                break;
+        }
+        return $start;
+    }
+    public function project_checked($project_sn){
         if(empty($project_sn) ) return FALSE;
         $project = $this->project($project_sn);
         if($project->num_rows()) {
@@ -293,17 +308,7 @@ class Investing_model extends XY_Model{
                 $tmp['end'] = calculate_end(strtotime($start),$info['month']);
             }
             $this->db->update($this->table,$tmp,array('project_sn'=>$info['project_sn']));
-            return $this->db->affected_rows();
-        }
 
-        return FALSE;
-    }
-
-    public function customer_frozen($project_sn){
-        if(empty($project_sn) ) return FALSE;
-        $project = $this->project($project_sn);
-        if($project->num_rows()) {
-            $info = $project->row_array();
             $tmp = array(
                 'customer_id'=>$info['customer_id'],
                 'project_sn'=>$info['project_sn'],
@@ -322,20 +327,6 @@ class Investing_model extends XY_Model{
         }
         return FALSE;
     }
-    protected function calculate_start($addtime)
-    {
-        $start = FALSE;
-        switch(strtolower($this->config->item('growing_mode'))){
-            case 't0':
-                $start = date('Y-m-d',$addtime);
-                break;
-            case 't1':
-                $start = date('Y-m-d',$addtime+24*60*60);
-                break;
-        }
-        return $start;
-    }
-
     public function project_instock($data=array())
     {
         if(empty($data['project_sn'])) return FALSE;

@@ -11,10 +11,10 @@
 <section class="content-header">
     <h1>
         客户列表
-        <small>advanced tables</small>
+        <small>客户管理</small>
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 控制面板</a></li>
+        <li><a href="<?php echo site_url()?>"><i class="fa fa-dashboard"></i> 控制面板</a></li>
 
         <li class="active">客户列表</li>
     </ol>
@@ -95,7 +95,6 @@
         c.render_detail();
         c.render_appling();
         c.render_cancle();
-        c.render_taking();
         c.render_project();
         c.render_bind();
         c.render_unbind();

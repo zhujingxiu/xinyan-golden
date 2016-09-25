@@ -118,7 +118,7 @@ class Customer extends Project {
             if($this->inRole('warehouser')){
                 //$buttons[] = lang('button_appling_renewed');
             }
-        }else{
+        }else if($this->config->item('apply_renew')){
             if($available*100 >= ($this->config->item('min_weight')*100) && $this->inRole('manager')){
                 $buttons[] = lang('button_appling_renew');
             }
@@ -131,7 +131,7 @@ class Customer extends Project {
             if($this->inRole('warehouser')){
                 //$buttons[] = lang('button_appling_ordered');
             }
-        }else{
+        }else if($this->config->item('apply_order')){
             if($available*100 >0 && $this->inRole('manager')){
                 $buttons[] = lang('button_appling_order');
             }

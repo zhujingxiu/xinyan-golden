@@ -20,6 +20,11 @@ $lang['error_reason_length'] = '驳回理由的内容长度不足10个字符';
 $lang['error_no_project'] = '项目不存在';
 $lang['error_no_customer'] = '客户不存在';
 $lang['error_no_applied'] = '没有找到该客户提金申请数据，请刷新重试';
+$lang['error_search_number'] = '没有相对应的客户';
+$lang['error_search_phone'] = '卡号与手机号不匹配';
+$lang['error_search_code'] = '短信验证码错误';
+$lang['error_search_captcha'] = '图形验证码错误';
+$lang['error_search_smstime'] = '手机验证码申请太过频繁，请稍后再试或尝试使用已发送的最近一条手机验证码！';
 
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['error_project_status'] = '项目状态已改变，请刷新重试';
@@ -36,7 +41,7 @@ $lang['error_terminating_profit'] = '输入的金息不在合理的范围内，�
 
 $lang['text_agree'] = "我已阅读并同意《%s》";
 $lang['text_goldbar'] = "金条";
-$lang['text_ornaments'] = "金饰";
+$lang['text_ornament'] = "金饰";
 $lang['text_renew_type'] = "续存金";
 $lang['text_other_type'] = "其他";
 $lang['text_cash'] = "现金";
@@ -68,6 +73,7 @@ $lang['text_period'] = "生息周期";
 $lang['text_pending_widget'] = "待处理";
 $lang['text_expiring_widget'] = "即将到期";
 $lang['text_today_widget'] = "今日登记";
+$lang['text_appling_widget'] = "客户申请";
 $lang['text_unknown'] = "未知";
 $lang['text_not_open'] = "尚未开启";
 $lang['text_investing'] = '<label class="label label-info">钱生金</label>';
@@ -75,7 +81,7 @@ $lang['text_recycling'] = '<label class="label label-primary">金生金</label>'
 
 $lang['text_porject_frozen_weight'] = "核实并冻结项目 %s 黄金克重 %s 克 到客户账户";
 $lang['text_price_desc'] = " 若无特殊说明，本站的黄金价格均指上海黄金交易所的沪金99 （即Au99.99）";
-$lang['text_price_month'] = " 黄金价格走势图 （30日内）";
+$lang['text_login_price_title'] = "黄金价格近期走势 ：%s收盘价 %s 元/克";
 $lang['text_price_today'] = " 今日黄金价格走势图";
 $lang['text_price_yestoday'] = " 昨日收盘价";
 $lang['text_price_unit'] = " 元/克";
@@ -113,6 +119,7 @@ $lang['button_appling'] = "<a class=\"btn btn-success btn-appling\">%s 提金</a
 $lang['button_confirming'] = "<a class=\"btn btn-primary btn-confirming\">%s 确认</a>";
 $lang['button_order'] = '<a class="btn btn-success btn-order">消费</a>';
 $lang['button_taking'] = '<a class="btn btn-success btn-taking">出库</a>';
+$lang['button_print'] = '<a href="%s" target="_blank" class="btn btn-default btn-print" data-toggle="tooltip" title="打印协议"><i class="fa fa-print"></a>';
 
 $lang['button_trashing'] = '<a class="btn btn-link btn-trashed">删除</a>';
 

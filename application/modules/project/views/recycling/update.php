@@ -26,8 +26,11 @@
                                     <div class="input-group col-sm-11">
                                         <span class="input-group-addon">黄金种类</span>
                                         <select class="form-control" name="type">
-                                            <option value="ornaments" <?php echo $type =='ornaments' ? 'selected' :'' ?>>金饰</option>
-                                            <option value="goldbar" <?php echo $type =='goldbar' ? 'selected' :'' ?>>金条</option>
+                                            <?php if(is_array($gold_types)):?>
+                                                <?php foreach($gold_types as $item):?>
+                                                    <option value="<?php echo $item['code']?>" <?php echo $type ==$item['code'] ? 'selected' :'' ?>><?php echo $item['title']?></option>
+                                                <?php endforeach?>
+                                            <?php endif?>
                                         </select>
                                     </div>
                                 </div>
@@ -236,6 +239,9 @@
                             <textarea class="form-control" name="editorValue" placeholder="填写出库备注"><?php echo $note;?></textarea>
                         </div>
                     </div>
+                </li>
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
                 </li>
             </ul>
         </div>

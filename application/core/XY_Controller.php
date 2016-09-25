@@ -8,6 +8,7 @@ class XY_Controller extends MX_Controller {
     protected $ajax_permission = FALSE;
     protected $current_url = FALSE;
     protected $module = FALSE;
+    protected $login_page = 'landing';
     function __construct()
     {
         parent::__construct();
@@ -61,7 +62,7 @@ class XY_Controller extends MX_Controller {
         }else{
             // 跳转到登录页面
             $this->worker_id = FALSE;
-            redirect('auth/login','refresh');
+            redirect($this->login_page,'refresh');
         }
     }
 
@@ -179,25 +180,40 @@ class XY_Controller extends MX_Controller {
                         'text' => '金生金',
                         'link' => 'project/recycling',
                         'auth' => $this->isAllowed('project/recycling/index'),
-                        'style' => in_array($current,array('project/recycling','project/recycling/index')) ? ' active':''
+                        'style' => in_array($current,array('project/recycling','project/recycling/index')) ? ' active':'',
+                        'widget'=>array(
+
+                            call_user_func_array(array($this->dashboard_model,'widget_pending'),array('recycling')),
+                        ),
                     ),
                     'investing' => array(
                         'text' => '钱生金',
                         'link' => 'project/investing',
                         'auth' => $this->isAllowed('project/investing/index'),
-                        'style' => in_array($current,array('project/investing','project/investing/index')) ? ' active':''
+                        'style' => in_array($current,array('project/investing','project/investing/index')) ? ' active':'',
+                        'widget'=>array(
+
+                            call_user_func_array(array($this->dashboard_model,'widget_pending'),array('investing')),
+                        ),
                     ),
                     'customer' => array(
                         'text' => '客户管理',
                         'link' => 'project/customer',
                         'auth' => $this->isAllowed('project/customer/index'),
-                        'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':''
+                        'style' => in_array($current,array('project/customer','project/customer/index')) ? ' active':'',
+                        'widget'=>array(
+                            call_user_func_array(array($this->dashboard_model,'widget_appling'),array('all')),
+                        ),
                     ),
                     'stock' => array(
                         'text' => '金库',
                         'link' => 'project/stock',
                         'auth' => $this->isAllowed('project/stock/index'),
-                        'style' => in_array($current,array('project/stock','project/stock/index')) ? ' active':''
+                        'style' => in_array($current,array('project/stock','project/stock/index')) ? ' active':'',
+                        'widget'=>array(
+
+                            call_user_func_array(array($this->dashboard_model,'widget_expiring'),array('all')),
+                        ),
                     ),
                     'trash' => array(
                         'text' => '回收站',

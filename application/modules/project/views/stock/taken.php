@@ -102,16 +102,16 @@
                         </h3>
                         <div class="timeline-body" style="clear: both">
                             <div class="input-group ">
-                                <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 客 户 手 机 </span>
-                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_phone;?>" disabled>
-                                <span class="input-group-addon" style="color:#CC9900;font-weight: bold;"> 申 请 重 量 </span>
-                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_weight;?>" disabled>
+                                <span class="input-group-addon _highlight" > 客户手机 </span>
+                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_phone;?>" readonly>
+                                <span class="input-group-addon _highlight" > 申请重量 </span>
+                                <input type="text" style="color:#CC9900;font-weight: bold;" class="form-control" value="<?php echo $applied_weight;?>" readonly>
                                 <span class="input-group-addon">克</span>
                             </div>
                             <div class="input-group">
-                                <span class="input-group-addon" ><b> 确 认 手 机 </b></span>
+                                <span class="input-group-addon" ><b> 确认手机 </b></span>
                                 <input type="text" name="phone" class="form-control" placeholder="确认客户手机">
-                                <span class="input-group-addon" ><b> 确 认 重 量 </b></span>
+                                <span class="input-group-addon" ><b> 确认重量 </b></span>
                                 <input class="form-control" name="weight" type="text" placeholder="确认申请提金重量" >
                                 <span class="input-group-addon">克</span>
                             </div>

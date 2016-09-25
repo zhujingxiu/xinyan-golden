@@ -33,7 +33,7 @@ class Crontab extends MX_Controller
                 $this->tool_model->run_crontab();
 
                 if(date('w') ==0 || date('w') ==6){
-                    $interval = 3600*4;
+                    $interval = 3600*6;
                 }else if(date('H')>23 || date('H')<7){
                     $interval = 3600;
                 }else{
@@ -60,7 +60,7 @@ class Crontab extends MX_Controller
                 do {
                     $this->tool_model->hexun_price($url);
                     if(date('w') ==0 || date('w') ==6){
-                        $interval = 3600*4;
+                        $interval = 3600*6;
                     }else if(date('H')>=23 || date('H')<=7){
                         $interval = 3600;//$this->setting->get_setting('hexun_interval') ? (int)$this->config->item('hexun_interval') : 5 * 60;
                     }else{

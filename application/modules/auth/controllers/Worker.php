@@ -32,7 +32,7 @@ class Worker extends XY_Controller {
             $data['groups'][] = $item;
         }
 
-        $this->layout->view('worker/list',$data);
+        $this->layout->view('worker',$data);
     }
 
     public function check_username()

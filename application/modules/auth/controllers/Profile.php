@@ -20,7 +20,7 @@ class Profile extends XY_Controller {
         if (!$this->ion_auth->logged_in())
         {
             // redirect them to the login page
-            redirect('auth/login', 'refresh');
+            redirect($this->login_page, 'refresh');
         }
         else
         {
@@ -34,7 +34,7 @@ class Profile extends XY_Controller {
                 $data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
             }
             $data['activity'] = $this->message->worker_activities(10);
-            $this->layout->view('worker/profile', $data);
+            $this->layout->view('profile', $data);
         }
     }
 
@@ -82,7 +82,7 @@ class Profile extends XY_Controller {
             else
             {
                 $this->session->set_flashdata('warning', $this->ion_auth->errors());
-                redirect('auth/profile', 'refresh');
+                json_error();
             }
         }
     }
@@ -93,7 +93,7 @@ class Profile extends XY_Controller {
         $id = $this->ion_auth->get_user_id();
         if (!$this->ion_auth->logged_in() || ( !($this->ion_auth->user()->row()->id == $id)))
         {
-            redirect('auth/login', 'refresh');
+            redirect($this->login_page, 'refresh');
         }
 
         $user = $this->ion_auth->user($id)->row();

@@ -376,8 +376,10 @@ class Recycling_model extends XY_Model{
         return FALSE;
     }
 
-    public function project_checked($project_sn,$start=FALSE){
-        if(empty($project_sn) ) return FALSE;
+    public function project_checked($data){
+        if(empty($data['project_sn']) ) return FALSE;
+        $project_sn = $data['project_sn'];
+        $start = empty($data['start']) ? false :$data['start'];
         $project = $this->project($project_sn);
         if($project->num_rows()) {
             $info = $project->row_array();
@@ -454,24 +456,7 @@ class Recycling_model extends XY_Model{
         $this->db->insert($this->stock_table,$tmp);
         return $this->db->insert_id();
     }
-    protected function type_text($type){
-        switch(strtolower($type)){
-            case 'goldbar':
-                $text = lang('text_goldbar');
-                break;
-            case 'ornaments':
-                $text = lang('text_ornaments');
-                break;
-            case 'renew':
-                $text = lang('text_renew_type');
-                break;
-            case 'other':
-                $text = lang('text_other_type');
-                break;
-        }
-        return $text;
 
-    }
     public function project_growing($project_sn){
         if(empty($project_sn)) return FALSE;
 
@@ -540,5 +525,15 @@ class Recycling_model extends XY_Model{
         $value = $user_id ? (int)$user_id : (int)$this->ion_auth->get_user_id();
         $this->db->update($this->table,array('locker_id' =>$value),array('project_sn' =>$project_sn));
         return $this->db->last_query();
+    }
+
+    public function gold_types()
+    {
+        return parent::gold_types();
+    }
+
+    public function type_text($code)
+    {
+        return parent::type_text($code);
     }
 }

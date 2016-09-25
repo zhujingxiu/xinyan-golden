@@ -228,32 +228,36 @@
                         <textarea class="form-control" name="editorValue" placeholder="填写入库备注"></textarea>
                     </div>
                 </li>
+                <?php if(!empty($histories) && is_array($histories)): ?>
                 <li class="time-label">
                     <span class="bg-purple"> 状态变更 </span>
                 </li>
-                <?php if(!empty($histories) && is_array($histories)): ?>
-                    <?php foreach($histories as $item) :?>
-                        <li>
-                            <i class="fa fa-user bg-aqua"></i>
-                            <div class="timeline-item">
-                        <span class="time">
-                            <?php echo $item['status']?>
-                            <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
-                        </span>
-                                <h3 class="timeline-header no-border">
-                                    <a href="javascript:;" class="liveim">
-                                        <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
-                                            <img data-toggle="tooltip" src="<?php echo site_url($item['avatar'])?>" class="user-avatar" title="<?php echo $item['operator']?>" alt="<?php echo $item['operator']?>">
-                                        <?php else: ?>
-                                            <?php echo $item['operator']?>
-                                        <?php endif?>
-                                    </a>
-                                    <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
-                                </h3>
-                            </div>
-                        </li>
-                    <?php endforeach ?>
+
+                <?php foreach($histories as $item) :?>
+                    <li>
+                        <i class="fa fa-user bg-aqua"></i>
+                        <div class="timeline-item">
+                    <span class="time">
+                        <?php echo $item['status']?>
+                        <i class="fa fa-clock-o"></i> <?php echo format_time($item['addtime'],true);?>
+                    </span>
+                            <h3 class="timeline-header no-border">
+                                <a href="javascript:;" class="liveim">
+                                    <?php if(!empty($item['avatar']) && file_exists($item['avatar'])): ?>
+                                        <img data-toggle="tooltip" src="<?php echo site_url($item['avatar'])?>" class="user-avatar" title="<?php echo $item['operator']?>" alt="<?php echo $item['operator']?>">
+                                    <?php else: ?>
+                                        <?php echo $item['operator']?>
+                                    <?php endif?>
+                                </a>
+                                <small>&nbsp; <?php echo str_truncate(strip_tags(htmlspecialchars_decode($item['note'])));?></small>
+                            </h3>
+                        </div>
+                    </li>
+                <?php endforeach ?>
                 <?php endif ?>
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
             </ul>
         </div>
     </div>

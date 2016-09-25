@@ -16,7 +16,6 @@ class Investing extends Project {
 		$this->layout->add_includes(array(
 			array('type'=>'css','src'=>_ASSET_.'lib/datatables/dataTables.bootstrap.css'),
 			//array('type'=>'css','src'=>_ASSET_.'lib/ueditor/themes/default/css/ueditor.min.css'),
-			//array('type'=>'css','src'=>_ASSET_.'lib/jquery-ui/jquery-ui.min.css'),
 		));
 		$data['success'] = $this->session->flashdata('success');
 		$data['warning'] = $this->session->flashdata('warning');
@@ -68,7 +67,7 @@ class Investing extends Project {
 					'referrer'	=> $row['referrer'],
 					'operator'	=> $row['operator'],
 					'lasttime'	=> $row['lasttime'] ? date('Y-m-d',$row['lasttime']).'<br>'.date('H:i:s',$row['lasttime']) :lang("text_unknown"),
-					'operation'	=> $this->investing_operation($row['status_id'],$row['locker_id'])
+					'operation'	=> $this->investing_operation($row['status_id'],$row['locker_id'],$row['project_sn'])
 				);
 			}
 		}
@@ -91,13 +90,12 @@ class Investing extends Project {
 				//json_error(array( 'msg' => lang('error_csrf'),'title'=>lang('error_title')));
 			}
 
-			if($price = $this->session->tempdata('current_price')){
-				$price = floatval(XEncrypt($price,'D'));
-				$this->session->set_tempdata('current_price', NULL, -300);
-				if($price*100 <= 0){
-					json_error(array('msg' =>lang('error_current_price')));
-				}
+			if($this->inRole('manager')&&$this->input->post("_price")){
+				$price = (float)$this->input->post("_price");
 			}else{
+				$price = (float)XEncrypt($this->session->flashdata('current_price'),'D');
+			}
+			if($price*100 <= 0){
 				json_error(array('msg' =>lang('error_current_price')));
 			}
             $this->form_validation->set_rules('weight', '购买克重', 'required');
@@ -155,7 +153,7 @@ class Investing extends Project {
 			}else{
 				json_error();
 			}
-			$this->session->set_tempdata('current_price',XEncrypt($price),1200);
+			$this->session->set_flashdata('current_price',XEncrypt($price));
 			$info = array(
 				'price' => $price,
 				'project_id' => '',
@@ -174,6 +172,7 @@ class Investing extends Project {
 			}
 			$info['periods'] = $this->project_model->periods(array('status'=>1))->result_array();
 			$info['transferrers'] = $this->group_users('manager');
+			$info['is_manager'] = $this->inRole('manager');
 			json_response(array('code'=>1,'title'=>'添加钱生金项目','msg'=>$this->load->view('investing/booking',$info,TRUE)));
 		}
 	}
@@ -304,6 +303,7 @@ class Investing extends Project {
 			json_success(array(
 				'title'=>'项目详情 '.$info['realname'].':'.$info['project_sn'],
 				'msg'=>$this->load->view('investing/detail',$info,TRUE),
+				'print'=>$this->inRole('manager')?site_url('project/investing/privacy?xe='.$info['project_sn']):False,
 				'terminable'=>false//$this->inRole('manager')
 			));
 		}else{
@@ -354,10 +354,8 @@ class Investing extends Project {
 						'start'		=> $this->calculate_start($project['addtime']),
 						'transferrer' =>$this->input->post('transferrer'),
 						'note' 		=> $note,
-						'call_func' => array(
-							'active_period'=>$project_sn,
-							'customer_frozen'=>$project_sn
-						),
+						'call_func' => 'project_checked',
+						'call_param' => $project_sn,
 					));
 					$this->session->set_flashdata('success', sprintf("项目已核实！编号: %s",$project_sn));
 					json_success();
@@ -630,7 +628,8 @@ class Investing extends Project {
 	}
 
 	public function privacy(){
-		$sn = XEncrypt($this->input->get('xe'),'D');
+		//$sn = XEncrypt($this->input->get('xe'),'D');
+		$sn = $this->input->get('xe');
 		$result = $this->investing_model->project($sn);
 
 
@@ -640,6 +639,11 @@ class Investing extends Project {
 			if(in_array($project['status_id'],array($this->config->item('investing_refused'),$this->config->item('investing_terminated')))){
 
 				die( '参数异常，您查找的项目不符合打印协议');
+			}
+			if(empty($project['start'])){
+				$project['start'] = $this->calculate_start($project['addtime']);
+				$starttime  = strtotime($project['start']);
+				$project['end'] = calculate_end($starttime,$project['month']);
 			}
 			$this->layout->view('privacy',$project,FALSE);
 		}else{

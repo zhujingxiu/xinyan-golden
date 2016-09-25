@@ -95,3 +95,13 @@ function calculate_total(weight,profit)
 {
     return math_mul(weight,profit);
 }
+
+function isMoblieCN(phone){
+
+    var reg = /^(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/
+    if (phone.length == 11) {
+        return reg.exec(phone);
+    } else {
+        return false;
+    }
+}

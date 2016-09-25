@@ -40,6 +40,7 @@ class Tool_model extends XY_Model
             if(is_array($list)){
                 $this->db->trans_begin();
                 $insert_batch =array();
+                $last_day = FALSE;
                 foreach($list as $item){
                     if(!isset($item['Code']) || !isset($item['Price']) || !isset($item['Date'])){
                         continue;
@@ -64,6 +65,25 @@ class Tool_model extends XY_Model
                         'updatetime' => $updatetime,
                         'addtime' => time(),
                     );
+                    if(date('w')==6 || date('w')==0){
+                        $yestoday = (date('w') == 0) ? date('Y-m-d',strtotime('-2 day')) : date('Y-m-d',strtotime("-1 day"));
+                        if($last_day == FALSE ){
+                            $this->db->where(array("date"=>$yestoday,"type"=>$item['Name']))->from("golden_price");
+                            if($this->db->count_all_results()) {
+                                $last_day = TRUE;
+                            }else{
+                                $this->db->insert("golden_price", array(
+                                    'date' =>  $yestoday,
+                                    'type' => $item['Name'],
+                                    'typename' => $this->getTypeName($item['Name']),
+                                    'price' => (float)$item['PreClose'],
+                                    'addtime' => time()
+                                ));
+                                if ($this->db->insert_id())
+                                    $last_day = TRUE;
+                            }
+                        }
+                    }
                 }
                 if($insert_batch){
                     $this->db->insert_batch('golden_today',$insert_batch);
@@ -98,18 +118,19 @@ class Tool_model extends XY_Model
     public function lastprice($lastday=FALSE)
     {
         if($lastday){
-            $date = ( date('w') == 0 || date('w') == 6 ) ? date('Y-m-d',strtotime('last Friday')) : date('Y-m-d',strtotime("-1 day"));
+            $date = (date('w') == 0) ? date('Y-m-d',strtotime('-2 day')) : date('Y-m-d',strtotime("-1 day"));
+
             $query = $this->db->where(array('date'=>$date,'type'=>'Au99.99'))->from("golden_price")->get();//,
             if($query->num_rows()){
                 $result = $query->row_array();
-                return (float)$result['price'];
+                return number_format($result['price'],2);
             }
         }
         else{
             $query = $this->db->where(array('type'=>'Au99.99'))->from("golden_today")->order_by('updatetime desc')->get();
             if($query->num_rows()){
                 $result = $query->row_array();
-                return (float)$result['price'];
+                return number_format($result['price'],2);
             }
         }
         return FALSE;
@@ -117,7 +138,7 @@ class Tool_model extends XY_Model
 
     public function range_price($mode)
     {
-        $table = "golden_price";$primary = "date";$date_format = FALSE;
+        $table = "golden_price";$primary = "date";$date_format = "m.d";
         switch(strtolower($mode)){
             case 'day':
                 $table = "golden_today";
@@ -127,6 +148,7 @@ class Tool_model extends XY_Model
                 break;
             case 'week':
                 $where = array('date >= '=>date('Y-m-d',strtotime("-1 week")));
+
                 break;
             case 'month':
                 $where = array('date >= '=>date('Y-m-d',strtotime("last month")));
@@ -138,7 +160,7 @@ class Tool_model extends XY_Model
             $result = $query->result_array();
             foreach($result as $item){
                 if(isset($item[$primary]) && isset($item['price'])){
-                    $key = $date_format ? date($date_format,$item[$primary]) : $item[$primary];
+                    $key = $primary == "updatetime" ? date($date_format,$item[$primary]) : date($date_format,strtotime($item[$primary]));
                     $tmp[$key] = $item['price'];
                 }
             }
@@ -469,7 +491,7 @@ class Tool_model extends XY_Model
                             'wechat' => $customer['wechat'],
                             'idnumber' => $customer['idnumber'],
                             'price' => $item['price'],
-                            'type' => $item['type']=='goldbar' ?lang('text_gold'):lang('text_ornaments'),
+                            'type' => $this->type_text($item['type']),
                             'number' => $item['number'],
                             'origin_weight' => $item['origin_weight'],
                             'weight' => $item['weight'],

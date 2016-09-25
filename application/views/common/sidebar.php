@@ -45,6 +45,13 @@
                         <a href="<?php echo site_url($child['link'])?>">
                             <i class="fa fa-circle-o"></i> 
                             <?php echo $child['text'] ?>
+                            <?php if(isset($child['widget']) && is_array($child['widget'])) : ?>
+                                <span class="pull-right-container">
+                                <?php foreach($child['widget'] as  $_widget):?>
+                                    <?php echo $_widget;?>
+                                <?php endforeach?>
+                                </span>
+                            <?php endif?>
                         </a>
                     </li>
                     <?php endif ?>

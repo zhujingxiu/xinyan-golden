@@ -191,8 +191,14 @@
                         <div id="gold-price-charts" style="margin: 0;padding: 0;width:100%;height:360px;">
                         </div>
                         <ul class="tu clear" id="toggle-charts">
+                            <?php if(date('w')==0 || date('w') == 6): ?>
+                            <li><input type="radio" name="price_charts" value="day" />今天</li>
+                            <li><input type="radio" name="price_charts" value="week" checked="checked" />周</li>
+
+                            <?php else : ?>
                             <li><input type="radio" name="price_charts" value="day" checked="checked"  />今天</li>
                             <li><input type="radio" name="price_charts" value="week"  />周</li>
+                            <?php endif?>
                             <li><input type="radio" name="price_charts" value="month"  />月</li>
                         </ul>
                     </div>
@@ -393,7 +399,12 @@
     <!-- /.content  -->
     <script>
         seajs.use('dashboard',function(l){
-            l.priceGoldView('day');
+            <?php if(date('w')==0 || date('w') == 6): ?>
+                l.priceGoldView('week');
+            <?php else: ?>
+                l.priceGoldView('day');
+            <?php endif ?>
+
             l.render_overview();
         });
     </script>

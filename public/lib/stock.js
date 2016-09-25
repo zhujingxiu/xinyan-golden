@@ -71,7 +71,7 @@ define(function(require,exports,modules){
                         options.yes = function (index, layero) {
                             layer.open({
                                 type: 1,
-                                title: '即将提前终止项目',
+                                title: '即将终止项目',
                                 area:'520px',
                                 offset: '100px',
                                 zIndex:199,

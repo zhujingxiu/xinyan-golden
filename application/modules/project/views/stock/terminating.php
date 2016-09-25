@@ -25,7 +25,7 @@
 
         <div class="form-group clearfix">
             <div class="input-group col-sm-12">
-                <textarea name="editorValue" class="form-control" placeholder="输入提前终止原因"></textarea>
+                <textarea name="editorValue" class="form-control" placeholder="输入终止原因"></textarea>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
             rules: {
                 editorValue: {
                     required: true,
-                    minlength: 10
+                    minlength: 8
                 },
                 profit: {
                     isFloatGteZero: true,
@@ -70,7 +70,7 @@
 
                 editorValue: {
                     required: '终止原因必须填写',
-                    minlength: '须大于10个字符'
+                    minlength: '须大于8个字符'
                 },
                 profit: {
                     isFloatGteZero: '请输入中文字符',
@@ -82,14 +82,19 @@
                 $(form).ajaxSubmit({
                         dataType: 'json',
                         beforeSubmit: function () {
-                            layer.load();
+                            _index = layer.load();
                         },
                         success: function (json) {
                             if (json.code == 1) {
                                 location.reload();
                             }else{
-                                var l = require('layout');
-                                l.render_message(json.msg,json.title);
+                                layer.close(_index);
+                                layer.alert(json.msg, {
+                                    icon: 2,
+                                    time: 5000, //2秒关闭（如果不配置，默认是3秒）
+                                    title:json.title
+                                });
+                                return false;
                             }
                         }
                     }

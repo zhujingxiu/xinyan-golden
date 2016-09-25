@@ -35,8 +35,8 @@ class Stock_model extends XY_Model{
         if(is_array($data) && isset($data['where'])){
             $this->db->where($data['where']);
         }
-        $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `project_sn` = `p`.`project_sn` AND `mode`='profit'";
-        $this->db->select('cp.title AS company ,cp.alias short_title,c.realname,c.phone,c.idnumber,p.*,w.realname operator, w.username,w2.realname referrer,('.$profit_weight.') stock_profit', false);
+        //$profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `gd_customer_stock` WHERE `project_sn` = `p`.`project_sn` AND `mode`='profit'";
+        $this->db->select('cp.title AS company ,cp.alias short_title,c.realname,c.phone,c.idnumber,p.*,w.realname operator, w.username,w2.realname referrer,(p.weight * p.profit) stock_profit', false);
         $this->db->from($this->table.' AS p');
         $this->db->join($this->customer_table.' AS c', 'c.customer_id = p.customer_id','left');
         $this->db->join($this->company_table.' AS cp', 'cp.company_id = p.company_id','left');
@@ -247,7 +247,7 @@ class Stock_model extends XY_Model{
             if (!empty($project['type']) && !empty($project['origin_weight'])) {
                 $gold = maybe_serialize(array(
                     'price' => $project['price'],
-                    'type' => $project['type'] == 'goldbar' ? lang('text_goldbar') : lang('text_ornaments'),
+                    'type' => $this->type_text($project['type']),
                     'number' => $project['number'],
                     'origin_weight' => $project['origin_weight'],
                     'weight' => $project['weight'],

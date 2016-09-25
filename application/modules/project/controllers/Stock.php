@@ -437,7 +437,7 @@ class Stock extends Project
         if(!$project_sn || !$reason){
             json_error();
         }
-        if(strlen($reason) < 10){
+        if(strlen($reason) < 8){
             json_error(array('msg'=>lang('error_reason_length')));
         }
         $result = $this->stock_model->project($project_sn);

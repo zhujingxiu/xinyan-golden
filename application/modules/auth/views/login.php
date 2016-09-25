@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
-
     <title><?php echo $title?>-登录</title>
-
     <link rel="stylesheet" href="<?php echo asset_url('login/css/reset.css')?>">
     <link rel="stylesheet" href="<?php echo asset_url('login/css/login.css')?>">
     <!--[if lt IE 9]>
@@ -18,16 +16,16 @@
     <script>DD_belatedPNG.fix('.centerIcon');</script>
     <![endif]-->
     <base href="<?php echo base_url(); ?>">
-
     <link rel="icon" href="favicon.ico">
 </head>
 
-<body>
+<body style="overflow: hidden;">
 <div class="loginWrapper clearfix">
     <div class="banWrapper" style="background: #faf4eb">
         <div id="left-container" class="banContent">
             <div id="gold-price-charts" style="margin: 0;padding: 0;width:700px;height:380px;">
             </div>
+            <a>查询我的存金</a>
         </div>
     </div>
     <div class="loginMain">
@@ -36,10 +34,9 @@
                 <a class="loginLogo" href="<?php echo base_url();?>"></a>
             </div>
             <?php echo form_open("auth/login", ['class' => 'formLogin', 'id' => "login_form"]); ?>
-
             <div class="loginList loginListUser">
                 <label></label>
-                <input type="text" class="loginText" name="identity" id="identity" value="" placeholder="用户名/手机号/邮箱"/>
+                <input type="text" class="loginText" name="identity" id="identity" value="" placeholder="工号"/>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
             <div class="loginList loginListPwd">

@@ -25,7 +25,7 @@ class Company extends XY_Controller {
         $data['warning'] = $this->session->flashdata('warning');
 
 
-        $this->layout->view('worker/company',$data);
+        $this->layout->view('company',$data);
     }
 
 

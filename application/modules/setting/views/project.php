@@ -475,7 +475,27 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="form-group clearfix" style="display: none;">
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-4 text-right">开启续存黄金
+                                                    <span class="help-block">开启客户账户黄金续存入库功能</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <label><input type="checkbox" name="apply_renew" value="1" <?php echo !empty($setting['apply_renew']) ? 'checked' : '' ?>/> 是</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
+                                                <label for="" class="control-label col-sm-4 text-right">开启消费抵扣
+                                                    <span class="help-block">开启客户门店消费抵扣账户金功能</span>
+                                                </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <label><input type="checkbox" name="apply_order" value="1" <?php echo !empty($setting['apply_order']) ? 'checked' : '' ?>/> 是</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group clearfix">
                                                 <label for="inputOrderPercent" class="control-label col-sm-4 text-right">门店消费
                                                     <span class="help-block">门店黄金消费比例</span>
                                                 </label>
@@ -492,7 +512,7 @@
                                                 </label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group">
-                                                        <label><input type="checkbox" name="terminated_trash" value="1" <?php echo !empty($setting['terminated_trash']) ? 'checked' : '' ?>/>是</label>
+                                                        <label><input type="checkbox" name="terminated_trash" value="1" <?php echo !empty($setting['terminated_trash']) ? 'checked' : '' ?>/> 是</label>
                                                     </div>
                                                 </div>
                                             </div>
