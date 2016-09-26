@@ -6,6 +6,7 @@ class Customer_model extends XY_Model{
     private $table = 'customer';
     private $stock_table = 'customer_stock';
     private $project_stock_table = 'project_stock';
+    private $investing_table = 'project_investing';
     private $recycling_table = 'project_recycling';
     private $recycling_history_table = 'project_recycling_history';
     private $project_table = 'project_stock';
@@ -488,7 +489,8 @@ class Customer_model extends XY_Model{
 
     public function get_smscode($phone){
 
-        return $this->db->get_where('customer_sms',array('phone'=>$phone));
+        $query = $this->db->get_where('customer_sms',array('phone'=>$phone));
+        return $query->num_rows()?$query->row_array():false;
     }
     public function add_smscode($phone,$sms){
         $fields = array(
@@ -524,17 +526,54 @@ class Customer_model extends XY_Model{
 
     public function search_projects($customer_id)
     {
+        $projects = array();
         $customer = $this->customer($customer_id);
         if($customer->num_rows()){
 
-            $this->db->where(array('ps.customer_id'=>$customer_id));
-            $profit_weight = "SELECT SUM(`weight`) AS `weight` FROM `".$this->db->dbprefix('customer_stock')."` WHERE `mode` = 'profit' AND `customer_id` = `ps`.`customer_id` AND `project_sn` = `p`.`project_sn`  ";
-            $query = $this->db->select("p.addtime,ps.*,w2.realname referrer,( ".$profit_weight." ) stock_profit ",FALSE)
-                ->from($this->project_stock_table." AS ps")
-                ->join($this->worker_table.' AS w2', 'w2.id = ps.referrer_id','left')
-                ->join($this->project_table." AS p","p.project_sn = ps.project_sn")->order_by('ps.addtime DESC')->get();
-            return $query->num_rows() ? $query->result_array() : FALSE;
+            $this->db->select('c.realname,c.phone,p.*,w.realname operator, w.username,w2.realname referrer,(p.weight * p.profit) stock_profit', false);
+            $this->db->from($this->recycling_table.' AS p')->where(array('p.customer_id'=>$customer_id,'p.is_del'=>0));
+            $this->db->join($this->table.' AS c', 'c.customer_id = p.customer_id','left');
+            $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
+            $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
+            $this->db->order_by('p.addtime asc');
+            $query = $this->db->get();
+
+            if($query->num_rows()){
+                foreach($query->result_array() as $item){
+                    if(empty($item['start'])){
+                        $item['start'] = $this->calculate_start($item['addtime']);
+                        $starttime  = strtotime($item['start']);
+                        $item['end'] = calculate_end($starttime,$item['month']);
+                    }
+                    $item['mode'] = 'recycling';
+                    $item['status'] = ($item['status_id'] != $this->config->item('recycling_terminated')) ? lang('label_growing') : lang('label_terminated');
+                    $projects[$item['addtime']] = $item;
+                }
+            }
+
+            //$query = $this->db->get_where($this->investing_table,array('customer_id'=>$customer_id,'is_del'=>0));
+            $this->db->select('c.realname,c.phone,p.*,w.realname operator, w.username,w2.realname referrer,(p.weight * p.profit) stock_profit', false);
+            $this->db->from($this->investing_table.' AS p')->where(array('p.customer_id'=>$customer_id,'p.is_del'=>0));
+            $this->db->join($this->table.' AS c', 'c.customer_id = p.customer_id','left');
+            $this->db->join($this->worker_table.' AS w', 'w.id = p.worker_id','left');
+            $this->db->join($this->worker_table.' AS w2', 'w2.id = p.referrer_id','left');
+            $this->db->order_by('p.addtime asc');
+            $query = $this->db->get();
+            if($query->num_rows()){
+                foreach($query->result_array() as $item){
+                    if(empty($item['start'])){
+                        $item['start'] = $this->calculate_start($item['addtime']);
+                        $starttime  = strtotime($item['start']);
+                        $item['end'] = calculate_end($starttime,$item['month']);
+                    }
+                    $item['mode'] = 'investing';
+                    $item['status'] = ($item['status_id'] != $this->config->item('investing_terminated')) ? lang('label_growing') : lang('label_terminated');
+                    $projects[$item['addtime']] = $item;
+                }
+            }
+            ksort($projects);
         }
-        return FALSE;
+
+        return $projects;
     }
 }

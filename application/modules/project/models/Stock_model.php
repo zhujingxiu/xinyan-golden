@@ -170,7 +170,7 @@ class Stock_model extends XY_Model{
                 'addtime' => time(),
                 'ip' => $this->_prepare_ip($this->input->ip_address())
             ));
-            $affected = $this->db->insert_id();
+
             // update status =0 for stock table
             $this->db->update($this->table,array('status'=>0), array('project_sn'=>$project_sn));
             // insert mode = in for customer stock table
@@ -188,23 +188,8 @@ class Stock_model extends XY_Model{
             ));
             //close stock table ,relax mode = in  project weight and calculate project unfinished profit insert into customer stock table
 
-            if($profit === FALSE) {
-                if (is_date($project['start']) && is_date($project['end'])) {
-                    if (time() < strtotime($project['end'])) {
-                        $number = floor((time() - strtotime($project['start'])) / (24 * 60 * 60 * 30));
-                        $this->db->insert($this->customer_stock_table, array(
-                            'customer_id' => $project['customer_id'],
-                            'mode' => 'profit',
-                            'project_sn' => $project_sn,
-                            'weight' => $this->calculate_unfinished_profit($project['month'], $project['profit'], $number, $project['weight']),
-                            'notify' => 1,
-                            'note' => lang('text_unfinished_profit'),
-                            'worker_id' => $this->ion_auth->get_user_id(),
-                            'addtime' => time()
-                        ));
-                    }
-                }
-            }else{
+            if($profit !== FALSE) {
+
                 $this->db->insert($this->customer_stock_table, array(
                     'customer_id' => $project['customer_id'],
                     'mode' => 'profit',
@@ -216,7 +201,7 @@ class Stock_model extends XY_Model{
                     'addtime' => time()
                 ));
             }
-
+            $affected = $this->db->insert_id();
             if ($this->db->trans_status() === FALSE)
             {
                 $this->db->trans_rollback();
@@ -230,6 +215,7 @@ class Stock_model extends XY_Model{
             $this->set_message('terminated_successful');
             return $affected;
         }
+        return FALSE;
     }
 
     public function trash_bin($project_sn,$mode,$note=''){
@@ -290,22 +276,6 @@ class Stock_model extends XY_Model{
 
             return $this->db->insert_id();
         }
-    }
-
-    protected function calculate_unfinished_profit($month,$profit,$number,$weight){
-        if(!$month || !$number)return 0;
-        switch(strtolower($this->config->item('gold_growing') )){
-            case 'season':
-                $value = $number/3;
-                break;
-            case 'year':
-                $value = $number/12;
-                break;
-            default:
-                $value = $number;
-                break;
-        }
-        return (float)(($profit/$month)*$value*$weight);
     }
 
     public function recylied($trash_id)

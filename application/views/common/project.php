@@ -7,15 +7,15 @@
  */
 ?>
 
-<div class="col-sm-12" style="padding-top:20px; ">
+<div class="col-sm-12" style="padding:20px; ">
     <table id="project" class="table table-bordered table-striped">
         <thead>
         <tr>
 
             <th>项目</th>
-            <th>存重</th>
-            <th>周期</th>
-            <th>收益</th>
+            <th>存金克重</th>
+            <th>预存周期</th>
+            <th>预期收益</th>
             <th>推荐人</th>
             <th>状态</th>
         </tr>
@@ -31,18 +31,17 @@
                 <td><?php echo $period ."<br>".lang('text_profit').calculate_profit($item['profit'],$item['month']).lang('text_profit_unit')?></td>
                 <td><?php echo number_format($item['stock_profit'],2)?>克</td>
                 <td><?php echo $item['referrer']?></td>
-                <td><?php echo $item['status'] ? lang('label_growing') : lang('label_terminated') ?></td>
+                <td><?php echo $item['status'] ?></td>
             </tr>
             <?php endforeach?>
         </tbody>
         <?php endif?>
         <tfoot>
         <tr>
-
             <th>项目</th>
-            <th>存重</th>
-            <th>周期</th>
-            <th>收益</th>
+            <th>存金克重</th>
+            <th>预存周期</th>
+            <th>预期收益</th>
             <th>推荐人</th>
             <th>状态</th>
         </tr>

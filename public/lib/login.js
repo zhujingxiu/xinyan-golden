@@ -4,7 +4,7 @@ define(function(require, exports, module) {
     exports.render_search = function() {
 
         $(function () {
-
+            require('layer')
             $("#searchBtn").click(function () {
                 $('.sysError').css('display', 'none');
                 $('.errorTips').css('display', 'none');
@@ -31,24 +31,28 @@ define(function(require, exports, module) {
                     exports.error('请输入有效的验证码', $("#captcha-code"), $("#searchBtn"));
                     return false;
                 }
-                require('layer')
+
                 $("#search_form").ajaxSubmit({
                     dataType: 'json',
                     success: function (json) {
                         var code = json.code;
-                        //当用户登录错误且次数超过3次,显示验证码
-
                         if (code == '1') {
+                            require('datatables')
+                            require('datatables.bs');
                             layer.open({
                                 type: 1,
                                 title: json.title,
-                                area:['900px','600px'],
+                                area:'900px',
                                 offset: '100px',
                                 zIndex: 99,
                                 btn: [ '关闭'],
                                 content: json.msg,
-
+                                yes:function(index, layero){
+                                    layer.close(index);
+                                    $("#searchBtn").val('查询存金').prop("disabled", false);
+                                }
                             });
+
                         }
                         else {
                             if (code == '0') {//登录数据库验证,登录失败显示
@@ -63,7 +67,7 @@ define(function(require, exports, module) {
                                 $("#captchasearch").click();
                             }
 
-                            $("#searchBtn").val('登录').prop("disabled", false);
+                            $("#searchBtn").val('查询中...').prop("disabled", false);
                             return false;
                         }
                     }
@@ -145,7 +149,7 @@ define(function(require, exports, module) {
                             searchPhone = obj_mobile;
                             exports.send_agin();
                         }else{
-                            exports.error(json.error,$that,$("#searchBtn"));
+                            $('.sysError').show().find('em').html(json.msg);
                             return false;
                         }
                     }
@@ -155,7 +159,7 @@ define(function(require, exports, module) {
             $('input[name="phone"]').bind("propertychange input",function(){
                 if($(this).val() != searchPhone ){
                     clearTimeout(resetSMS);
-                    $('#get_smscode').removeAttr('disabled').text('发送验证码');
+                    $('#get_smscode').removeAttr('disabled').val('发送验证码');
                 }
             });
 
@@ -166,9 +170,9 @@ define(function(require, exports, module) {
         interval--;
         if(interval>0){
             resetSMS = setTimeout(function(){exports.send_agin();},1000);
-            $('#get_smscode').text(interval+'秒后获取验证码');
+            $('#get_smscode').val(interval+'秒后重新获取');
         }else{
-            $('#get_smscode').removeAttr('disabled').text('获取验证码');
+            $('#get_smscode').removeAttr('disabled').val('获取验证码');
             interval=120;
         }
     }
@@ -256,7 +260,7 @@ define(function(require, exports, module) {
     }
     exports.price = function (el) {
         require('echarts');
-        $.get('/landing/price',{r:Math.random()},function(json){
+        $.get('/tool/common/price',{r:Math.random()},function(json){
 
             if(json.code==1)
             exports.renderEchart('gold-price-charts',json.title,json.subtitle,json.time,json.price);

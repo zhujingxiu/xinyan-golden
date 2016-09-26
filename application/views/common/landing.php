@@ -7,6 +7,10 @@
     <title><?php echo $title?></title>
     <link rel="stylesheet" href="<?php echo asset_url('login/css/reset.css')?>">
     <link rel="stylesheet" href="<?php echo asset_url('login/css/login.css')?>">
+    <link rel="stylesheet" href="<?php echo asset_url('lib/layer/skin/layer.css')?>">
+    <link rel="stylesheet" href="<?php echo asset_url('lib/jquery-ui/jquery-ui.min.css')?>">
+    <link rel="stylesheet" href="<?php echo asset_url('lib/datatables/jquery.dataTables.min.css')?>">
+    <link rel="stylesheet" href="<?php echo asset_url('lib/datatables/dataTables.bootstrap.css')?>">
     <!--[if lt IE 9]>
     <script src="<?php echo asset_url('base/html5shiv.min.js')?>" type="text/javascript" charset="utf-8"></script>
     <script src="<?php echo asset_url('base/respond.min.js')?>" type="text/javascript" charset="utf-8"></script>
@@ -38,7 +42,7 @@
                 <input type="text" class="loginText" name="number" id="search_number" placeholder="身份证号或金卡卡号"/>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
-            <div class="loginList loginListPwd">
+            <div class="loginList loginListPhone">
                 <label></label>
                 <input type="text" class="loginText" name="phone" id="search_phone" placeholder="预留的手机号"/>
                 <span class="errorTips"><i></i><em></em></span>
@@ -46,8 +50,8 @@
             <div class="loginList loginListCode" id="search-code">
                 <label></label>
                 <input type="text" class="loginText" name="captcha" id="search_captcha" placeholder="图形验证码"/>
-                <img src="<?php echo base_url('landing/captcha'); ?>" id="captcha_search" >
-                <a href="javascript:;" class="getImg" id="captchaSearch" onclick="document.getElementById('captcha_search').src='<?php echo base_url('landing/captcha'); ?>?_t=' + Math.random();">&nbsp;</a>
+                <img src="<?php echo base_url('/tool/common/captcha'); ?>" id="captcha_search" >
+                <a href="javascript:;" class="getImg" id="captchaSearch" onclick="document.getElementById('captcha_search').src='<?php echo base_url('/tool/common/captcha'); ?>?_t=' + Math.random();">&nbsp;</a>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
             <div class="loginList loginListCode" id="sms-code">
@@ -77,8 +81,8 @@
             <div class="loginList loginListCode" style="display:none;" id="login-captcha">
                 <label></label>
                 <input type="text" class="loginText" name="captcha" id="captcha-login" placeholder="验证码"/>
-                <img src="<?php echo base_url('landing/captcha'); ?>" id="captcha_login" >
-                <a href="javascript:;" class="getImg" id="captchalogin" onclick="document.getElementById('captcha_login').src='<?php echo base_url('landing/captcha'); ?>?_t=' + Math.random();">&nbsp;</a>
+                <img src="<?php echo base_url('/tool/common/captcha'); ?>" id="captcha_login" >
+                <a href="javascript:;" class="getImg" id="captchalogin" onclick="document.getElementById('captcha_login').src='<?php echo base_url('/tool/common/captcha'); ?>?_t=' + Math.random();">&nbsp;</a>
                 <span class="errorTips"><i></i><em></em></span>
             </div>
             <div class="sysError" style="display:none">

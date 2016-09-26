@@ -369,19 +369,21 @@ class Customer extends Project {
             if(strlen($card_serial)!=8){
                 json_error(array('msg'=>lang('error_card')));
             }
-            $result = $this->customer_model->get_bind($card_serial);
 
-            if($result->num_rows()){
-                $_customer = $result->row_array();
-                if($_customer['customer_id']!=$this->input->get('customer')){
-                    json_error(array('msg'=>lang('error_card_match')));
-                }
-            }else{
-                json_error(array('msg'=>lang('error_card_customer')));
-            }
             $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()){
                 $info = $result->row_array();
+                if(empty($info['card_number'])){
+                    json_error(array('msg'=>lang('error_card_customer')));
+                }
+                $card = $this->customer_model->get_bind($card_serial);
+
+                if($card->num_rows()){
+                    $_customer = $card->row_array();
+                    if($_customer['customer_id']!=$customer_id){
+                        json_error(array('msg'=>lang('error_card_match')));
+                    }
+                }
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['card_serial'] = $card_serial;
                 $info['max'] = (float)$info['available'];
@@ -485,19 +487,20 @@ class Customer extends Project {
             if(strlen($card_serial)!=8){
                 json_error(array('msg'=>lang('error_card')));
             }
-            $result = $this->customer_model->get_bind($card_serial);
-
-            if($result->num_rows()){
-                $_customer = $result->row_array();
-                if($_customer['customer_id']!=$this->input->get('customer')){
-                    json_error(array('msg'=>lang('error_card_match')));
-                }
-            }else{
-                json_error(array('msg'=>lang('error_card_customer')));
-            }
             $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()) {
                 $info = $result->row_array();
+                if(empty($info['card_number'])){
+                    json_error(array('msg'=>lang('error_card_customer')));
+                }
+                $card = $this->customer_model->get_bind($card_serial);
+
+                if($card->num_rows()){
+                    $_customer = $card->row_array();
+                    if($_customer['customer_id']!=$customer_id){
+                        json_error(array('msg'=>lang('error_card_match')));
+                    }
+                }
             }
             $info['card_serial'] = $card_serial;
             $info['agree'] = '';
@@ -578,20 +581,22 @@ class Customer extends Project {
             if(strlen($card_serial)!=8){
                 json_error(array('msg'=>lang('error_card')));
             }
-            $result = $this->customer_model->get_bind($card_serial);
 
-            if($result->num_rows()){
-                $_customer = $result->row_array();
-                if($_customer['customer_id']!=$this->input->get('customer')){
-                    json_error(array('msg'=>lang('error_card_match')));
-                }
-            }else{
-                json_error(array('msg'=>lang('error_card_customer')));
-            }
             $result = $this->customer_model->customer($customer_id);
             if($result->num_rows()) {
 
                 $info = $result->row_array();
+                if(empty($info['card_number'])){
+                    json_error(array('msg'=>lang('error_card_customer')));
+                }
+                $card = $this->customer_model->get_bind($card_serial);
+
+                if($card->num_rows()){
+                    $_customer = $card->row_array();
+                    if($_customer['customer_id']!=$customer_id){
+                        json_error(array('msg'=>lang('error_card_match')));
+                    }
+                }
                 $info['card_serial'] = $card_serial;
                 $info['csrf'] = $this->_get_csrf_nonce();
                 $info['order_percent'] = $this->config->item('order_percent');

@@ -449,12 +449,12 @@ class Stock extends Project
         if($profit*100>=($info['profit']*$info['weight'])*100){
             json_error(array('msg'=>lang('error_terminating_profit')));
         }
-
-        if($this->stock_model->terminated($project_sn,$reason,$mode,$profit)){
+        $do = $this->stock_model->terminated($project_sn,$reason,$mode,$profit);
+        if($do){
             $this->session->set_flashdata('success', sprintf("项目已终止！编号: %s",$project_sn));
             json_success();
         }
-        json_error();
+        json_error(array('do'=>$do));
     }
 
     public function trashed()

@@ -13,7 +13,7 @@ class Crontab extends MX_Controller
     {
         parent::__construct();
         $this->load->library(array('Ion_auth','Setting'));
-        $this->load->model('tool_model');
+        $this->load->model('cron_model');
     }
     public function index()
     {
@@ -29,8 +29,7 @@ class Crontab extends MX_Controller
             ignore_user_abort(true);
 
             do {
-
-                $this->tool_model->run_crontab();
+                $this->cron_model->run_crontab();
 
                 if(date('w') ==0 || date('w') ==6){
                     $interval = 3600*6;
@@ -58,7 +57,7 @@ class Crontab extends MX_Controller
             $url = $this->setting->get_setting('hexun_url');
             if($url) {
                 do {
-                    $this->tool_model->hexun_price($url);
+                    $this->cron_model->hexun_price($url);
                     if(date('w') ==0 || date('w') ==6){
                         $interval = 3600*6;
                     }else if(date('H')>=23 || date('H')<=7){

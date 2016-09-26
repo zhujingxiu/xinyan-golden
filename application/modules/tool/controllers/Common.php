@@ -6,7 +6,7 @@ class Common extends MX_Controller {
     {
         parent::__construct();
         $this->load->database();
-        $this->load->library(array('ion_auth','form_validation','setting'));
+        $this->load->library(array('ion_auth','form_validation','setting','sms'));
         $this->load->helper(array('url','language','server'));
         $this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -72,22 +72,20 @@ class Common extends MX_Controller {
         }
 
         $sms_log = $this->customer_model->get_smscode($phone);
-        if(!empty($sms_log['sms']) && time() < ($sms_log['time']+600) ){
+        if(!empty($sms_log['code']) && time() < ($sms_log['time']+600) ){
             json_error(array('msg'=> lang('error_search_smstime','default')));
         }
 
         $sms = new Sms();
-        $sms_number = mt_rand(100000,999999);
-        $pattern = "尊敬的用户，".$sms_number."是您本次的验证码，该验证码10分钟内有效。【黄金码头】";
-        $res = $sms->sendMsg($phone,$pattern);
-        //var_dump($res);
-        $this->model_account_customer->del_smscode($phone);
-        $this->model_account_customer->add_smscode($phone,$sms_number);
-        json_success();
-
+        $code = mt_rand(100000,999999);
+        $res = $sms->search_code($phone,$code);
+        if(is_array($res)){
+            $this->customer_model->del_smscode($phone);
+            $this->customer_model->add_smscode($phone,$code);
+            json_success();
+        }
+        json_error();
     }
-
-
 
     public function captcha(){
         $this->load->library('captcha');
@@ -100,7 +98,7 @@ class Common extends MX_Controller {
         $this->load->model('tool/tool_model');
         if(true/*date('w') ==0 || date('w') ==6*/){
             $data = $this->tool_model->range_price('month');
-            $data['title'] = sprintf($this->lang->line('text_login_price_title','default'),(date('w')) ? '昨天' : '周五',$this->tool_model->lastprice(TRUE));
+            $data['title'] = sprintf($this->lang->line('text_login_price_title','default'),(!date('w')||date('w')==1) ? '周五' : '昨天',$this->tool_model->lastprice((!date('w')||date('w')==1)));
             $data['subtitle'] = $this->lang->line('text_price_desc','default');
         }else{
             $data = $this->tool_model->range_price('day');

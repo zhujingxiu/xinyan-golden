@@ -50,8 +50,9 @@ define(function (require, exports, modules) {
     }
 
     exports.detected_card = function(){
+        var card_serial = '';
         if (ICCardReader.Open()) {
-
+            card_serial = ICCardReader.Request();
             if (card_serial.length != 8) {
                 ICCardReader.Beep();
                 alert('没有检测到磁卡，请重试！');
@@ -62,7 +63,7 @@ define(function (require, exports, modules) {
             window.navigate("http://www.youwokeji.com.cn/yw60xocxSetup.exe");
             return false;
         }
-        return true;
+        return card_serial;
     }
 
     exports.do_detail = function(cid){
@@ -114,9 +115,10 @@ define(function (require, exports, modules) {
     exports.render_appling = function () {
 
         $('#list').delegate('.btn-appling','click', function (e) {
-            //exports.detected_card();
-            //var card_serial = ICCardReader.Request();//'sadsadsa';//
-            var card_serial = '3B8814DB';
+            var card_serial = exports.detected_card();
+            if(card_serial==false){
+                return false;
+            }
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
@@ -162,7 +164,10 @@ define(function (require, exports, modules) {
 
             //exports.detected_card();
             //var card_serial = ICCardReader.Request();//'sadsadsa';//
-            var card_serial = '3B8814DB';
+            var card_serial = exports.detected_card();
+            if(card_serial==false){
+                return false;
+            }
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');
@@ -211,7 +216,7 @@ define(function (require, exports, modules) {
                 formType: 2,
                 title: '填写取消申请原因'
             }, function(value, index, elem){
-                if(value.length >= 10) {
+                if(value.length >= 8) {
                     $.ajax({
                         type: 'post',
                         url: '/project/customer/cancle',
@@ -230,7 +235,7 @@ define(function (require, exports, modules) {
                         }
                     })
                 }else{
-                    layer.tips('内容长度不小于10个字符', elem,{tips: 1});
+                    layer.tips('内容长度不小于8个字符', elem,{tips: 1});
                 }
             });
 
@@ -263,10 +268,11 @@ define(function (require, exports, modules) {
     }
     exports.render_bind = function(){
         $('#list').delegate('.btn-bind','click', function () {
-            //exports.detected_card();
-            //var card_serial = ICCardReader.Request();//'sadsadsa';//
-            var card_serial = '3B8814DB';
 
+            var card_serial = exports.detected_card();
+            if(card_serial==false){
+                return false;
+            }
             require('layer');
             require('ajaxSubmit');
             require('jqueryvalidate');

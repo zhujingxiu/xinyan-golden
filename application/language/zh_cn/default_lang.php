@@ -22,9 +22,9 @@ $lang['error_no_customer'] = '客户不存在';
 $lang['error_no_applied'] = '没有找到该客户提金申请数据，请刷新重试';
 $lang['error_search_number'] = '没有相对应的客户';
 $lang['error_search_phone'] = '卡号与手机号不匹配';
-$lang['error_search_code'] = '短信验证码错误';
+$lang['error_search_code'] = '短信验证码错误或过期，请重新获取';
 $lang['error_search_captcha'] = '图形验证码错误';
-$lang['error_search_smstime'] = '手机验证码申请太过频繁，请稍后再试或尝试使用已发送的最近一条手机验证码！';
+$lang['error_search_smstime'] = '获取太频繁，请10分钟后重试或尝试最近收到的验证码';
 
 $lang['error_total_max'] = '申请的重量不得大于当前最大值';
 $lang['error_project_status'] = '项目状态已改变，请刷新重试';

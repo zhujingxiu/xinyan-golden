@@ -444,4 +444,20 @@ class XY_Model extends CI_Model
         }
         return False;
     }
+
+    protected function calculate_unfinished_profit($month,$profit,$number,$weight){
+        if(!$month || !$number)return 0;
+        switch(strtolower($this->config->item('gold_growing') )){
+            case 'season':
+                $value = $number/3;
+                break;
+            case 'year':
+                $value = $number/12;
+                break;
+            default:
+                $value = $number;
+                break;
+        }
+        return (float)(($profit/$month)*$value*$weight);
+    }
 }

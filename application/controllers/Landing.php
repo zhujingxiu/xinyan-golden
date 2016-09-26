@@ -23,6 +23,7 @@ class Landing extends MX_Controller {
 	}
 
 	function index(){
+
 		$tpl_data['title'] = $this->config->item('site_name');
 		if($this->input->server('REQUEST_METHOD') == 'POST') {
 			//validate form input
@@ -56,30 +57,6 @@ class Landing extends MX_Controller {
 		}
 	}
 
-	public function captcha(){
-		$this->load->library('captcha');
-		$code = $this->captcha->getCaptcha(100,50);
-		$this->session->set_userdata('captcha', $code);
-		$this->captcha->showImg();
-	}
-	public function price()
-	{
-		$this->load->model('tool/tool_model');
-		if(true/*date('w') ==0 || date('w') ==6*/){
-			$data = $this->tool_model->range_price('month');
-			$data['title'] = sprintf($this->lang->line('text_login_price_title','default'),(date('w')) ? '昨天' : '周五',$this->tool_model->lastprice(TRUE));
-			$data['subtitle'] = $this->lang->line('text_price_desc','default');
-		}else{
-			$data = $this->tool_model->range_price('day');
-			$data['title'] = $this->lang->line('text_price_today','default');
-			$data['subtitle'] = $this->lang->line('text_price_yestoday','default').$this->tool_model->lastprice(true).$this->lang->line('text_price_unit','default').$this->lang->line('text_price_desc','default');
-			$data['current'] = $this->tool_model->gold_price();
-		}
-		if($data){
-			json_success($data);
-		}
-		json_error();
-	}
 
 	public function search()
 	{
@@ -99,15 +76,18 @@ class Landing extends MX_Controller {
 		if (!$customer){
 			json_error(array('msg'=> $this->lang->line('error_search_phone','default')));
 		}
-		/*
+
 		$sms_log = $this->customer_model->get_smscode($phone);
-		if(!empty($sms_log['code']) && ($code == $sms_log['code']) && time() < ($sms_log['time']+600) ){
+		if(empty($sms_log['code']) || ($code != $sms_log['code']) && time() > ($sms_log['time']+600) ){
 			json_error(array('msg'=> $this->lang->line('error_search_smstime','default')));
 		}
-		*/
+
 
 		$project = $this->customer_model->search_projects($customer['customer_id']);
 
-		json_success(array('msg'=>$this->load->view('common/project',$project),'title'=>'我的存金记录'));
+		json_success(array(
+			'msg'=>$this->load->view('common/project',array('projects'=>$project),TRUE),
+			'title'=>'我的存金记录',
+		));
 	}
 }

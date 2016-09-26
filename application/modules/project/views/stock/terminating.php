@@ -10,7 +10,8 @@
 <div class="col-sm-12" style="margin-top:20px;">
     <?php echo form_open('/project/stock/terminated',array('id' => "form-terminating"))?>
     <?php echo form_hidden('project_sn',$project_sn)?>
-    <?php $max_profit = round($weight*$profit,2)?>
+    <?php echo form_hidden('mode',$mode)?>
+    <?php $max_profit = round($weight*$profit,2)-0.01;?>
     <div class="col-sm-12">
         <div class="form-group clearfix">
             <div class="input-group">
